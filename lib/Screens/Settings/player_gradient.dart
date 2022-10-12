@@ -89,7 +89,8 @@ class _PlayerGradientSelectionState extends State<PlayerGradientSelection> {
                             ),
                           ),
                           clipBehavior: Clip.antiAlias,
-                          child: DecoratedBox(
+                          // ignore: use_decorated_box
+                          child: Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: type == 'simple'
