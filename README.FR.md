@@ -7,7 +7,7 @@ Superbe Lecteur de Musique fait avec Flutter !
 [![made-with-flutter](https://img.shields.io/badge/Made%20with-Flutter-1f425f.svg)](https://flutter.dev/) ![Release](https://img.shields.io/github/v/release/Sangwan5688/BlackHole) ![Downloads](https://img.shields.io/github/downloads/Sangwan5688/BlackHole/total)
 [![Build](https://github.com/Sangwan5688/BlackHole/actions/workflows/flutter.yml/badge.svg)](https://github.com/Sangwan5688/BlackHole/actions/workflows/flutter.yml)
 
-### N'oubliez pas de :star: la repo
+### N'oubliez pas de :star: le repo
 
 [![GitHub stars](https://img.shields.io/github/stars/Sangwan5688/BlackHole.svg?style=social&label=Star)](https://github.com//Sangwan5688/BlackHole) ![GitHub forks](https://img.shields.io/github/forks/Sangwan5688/BlackHole.svg?style=social&label=Forks) ![GitHub followers](https://img.shields.io/github/followers/Sangwan5688.svg?style=social&label=Follow)
 
@@ -33,20 +33,20 @@ Superbe Lecteur de Musique fait avec Flutter !
 
 - [Espagnol :es:](/README.ES.md)
 - [Russe :ru:](/README.RU.md)
-- [Franiçais :fr:](/README.FR.md)
-- [Japanese :jp:](/README.JA.md)
+- [Français :fr:](/README.FR.md)
+- [Japonais :jp:](/README.JA.md)
 
 Merci à [Euri](https://github.com/EuriNaiz) et [Nikita](https://github.com/TireX228) pour les traductions
 
-## Foncionnalités
+## Fonctionnalités
 
 * Meilleure qualité d'écoute (320kbps aac)
 * Recherche de Morceau, Album, Artiste et Liste de Lecture
-* Listes de Lecture d'un Langage Spécifique Promues
+* Listes de Lecture d'un Langage Spécifique Promu
 * Morceaux Tendances
-* Radios d'Artistes et Genre
+* Radios d'Artistes et Genres
 * Supporte 15+ langages musicaux
-* Meilleurs Morceaux Spotfiy Locaux et Globaux
+* Meilleurs Morceaux Spotify Locaux et Globaux
 * Ajouter des Morceaux aux Favoris
 * Supporte les Listes de Lecture
 * Import de Listes de Lecture depuis Spotify & YouTube
@@ -62,11 +62,11 @@ Merci à [Euri](https://github.com/EuriNaiz) et [Nikita](https://github.com/Tire
 * Téléchragement pour une écoute hors-ligne (320kbps avec des tags ID3)
 * Jouer des Morceaux en Ligne tout comme Hors-Ligne
 * Supporte l'Édition des Tags
-* Résultats de Recherche Populaires
+* Résultats de Recherches Populaires
 * Supporte la Recherche sur YouTube
 * Listes de Lectures Youtube Promues
 * Jouer des vidéos comme audio
-* Recommendation Automatique de Morceaux
+* Recommandations Automatiques de Morceaux
 * Égaliseur Intégré
 * Sauvegarde & Restoration
 * Mise à Jour et Vérification Automatiques
@@ -94,7 +94,7 @@ See the GNU General Public License for more details.
 ```
 [Voir la License](https://github.com/Sangwan5688/BlackHole/blob/main/LICENSE)
 
-## Construire depuis la Source
+## Build depuis la Source
 
 1. Si vous n'avez pas le SDK Flutter installé, merci de visiter le site officiel de [Flutter](https://flutter.dev/).
 2. Récupérez le code source de la branche master.
@@ -103,7 +103,7 @@ See the GNU General Public License for more details.
 git clone https://github.com/Sangwan5688/BlackHole.git
 ```
 
-3. Lancez l'application avec Android Studio ou VS Code. Ou dans la ligne de commandes:
+3. Lancez l'application avec Android Studio ou VS Code. Ou en ligne de commandes:
 
 ```
 flutter pub get
@@ -120,12 +120,12 @@ Regardez les [Problèmes communs](https://github.com/Sangwan5688/BlackHole/wiki/
 
 ## Vous voulez tester les Versions Bêtas ? Besoin d'Aide ??
 
-Vous pouvez rejoindre notre [Canal Telegram](https://t.me/blackhole_official) ou le [Grroupe Telegram](https://t.me/joinchat/fHDC1AWnOhw0ZmI9), si vous avez une requête, ou vous avez besoin d'aide avec quelque chose ainsi qu'avoir les versions bêtas du projet.
+Vous pouvez rejoindre notre [Canal Telegram](https://t.me/blackhole_official) ou le [Groupe Telegram](https://t.me/joinchat/fHDC1AWnOhw0ZmI9), si vous avez une requête, ou vous avez besoin d'aide avec quelque chose ainsi qu'avoir les versions bêtas du projet.
 
 ## Vous avez aimé mon travail ?
 
 <a href="https://www.buymeacoffee.com/ankitsangwan" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-## Qu'est-ce qui est nouveau
+## Qu'est-ce qui est nouveau ?
 
 Pour lire tous les changements, visitez la [page du wiki](https://github.com/Sangwan5688/BlackHole/wiki/Changelog)
