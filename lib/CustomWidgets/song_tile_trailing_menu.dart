@@ -62,7 +62,7 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
         ),
       ),
       itemBuilder: (context) => [
-        if (widget.isPlaylist)
+        if (widget.isPlaylist && widget.deleteLiked != null)
           PopupMenuItem(
             value: 6,
             child: Row(

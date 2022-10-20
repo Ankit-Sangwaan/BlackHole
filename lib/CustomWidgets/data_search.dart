@@ -19,6 +19,8 @@
 
 import 'dart:io';
 
+import 'package:blackhole/CustomWidgets/download_button.dart';
+import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Helpers/audio_query.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -328,6 +330,21 @@ class DownloadsSearch extends SearchDelegate {
           suggestionList[index]['artist'].toString(),
           overflow: TextOverflow.ellipsis,
         ),
+        trailing: isDowns
+            ? null
+            : Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  DownloadButton(
+                    data: suggestionList[index] as Map,
+                    icon: 'download',
+                  ),
+                  SongTileTrailingMenu(
+                    data: suggestionList[index] as Map,
+                    isPlaylist: true,
+                  ),
+                ],
+              ),
         onTap: () {
           Navigator.of(context).push(
             PageRouteBuilder(
