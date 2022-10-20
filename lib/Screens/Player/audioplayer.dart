@@ -2094,8 +2094,12 @@ class NameNControls extends StatelessWidget {
             padding: EdgeInsets.zero,
             boxShadow: const [],
             color: useFullScreenGradient
-                ? const Color.fromRGBO(0, 0, 0, 0.05)
-                : const Color.fromRGBO(0, 0, 0, 0.5),
+                ? Theme.of(context).brightness == Brightness.dark
+                    ? const Color.fromRGBO(0, 0, 0, 0.05)
+                    : const Color.fromRGBO(255, 255, 255, 0.05)
+                : Theme.of(context).brightness == Brightness.dark
+                    ? const Color.fromRGBO(0, 0, 0, 0.5)
+                    : const Color.fromRGBO(255, 255, 255, 0.5),
             // gradientColor![1]!.withOpacity(0.5),
             // useBlurForNowPlaying
             // ? Theme.of(context).brightness == Brightness.dark
