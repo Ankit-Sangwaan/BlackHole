@@ -51,6 +51,7 @@ class SongTileTrailingMenu extends StatefulWidget {
 class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
   @override
   Widget build(BuildContext context) {
+    final MediaItem mediaItem = MediaItemConverter.mapToMediaItem(widget.data);
     return PopupMenuButton(
       icon: Icon(
         Icons.more_vert_rounded,
@@ -134,19 +135,24 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
             ],
           ),
         ),
-        PopupMenuItem(
-          value: 5,
-          child: Row(
-            children: [
-              Icon(
-                Icons.person_rounded,
-                color: Theme.of(context).iconTheme.color,
+        if (mediaItem.artist != null)
+          ...mediaItem.artist.toString().split(', ').map(
+                (artist) => PopupMenuItem(
+                  value: artist,
+                  child: Row(
+                    children: [
+                      Icon(
+                        Icons.person_rounded,
+                        color: Theme.of(context).iconTheme.color,
+                      ),
+                      const SizedBox(width: 10.0),
+                      Text(
+                        '${AppLocalizations.of(context)!.viewArtist} ($artist)',
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              const SizedBox(width: 10.0),
-              Text(AppLocalizations.of(context)!.viewArtist),
-            ],
-          ),
-        ),
         PopupMenuItem(
           value: 3,
           child: Row(
@@ -161,51 +167,52 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
           ),
         ),
       ],
-      onSelected: (int? value) {
-        final MediaItem mediaItem =
-            MediaItemConverter.mapToMediaItem(widget.data);
-        if (value == 3) {
-          Share.share(widget.data['perma_url'].toString());
-        }
-        if (value == 4) {
-          Navigator.push(
-            context,
-            PageRouteBuilder(
-              opaque: false,
-              pageBuilder: (_, __, ___) => SongsListPage(
-                listItem: {
-                  'type': 'album',
-                  'id': mediaItem.extras?['album_id'],
-                  'title': mediaItem.album,
-                  'image': mediaItem.artUri,
-                },
+      onSelected: (value) {
+        switch (value) {
+          case 3:
+            Share.share(widget.data['perma_url'].toString());
+            break;
+
+          case 4:
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                opaque: false,
+                pageBuilder: (_, __, ___) => SongsListPage(
+                  listItem: {
+                    'type': 'album',
+                    'id': mediaItem.extras?['album_id'],
+                    'title': mediaItem.album,
+                    'image': mediaItem.artUri,
+                  },
+                ),
               ),
-            ),
-          );
-        }
-        if (value == 5) {
-          Navigator.push(
-            context,
-            PageRouteBuilder(
-              opaque: false,
-              pageBuilder: (_, __, ___) => AlbumSearchPage(
-                query: mediaItem.artist.toString().split(', ').first,
-                type: 'Artists',
+            );
+            break;
+          case 6:
+            widget.deleteLiked!(widget.data);
+            break;
+          case 0:
+            AddToPlaylist().addToPlaylist(context, mediaItem);
+            break;
+          case 1:
+            addToNowPlaying(context: context, mediaItem: mediaItem);
+            break;
+          case 2:
+            playNext(mediaItem, context);
+            break;
+          default:
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                opaque: false,
+                pageBuilder: (_, __, ___) => AlbumSearchPage(
+                  query: value.toString(),
+                  type: 'Artists',
+                ),
               ),
-            ),
-          );
-        }
-        if (value == 6) {
-          widget.deleteLiked!(widget.data);
-        }
-        if (value == 0) {
-          AddToPlaylist().addToPlaylist(context, mediaItem);
-        }
-        if (value == 1) {
-          addToNowPlaying(context: context, mediaItem: mediaItem);
-        }
-        if (value == 2) {
-          playNext(mediaItem, context);
+            );
+            break;
         }
       },
     );

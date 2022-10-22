@@ -137,6 +137,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                         horizontal: 2.0,
                         vertical: 1.0,
                       ),
+                      elevation: 0,
                       child: SizedBox(
                         height: useDense ? 68.0 : 76.0,
                         child: GradientContainer(

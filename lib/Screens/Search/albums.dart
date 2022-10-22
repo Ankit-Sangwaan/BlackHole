@@ -175,10 +175,12 @@ class _AlbumSearchPageState extends State<AlbumSearchPage> {
                                           text: '${entry["title"]}',
                                         );
                                       },
-                                      subtitle: Text(
-                                        '${entry["subtitle"]}',
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
+                                      subtitle: entry['subtitle'] == ''
+                                          ? null
+                                          : Text(
+                                              '${entry["subtitle"]}',
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
                                       leading: Card(
                                         elevation: 8,
                                         shape: RoundedRectangleBorder(

@@ -1795,6 +1795,7 @@ class NameNControls extends StatelessWidget {
         height > 500 ? height * 0.4 : height * 0.15;
     final bool useFullScreenGradient = Hive.box('settings')
         .get('useFullScreenGradient', defaultValue: false) as bool;
+    final List<String> artists = mediaItem.artist.toString().split(', ');
     return SizedBox(
       width: width,
       height: height,
@@ -1806,13 +1807,13 @@ class NameNControls extends StatelessWidget {
               /// Title and subtitle
               SizedBox(
                 height: titleBoxHeight,
-                child: PopupMenuButton<int>(
+                child: PopupMenuButton<String>(
                   shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15.0)),
                   ),
                   offset: const Offset(1.0, 0.0),
-                  onSelected: (int value) {
-                    if (value == 0) {
+                  onSelected: (String value) {
+                    if (value == '0') {
                       Navigator.push(
                         context,
                         PageRouteBuilder(
@@ -1827,25 +1828,24 @@ class NameNControls extends StatelessWidget {
                           ),
                         ),
                       );
-                    }
-                    if (value == 5) {
+                    } else {
                       Navigator.push(
                         context,
                         PageRouteBuilder(
                           opaque: false,
                           pageBuilder: (_, __, ___) => AlbumSearchPage(
-                            query:
-                                mediaItem.artist.toString().split(', ').first,
+                            query: value,
                             type: 'Artists',
                           ),
                         ),
                       );
                     }
                   },
-                  itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+                  itemBuilder: (BuildContext context) =>
+                      <PopupMenuEntry<String>>[
                     if (mediaItem.extras?['album_id'] != null)
-                      PopupMenuItem<int>(
-                        value: 0,
+                      PopupMenuItem<String>(
+                        value: '0',
                         child: Row(
                           children: [
                             const Icon(
@@ -1859,20 +1859,27 @@ class NameNControls extends StatelessWidget {
                         ),
                       ),
                     if (mediaItem.artist != null)
-                      PopupMenuItem<int>(
-                        value: 5,
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Icons.person_rounded,
+                      ...artists
+                          .map(
+                            (String artist) => PopupMenuItem<String>(
+                              value: artist,
+                              child: SingleChildScrollView(
+                                scrollDirection: Axis.horizontal,
+                                child: Row(
+                                  children: [
+                                    const Icon(
+                                      Icons.person_rounded,
+                                    ),
+                                    const SizedBox(width: 10.0),
+                                    Text(
+                                      '${AppLocalizations.of(context)!.viewArtist} ($artist)',
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                            const SizedBox(width: 10.0),
-                            Text(
-                              AppLocalizations.of(context)!.viewArtist,
-                            ),
-                          ],
-                        ),
-                      ),
+                          )
+                          .toList()
                   ],
                   child: Center(
                     child: Padding(
