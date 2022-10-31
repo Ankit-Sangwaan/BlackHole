@@ -146,8 +146,6 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    final String lang =
-        Hive.box('settings').get('lang', defaultValue: 'English') as String;
     final Map<String, String> codes = {
       'Chinese': 'zh',
       'Czech': 'cs',
@@ -169,7 +167,14 @@ class _MyAppState extends State<MyApp> {
       'Ukrainian': 'uk',
       'Urdu': 'ur',
     };
-    _locale = Locale(codes[lang]!);
+    final String systemLangCode = Platform.localeName.substring(0, 2);
+    if (codes.values.contains(systemLangCode)) {
+      _locale = Locale(systemLangCode);
+    } else {
+      final String lang =
+          Hive.box('settings').get('lang', defaultValue: 'English') as String;
+      _locale = Locale(codes[lang]!);
+    }
 
     AppTheme.currentTheme.addListener(() {
       setState(() {});
