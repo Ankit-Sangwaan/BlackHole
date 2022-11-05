@@ -107,7 +107,9 @@ class BouncyImageSliverScrollView extends StatelessWidget {
               }
 
               _opacity.value = (top - 80) / (expandedHeight - 80);
-
+              if (_opacity.value < 0.1) {
+                _opacity.value = 0;
+              }
               return FlexibleSpaceBar(
                 title: Opacity(
                   opacity: max(0, _opacity.value),

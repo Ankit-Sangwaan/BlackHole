@@ -147,28 +147,22 @@ class _DownloadedSongsState extends State<DownloadedSongs>
         if (_albums.containsKey(_songs[i].album ?? 'Unknown')) {
           _albums[_songs[i].album ?? 'Unknown']!.add(_songs[i]);
         } else {
-          _albums.addEntries([
-            MapEntry(_songs[i].album ?? 'Unknown', [_songs[i]])
-          ]);
-          _sortedAlbumKeysList.add(_songs[i].album!);
+          _albums[_songs[i].album ?? 'Unknown'] = [_songs[i]];
+          _sortedAlbumKeysList.add(_songs[i].album ?? 'Unknown');
         }
 
         if (_artists.containsKey(_songs[i].artist ?? 'Unknown')) {
           _artists[_songs[i].artist ?? 'Unknown']!.add(_songs[i]);
         } else {
-          _artists.addEntries([
-            MapEntry(_songs[i].artist ?? 'Unknown', [_songs[i]])
-          ]);
-          _sortedArtistKeysList.add(_songs[i].artist!);
+          _artists[_songs[i].artist ?? 'Unknown'] = [_songs[i]];
+          _sortedArtistKeysList.add(_songs[i].artist ?? 'Unknown');
         }
 
         if (_genres.containsKey(_songs[i].genre ?? 'Unknown')) {
           _genres[_songs[i].genre ?? 'Unknown']!.add(_songs[i]);
         } else {
-          _genres.addEntries([
-            MapEntry(_songs[i].genre ?? 'Unknown', [_songs[i]])
-          ]);
-          _sortedGenreKeysList.add(_songs[i].genre!);
+          _genres[_songs[i].genre ?? 'Unknown'] = [_songs[i]];
+          _sortedGenreKeysList.add(_songs[i].genre ?? 'Unknown');
         }
       } catch (e) {
         log(e.toString());
