@@ -72,9 +72,9 @@ Future<void> sharePlaylist(
   final String songs = json.encode(songsMap);
   final File file = await File('$temp/$showName.json').create(recursive: true);
   await file.writeAsString(songs);
-
-  await Share.shareFiles(
-    [file.path],
+  final files = <XFile>[XFile(file.path)];
+  await Share.shareXFiles(
+    files,
     text: AppLocalizations.of(context)!.playlistShareText,
   );
   await Future.delayed(const Duration(seconds: 10), () {});

@@ -43,7 +43,6 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Future _addUserData(String name) async {
-    int? status;
     await Hive.box('settings').put('name', name.trim());
     final DateTime now = DateTime.now();
     final List createDate = now
@@ -54,25 +53,14 @@ class _AuthScreenState extends State<AuthScreen> {
       ..removeLast()
       ..join('.');
 
-    String userId = uuid.v1();
-    status = await SupaBase().createUser({
+    final String userId = uuid.v1();
+    await SupaBase().createUser({
       'id': userId,
       'name': name,
       'accountCreatedOn': '${createDate[0]} IST',
       'timeZone':
           "Zone: ${now.timeZoneName} Offset: ${now.timeZoneOffset.toString().replaceAll('.000000', '')}",
     });
-
-    while (status == null || status == 409) {
-      userId = uuid.v1();
-      status = await SupaBase().createUser({
-        'id': userId,
-        'name': name,
-        'accountCreatedOn': '${createDate[0]} IST',
-        'timeZone':
-            "Zone: ${now.timeZoneName} Offset: ${now.timeZoneOffset.toString().replaceAll('.000000', '')}",
-      });
-    }
     await Hive.box('settings').put('userId', userId);
   }
 
