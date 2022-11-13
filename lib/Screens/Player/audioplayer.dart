@@ -1152,12 +1152,14 @@ abstract class AudioPlayerHandler implements AudioHandler {
 class NowPlayingStream extends StatelessWidget {
   final AudioPlayerHandler audioHandler;
   final ScrollController? scrollController;
+  final PanelController? panelController;
   final bool head;
   final double headHeight;
 
   const NowPlayingStream({
     required this.audioHandler,
     this.scrollController,
+    this.panelController,
     this.head = false,
     this.headHeight = 50,
   });
@@ -1168,22 +1170,24 @@ class NowPlayingStream extends StatelessWidget {
     int queuePosition,
     int queueLength,
   ) {
-    if (queuePosition > 3) {
-      controller?.animateTo(
-        itemIndex * 72 + 12,
-        curve: Curves.linear,
-        duration: const Duration(
-          milliseconds: 350,
-        ),
-      );
-    } else if (queuePosition < 4 && queueLength > 4) {
-      controller?.animateTo(
-        (queueLength - 4) * 72 + 12,
-        curve: Curves.linear,
-        duration: const Duration(
-          milliseconds: 350,
-        ),
-      );
+    if (panelController != null && !panelController!.isPanelOpen) {
+      if (queuePosition > 3) {
+        controller?.animateTo(
+          itemIndex * 72 + 12,
+          curve: Curves.linear,
+          duration: const Duration(
+            milliseconds: 350,
+          ),
+        );
+      } else if (queuePosition < 4 && queueLength > 4) {
+        controller?.animateTo(
+          (queueLength - 4) * 72 + 12,
+          curve: Curves.linear,
+          duration: const Duration(
+            milliseconds: 350,
+          ),
+        );
+      }
     }
     return;
   }
@@ -2196,6 +2200,7 @@ class NameNControls extends StatelessWidget {
                       headHeight: nowplayingBoxHeight,
                       audioHandler: audioHandler,
                       scrollController: scrollController,
+                      panelController: panelController,
                     ),
                   ),
                 ),
