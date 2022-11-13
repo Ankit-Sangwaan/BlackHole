@@ -26,7 +26,7 @@ import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/textinput_dialog.dart';
 import 'package:blackhole/Helpers/backup_restore.dart';
 import 'package:blackhole/Helpers/config.dart';
-// import 'package:blackhole/Helpers/countrycodes.dart';
+import 'package:blackhole/Helpers/countrycodes.dart';
 import 'package:blackhole/Helpers/picker.dart';
 import 'package:blackhole/Helpers/supabase.dart';
 import 'package:blackhole/Screens/Home/saavn.dart' as home_screen;
@@ -2467,34 +2467,15 @@ class _SettingPageState extends State<SettingPage> {
                             ),
                             underline: const SizedBox(),
                             onChanged: (String? newValue) {
-                              final Map<String, String> codes = {
-                                'Chinese': 'zh',
-                                'Czech': 'cs',
-                                'Dutch': 'nl',
-                                'English': 'en',
-                                'French': 'fr',
-                                'German': 'de',
-                                'Hebrew': 'he',
-                                'Hindi': 'hi',
-                                'Hungarian': 'hu',
-                                'Indonesian': 'id',
-                                'Italian': 'it',
-                                'Polish': 'pl',
-                                'Portuguese': 'pt',
-                                'Russian': 'ru',
-                                'Spanish': 'es',
-                                'Tamil': 'ta',
-                                'Turkish': 'tr',
-                                'Ukrainian': 'uk',
-                                'Urdu': 'ur',
-                              };
                               if (newValue != null) {
                                 setState(
                                   () {
                                     lang = newValue;
                                     MyApp.of(context).setLocale(
                                       Locale.fromSubtags(
-                                        languageCode: codes[newValue]!,
+                                        languageCode: ConstantCodes
+                                                .languageCodes[newValue] ??
+                                            'en',
                                       ),
                                     );
                                     Hive.box('settings').put('lang', newValue);
@@ -2502,31 +2483,12 @@ class _SettingPageState extends State<SettingPage> {
                                 );
                               }
                             },
-                            items: <String>[
-                              'Chinese',
-                              'Czech',
-                              'Dutch',
-                              'English',
-                              'French',
-                              'German',
-                              'Hebrew',
-                              'Hindi',
-                              'Hungarian',
-                              'Indonesian',
-                              'Italian',
-                              'Polish',
-                              'Portuguese',
-                              'Russian',
-                              'Spanish',
-                              'Tamil',
-                              'Turkish',
-                              'Ukrainian',
-                              'Urdu',
-                            ].map<DropdownMenuItem<String>>((String value) {
+                            items: ConstantCodes.languageCodes.keys
+                                .map<DropdownMenuItem<String>>((language) {
                               return DropdownMenuItem<String>(
-                                value: value,
+                                value: language,
                                 child: Text(
-                                  value,
+                                  language,
                                 ),
                               );
                             }).toList(),
