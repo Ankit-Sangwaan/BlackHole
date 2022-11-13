@@ -22,6 +22,7 @@ import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:blackhole/Helpers/config.dart';
+import 'package:blackhole/Helpers/countrycodes.dart';
 import 'package:blackhole/Helpers/handle_native.dart';
 import 'package:blackhole/Helpers/route_handler.dart';
 import 'package:blackhole/Screens/About/about.dart';
@@ -146,34 +147,13 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    final Map<String, String> codes = {
-      'Chinese': 'zh',
-      'Czech': 'cs',
-      'Dutch': 'nl',
-      'English': 'en',
-      'French': 'fr',
-      'German': 'de',
-      'Hebrew': 'he',
-      'Hindi': 'hi',
-      'Hungarian': 'hu',
-      'Indonesian': 'id',
-      'Italian': 'it',
-      'Polish': 'pl',
-      'Portuguese': 'pt',
-      'Russian': 'ru',
-      'Spanish': 'es',
-      'Tamil': 'ta',
-      'Turkish': 'tr',
-      'Ukrainian': 'uk',
-      'Urdu': 'ur',
-    };
     final String systemLangCode = Platform.localeName.substring(0, 2);
-    if (codes.values.contains(systemLangCode)) {
+    if (ConstantCodes.languageCodes.values.contains(systemLangCode)) {
       _locale = Locale(systemLangCode);
     } else {
       final String lang =
           Hive.box('settings').get('lang', defaultValue: 'English') as String;
-      _locale = Locale(codes[lang]!);
+      _locale = Locale(ConstantCodes.languageCodes[lang] ?? 'en');
     }
 
     AppTheme.currentTheme.addListener(() {
@@ -251,27 +231,9 @@ class _MyAppState extends State<MyApp> {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('zh', ''), // Chinese
-        Locale('cs', ''), // Czech
-        Locale('nl', ''), // Dutch
-        Locale('en', ''), // English, no country code
-        Locale('fr', ''), // French
-        Locale('de', ''), // German
-        Locale('he', ''), // Hebrew
-        Locale('hi', ''), // Hindi
-        Locale('hu', ''), // Hungarian
-        Locale('id', ''), // Indonesian
-        Locale('it', ''), // Italian
-        Locale('pl', ''), // Polish
-        Locale('pt', ''), // Portuguese
-        Locale('ru', ''), // Russian
-        Locale('es', ''), // Spanish
-        Locale('ta', ''), // Tamil
-        Locale('tr', ''), // Turkish
-        Locale('uk', ''), // Ukrainian
-        Locale('ur', ''), // Urdu
-      ],
+      supportedLocales: ConstantCodes.languageCodes.entries
+          .map((languageCode) => Locale(languageCode.value, ''))
+          .toList(),
       routes: {
         '/': (context) => initialFuntion(),
         '/pref': (context) => const PrefScreen(),
