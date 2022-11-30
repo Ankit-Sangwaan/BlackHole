@@ -160,160 +160,168 @@ class _SearchPageState extends State<SearchPage> {
                     onPressed: () => Navigator.pop(context),
                   ),
                   body: (fromHome!)
-                      ? ValueListenableBuilder(
-                          valueListenable: topSearch,
-                          builder: (
-                            BuildContext context,
-                            List<String> value,
-                            Widget? child,
-                          ) {
-                            if (value.isEmpty) return const SizedBox();
-                            return SingleChildScrollView(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 15,
+                      ? SingleChildScrollView(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                          ),
+                          physics: const BouncingScrollPhysics(),
+                          child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 70,
                               ),
-                              physics: const BouncingScrollPhysics(),
-                              child: Column(
-                                children: [
-                                  const SizedBox(
-                                    height: 70,
-                                  ),
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Wrap(
-                                      children: List<Widget>.generate(
-                                        search.length,
-                                        (int index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 5.0,
+                              Align(
+                                alignment: Alignment.topLeft,
+                                child: Wrap(
+                                  children: List<Widget>.generate(
+                                    search.length,
+                                    (int index) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 5.0,
+                                        ),
+                                        child: GestureDetector(
+                                          child: Chip(
+                                            label: Text(
+                                              search[index].toString(),
                                             ),
-                                            child: GestureDetector(
-                                              child: Chip(
-                                                label: Text(
-                                                  search[index].toString(),
-                                                ),
-                                                labelStyle: TextStyle(
-                                                  color: Theme.of(context)
-                                                      .textTheme
-                                                      .bodyText1!
-                                                      .color,
-                                                  fontWeight: FontWeight.normal,
-                                                ),
-                                                onDeleted: () {
-                                                  setState(() {
-                                                    search.removeAt(index);
-                                                    Hive.box('settings').put(
-                                                      'search',
-                                                      search,
-                                                    );
-                                                  });
-                                                },
-                                              ),
-                                              onTap: () {
-                                                setState(
-                                                  () {
-                                                    fetched = false;
-                                                    query = search[index]
-                                                        .toString()
-                                                        .trim();
-                                                    controller.text = query;
-                                                    status = false;
-                                                    fromHome = false;
-                                                    searchedData = {};
-                                                  },
+                                            labelStyle: TextStyle(
+                                              color: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyText1!
+                                                  .color,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                            onDeleted: () {
+                                              setState(() {
+                                                search.removeAt(index);
+                                                Hive.box('settings').put(
+                                                  'search',
+                                                  search,
                                                 );
+                                              });
+                                            },
+                                          ),
+                                          onTap: () {
+                                            setState(
+                                              () {
+                                                fetched = false;
+                                                query = search[index]
+                                                    .toString()
+                                                    .trim();
+                                                controller.text = query;
+                                                status = false;
+                                                fromHome = false;
+                                                searchedData = {};
                                               },
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    ),
+                                            );
+                                          },
+                                        ),
+                                      );
+                                    },
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 10,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          AppLocalizations.of(context)!
-                                              .trendingSearch,
-                                          style: TextStyle(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              ValueListenableBuilder(
+                                valueListenable: topSearch,
+                                builder: (
+                                  BuildContext context,
+                                  List<String> value,
+                                  Widget? child,
+                                ) {
+                                  if (value.isEmpty) return const SizedBox();
+                                  return Column(
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 10,
+                                          vertical: 10,
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              AppLocalizations.of(context)!
+                                                  .trendingSearch,
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w800,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Wrap(
+                                          children: List<Widget>.generate(
+                                            value.length,
+                                            (int index) {
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 5.0,
+                                                ),
+                                                child: ChoiceChip(
+                                                  label: Text(value[index]),
+                                                  selectedColor:
+                                                      Theme.of(context)
+                                                          .colorScheme
+                                                          .secondary
+                                                          .withOpacity(0.2),
+                                                  labelStyle: TextStyle(
+                                                    color: Theme.of(context)
+                                                        .textTheme
+                                                        .bodyText1!
+                                                        .color,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                  ),
+                                                  selected: false,
+                                                  onSelected: (bool selected) {
+                                                    if (selected) {
+                                                      setState(
+                                                        () {
+                                                          fetched = false;
+                                                          query = value[index]
+                                                              .trim();
+                                                          controller.text =
+                                                              query;
+                                                          status = false;
+                                                          fromHome = false;
+                                                          searchedData = {};
+                                                          search.insert(
+                                                            0,
+                                                            value[index],
+                                                          );
+                                                          if (search.length >
+                                                              10) {
+                                                            search = search
+                                                                .sublist(0, 10);
+                                                          }
+                                                          Hive.box('settings')
+                                                              .put(
+                                                            'search',
+                                                            search,
+                                                          );
+                                                        },
+                                                      );
+                                                    }
+                                                  },
+                                                ),
+                                              );
+                                            },
                                           ),
                                         ),
-                                      ],
-                                    ),
-                                  ),
-                                  Align(
-                                    alignment: Alignment.topLeft,
-                                    child: Wrap(
-                                      children: List<Widget>.generate(
-                                        value.length,
-                                        (int index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 5.0,
-                                            ),
-                                            child: ChoiceChip(
-                                              label: Text(value[index]),
-                                              selectedColor: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary
-                                                  .withOpacity(0.2),
-                                              labelStyle: TextStyle(
-                                                color: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyText1!
-                                                    .color,
-                                                fontWeight: FontWeight.normal,
-                                              ),
-                                              selected: false,
-                                              onSelected: (bool selected) {
-                                                if (selected) {
-                                                  setState(
-                                                    () {
-                                                      fetched = false;
-                                                      query =
-                                                          value[index].trim();
-                                                      controller.text = query;
-                                                      status = false;
-                                                      fromHome = false;
-                                                      searchedData = {};
-                                                      search.insert(
-                                                        0,
-                                                        value[index],
-                                                      );
-                                                      if (search.length > 5) {
-                                                        search = search.sublist(
-                                                          0,
-                                                          5,
-                                                        );
-                                                      }
-                                                      Hive.box('settings').put(
-                                                        'search',
-                                                        search,
-                                                      );
-                                                    },
-                                                  );
-                                                }
-                                              },
-                                            ),
-                                          );
-                                        },
                                       ),
-                                    ),
-                                  ),
-                                ],
+                                    ],
+                                  );
+                                },
                               ),
-                            );
-                          },
+                            ],
+                          ),
                         )
                       : !fetched
                           ? const Center(

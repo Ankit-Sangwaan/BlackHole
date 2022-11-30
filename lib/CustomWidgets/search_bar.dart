@@ -181,9 +181,12 @@ class _SearchBarState extends State<SearchBar> {
                         query = submittedQuery;
                         widget.onSubmitted(submittedQuery);
                         if (!hide.value) hide.value = true;
-                        final List searchQueries = Hive.box('settings')
+                        List searchQueries = Hive.box('settings')
                             .get('search', defaultValue: []) as List;
-                        searchQueries.add(query);
+                        searchQueries.insert(0, query);
+                        if (searchQueries.length > 10) {
+                          searchQueries = searchQueries.sublist(0, 10);
+                        }
                         Hive.box('settings').put('search', searchQueries);
                       }
                     },
