@@ -509,13 +509,18 @@ class _DownloadsState extends State<Downloads>
                           ),
                         ],
                       ),
-                floatingActionButton: DecoratedBox(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).cardColor,
-                    borderRadius: BorderRadius.circular(100.0),
-                  ),
-                  child: GestureDetector(
-                    onTap: () {
+                floatingActionButton: ValueListenableBuilder(
+                  valueListenable: _showShuffle,
+                  child: FloatingActionButton(
+                    backgroundColor: Theme.of(context).cardColor,
+                    child: Icon(
+                      Icons.shuffle_rounded,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                      size: 24.0,
+                    ),
+                    onPressed: () {
                       if (_songs.isNotEmpty) {
                         final tempList = _songs.toList();
                         tempList.shuffle();
@@ -534,51 +539,22 @@ class _DownloadsState extends State<Downloads>
                         );
                       }
                     },
-                    child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: AnimatedSize(
-                        duration: const Duration(milliseconds: 200),
-                        child: ValueListenableBuilder<bool>(
-                          valueListenable: _showShuffle,
-                          builder: (
-                            BuildContext context,
-                            bool showFullShuffle,
-                            Widget? child,
-                          ) {
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.shuffle_rounded,
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black,
-                                  size: 24.0,
-                                ),
-                                if (showFullShuffle) const SizedBox(width: 5.0),
-                                if (showFullShuffle)
-                                  Text(
-                                    AppLocalizations.of(context)!.shuffle,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18.0,
-                                      color: Theme.of(context).brightness ==
-                                              Brightness.dark
-                                          ? Colors.white
-                                          : Colors.black,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                if (showFullShuffle) const SizedBox(width: 2.5),
-                              ],
-                            );
-                          },
-                        ),
-                      ),
-                    ),
                   ),
+                  builder: (
+                    BuildContext context,
+                    bool showShuffle,
+                    Widget? child,
+                  ) {
+                    return AnimatedSlide(
+                      duration: const Duration(milliseconds: 300),
+                      offset: showShuffle ? Offset.zero : const Offset(0, 2),
+                      child: AnimatedOpacity(
+                        duration: const Duration(milliseconds: 300),
+                        opacity: showShuffle ? 1 : 0,
+                        child: child,
+                      ),
+                    );
+                  },
                 ),
               ),
             ),
