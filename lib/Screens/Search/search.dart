@@ -64,9 +64,12 @@ class _SearchPageState extends State<SearchPage> {
   bool alertShown = false;
   bool albumFetched = false;
   bool? fromHome;
-  // List search = Hive.box('settings').get('search', defaultValue: [],) as List;
-  // bool showHistory =
-  // Hive.box('settings').get('showHistory', defaultValue: true) as bool;
+  List search = Hive.box('settings').get(
+    'search',
+    defaultValue: [],
+  ) as List;
+  bool showHistory =
+      Hive.box('settings').get('showHistory', defaultValue: true) as bool;
   bool liveSearch =
       Hive.box('settings').get('liveSearch', defaultValue: true) as bool;
 
@@ -166,15 +169,71 @@ class _SearchPageState extends State<SearchPage> {
                           ) {
                             if (value.isEmpty) return const SizedBox();
                             return SingleChildScrollView(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                              ),
                               physics: const BouncingScrollPhysics(),
                               child: Column(
                                 children: [
+                                  const SizedBox(
+                                    height: 70,
+                                  ),
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Wrap(
+                                      children: List<Widget>.generate(
+                                        search.length,
+                                        (int index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0,
+                                            ),
+                                            child: GestureDetector(
+                                              child: Chip(
+                                                label: Text(
+                                                  search[index].toString(),
+                                                ),
+                                                labelStyle: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1!
+                                                      .color,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                                onDeleted: () {
+                                                  setState(() {
+                                                    search.removeAt(index);
+                                                    Hive.box('settings').put(
+                                                      'search',
+                                                      search,
+                                                    );
+                                                  });
+                                                },
+                                              ),
+                                              onTap: () {
+                                                setState(
+                                                  () {
+                                                    fetched = false;
+                                                    query = search[index]
+                                                        .toString()
+                                                        .trim();
+                                                    controller.text = query;
+                                                    status = false;
+                                                    fromHome = false;
+                                                    searchedData = {};
+                                                  },
+                                                );
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(
-                                      25,
-                                      90,
-                                      10,
-                                      0,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 10,
+                                      vertical: 10,
                                     ),
                                     child: Row(
                                       children: [
@@ -185,59 +244,67 @@ class _SearchPageState extends State<SearchPage> {
                                             color: Theme.of(context)
                                                 .colorScheme
                                                 .secondary,
-                                            fontSize: 25,
+                                            fontSize: 20,
                                             fontWeight: FontWeight.w800,
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-                                  ListView.builder(
-                                    itemCount: value.length,
-                                    physics:
-                                        const NeverScrollableScrollPhysics(),
-                                    shrinkWrap: true,
-                                    padding: const EdgeInsets.fromLTRB(
-                                      15,
-                                      10,
-                                      10,
-                                      0,
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Wrap(
+                                      children: List<Widget>.generate(
+                                        value.length,
+                                        (int index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0,
+                                            ),
+                                            child: ChoiceChip(
+                                              label: Text(value[index]),
+                                              selectedColor: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary
+                                                  .withOpacity(0.2),
+                                              labelStyle: TextStyle(
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyText1!
+                                                    .color,
+                                                fontWeight: FontWeight.normal,
+                                              ),
+                                              selected: false,
+                                              onSelected: (bool selected) {
+                                                if (selected) {
+                                                  setState(
+                                                    () {
+                                                      fetched = false;
+                                                      query =
+                                                          value[index].trim();
+                                                      controller.text = query;
+                                                      status = false;
+                                                      fromHome = false;
+                                                      searchedData = {};
+                                                      search.insert(
+                                                        0,
+                                                        value[index],
+                                                      );
+                                                      if (search.length > 5) {
+                                                        search = search.sublist(
+                                                            0, 5);
+                                                      }
+                                                      Hive.box('settings').put(
+                                                          'search', search);
+                                                    },
+                                                  );
+                                                }
+                                              },
+                                            ),
+                                          );
+                                        },
+                                      ),
                                     ),
-                                    itemBuilder: (context, index) {
-                                      return ListTile(
-                                        horizontalTitleGap: 0.0,
-                                        title: Text(
-                                          value[index],
-                                        ),
-                                        leading: const Icon(
-                                          Icons.trending_up_rounded,
-                                        ),
-                                        onLongPress: () {
-                                          copyToClipboard(
-                                            context: context,
-                                            text: value[index],
-                                          );
-                                        },
-                                        onTap: () {
-                                          setState(
-                                            () {
-                                              fetched = false;
-                                              query = value[index].trim();
-                                              controller.text = query;
-                                              status = false;
-                                              fromHome = false;
-                                              searchedData = {};
-                                              // search.insert(0, value[index],);
-                                              // if (search.length > 5) {
-                                              //   search = search.sublist(0, 5);
-                                              // }
-                                              // Hive.box('settings')
-                                              //     .put('search', search);
-                                            },
-                                          );
-                                        },
-                                      );
-                                    },
                                   ),
                                 ],
                               ),

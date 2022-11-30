@@ -19,6 +19,7 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 
 class SearchBar extends StatefulWidget {
   final bool isYt;
@@ -180,6 +181,7 @@ class _SearchBarState extends State<SearchBar> {
                         query = submittedQuery;
                         widget.onSubmitted(submittedQuery);
                         if (!hide.value) hide.value = true;
+                        Hive.box('settings').put('search', query);
                       }
                     },
                   ),

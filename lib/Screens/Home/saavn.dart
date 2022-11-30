@@ -114,6 +114,10 @@ class _SaavnHomePageState extends State<SaavnHomePage>
     }
   }
 
+  int likedCount() {
+    return Hive.box('Favorite Songs').length;
+  }
+
   @override
   bool get wantKeepAlive => true;
 
@@ -195,7 +199,8 @@ class _SaavnHomePageState extends State<SaavnHomePage>
               if (idx == playlistIndex) {
                 return (playlistNames.isEmpty ||
                         !(Hive.box('settings')
-                            .get('showPlaylist', defaultValue: true) as bool))
+                            .get('showPlaylist', defaultValue: true) as bool) ||
+                        likedCount() == 0)
                     ? const SizedBox()
                     : Column(
                         children: [
