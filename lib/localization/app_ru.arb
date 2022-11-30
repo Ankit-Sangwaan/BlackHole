@@ -83,7 +83,7 @@
   "@cacheSongSub": {},
   "cancel": "Отмена",
   "@cancel": {},
-  "cantAddToQueue": "Невозможно добавить онлайн песню в онлайн очередь",
+  "cantAddToQueue": "Невозможно добавить онлайн песню в офлайн очередь",
   "@cantAddToQueue": {},
   "canvasColor": "Цвет холста",
   "@canvasColor": {},
