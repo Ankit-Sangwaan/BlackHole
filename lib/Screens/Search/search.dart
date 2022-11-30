@@ -292,10 +292,14 @@ class _SearchPageState extends State<SearchPage> {
                                                       );
                                                       if (search.length > 5) {
                                                         search = search.sublist(
-                                                            0, 5);
+                                                          0,
+                                                          5,
+                                                        );
                                                       }
                                                       Hive.box('settings').put(
-                                                          'search', search);
+                                                        'search',
+                                                        search,
+                                                      );
                                                     },
                                                   );
                                                 }

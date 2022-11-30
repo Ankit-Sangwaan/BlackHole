@@ -524,51 +524,52 @@ class _LikedSongsState extends State<LikedSongs>
                         ],
                       ),
                 floatingActionButton: ValueListenableBuilder(
-                    valueListenable: _showShuffle,
-                    child: FloatingActionButton(
-                      backgroundColor: Theme.of(context).cardColor,
-                      child: Icon(
-                        Icons.shuffle_rounded,
-                        color: Theme.of(context).brightness == Brightness.dark
-                            ? Colors.white
-                            : Colors.black,
-                        size: 24.0,
-                      ),
-                      onPressed: () {
-                        if (_songs.isNotEmpty) {
-                          final tempList = _songs.toList();
-                          tempList.shuffle();
-                          Navigator.of(context).push(
-                            PageRouteBuilder(
-                              opaque: false,
-                              pageBuilder: (_, __, ___) => PlayScreen(
-                                songsList: tempList,
-                                index: 0,
-                                offline: false,
-                                fromMiniplayer: false,
-                                fromDownloads: false,
-                                recommend: false,
-                              ),
-                            ),
-                          );
-                        }
-                      },
+                  valueListenable: _showShuffle,
+                  child: FloatingActionButton(
+                    backgroundColor: Theme.of(context).cardColor,
+                    child: Icon(
+                      Icons.shuffle_rounded,
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.white
+                          : Colors.black,
+                      size: 24.0,
                     ),
-                    builder: (
-                      BuildContext context,
-                      bool showShuffle,
-                      Widget? child,
-                    ) {
-                      return AnimatedSlide(
+                    onPressed: () {
+                      if (_songs.isNotEmpty) {
+                        final tempList = _songs.toList();
+                        tempList.shuffle();
+                        Navigator.of(context).push(
+                          PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (_, __, ___) => PlayScreen(
+                              songsList: tempList,
+                              index: 0,
+                              offline: false,
+                              fromMiniplayer: false,
+                              fromDownloads: false,
+                              recommend: false,
+                            ),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                  builder: (
+                    BuildContext context,
+                    bool showShuffle,
+                    Widget? child,
+                  ) {
+                    return AnimatedSlide(
+                      duration: const Duration(milliseconds: 300),
+                      offset: showShuffle ? Offset.zero : const Offset(0, 2),
+                      child: AnimatedOpacity(
                         duration: const Duration(milliseconds: 300),
-                        offset: showShuffle ? Offset.zero : const Offset(0, 2),
-                        child: AnimatedOpacity(
-                          duration: const Duration(milliseconds: 300),
-                          opacity: showShuffle ? 1 : 0,
-                          child: child,
-                        ),
-                      );
-                    }),
+                        opacity: showShuffle ? 1 : 0,
+                        child: child,
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ),
