@@ -17,28 +17,24 @@
  * Copyright (c) 2021-2022, Ankit Sangwan
  */
 
-import 'dart:convert';
-
+import 'package:app_links/app_links.dart';
+import 'package:blackhole/APIs/spotify_api.dart';
 import 'package:blackhole/CustomWidgets/custom_physics.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
 // import 'package:blackhole/Helpers/countrycodes.dart';
 import 'package:blackhole/Screens/Search/search.dart';
 // import 'package:blackhole/Screens/Settings/setting.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 // import 'package:html_unescape/html_unescape_small.dart';
-import 'package:http/http.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-List topSongs = [];
-List viralSongs = [];
-List cachedTopSongs = [];
-List cachedViralSongs = [];
+List localSongs = [];
+List globalSongs = [];
 bool fetched = false;
-bool emptyTop = false;
-bool emptyViral = false;
+final ValueNotifier<bool> fetchFinished = ValueNotifier<bool>(false);
 
 class TopCharts extends StatefulWidget {
   final PageController pageController;
@@ -78,7 +74,7 @@ class _TopChartsState extends State<TopCharts>
             tabs: [
               Tab(
                 child: Text(
-                  AppLocalizations.of(context)!.top,
+                  AppLocalizations.of(context)!.local,
                   style: TextStyle(
                     color: Theme.of(context).textTheme.bodyText1!.color,
                   ),
@@ -86,7 +82,7 @@ class _TopChartsState extends State<TopCharts>
               ),
               Tab(
                 child: Text(
-                  AppLocalizations.of(context)!.viral,
+                  AppLocalizations.of(context)!.global,
                   style: TextStyle(
                     color: Theme.of(context).textTheme.bodyText1!.color,
                   ),
@@ -152,8 +148,8 @@ class _TopChartsState extends State<TopCharts>
               //     );
               //   },
               // ),
-              TopPage(type: 'top'),
-              TopPage(type: 'viral'),
+              TopPage(type: 'local'),
+              TopPage(type: 'global'),
             ],
           ),
         ),
@@ -162,22 +158,99 @@ class _TopChartsState extends State<TopCharts>
   }
 }
 
-Future<List> scrapData(String type) async {
-  const String authority = 'www.volt.fm';
-  const String topPath = '/charts/spotify-top';
-  const String viralPath = '/charts/spotify-viral';
-  // const String weeklyPath = '/weekly';
+Future<List> getChartDetails(String accessToken, String type) async {
+  const String globalPlaylistId = '37i9dQZEVXbMDoHDwVN2tF';
+  const String localPlaylistId = '37i9dQZEVXbLZ52XmnySJg';
+  final String playlistId =
+      type == 'global' ? globalPlaylistId : localPlaylistId;
+  final List data = [];
+  final List tracks =
+      await SpotifyApi().getAllTracksOfPlaylist(accessToken, playlistId);
+  for (final track in tracks) {
+    final trackName = track['track']['name'];
+    final imageUrlSmall = track['track']['album']['images'].last['url'];
+    final imageUrlBig = track['track']['album']['images'].first['url'];
+    final spotifyUrl = track['track']['external_urls']['spotify'];
+    final artistName = track['track']['artists'][0]['name'].toString();
+    data.add({
+      'name': trackName,
+      'artist': artistName,
+      'image_url_small': imageUrlSmall,
+      'image_url_big': imageUrlBig,
+      'url': spotifyUrl,
+    });
+  }
+  return data;
+}
 
-  final String unencodedPath = type == 'top' ? topPath : viralPath;
-  // if (isWeekly) unencodedPath += weeklyPath;
+Future<void> scrapData(String type, {bool signIn = false}) async {
+  String code;
+  final String accessToken = Hive.box('settings')
+      .get('spotifyAccessToken', defaultValue: 'null')
+      .toString();
+  final String refreshToken = Hive.box('settings')
+      .get('spotifyRefreshToken', defaultValue: 'null')
+      .toString();
+  final bool spotifySigned =
+      Hive.box('settings').get('spotifySigned', defaultValue: false) as bool;
 
-  final Response res = await get(Uri.https(authority, unencodedPath));
+  if (!spotifySigned && !signIn) {
+    return;
+  }
 
-  if (res.statusCode != 200) return List.empty();
-  final result = RegExp(r'<script.*>({\"context\".*})<\/script>', dotAll: true)
-      .firstMatch(res.body)![1]!;
-  final Map data = json.decode(result) as Map;
-  return data['chart_ranking']['tracks'] as List;
+  if (accessToken == 'null' || refreshToken == 'null') {
+    launchUrl(
+      Uri.parse(
+        SpotifyApi().requestAuthorization(),
+      ),
+      mode: LaunchMode.externalApplication,
+    );
+    AppLinks(
+      onAppLink: (Uri uri, String link) async {
+        closeInAppWebView();
+        if (link.contains('code=')) {
+          code = link.split('code=')[1];
+          Hive.box('settings').put('spotifyAppCode', code);
+          final List data = await SpotifyApi().getAccessToken(code: code);
+          if (data.isNotEmpty) {
+            Hive.box('settings').put('spotifyAccessToken', data[0]);
+            Hive.box('settings').put('spotifyRefreshToken', data[1]);
+            Hive.box('settings').put('spotifySigned', true);
+          }
+          final temp = await getChartDetails(data[0].toString(), type);
+          if (temp.isNotEmpty) {
+            Hive.box('cache').put('${type}_chart', temp);
+            if (type == 'global') {
+              globalSongs = temp;
+            } else {
+              localSongs = temp;
+            }
+          }
+          fetchFinished.value = true;
+        }
+      },
+    );
+  } else {
+    final List data =
+        await SpotifyApi().getAccessToken(refreshToken: refreshToken);
+    if (data.isNotEmpty) {
+      Hive.box('settings').put('spotifySigned', true);
+      Hive.box('settings').put('spotifyAccessToken', data[0]);
+      if (data[1] != 'null') {
+        Hive.box('settings').put('spotifyRefreshToken', data[1]);
+      }
+      final temp = await getChartDetails(data[0].toString(), type);
+      if (temp.isNotEmpty) {
+        Hive.box('cache').put('${type}_chart', temp);
+        if (type == 'global') {
+          globalSongs = temp;
+        } else {
+          localSongs = temp;
+        }
+      }
+    }
+    fetchFinished.value = true;
+  }
 }
 
 class TopPage extends StatefulWidget {
@@ -189,36 +262,14 @@ class TopPage extends StatefulWidget {
 
 class _TopPageState extends State<TopPage>
     with AutomaticKeepAliveClientMixin<TopPage> {
-  Future<void> getData(String type) async {
-    fetched = true;
-    final List temp = await compute(scrapData, type);
-    setState(() {
-      if (type == 'top') {
-        topSongs = temp;
-        if (topSongs.isNotEmpty) {
-          cachedTopSongs = topSongs;
-          Hive.box('cache').put(type, topSongs);
-        }
-        emptyTop = topSongs.isEmpty && cachedTopSongs.isEmpty;
-      } else {
-        viralSongs = temp;
-        if (viralSongs.isNotEmpty) {
-          cachedViralSongs = viralSongs;
-          Hive.box('cache').put(type, viralSongs);
-        }
-        emptyViral = viralSongs.isEmpty && cachedViralSongs.isEmpty;
-      }
-    });
-  }
-
   Future<void> getCachedData(String type) async {
     fetched = true;
-    if (type == 'top') {
-      cachedTopSongs =
-          await Hive.box('cache').get(type, defaultValue: []) as List;
+    if (type == 'global') {
+      globalSongs = await Hive.box('cache')
+          .get('${type}_chart', defaultValue: []) as List;
     } else {
-      cachedViralSongs =
-          await Hive.box('cache').get(type, defaultValue: []) as List;
+      localSongs = await Hive.box('cache')
+          .get('${type}_chart', defaultValue: []) as List;
     }
     setState(() {});
   }
@@ -229,111 +280,117 @@ class _TopPageState extends State<TopPage>
   @override
   void initState() {
     super.initState();
-    if (widget.type == 'top' && topSongs.isEmpty) {
-      getCachedData(widget.type);
-      getData(widget.type);
-    } else {
-      if (viralSongs.isEmpty) {
-        getCachedData(widget.type);
-        getData(widget.type);
-      }
-    }
+    getCachedData(widget.type);
+    scrapData(widget.type);
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final bool isTop = widget.type == 'top';
+    final bool isGlobal = widget.type == 'global';
+    final List showList = isGlobal ? globalSongs : localSongs;
     if (!fetched) {
       getCachedData(widget.type);
-      getData(widget.type);
+      scrapData(widget.type);
     }
-    final List showList = isTop ? cachedTopSongs : cachedViralSongs;
-    final bool isListEmpty = isTop ? emptyTop : emptyViral;
-    return Column(
-      children: [
-        if (showList.length <= 10)
-          Expanded(
-            child: isListEmpty
-                ? emptyScreen(
-                    context,
-                    0,
-                    ':( ',
-                    100,
-                    'ERROR',
-                    60,
-                    'Service Unavailable',
-                    20,
-                  )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      CircularProgressIndicator(),
-                    ],
+    return ValueListenableBuilder(
+      valueListenable: fetchFinished,
+      builder: (BuildContext context, bool value, Widget? child) {
+        return Column(
+          children: [
+            if (!(Hive.box('settings').get('spotifySigned', defaultValue: false)
+                as bool))
+              Expanded(
+                child: Center(
+                  child: TextButton(
+                    onPressed: () {
+                      scrapData(widget.type, signIn: true);
+                    },
+                    child: const Text('Sign in to Spotify'),
                   ),
-          )
-        else
-          Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: showList.length,
-              itemExtent: 70.0,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  leading: Card(
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7.0),
-                    ),
-                    clipBehavior: Clip.antiAlias,
-                    child: Stack(
-                      children: [
-                        const Image(
-                          image: AssetImage('assets/cover.jpg'),
+                ),
+              )
+            else if (showList.isEmpty)
+              Expanded(
+                child: value
+                    ? emptyScreen(
+                        context,
+                        0,
+                        ':( ',
+                        100,
+                        'ERROR',
+                        60,
+                        'Service Unavailable',
+                        20,
+                      )
+                    : Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          CircularProgressIndicator(),
+                        ],
+                      ),
+              )
+            else
+              Expanded(
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: showList.length,
+                  itemExtent: 70.0,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Card(
+                        elevation: 5,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7.0),
                         ),
-                        if (showList[index]['image_url_small'] != '')
-                          CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            imageUrl:
-                                showList[index]['image_url_small'].toString(),
-                            errorWidget: (context, _, __) => const Image(
-                              fit: BoxFit.cover,
+                        clipBehavior: Clip.antiAlias,
+                        child: Stack(
+                          children: [
+                            const Image(
                               image: AssetImage('assets/cover.jpg'),
                             ),
-                            placeholder: (context, url) => const Image(
-                              fit: BoxFit.cover,
-                              image: AssetImage('assets/cover.jpg'),
-                            ),
-                          ),
-                      ],
-                    ),
-                  ),
-                  title: Text(
-                    '${index + 1}. ${showList[index]["name"]}',
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  subtitle: Text(
-                    (showList[index]['artists'] as List)
-                        .map((e) => e['name'])
-                        .toList()
-                        .join(', '),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => SearchPage(
-                          query: showList[index]['name'].toString(),
+                            if (showList[index]['image_url_small'] != '')
+                              CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                imageUrl: showList[index]['image_url_small']
+                                    .toString(),
+                                errorWidget: (context, _, __) => const Image(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('assets/cover.jpg'),
+                                ),
+                                placeholder: (context, url) => const Image(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage('assets/cover.jpg'),
+                                ),
+                              ),
+                          ],
                         ),
                       ),
+                      title: Text(
+                        '${index + 1}. ${showList[index]["name"]}',
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Text(
+                        showList[index]['artist'].toString(),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SearchPage(
+                              query: showList[index]['name'].toString(),
+                            ),
+                          ),
+                        );
+                      },
                     );
                   },
-                );
-              },
-            ),
-          ),
-      ],
+                ),
+              ),
+          ],
+        );
+      },
     );
   }
 }

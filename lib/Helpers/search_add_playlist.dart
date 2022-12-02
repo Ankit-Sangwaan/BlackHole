@@ -20,6 +20,7 @@
 import 'dart:convert';
 
 import 'package:blackhole/APIs/api.dart';
+import 'package:blackhole/APIs/spotify_api.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/Helpers/playlist.dart';
 import 'package:blackhole/Services/youtube_services.dart';
@@ -49,6 +50,24 @@ class SearchAddPlaylist {
         };
       }
       return {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  static Future<Map> addSpotifyPlaylist(
+    String title,
+    String accessToken,
+    String playlistId,
+  ) async {
+    try {
+      final List tracks =
+          await SpotifyApi().getAllTracksOfPlaylist(accessToken, playlistId);
+      return {
+        'title': title,
+        'count': tracks.length,
+        'tracks': tracks,
+      };
     } catch (e) {
       return {};
     }
@@ -131,6 +150,31 @@ class SearchAddPlaylist {
       try {
         final List result =
             await SaavnAPI().fetchTopSearchResult(trackName!.split('|')[0]);
+        addMapToPlaylist(playName, result[0] as Map);
+      } catch (e) {
+        // print('Error in $_done: $e');
+      }
+    }
+  }
+
+  static Stream<Map> spotifySongsAdder(String playName, List tracks) async* {
+    int done = 0;
+    for (final track in tracks) {
+      String? trackName;
+      String? artistName;
+      try {
+        trackName = track['track']['name'].toString();
+        artistName = (track['track']['artists'] as List)
+            .map((e) => e['name'])
+            .toList()
+            .join(', ');
+        yield {'done': ++done, 'name': '$trackName - $artistName'};
+      } catch (e) {
+        yield {'done': ++done, 'name': ''};
+      }
+      try {
+        final List result =
+            await SaavnAPI().fetchTopSearchResult('$trackName by $artistName');
         addMapToPlaylist(playName, result[0] as Map);
       } catch (e) {
         // print('Error in $_done: $e');

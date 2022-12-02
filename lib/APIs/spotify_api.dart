@@ -60,22 +60,38 @@ class SpotifyApi {
   //   }
   // }
 
-  Future<List<String>> getAccessToken(String code) async {
+  Future<List<String>> getAccessToken({
+    String? code,
+    String? refreshToken,
+  }) async {
     final Map<String, String> headers = {
       'Authorization':
           "Basic ${base64.encode(utf8.encode("$clientID:$clientSecret"))}",
     };
 
-    final Map<String, String> body = {
-      'grant_type': 'authorization_code',
-      'code': code,
-      'redirect_uri': redirectUrl
-    };
+    Map<String, String>? body;
+    if (code != null) {
+      body = {
+        'grant_type': 'authorization_code',
+        'code': code,
+        'redirect_uri': redirectUrl
+      };
+    } else if (refreshToken != null) {
+      body = {
+        'grant_type': 'refresh_token',
+        'refresh_token': refreshToken,
+      };
+    }
+
+    if (body == null) {
+      return [];
+    }
 
     try {
       final Uri path = Uri.parse(requestToken);
       final response = await post(path, headers: headers, body: body);
       // print(response.statusCode);
+      // print(response.body);
       if (response.statusCode == 200) {
         final Map result = jsonDecode(response.body) as Map;
         return <String>[
@@ -111,14 +127,42 @@ class SpotifyApi {
     return [];
   }
 
-  Future<Map> getTracksOfPlaylist(
+  Future<List> getAllTracksOfPlaylist(
     String accessToken,
-    String playListId,
+    String playlistId,
+  ) async {
+    final List tracks = [];
+    int totalTracks = 100;
+
+    final Map data = await SpotifyApi().getHundredTracksOfPlaylist(
+      accessToken,
+      playlistId,
+      0,
+    );
+    totalTracks = data['total'] as int;
+    tracks.addAll(data['tracks'] as List);
+
+    if (totalTracks > 100) {
+      for (int i = 1; i * 100 <= totalTracks; i++) {
+        final Map data = await SpotifyApi().getHundredTracksOfPlaylist(
+          accessToken,
+          playlistId,
+          i * 100,
+        );
+        tracks.addAll(data['tracks'] as List);
+      }
+    }
+    return tracks;
+  }
+
+  Future<Map> getHundredTracksOfPlaylist(
+    String accessToken,
+    String playlistId,
     int offset,
   ) async {
     try {
       final Uri path = Uri.parse(
-        '$spotifyTrackBaseUrl/$playListId/tracks?limit=100&offset=$offset',
+        '$spotifyTrackBaseUrl/$playlistId/tracks?limit=100&offset=$offset',
       );
       final response = await get(
         path,
