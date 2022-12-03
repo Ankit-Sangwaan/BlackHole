@@ -672,5 +672,7 @@
   "top": "热门",
   "@top": {},
   "viral": "飙升",
-  "@viral": {}
+  "@viral": {},
+  "signInSpotify": "登录 Spotify",
+  "@signInSpotify": {}
 }
