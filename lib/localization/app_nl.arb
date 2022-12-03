@@ -668,5 +668,7 @@
   "top": "Top",
   "@top": {},
   "viral": "Viral",
-  "@viral": {}
+  "@viral": {},
+  "openInSpotify": "Openen met Spotify",
+  "@openInSpotify": {}
 }
