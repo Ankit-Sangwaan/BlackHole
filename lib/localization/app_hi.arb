@@ -664,5 +664,9 @@
   "top": "ऊपर",
   "@top": {},
   "viral": "वायरल",
-  "@viral": {}
+  "@viral": {},
+  "openInSpotify": "Spotify में खोलें",
+  "@openInSpotify": {},
+  "signInSpotify": "Spotify में साइन इन करें",
+  "@signInSpotify": {}
 }
