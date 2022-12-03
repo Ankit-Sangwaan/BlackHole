@@ -670,5 +670,7 @@
   "viral": "Virální",
   "@viral": {},
   "openInSpotify": "Otevřít ve službě Spotify",
-  "@openInSpotify": {}
+  "@openInSpotify": {},
+  "signInSpotify": "Přihlásit se ke Spotify",
+  "@signInSpotify": {}
 }
