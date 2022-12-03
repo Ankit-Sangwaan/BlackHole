@@ -110,5 +110,21 @@
   "changeOrder": "ਕ੍ਰਮ ਬਦਲਣ ਲਈ ਦੇਰ ਤੱਕ ਦਬਾਓ\n",
   "@changeOrder": {},
   "checkingUpdate": "ਅੱਪਡੇਟਸ ਦੇ ਲਈ ਜਾਂਚ ਹੋ ਰਹੀ ਹੈ…",
-  "@checkingUpdate": {}
+  "@checkingUpdate": {},
+  "countryQue": "ਤੁਸੀਂ ਕਿਸ ਦੇਸ਼ ਲਈ ਸਪੌਟੀਫਾਈ ਦੇ ਸਥਾਨਕ ਚਾਰਟ ਦੇਖਣਾ ਚਾਹੋਗੇ?",
+  "@countryQue": {},
+  "clearCacheSub": "ਕੈਸ਼ ਕੀਤੇ ਵੇਰਵਿਆਂ ਨੂੰ ਮਿਟਾਉਂਦਾ ਹੈ ਜਿਸ ਵਿੱਚ ਹੋਮਪੇਜ, ਸਪੋਟੀਫਾਈ ਟਾਪ ਚਾਰਟਸ, ਯੂਟਿਊਬ ਅਤੇ ਆਖਰੀ ਸੈਸ਼ਨ ਡਾਟਾ ਸ਼ਾਮਲ ਹੈ। ਆਮ ਤੌਰ 'ਤੇ ਜਦੋਂ ਡੇਟਾ ਵੱਡਾ ਹੋ ਜਾਂਦਾ ਹੈ ਤਾਂ ਐਪ ਉਹਨਾਂ ਨੂੰ ਆਪਣੇ ਆਪ ਸਾਫ਼ ਕਰ ਦਿੰਦਾ ਹੈ\n",
+  "@clearCacheSub": {},
+  "importSpotify": "ਸਪੌਟੀਫਾਈ ਤੋਂ ਆਯਾਤ ਕਰੋ",
+  "@importSpotify": {},
+  "openInSpotify": "ਸਪੌਟੀਫਾਈ ਵਿੱਚ ਖੋਲ੍ਹੋ",
+  "@openInSpotify": {},
+  "signInSpotify": "ਸਪੌਟੀਫਾਈ ਵਿੱਚ ਸਾਈਨ ਇਨ ਕਰੋ",
+  "@signInSpotify": {},
+  "spotifyCharts": "ਸਪੌਟੀਫਾਈ ਚਾਰਟ",
+  "@spotifyCharts": {},
+  "spotifyPublic": "ਸਪੌਟੀਫਾਈ ਪਬਲਿਕ",
+  "@spotifyPublic": {},
+  "spotifyTopCharts": "ਸਪੌਟੀਫਾਈ ਟੌਪ ਚਾਰਟ",
+  "@spotifyTopCharts": {}
 }
