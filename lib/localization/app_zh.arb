@@ -666,5 +666,11 @@
   "importPlaylist": "导入播放列表",
   "@importPlaylist": {},
   "mergePlaylists": "合并播放列表",
-  "@mergePlaylists": {}
+  "@mergePlaylists": {},
+  "openInSpotify": "在 Spotify 中打开",
+  "@openInSpotify": {},
+  "top": "热门",
+  "@top": {},
+  "viral": "飙升",
+  "@viral": {}
 }
