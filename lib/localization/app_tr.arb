@@ -668,5 +668,9 @@
   "top": "Zirve",
   "@top": {},
   "viral": "Viral",
-  "@viral": {}
+  "@viral": {},
+  "openInSpotify": "Spotify'da aç",
+  "@openInSpotify": {},
+  "signInSpotify": "Spotify'da oturum aç",
+  "@signInSpotify": {}
 }
