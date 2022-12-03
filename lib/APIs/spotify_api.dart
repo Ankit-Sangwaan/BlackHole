@@ -34,10 +34,11 @@ class SpotifyApi {
   final String clientID = '08de4eaf71904d1b95254fab3015d711';
   final String clientSecret = '622b4fbad33947c59b95a6ae607de11d';
   final String redirectUrl = 'app://blackhole/auth';
-  final String spotifyApiBaseUrl = 'https://accounts.spotify.com/api';
-  final String spotifyPlaylistBaseUrl =
-      'https://api.spotify.com/v1/me/playlists';
-  final String spotifyTrackBaseUrl = 'https://api.spotify.com/v1/playlists';
+  final String spotifyApiUrl = 'https://accounts.spotify.com/api';
+  final String spotifyApiBaseUrl = 'https://api.spotify.com/v1';
+  final String spotifyUserPlaylistEndpoint = '/me/playlists';
+  final String spotifyPlaylistTrackEndpoint = '/playlists';
+  final String spotifyRegionalChartsEndpoint = '/views/charts-regional';
   final String spotifyBaseUrl = 'https://accounts.spotify.com';
   final String requestToken = 'https://accounts.spotify.com/api/token';
 
@@ -90,13 +91,13 @@ class SpotifyApi {
     try {
       final Uri path = Uri.parse(requestToken);
       final response = await post(path, headers: headers, body: body);
-      // print(response.statusCode);
-      // print(response.body);
+
       if (response.statusCode == 200) {
         final Map result = jsonDecode(response.body) as Map;
         return <String>[
           result['access_token'].toString(),
-          result['refresh_token'].toString()
+          result['refresh_token'].toString(),
+          result['expires_in'].toString(),
         ];
       }
     } catch (e) {
@@ -107,7 +108,8 @@ class SpotifyApi {
 
   Future<List> getUserPlaylists(String accessToken) async {
     try {
-      final Uri path = Uri.parse('$spotifyPlaylistBaseUrl?limit=50');
+      final Uri path =
+          Uri.parse('$spotifyApiBaseUrl$spotifyUserPlaylistEndpoint?limit=50');
 
       final response = await get(
         path,
@@ -162,7 +164,7 @@ class SpotifyApi {
   ) async {
     try {
       final Uri path = Uri.parse(
-        '$spotifyTrackBaseUrl/$playlistId/tracks?limit=100&offset=$offset',
+        '$spotifyApiBaseUrl$spotifyPlaylistTrackEndpoint/$playlistId/tracks?limit=100&offset=$offset',
       );
       final response = await get(
         path,

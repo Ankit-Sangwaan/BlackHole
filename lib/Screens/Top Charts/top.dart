@@ -21,9 +21,10 @@ import 'package:app_links/app_links.dart';
 import 'package:blackhole/APIs/spotify_api.dart';
 import 'package:blackhole/CustomWidgets/custom_physics.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
+import 'package:blackhole/Helpers/countrycodes.dart';
 // import 'package:blackhole/Helpers/countrycodes.dart';
 import 'package:blackhole/Screens/Search/search.dart';
-// import 'package:blackhole/Screens/Settings/setting.dart';
+import 'package:blackhole/Screens/Settings/setting.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -58,17 +59,17 @@ class _TopChartsState extends State<TopCharts>
       child: Scaffold(
         backgroundColor: Colors.transparent,
         appBar: AppBar(
-          // actions: [
-          //   Padding(
-          //     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-          //     child: IconButton(
-          //       icon: const Icon(Icons.my_location_rounded),
-          //       onPressed: () async {
-          //         await SpotifyCountry().changeCountry(context: context);
-          //       },
-          //     ),
-          //   ),
-          // ],
+          actions: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+              child: IconButton(
+                icon: const Icon(Icons.my_location_rounded),
+                onPressed: () async {
+                  await SpotifyCountry().changeCountry(context: context);
+                },
+              ),
+            ),
+          ],
           bottom: TabBar(
             indicatorSize: TabBarIndicatorSize.label,
             tabs: [
@@ -135,21 +136,19 @@ class _TopChartsState extends State<TopCharts>
             }
             return true;
           },
-          child: const TabBarView(
-            physics: CustomPhysics(),
+          child: TabBarView(
+            physics: const CustomPhysics(),
             children: [
-              // ValueListenableBuilder(
-              //   valueListenable: Hive.box('settings').listenable(),
-              //   builder: (BuildContext context, Box box, Widget? widget) {
-              //     return TopPage(
-              //       region: CountryCodes
-              //           .countryCodes[box.get('region', defaultValue: 'India')]
-              //           .toString(),
-              //     );
-              //   },
-              // ),
-              TopPage(type: 'local'),
-              TopPage(type: 'global'),
+              ValueListenableBuilder(
+                valueListenable: Hive.box('settings').listenable(),
+                builder: (BuildContext context, Box box, Widget? widget) {
+                  return TopPage(
+                    type: box.get('region', defaultValue: 'India').toString(),
+                  );
+                },
+              ),
+              // TopPage(type: 'local'),
+              const TopPage(type: 'Global'),
             ],
           ),
         ),
@@ -159,10 +158,12 @@ class _TopChartsState extends State<TopCharts>
 }
 
 Future<List> getChartDetails(String accessToken, String type) async {
-  const String globalPlaylistId = '37i9dQZEVXbMDoHDwVN2tF';
-  const String localPlaylistId = '37i9dQZEVXbLZ52XmnySJg';
+  final String globalPlaylistId = ConstantCodes.localChartCodes['Global']!;
+  final String localPlaylistId = ConstantCodes.localChartCodes.containsKey(type)
+      ? ConstantCodes.localChartCodes[type]!
+      : ConstantCodes.localChartCodes['India']!;
   final String playlistId =
-      type == 'global' ? globalPlaylistId : localPlaylistId;
+      type == 'Global' ? globalPlaylistId : localPlaylistId;
   final List data = [];
   final List tracks =
       await SpotifyApi().getAllTracksOfPlaylist(accessToken, playlistId);
@@ -177,7 +178,7 @@ Future<List> getChartDetails(String accessToken, String type) async {
       'artist': artistName,
       'image_url_small': imageUrlSmall,
       'image_url_big': imageUrlBig,
-      'url': spotifyUrl,
+      'spotifyUrl': spotifyUrl,
     });
   }
   return data;
@@ -185,10 +186,10 @@ Future<List> getChartDetails(String accessToken, String type) async {
 
 Future<void> scrapData(String type, {bool signIn = false}) async {
   String code;
-  final String accessToken = Hive.box('settings')
+  String accessToken = Hive.box('settings')
       .get('spotifyAccessToken', defaultValue: 'null')
       .toString();
-  final String refreshToken = Hive.box('settings')
+  String refreshToken = Hive.box('settings')
       .get('spotifyRefreshToken', defaultValue: 'null')
       .toString();
   final bool spotifySigned =
@@ -211,16 +212,20 @@ Future<void> scrapData(String type, {bool signIn = false}) async {
         if (link.contains('code=')) {
           code = link.split('code=')[1];
           Hive.box('settings').put('spotifyAppCode', code);
-          final List data = await SpotifyApi().getAccessToken(code: code);
+          final currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
+          final List<String> data =
+              await SpotifyApi().getAccessToken(code: code);
           if (data.isNotEmpty) {
             Hive.box('settings').put('spotifyAccessToken', data[0]);
             Hive.box('settings').put('spotifyRefreshToken', data[1]);
             Hive.box('settings').put('spotifySigned', true);
+            Hive.box('settings')
+                .put('spotifyTokenExpireAt', currentTime + int.parse(data[2]));
           }
-          final temp = await getChartDetails(data[0].toString(), type);
+          final temp = await getChartDetails(data[0], type);
           if (temp.isNotEmpty) {
             Hive.box('cache').put('${type}_chart', temp);
-            if (type == 'global') {
+            if (type == 'Global') {
               globalSongs = temp;
             } else {
               localSongs = temp;
@@ -231,22 +236,32 @@ Future<void> scrapData(String type, {bool signIn = false}) async {
       },
     );
   } else {
-    final List data =
-        await SpotifyApi().getAccessToken(refreshToken: refreshToken);
-    if (data.isNotEmpty) {
-      Hive.box('settings').put('spotifySigned', true);
-      Hive.box('settings').put('spotifyAccessToken', data[0]);
-      if (data[1] != 'null') {
-        Hive.box('settings').put('spotifyRefreshToken', data[1]);
-      }
-      final temp = await getChartDetails(data[0].toString(), type);
-      if (temp.isNotEmpty) {
-        Hive.box('cache').put('${type}_chart', temp);
-        if (type == 'global') {
-          globalSongs = temp;
-        } else {
-          localSongs = temp;
+    final double expiredAt = Hive.box('settings')
+        .get('spotifyTokenExpireAt', defaultValue: 0) as double;
+    final currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
+    if ((currentTime + 60) >= expiredAt) {
+      final List<String> data =
+          await SpotifyApi().getAccessToken(refreshToken: refreshToken);
+      if (data.isNotEmpty) {
+        Hive.box('settings').put('spotifySigned', true);
+        accessToken = data[0];
+        Hive.box('settings').put('spotifyAccessToken', data[0]);
+        if (data[1] != 'null') {
+          refreshToken = data[1];
+          Hive.box('settings').put('spotifyRefreshToken', data[1]);
         }
+        Hive.box('settings')
+            .put('spotifyTokenExpireAt', currentTime + int.parse(data[2]));
+      }
+    }
+
+    final temp = await getChartDetails(accessToken, type);
+    if (temp.isNotEmpty) {
+      Hive.box('cache').put('${type}_chart', temp);
+      if (type == 'Global') {
+        globalSongs = temp;
+      } else {
+        localSongs = temp;
       }
     }
     fetchFinished.value = true;
@@ -264,7 +279,7 @@ class _TopPageState extends State<TopPage>
     with AutomaticKeepAliveClientMixin<TopPage> {
   Future<void> getCachedData(String type) async {
     fetched = true;
-    if (type == 'global') {
+    if (type == 'Global') {
       globalSongs = await Hive.box('cache')
           .get('${type}_chart', defaultValue: []) as List;
     } else {
@@ -287,8 +302,7 @@ class _TopPageState extends State<TopPage>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    final bool isGlobal = widget.type == 'global';
-    final List showList = isGlobal ? globalSongs : localSongs;
+    final bool isGlobal = widget.type == 'Global';
     if (!fetched) {
       getCachedData(widget.type);
       scrapData(widget.type);
@@ -296,6 +310,7 @@ class _TopPageState extends State<TopPage>
     return ValueListenableBuilder(
       valueListenable: fetchFinished,
       builder: (BuildContext context, bool value, Widget? child) {
+        final List showList = isGlobal ? globalSongs : localSongs;
         return Column(
           children: [
             if (!(Hive.box('settings').get('spotifySigned', defaultValue: false)
@@ -373,6 +388,36 @@ class _TopPageState extends State<TopPage>
                       subtitle: Text(
                         showList[index]['artist'].toString(),
                         overflow: TextOverflow.ellipsis,
+                      ),
+                      trailing: PopupMenuButton(
+                        icon: const Icon(Icons.more_vert_rounded),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(15.0),
+                          ),
+                        ),
+                        onSelected: (int? value) async {
+                          if (value == 0) {
+                            await launchUrl(
+                              Uri.parse(showList[index]['url'].toString()),
+                              mode: LaunchMode.externalApplication,
+                            );
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          PopupMenuItem(
+                            value: 0,
+                            child: Row(
+                              children: [
+                                const Icon(Icons.open_in_new_rounded),
+                                const SizedBox(width: 10.0),
+                                Text(
+                                  AppLocalizations.of(context)!.openInSpotify,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                       onTap: () {
                         Navigator.push(

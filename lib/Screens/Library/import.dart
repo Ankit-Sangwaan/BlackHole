@@ -155,9 +155,9 @@ Future<void> connectToSpotify(
   Box settingsBox,
 ) async {
   String code;
-  final String accessToken =
+  String accessToken =
       settingsBox.get('spotifyAccessToken', defaultValue: 'null').toString();
-  final String refreshToken =
+  String refreshToken =
       settingsBox.get('spotifyRefreshToken', defaultValue: 'null').toString();
 
   if (accessToken == 'null' || refreshToken == 'null') {
@@ -173,12 +173,18 @@ Future<void> connectToSpotify(
         if (link.contains('code=')) {
           code = link.split('code=')[1];
           settingsBox.put('spotifyAppCode', code);
-          final List data = await SpotifyApi().getAccessToken(code: code);
+          final currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
+          final List<String> data =
+              await SpotifyApi().getAccessToken(code: code);
           if (data.isNotEmpty) {
             settingsBox.put('spotifyAccessToken', data[0]);
             settingsBox.put('spotifyRefreshToken', data[1]);
+            settingsBox.put(
+              'spotifyTokenExpireAt',
+              currentTime + int.parse(data[2]),
+            );
             await fetchPlaylists(
-              data[0].toString(),
+              data[0],
               context,
               playlistNames,
               settingsBox,
@@ -188,20 +194,29 @@ Future<void> connectToSpotify(
       },
     );
   } else {
-    final List data =
-        await SpotifyApi().getAccessToken(refreshToken: refreshToken);
-    if (data.isNotEmpty) {
-      settingsBox.put('spotifyAccessToken', data[0]);
-      if (data[1] != 'null') {
-        Hive.box('settings').put('spotifyRefreshToken', data[1]);
+    final double expiredAt = Hive.box('settings')
+        .get('spotifyTokenExpireAt', defaultValue: 0) as double;
+    final currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
+    if ((currentTime + 60) >= expiredAt) {
+      final List<String> data =
+          await SpotifyApi().getAccessToken(refreshToken: refreshToken);
+      if (data.isNotEmpty) {
+        accessToken = data[0];
+        Hive.box('settings').put('spotifyAccessToken', data[0]);
+        if (data[1] != 'null') {
+          refreshToken = data[1];
+          Hive.box('settings').put('spotifyRefreshToken', data[1]);
+        }
+        Hive.box('settings')
+            .put('spotifyTokenExpireAt', currentTime + int.parse(data[2]));
       }
-      await fetchPlaylists(
-        data[0].toString(),
-        context,
-        playlistNames,
-        settingsBox,
-      );
     }
+    await fetchPlaylists(
+      accessToken,
+      context,
+      playlistNames,
+      settingsBox,
+    );
   }
 }
 

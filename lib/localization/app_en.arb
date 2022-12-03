@@ -395,6 +395,8 @@
   "@nowPlaying": {},
   "ok": "Ok",
   "@ok": {},
+  "openInSpotify": "Open In Spotify",
+  "@openInSpotify": {},
   "or": "OR",
   "@or": {},
   "others": "Others",
