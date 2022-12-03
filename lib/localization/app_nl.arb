@@ -670,5 +670,7 @@
   "viral": "Viral",
   "@viral": {},
   "openInSpotify": "Openen met Spotify",
-  "@openInSpotify": {}
+  "@openInSpotify": {},
+  "signInSpotify": "Inloggen op Spotify",
+  "@signInSpotify": {}
 }
