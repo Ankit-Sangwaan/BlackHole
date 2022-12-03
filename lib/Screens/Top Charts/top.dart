@@ -321,7 +321,7 @@ class _TopPageState extends State<TopPage>
                     onPressed: () {
                       scrapData(widget.type, signIn: true);
                     },
-                    child: const Text('Sign in to Spotify'),
+                    child: Text(AppLocalizations.of(context)!.signInSpotify),
                   ),
                 ),
               )

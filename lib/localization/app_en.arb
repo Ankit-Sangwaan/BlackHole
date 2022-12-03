@@ -509,6 +509,8 @@
   "@showQr": {},
   "shuffle": "Shuffle",
   "@shuffle": {},
+  "signInSpotify": "Sign in to Spotify",
+  "@signInSpotify": {},
   "size": "Size",
   "@size": {},
   "skip": "Skip",
