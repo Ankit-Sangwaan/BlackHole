@@ -668,5 +668,7 @@
   "top": "Nejlepší",
   "@top": {},
   "viral": "Virální",
-  "@viral": {}
+  "@viral": {},
+  "openInSpotify": "Otevřít ve službě Spotify",
+  "@openInSpotify": {}
 }
