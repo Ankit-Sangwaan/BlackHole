@@ -652,5 +652,9 @@
   "viral": "ויראלי",
   "@viral": {},
   "top": "עליון",
-  "@top": {}
+  "@top": {},
+  "openInSpotify": "פתיחה ב־Spotify",
+  "@openInSpotify": {},
+  "signInSpotify": "כניסה ל־Spotify",
+  "@signInSpotify": {}
 }
