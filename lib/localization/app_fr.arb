@@ -670,5 +670,9 @@
   "top": "Haut",
   "@top": {},
   "viral": "Viral",
-  "@viral": {}
+  "@viral": {},
+  "openInSpotify": "Ouvrir dans Spotify",
+  "@openInSpotify": {},
+  "signInSpotify": "Se connecter à Spotify",
+  "@signInSpotify": {}
 }
