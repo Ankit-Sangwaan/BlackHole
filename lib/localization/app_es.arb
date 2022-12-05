@@ -664,5 +664,9 @@
   "ytDownQuality": "Calidad de descarga de YouTube",
   "@ytDownQuality": {},
   "upNext": "Cola de reproducción",
-  "@upNext": {}
+  "@upNext": {},
+  "openInSpotify": "Abrir en Spotify",
+  "@openInSpotify": {},
+  "signInSpotify": "Inicia sesión en Spotify",
+  "@signInSpotify": {}
 }
