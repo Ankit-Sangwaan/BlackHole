@@ -666,5 +666,9 @@
   "top": "Topo",
   "@top": {},
   "viral": "Viral",
-  "@viral": {}
+  "@viral": {},
+  "openInSpotify": "Abrir no Spotify",
+  "@openInSpotify": {},
+  "signInSpotify": "Inicie sessão no Spotify",
+  "@signInSpotify": {}
 }
