@@ -670,5 +670,9 @@
   "viral": "அதிபரவும்",
   "@viral": {},
   "top": "உச்ச",
-  "@top": {}
+  "@top": {},
+  "openInSpotify": "ஸ்பாட்டிஃபையில் திற",
+  "@openInSpotify": {},
+  "signInSpotify": "ஸ்பாட்டிஃபைக்கு உள்நுழை",
+  "@signInSpotify": {}
 }
