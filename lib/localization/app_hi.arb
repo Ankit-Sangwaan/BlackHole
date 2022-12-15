@@ -647,7 +647,7 @@
   "@resetOnSkip": {},
   "confirmViewable": "सुनिश्चित करें कि प्लेलिस्ट देखने योग्य है",
   "@confirmViewable": {},
-  "useBlurForNowPlayingSub": "अभी चल रहे अनुभाग में अब blur कम opacity के साथ शो होगा",
+  "useBlurForNowPlayingSub": "कम अस्पष्टता वाले धुंधलापन का उपयोग अभी चल रहे अनुभाग की पृष्ठभूमि के रूप में किया जाएगा",
   "@useBlurForNowPlayingSub": {},
   "autoBackLocation": "ऑटो बैकअप स्थान",
   "@autoBackLocation": {},
