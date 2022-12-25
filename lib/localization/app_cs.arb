@@ -672,5 +672,9 @@
   "openInSpotify": "Otevřít ve službě Spotify",
   "@openInSpotify": {},
   "signInSpotify": "Přihlásit se ke Spotify",
-  "@signInSpotify": {}
+  "@signInSpotify": {},
+  "shareLogsSub": "Sdílet protokoly aktuálních relací",
+  "@shareLogsSub": {},
+  "shareLogs": "Sdílet protokoly",
+  "@shareLogs": {}
 }
