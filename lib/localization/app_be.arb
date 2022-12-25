@@ -660,5 +660,9 @@
   "openInSpotify": "Адкрыць у Spotify",
   "@openInSpotify": {},
   "signInSpotify": "Увайсці ў Spotify",
-  "@signInSpotify": {}
+  "@signInSpotify": {},
+  "shareLogsSub": "Падзяліцеся логамі бягучых сеансаў",
+  "@shareLogsSub": {},
+  "shareLogs": "Абагуліць логі",
+  "@shareLogs": {}
 }
