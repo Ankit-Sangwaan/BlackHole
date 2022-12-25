@@ -40,13 +40,14 @@ class DownloadButton extends StatefulWidget {
 }
 
 class _DownloadButtonState extends State<DownloadButton> {
-  Download down = Download();
+  late Download down;
   final Box downloadsBox = Hive.box('downloads');
   final ValueNotifier<bool> showStopButton = ValueNotifier<bool>(false);
 
   @override
   void initState() {
     super.initState();
+    down = Download(widget.data['id'].toString());
     down.addListener(() {
       setState(() {});
     });
@@ -166,12 +167,13 @@ class MultiDownloadButton extends StatefulWidget {
 }
 
 class _MultiDownloadButtonState extends State<MultiDownloadButton> {
-  Download down = Download();
+  late Download down;
   int done = 0;
 
   @override
   void initState() {
     super.initState();
+    down = Download(widget.data.first['id'].toString());
     down.addListener(() {
       setState(() {});
     });
@@ -275,7 +277,7 @@ class AlbumDownloadButton extends StatefulWidget {
 }
 
 class _AlbumDownloadButtonState extends State<AlbumDownloadButton> {
-  Download down = Download();
+  late Download down;
   int done = 0;
   List data = [];
   bool finished = false;
@@ -283,6 +285,7 @@ class _AlbumDownloadButtonState extends State<AlbumDownloadButton> {
   @override
   void initState() {
     super.initState();
+    down = Download(widget.albumId);
     down.addListener(() {
       setState(() {});
     });

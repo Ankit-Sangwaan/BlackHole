@@ -69,22 +69,23 @@ Future<void> main() async {
 }
 
 Future<void> setOptimalDisplayMode() async {
-  final List<DisplayMode> supported = await FlutterDisplayMode.supported;
-  final DisplayMode active = await FlutterDisplayMode.active;
+  await FlutterDisplayMode.setHighRefreshRate();
+  // final List<DisplayMode> supported = await FlutterDisplayMode.supported;
+  // final DisplayMode active = await FlutterDisplayMode.active;
 
-  final List<DisplayMode> sameResolution = supported
-      .where(
-        (DisplayMode m) => m.width == active.width && m.height == active.height,
-      )
-      .toList()
-    ..sort(
-      (DisplayMode a, DisplayMode b) => b.refreshRate.compareTo(a.refreshRate),
-    );
+  // final List<DisplayMode> sameResolution = supported
+  //     .where(
+  //       (DisplayMode m) => m.width == active.width && m.height == active.height,
+  //     )
+  //     .toList()
+  //   ..sort(
+  //     (DisplayMode a, DisplayMode b) => b.refreshRate.compareTo(a.refreshRate),
+  //   );
 
-  final DisplayMode mostOptimalMode =
-      sameResolution.isNotEmpty ? sameResolution.first : active;
+  // final DisplayMode mostOptimalMode =
+  //     sameResolution.isNotEmpty ? sameResolution.first : active;
 
-  await FlutterDisplayMode.setPreferredMode(mostOptimalMode);
+  // await FlutterDisplayMode.setPreferredMode(mostOptimalMode);
 }
 
 Future<void> startService() async {

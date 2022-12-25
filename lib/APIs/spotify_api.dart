@@ -40,6 +40,7 @@ class SpotifyApi {
   final String spotifyUserPlaylistEndpoint = '/me/playlists';
   final String spotifyPlaylistTrackEndpoint = '/playlists';
   final String spotifyRegionalChartsEndpoint = '/views/charts-regional';
+  final String spotifyFeaturedPlaylistsEndpoint = '/browse/featured-playlists';
   final String spotifyBaseUrl = 'https://accounts.spotify.com';
   final String requestToken = 'https://accounts.spotify.com/api/token';
 
@@ -185,5 +186,41 @@ class SpotifyApi {
       Logger.root.severe('Error in getting spotify playlist tracks: $e');
     }
     return {};
+  }
+
+  Future<List<Map>> getFeaturedPlaylists(String accessToken) async {
+    try {
+      final Uri path = Uri.parse(
+        '$spotifyApiBaseUrl/browse/featured-playlists',
+      );
+      final response = await get(
+        path,
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Accept': 'application/json'
+        },
+      );
+      final List<Map> songsData = [];
+      if (response.statusCode == 200) {
+        final result = jsonDecode(response.body);
+        await for (final element in result['playlists']['items']) {
+          songsData.add({
+            'name': element['name'],
+            'id': element['id'],
+            'image': element['images'][0]['url'],
+            'description': element['description'],
+            'externalUrl': element['external_urls']['spotify'],
+            'tracks': await SpotifyApi().getAllTracksOfPlaylist(
+              accessToken,
+              element['id'].toString(),
+            ),
+          });
+        }
+      }
+      return songsData;
+    } catch (e) {
+      Logger.root.severe('Error in getting spotify featured playlists: $e');
+      return List.empty();
+    }
   }
 }

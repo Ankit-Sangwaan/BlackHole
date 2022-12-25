@@ -36,14 +36,30 @@ import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class Download with ChangeNotifier {
+  static final Map<String, Download> _instances = {};
+  final String id;
+
+  factory Download(String id) {
+    if (_instances.containsKey(id)) {
+      return _instances[id]!;
+    } else {
+      final instance = Download._internal(id);
+      _instances[id] = instance;
+      return instance;
+    }
+  }
+
+  Download._internal(this.id);
+
   int? rememberOption;
   final ValueNotifier<bool> remember = ValueNotifier<bool>(false);
   String preferredDownloadQuality = Hive.box('settings')
       .get('downloadQuality', defaultValue: '320 kbps') as String;
   String preferredYtDownloadQuality = Hive.box('settings')
       .get('ytDownloadQuality', defaultValue: 'High') as String;
-  String downloadFormat = 'm4a';
-  // Hive.box('settings').get('downloadFormat', defaultValue: 'm4a');
+  String downloadFormat = Hive.box('settings')
+      .get('downloadFormat', defaultValue: 'm4a')
+      .toString();
   bool createDownloadFolder = Hive.box('settings')
       .get('createDownloadFolder', defaultValue: false) as bool;
   bool createYoutubeFolder = Hive.box('settings')
@@ -384,40 +400,41 @@ class Download with ChangeNotifier {
           // log('Error fetching lyrics: $e');
           lyrics = '';
         }
+        // commented out not to use FFmpeg as it increases the size of the app
+        // can uncomment this if you want to use FFmpeg to convert the audio format
+        // to any desired codec instead of the default m4a one.
 
-        // if (filepath!.endsWith('.opus')) {
-        // List<String>? _argsList;
-        // ShowSnackBar().showSnackBar(
-        //   context,
-        //   'Converting "opus" to "$downloadFormat"',
-        // );
-
-        // if (downloadFormat == 'mp3')
-        //   _argsList = [
-        //     "-y",
-        //     "-i",
-        //     "$filepath",
-        //     "-c:a",
-        //     "libmp3lame",
-        //     "-b:a",
-        //     "256k",
-        //     "${filepath.replaceAll('.opus', '.mp3')}"
-        //   ];
-        // if (downloadFormat == 'm4a') {
-        //   _argsList = [
-        //     '-y',
-        //     '-i',
-        //     filepath!,
-        //     '-c:a',
-        //     'aac',
-        //     '-b:a',
-        //     '256k',
-        //     filepath!.replaceAll('.opus', '.m4a')
-        //   ];
-        // }
-        // await FlutterFFmpeg().executeWithArguments(_argsList);
-        // await File(filepath!).delete();
-        // filepath = filepath!.replaceAll('.opus', '.$downloadFormat');
+        // final List<String> availableFormats = ['m4a'];
+        // if (downloadFormat != 'm4a' &&
+        //     availableFormats.contains(downloadFormat)) {
+        //   List<String>? argsList;
+        //   if (downloadFormat == 'mp3') {
+        //     argsList = [
+        //       '-y',
+        //       '-i',
+        //       '$filepath',
+        //       '-c:a',
+        //       'libmp3lame',
+        //       '-b:a',
+        //       '320k',
+        //       (filepath!.replaceAll('.m4a', '.mp3'))
+        //     ];
+        //   }
+        //   if (downloadFormat == 'm4a') {
+        //     argsList = [
+        //       '-y',
+        //       '-i',
+        //       filepath!,
+        //       '-c:a',
+        //       'aac',
+        //       '-b:a',
+        //       '320k',
+        //       filepath!.replaceAll('.m4a', '.m4a')
+        //     ];
+        //   }
+        //   // await FlutterFFmpeg().executeWithArguments(_argsList);
+        //   // await File(filepath!).delete();
+        //   // filepath = filepath!.replaceAll('.m4a', '.$downloadFormat');
         // }
 
         // debugPrint('Started tag editing');
