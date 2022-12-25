@@ -672,5 +672,9 @@
   "openInSpotify": "Openen met Spotify",
   "@openInSpotify": {},
   "signInSpotify": "Inloggen op Spotify",
-  "@signInSpotify": {}
+  "@signInSpotify": {},
+  "shareLogs": "Logboeken delen",
+  "@shareLogs": {},
+  "shareLogsSub": "Deel de logboeken van de huidige sessies",
+  "@shareLogsSub": {}
 }
