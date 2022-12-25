@@ -42,6 +42,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -3088,6 +3089,30 @@ class _SettingPageState extends State<SettingPage> {
                               () {},
                             );
                           },
+                        ),
+                        ListTile(
+                          title: Text(
+                            AppLocalizations.of(
+                              context,
+                            )!
+                                .shareLogs,
+                          ),
+                          subtitle: Text(
+                            AppLocalizations.of(
+                              context,
+                            )!
+                                .shareLogsSub,
+                          ),
+                          onTap: () async {
+                            final Directory tempDir =
+                                await getTemporaryDirectory();
+                            final files = <XFile>[
+                              XFile('${tempDir.path}/logs/logs.log')
+                            ];
+                            Share.shareXFiles(files);
+                          },
+                          dense: true,
+                          isThreeLine: true,
                         ),
                       ],
                     ),

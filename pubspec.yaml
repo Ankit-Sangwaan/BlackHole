@@ -11,7 +11,7 @@ environment:
 
 dependencies:
   app_links: 2.2.2
-  audio_service: ^0.18.7
+  audio_service: ^0.18.8
   audiotagger: ^2.2.1
   # bitsdojo_window: ^0.1.1+1 #For Desktops
   cached_network_image: ^3.2.2
@@ -35,7 +35,7 @@ dependencies:
   just_audio: ^0.9.30
   # Discontinued, Use just_audio_windows instead.
   # just_audio_libwinmedia: ^0.0.4 # For windows and linux.
-  # logging: ^1.0.1
+  logging: ^1.1.0
   marquee: ^2.2.3
   material_design_icons_flutter: 5.0.5955-rc.1
   on_audio_query: ^2.6.1

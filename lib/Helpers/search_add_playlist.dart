@@ -27,6 +27,7 @@ import 'package:blackhole/Services/youtube_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -51,6 +52,7 @@ class SearchAddPlaylist {
       }
       return {};
     } catch (e) {
+      Logger.root.severe('Error while adding YT playlist: $e');
       return {};
     }
   }
@@ -69,6 +71,7 @@ class SearchAddPlaylist {
         'tracks': tracks,
       };
     } catch (e) {
+      Logger.root.severe('Error while adding Spotify playlist: $e');
       return {};
     }
   }
@@ -104,6 +107,7 @@ class SearchAddPlaylist {
       }
       return {};
     } catch (e) {
+      Logger.root.severe('Error while adding Resso playlist: $e');
       return {};
     }
   }
@@ -133,6 +137,7 @@ class SearchAddPlaylist {
       }
       return {};
     } catch (e) {
+      Logger.root.severe('Error while adding JioSaavn playlist: $e');
       return {};
     }
   }
@@ -152,7 +157,7 @@ class SearchAddPlaylist {
             await SaavnAPI().fetchTopSearchResult(trackName!.split('|')[0]);
         addMapToPlaylist(playName, result[0] as Map);
       } catch (e) {
-        // print('Error in $_done: $e');
+        Logger.root.severe('Error in $done: $e');
       }
     }
   }
@@ -178,6 +183,7 @@ class SearchAddPlaylist {
         addMapToPlaylist(playName, result[0] as Map);
       } catch (e) {
         // print('Error in $_done: $e');
+        Logger.root.severe('Error in $done: $e');
       }
     }
   }
@@ -204,6 +210,7 @@ class SearchAddPlaylist {
         addMapToPlaylist(playName, result[0] as Map);
       } catch (e) {
         // print('Error in $_done: $e');
+        Logger.root.severe('Error in $done: $e');
       }
     }
   }

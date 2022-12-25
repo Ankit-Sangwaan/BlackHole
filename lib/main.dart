@@ -24,6 +24,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:blackhole/Helpers/config.dart';
 import 'package:blackhole/Helpers/countrycodes.dart';
 import 'package:blackhole/Helpers/handle_native.dart';
+import 'package:blackhole/Helpers/logging.dart';
 import 'package:blackhole/Helpers/route_handler.dart';
 import 'package:blackhole/Screens/About/about.dart';
 import 'package:blackhole/Screens/Home/home.dart';
@@ -100,6 +101,7 @@ Future<void> startService() async {
       notificationColor: Colors.grey[900],
     ),
   );
+  initializeLogging();
   GetIt.I.registerSingleton<AudioPlayerHandler>(audioHandler);
   GetIt.I.registerSingleton<MyTheme>(MyTheme());
 }

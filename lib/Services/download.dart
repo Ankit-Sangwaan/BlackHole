@@ -31,6 +31,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -353,6 +354,7 @@ class Download with ChangeNotifier {
           client.close();
         }
       } catch (e) {
+        Logger.root.severe('Error in download: $e');
         // print('Error: $e');
       }
     }).onDone(() async {
@@ -378,7 +380,8 @@ class Download with ChangeNotifier {
                 )
               : '';
         } catch (e) {
-          // print('Error fetching lyrics: $e');
+          Logger.root.severe('Error fetching lyrics: $e');
+          // log('Error fetching lyrics: $e');
           lyrics = '';
         }
 
@@ -443,6 +446,7 @@ class Download with ChangeNotifier {
             //   }
             // });
           } catch (e) {
+            Logger.root.severe('Error editing tags: $e');
             log('Failed to edit tags');
           }
         }

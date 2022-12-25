@@ -21,6 +21,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 
 class SpotifyApi {
   final List<String> _scopes = [
@@ -101,7 +102,7 @@ class SpotifyApi {
         ];
       }
     } catch (e) {
-      // print('Error: $e');
+      Logger.root.severe('Error in getting spotify access token: $e');
     }
     return [];
   }
@@ -124,7 +125,7 @@ class SpotifyApi {
         return playlists;
       }
     } catch (e) {
-      // print('Error: $e');
+      Logger.root.severe('Error in getting spotify user playlists: $e');
     }
     return [];
   }
@@ -181,7 +182,7 @@ class SpotifyApi {
         return {'tracks': tracks, 'total': total};
       }
     } catch (e) {
-      // print('Error: $e');
+      Logger.root.severe('Error in getting spotify playlist tracks: $e');
     }
     return {};
   }

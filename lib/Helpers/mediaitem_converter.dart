@@ -42,7 +42,7 @@ class MediaItemConverter {
       '320kbps': mediaItem.extras?['320kbps'],
       'quality': mediaItem.extras?['quality'],
       'perma_url': mediaItem.extras?['perma_url'],
-      'expire_at': 0,
+      'expire_at': mediaItem.extras?['expire_at'],
     };
   }
 

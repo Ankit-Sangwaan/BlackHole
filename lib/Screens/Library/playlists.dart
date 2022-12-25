@@ -28,6 +28,7 @@ import 'package:blackhole/Screens/Library/liked.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:logging/logging.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class PlaylistScreen extends StatefulWidget {
@@ -335,6 +336,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                                   await playlistBox
                                                       .deleteFromDisk();
                                                 } catch (e) {
+                                                  Logger.root.severe(
+                                                    'Error merging $playlistName: $e',
+                                                  );
                                                   ShowSnackBar().showSnackBar(
                                                     context,
                                                     'Error merging $playlistName: $e',
@@ -358,6 +362,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                               );
                                             }
                                           } catch (e) {
+                                            Logger.root.severe(
+                                              'Error merging playlists: $e',
+                                            );
                                             ShowSnackBar().showSnackBar(
                                               context,
                                               'Error: $e',

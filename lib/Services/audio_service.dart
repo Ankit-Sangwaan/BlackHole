@@ -29,6 +29,7 @@ import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:logging/logging.dart';
 import 'package:rxdart/rxdart.dart';
 
 class AudioPlayerHandlerImpl extends BaseAudioHandler
@@ -146,6 +147,24 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         }
       }
 
+      if (item.genre == 'YouTube') {
+        final int expiredAt =
+            int.parse((item.extras!['expire_at'] ?? '0').toString());
+        if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 > expiredAt) {
+          Logger.root.info('youtube link expired');
+          _player!.seekToNext();
+          // final index = queue.value.indexOf(item);
+          // print(index);
+          // _playlist.insert(
+          //   index,
+          //   AudioSource.uri(
+          //     Uri.parse(newUrl),
+          //   ),
+          // );
+          // _playlist.removeAt(index);
+        }
+      }
+
       if (item.artUri.toString().startsWith('http') &&
           item.genre != 'YouTube') {
         addRecentlyPlayed(item);
@@ -229,22 +248,31 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       final int lastPos =
           await Hive.box('cache').get('lastPos', defaultValue: 0) as int;
 
-      final List<MediaItem> lastQueue = lastQueueList
-          .map((e) => MediaItemConverter.mapToMediaItem(e as Map))
-          .toList();
-      if (lastQueue.isEmpty) {
-        await _player!.setAudioSource(_playlist, preload: false);
-      } else {
-        await _playlist.addAll(_itemsToSources(lastQueue));
-        await _player!.setAudioSource(
-          _playlist,
-          // commented out due to some bug in audio_service which causes app to freeze
-          // instead manually seeking after audiosource initialised
+      if (lastQueueList.first['genre'] != 'YouTube') {
+        final List<MediaItem> lastQueue = lastQueueList
+            .map((e) => MediaItemConverter.mapToMediaItem(e as Map))
+            .toList();
+        if (lastQueue.isEmpty) {
+          await _player!.setAudioSource(_playlist, preload: false);
+        } else {
+          await _playlist.addAll(_itemsToSources(lastQueue));
+          try {
+            await _player!.setAudioSource(
+              _playlist,
+              // commented out due to some bug in audio_service which causes app to freeze
+              // instead manually seeking after audiosource initialised
 
-          // initialIndex: lastIndex,
-          // initialPosition: Duration(seconds: lastPos),
-        );
-        await _player!.seek(Duration(seconds: lastPos), index: lastIndex);
+              // initialIndex: lastIndex,
+              // initialPosition: Duration(seconds: lastPos),
+            );
+            await _player!.seek(Duration(seconds: lastPos), index: lastIndex);
+          } catch (e) {
+            Logger.root.severe('Error while loading last queue', e);
+            await _player!.setAudioSource(_playlist, preload: false);
+          }
+        }
+      } else {
+        await _player!.setAudioSource(_playlist, preload: false);
       }
     } else {
       await _player!.setAudioSource(_playlist, preload: false);
@@ -370,9 +398,11 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   }
 
   Future<void> addLastQueue(List<MediaItem> queue) async {
-    final lastQueue =
-        queue.map((item) => MediaItemConverter.mediaItemToMap(item)).toList();
-    Hive.box('cache').put('lastQueue', lastQueue);
+    if (queue.first.genre != 'YouTube') {
+      final lastQueue =
+          queue.map((item) => MediaItemConverter.mediaItemToMap(item)).toList();
+      Hive.box('cache').put('lastQueue', lastQueue);
+    }
   }
 
   @override

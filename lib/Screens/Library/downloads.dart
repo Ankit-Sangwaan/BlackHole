@@ -37,6 +37,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
+import 'package:logging/logging.dart';
 // import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -147,6 +148,7 @@ class _DownloadsState extends State<Downloads>
         //   context,
         //   'Error: $e',
         // );
+        Logger.root.severe('Error while setting artist and album: $e');
       }
     }
 
@@ -306,6 +308,7 @@ class _DownloadsState extends State<Downloads>
         '${AppLocalizations.of(context)!.deleted} ${song['title']}',
       );
     } catch (e) {
+      Logger.root.severe('Failed to delete $audioFile.path\nError: $e');
       ShowSnackBar().showSnackBar(
         context,
         '${AppLocalizations.of(context)!.failedDelete}: ${audioFile.path}\nError: $e',
@@ -831,6 +834,7 @@ Future<Map> editTags(Map song, BuildContext context) async {
                   );
                 }
               } catch (e) {
+                Logger.root.severe('Failed to edit tags: $e');
                 ShowSnackBar().showSnackBar(
                   context,
                   '${AppLocalizations.of(context)!.failedTagEdit}\nError: $e',

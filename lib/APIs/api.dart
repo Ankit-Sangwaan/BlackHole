@@ -25,6 +25,7 @@ import 'package:blackhole/Helpers/format.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
 import 'package:http/io_client.dart';
+import 'package:logging/logging.dart';
 
 class SaavnAPI {
   List preferredLanguages = Hive.box('settings')
@@ -100,6 +101,7 @@ class SaavnAPI {
       }
     } catch (e) {
       log('Error in fetchHomePageData: $e');
+      Logger.root.severe('Error in fetchHomePageData: $e');
     }
     return result;
   }
@@ -134,6 +136,7 @@ class SaavnAPI {
         }
       } catch (e) {
         log('Error in getSongFromToken: $e');
+        Logger.root.severe('Error in getSongFromToken: $e');
       }
       return {'songs': List.empty()};
     } else {
@@ -153,6 +156,7 @@ class SaavnAPI {
         }
       } catch (e) {
         log('Error in getSongFromToken: $e');
+        Logger.root.severe('Error in getSongFromToken: $e');
       }
       return {'songs': List.empty()};
     }
@@ -228,6 +232,7 @@ class SaavnAPI {
       }
     } catch (e) {
       log('Error in getTopSearches: $e');
+      Logger.root.severe('Error in getTopSearches: $e');
     }
     return List.empty();
   }
@@ -258,6 +263,7 @@ class SaavnAPI {
       }
     } catch (e) {
       log('Error in fetchSongSearchResults: $e');
+      Logger.root.severe('Error in fetchSongSearchResults: $e');
       return {
         'songs': List.empty(),
         'error': e,
@@ -416,6 +422,7 @@ class SaavnAPI {
       }
     } catch (e) {
       log('Error in fetchAlbumSongs: $e');
+      Logger.root.severe('Error in fetchAlbumSongs: $e');
       return {
         'songs': List.empty(),
         'error': e,
@@ -542,6 +549,7 @@ class SaavnAPI {
       }
     } catch (e) {
       log('Error in fetchPlaylistSongs: $e');
+      Logger.root.severe('Error in fetchPlaylistSongs: $e');
       return {
         'songs': List.empty(),
         'error': e,
@@ -574,6 +582,7 @@ class SaavnAPI {
       }
     } catch (e) {
       log('Error in fetchSongDetails: $e');
+      Logger.root.severe('Error in fetchSongDetails: $e');
     }
     return {};
   }

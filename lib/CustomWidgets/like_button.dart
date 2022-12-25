@@ -22,6 +22,7 @@ import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/Helpers/playlist.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:logging/logging.dart';
 
 class LikeButton extends StatefulWidget {
   final MediaItem? mediaItem;
@@ -85,7 +86,7 @@ class _LikeButtonState extends State<LikeButton>
         liked = checkPlaylist('Favorite Songs', widget.data!['id'].toString());
       }
     } catch (e) {
-      // print('Error: $e');
+      Logger.root.severe('Error in likeButton: $e');
     }
     return ScaleTransition(
       scale: _scale,

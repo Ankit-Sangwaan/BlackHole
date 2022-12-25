@@ -21,6 +21,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:logging/logging.dart';
 
 class ShowSnackBar {
   void showSnackBar(
@@ -53,6 +54,7 @@ class ShowSnackBar {
       );
     } catch (e) {
       log('Failed to show Snackbar with title:$title');
+      Logger.root.info('Failed to show Snackbar with title:$title');
     }
   }
 }

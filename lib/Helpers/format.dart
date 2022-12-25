@@ -25,6 +25,7 @@ import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/Helpers/extensions.dart';
 import 'package:dart_des/dart_des.dart';
 import 'package:hive/hive.dart';
+import 'package:logging/logging.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class FormatResponse {
@@ -135,7 +136,7 @@ class FormatResponse {
       };
       // Hive.box('cache').put(response['id'].toString(), info);
     } catch (e) {
-      // log('Error inside FormatSingleSongResponse: $e');
+      Logger.root.severe('Error inside FormatSingleSongResponse: $e');
       return {'Error': e};
     }
   }
@@ -204,6 +205,7 @@ class FormatResponse {
         'url': decode(response['encrypted_media_url'].toString())
       };
     } catch (e) {
+      Logger.root.severe('Error inside FormatSingleAlbumSongResponse: $e');
       return {'Error': e};
     }
   }
@@ -286,6 +288,7 @@ class FormatResponse {
       };
     } catch (e) {
       log('Error inside formatSingleAlbumResponse: $e');
+      Logger.root.severe('Error inside formatSingleAlbumResponse: $e');
       return {'Error': e};
     }
   }
@@ -320,6 +323,7 @@ class FormatResponse {
       };
     } catch (e) {
       log('Error inside formatSinglePlaylistResponse: $e');
+      Logger.root.severe('Error inside formatSinglePlaylistResponse: $e');
       return {'Error': e};
     }
   }
@@ -359,6 +363,7 @@ class FormatResponse {
       };
     } catch (e) {
       log('Error inside formatSingleArtistResponse: $e');
+      Logger.root.severe('Error inside formatSingleArtistResponse: $e');
       return {'Error': e};
     }
   }
@@ -433,6 +438,8 @@ class FormatResponse {
             .replaceAll('http:', 'https:'),
       };
     } catch (e) {
+      Logger.root
+          .severe('Error inside formatSingleArtistTopAlbumSongResponse: $e');
       return {'Error': e};
     }
   }
@@ -468,6 +475,7 @@ class FormatResponse {
         'perma_url': response['perma_url'].toString(),
       };
     } catch (e) {
+      Logger.root.severe('Error inside formatSingleSimilarArtistResponse: $e');
       return {'Error': e};
     }
   }
@@ -489,6 +497,7 @@ class FormatResponse {
             .replaceAll('http:', 'https:'),
       };
     } catch (e) {
+      Logger.root.severe('Error inside formatSingleShowResponse: $e');
       return {'Error': e};
     }
   }
@@ -544,6 +553,7 @@ class FormatResponse {
       data['collections_temp'] = promoListTemp;
     } catch (e) {
       log('Error in formatHomePageData: $e');
+      Logger.root.severe('Error inside formatHomePageData: $e');
     }
     return data;
   }
@@ -561,6 +571,7 @@ class FormatResponse {
       data['collections_temp'] = [];
     } catch (e) {
       log('Error in formatPromoLists: $e');
+      Logger.root.severe('Error inside formatPromoLists: $e');
     }
     return data;
   }
