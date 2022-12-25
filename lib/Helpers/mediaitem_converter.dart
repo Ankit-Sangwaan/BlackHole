@@ -42,6 +42,7 @@ class MediaItemConverter {
       '320kbps': mediaItem.extras?['320kbps'],
       'quality': mediaItem.extras?['quality'],
       'perma_url': mediaItem.extras?['perma_url'],
+      'expire_at': 0,
     };
   }
 
@@ -84,6 +85,7 @@ class MediaItemConverter {
         'perma_url': song['perma_url'],
         'addedByAutoplay': addedByAutoplay,
         'autoplay': autoplay,
+        'expire_at': song['expire_at'],
       },
     );
   }

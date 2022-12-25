@@ -691,8 +691,7 @@ class _HomePageState extends State<HomePage> {
                                                                         .split(
                                                                           ' ',
                                                                         )[0]
-                                                                        .toString()
-                                                                        .capitalize(),
+                                                                        .toString(),
                                                                 style:
                                                                     const TextStyle(
                                                                   letterSpacing:

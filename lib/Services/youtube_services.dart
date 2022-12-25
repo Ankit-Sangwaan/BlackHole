@@ -18,6 +18,7 @@
  */
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -276,6 +277,7 @@ class YouTubeServices {
       'secondImage': video.thumbnails.highResUrl,
       'language': 'YouTube',
       'genre': 'YouTube',
+      'expire_at': '0',
       'url': quality == 'High' ? urls.last : urls.first,
       'lowUrl': urls.first,
       'highUrl': urls.last,
@@ -401,21 +403,18 @@ class YouTubeServices {
         await yt.videos.streamsClient.getManifest(video.id);
     final List<AudioOnlyStreamInfo> sortedStreamInfo =
         manifest.audioOnly.sortByBitrate();
-    // if (preferM4a) {
-    //   final List<AudioOnlyStreamInfo> temp = sortedStreamInfo
-    //       .where((element) => element.audioCodec == 'mp4')
-    //       .toList();
+    if (Platform.isIOS) {
+      final List<AudioOnlyStreamInfo> temp = sortedStreamInfo
+          .where((element) => element.audioCodec.contains('mp4'))
+          .toList();
 
-    //   if (temp.isNotEmpty) {
-    //     if (quality == 'High') {
-    //       final AudioOnlyStreamInfo streamInfo = temp.last;
-    //       return streamInfo.url.toString();
-    //     } else {
-    //       final AudioOnlyStreamInfo streamInfo = temp.first;
-    //       return streamInfo.url.toString();
-    //     }
-    //   }
-    // }
+      if (temp.isNotEmpty) {
+        return [
+          temp.first.url.toString(),
+          temp.last.url.toString(),
+        ];
+      }
+    }
     return [
       sortedStreamInfo.first.url.toString(),
       sortedStreamInfo.last.url.toString(),
