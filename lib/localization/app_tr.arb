@@ -665,12 +665,16 @@
   "@importPlaylist": {},
   "mergePlaylists": "Çalma Listelerini Birleştir",
   "@mergePlaylists": {},
-  "top": "Zirve",
+  "top": "En iyi",
   "@top": {},
   "viral": "Viral",
   "@viral": {},
   "openInSpotify": "Spotify'da aç",
   "@openInSpotify": {},
   "signInSpotify": "Spotify'da oturum aç",
-  "@signInSpotify": {}
+  "@signInSpotify": {},
+  "shareLogs": "Günlükleri Paylaş",
+  "@shareLogs": {},
+  "shareLogsSub": "Geçerli oturum günlüklerini paylaşın",
+  "@shareLogsSub": {}
 }
