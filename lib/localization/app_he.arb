@@ -656,5 +656,9 @@
   "openInSpotify": "פתיחה ב־Spotify",
   "@openInSpotify": {},
   "signInSpotify": "כניסה ל־Spotify",
-  "@signInSpotify": {}
+  "@signInSpotify": {},
+  "shareLogs": "שיתוף יומנים",
+  "@shareLogs": {},
+  "shareLogsSub": "שיתוף יומני הפעילות הנוכחית",
+  "@shareLogsSub": {}
 }
