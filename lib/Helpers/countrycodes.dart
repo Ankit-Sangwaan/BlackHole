@@ -168,11 +168,11 @@ class ConstantCodes {
 
   // supported languages and their code
   static const Map<String, String> languageCodes = {
+    'English': 'en',
     'Belarusian': 'be',
     'Chinese': 'zh',
     'Czech': 'cs',
     'Dutch': 'nl',
-    'English': 'en',
     'French': 'fr',
     'German': 'de',
     'Hebrew': 'he',
@@ -185,6 +185,7 @@ class ConstantCodes {
     'Nepali': 'ne',
     'Polish': 'pl',
     'Portuguese': 'pt',
+    'Punjabi': 'pa',
     'Russian': 'ru',
     'Spanish': 'es',
     'Tamil': 'ta',
