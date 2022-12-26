@@ -660,5 +660,9 @@
   "ytDownQuality": "ਯੂਟਿਊਬ ਡਾਊਨਲੋਡ ਕੁਆਲਿਟੀ",
   "@ytDownQuality": {},
   "ytDownQualitySub": "ਉੱਚ ਕੁਆਲਿਟੀ ਵਧੇਰੇ ਡਿਸਕ ਥਾਂ ਦੀ ਵਰਤੋਂ ਕਰਦੀ ਹੈ",
-  "@ytDownQualitySub": {}
+  "@ytDownQualitySub": {},
+  "shareLogs": "ਲੌਗ ਸ਼ੇਅਰ ਕਰੋ",
+  "@shareLogs": {},
+  "shareLogsSub": "ਮੌਜੂਦਾ ਸੈਸ਼ਨਾਂ ਦੇ ਲੌਗਾਂ ਨੂੰ ਸਾਂਝਾ ਕਰੋ",
+  "@shareLogsSub": {}
 }
