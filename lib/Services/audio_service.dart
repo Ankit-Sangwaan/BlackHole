@@ -24,6 +24,7 @@ import 'dart:io';
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:blackhole/APIs/api.dart';
+import 'package:blackhole/Helpers/logging.dart';
 import 'package:blackhole/Helpers/mediaitem_converter.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:hive/hive.dart';
@@ -120,6 +121,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
 
+    await initializeLogging();
     await startService();
 
     speed.debounceTime(const Duration(milliseconds: 250)).listen((speed) {
@@ -237,44 +239,52 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
               sequence.map((source) => _mediaItemExpando[source]!).toList(),
         )
         .pipe(queue);
+    try {
+      if (loadStart) {
+        final List lastQueueList = await Hive.box('cache')
+            .get('lastQueue', defaultValue: [])?.toList() as List;
 
-    if (loadStart) {
-      final List lastQueueList = await Hive.box('cache')
-          .get('lastQueue', defaultValue: [])?.toList() as List;
+        final int lastIndex =
+            await Hive.box('cache').get('lastIndex', defaultValue: 0) as int;
 
-      final int lastIndex =
-          await Hive.box('cache').get('lastIndex', defaultValue: 0) as int;
+        final int lastPos =
+            await Hive.box('cache').get('lastPos', defaultValue: 0) as int;
 
-      final int lastPos =
-          await Hive.box('cache').get('lastPos', defaultValue: 0) as int;
-
-      if (lastQueueList.first['genre'] != 'YouTube') {
-        final List<MediaItem> lastQueue = lastQueueList
-            .map((e) => MediaItemConverter.mapToMediaItem(e as Map))
-            .toList();
-        if (lastQueue.isEmpty) {
-          await _player!.setAudioSource(_playlist, preload: false);
-        } else {
-          await _playlist.addAll(_itemsToSources(lastQueue));
-          try {
-            await _player!.setAudioSource(
-              _playlist,
-              // commented out due to some bug in audio_service which causes app to freeze
-              // instead manually seeking after audiosource initialised
-
-              // initialIndex: lastIndex,
-              // initialPosition: Duration(seconds: lastPos),
-            );
-            await _player!.seek(Duration(seconds: lastPos), index: lastIndex);
-          } catch (e) {
-            Logger.root.severe('Error while loading last queue', e);
+        if (lastQueueList.isNotEmpty &&
+            lastQueueList.first['genre'] != 'YouTube') {
+          final List<MediaItem> lastQueue = lastQueueList
+              .map((e) => MediaItemConverter.mapToMediaItem(e as Map))
+              .toList();
+          if (lastQueue.isEmpty) {
             await _player!.setAudioSource(_playlist, preload: false);
+          } else {
+            await _playlist.addAll(_itemsToSources(lastQueue));
+            try {
+              await _player!.setAudioSource(
+                _playlist,
+                // commented out due to some bug in audio_service which causes app to freeze
+                // instead manually seeking after audiosource initialised
+
+                // initialIndex: lastIndex,
+                // initialPosition: Duration(seconds: lastPos),
+              );
+              if (lastIndex != 0 || lastPos > 0) {
+                await _player!
+                    .seek(Duration(seconds: lastPos), index: lastIndex);
+              }
+            } catch (e) {
+              Logger.root.severe('Error while setting last audiosource', e);
+              await _player!.setAudioSource(_playlist, preload: false);
+            }
           }
+        } else {
+          await _player!.setAudioSource(_playlist, preload: false);
         }
       } else {
         await _player!.setAudioSource(_playlist, preload: false);
       }
-    } else {
+    } catch (e) {
+      Logger.root.severe('Error while loading last queue', e);
       await _player!.setAudioSource(_playlist, preload: false);
     }
   }

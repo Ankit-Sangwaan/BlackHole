@@ -39,18 +39,18 @@ dependencies:
   marquee: ^2.2.3
   material_design_icons_flutter: 5.0.5955-rc.1
   on_audio_query: ^2.6.1
-  package_info_plus: ^3.0.1
+  package_info_plus: ^3.0.2
   palette_generator: ^0.3.3+2
   path_provider: ^2.0.11
   permission_handler: ^10.2.0
   receive_sharing_intent: ^1.4.5
   salomon_bottom_bar: ^3.3.1
-  share_plus: ^6.2.0
+  share_plus: ^6.3.0
   sliding_up_panel: ^2.0.0+1
   supabase: ^1.1.1
-  url_launcher: ^6.1.6
+  url_launcher: ^6.1.7
   uuid: ^3.0.7
-  youtube_explode_dart: 1.10.6
+  youtube_explode_dart: 1.10.7+1
 
 dev_dependencies:
   flutter_test:

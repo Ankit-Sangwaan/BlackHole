@@ -1674,9 +1674,11 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                                   fit: BoxFit.contain,
                                   width: widget.width * 0.85,
                                   gaplessPlayback: true,
-                                  errorBuilder: (BuildContext context,
-                                      Object exception,
-                                      StackTrace? stackTrace) {
+                                  errorBuilder: (
+                                    BuildContext context,
+                                    Object exception,
+                                    StackTrace? stackTrace,
+                                  ) {
                                     return const Image(
                                       fit: BoxFit.cover,
                                       image: AssetImage('assets/cover.jpg'),
