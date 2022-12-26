@@ -668,5 +668,9 @@
   "openInSpotify": "Spotify में खोलें",
   "@openInSpotify": {},
   "signInSpotify": "Spotify में साइन इन करें",
-  "@signInSpotify": {}
+  "@signInSpotify": {},
+  "shareLogs": "लॉग शेयर करें",
+  "@shareLogs": {},
+  "shareLogsSub": "वर्तमान सत्र लॉग साझा करें",
+  "@shareLogsSub": {}
 }
