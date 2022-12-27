@@ -674,5 +674,9 @@
   "openInSpotify": "Ouvrir dans Spotify",
   "@openInSpotify": {},
   "signInSpotify": "Se connecter à Spotify",
-  "@signInSpotify": {}
+  "@signInSpotify": {},
+  "shareLogs": "Partager les journaux",
+  "@shareLogs": {},
+  "shareLogsSub": "Partager les journaux des sessions en cours",
+  "@shareLogsSub": {}
 }
