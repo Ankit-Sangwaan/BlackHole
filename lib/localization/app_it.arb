@@ -664,5 +664,9 @@
   "openInSpotify": "Apri in Spotify",
   "@openInSpotify": {},
   "signInSpotify": "Accedi a Spotify",
-  "@signInSpotify": {}
+  "@signInSpotify": {},
+  "shareLogs": "Condividi i registri",
+  "@shareLogs": {},
+  "shareLogsSub": "Condividi i registri delle sessioni correnti",
+  "@shareLogsSub": {}
 }
