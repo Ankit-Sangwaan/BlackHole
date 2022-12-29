@@ -34,6 +34,7 @@
 - [English :uk:](/README.md)
 - [Spanish :es:](/README.ES.md)
 - [Japanese :jp:](/README.JA.md)
+- [Belarusian :belarus:](/README.BE.md)
 
 спасибо [Nikita](https://github.com/TireX228) за этот перевод
 

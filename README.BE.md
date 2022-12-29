@@ -2,17 +2,17 @@
 
 # BlackHole
 
-オープンソースの音楽プレイヤーアプリです！
+Музычны прайгравальнік з адкрытым зыходным кодам для ўсіх вашых патрэб!
 
 [![made-with-flutter](https://img.shields.io/badge/Made%20with-Flutter-1f425f.svg)](https://flutter.dev/) ![Release](https://img.shields.io/github/v/release/Sangwan5688/BlackHole) ![Downloads](https://img.shields.io/github/downloads/Sangwan5688/BlackHole/total)
 [![Build](https://github.com/Sangwan5688/BlackHole/actions/workflows/flutter.yml/badge.svg)](https://github.com/Sangwan5688/BlackHole/actions/workflows/flutter.yml)
 [![Translation-Status](https://hosted.weblate.org/widgets/blackhole/-/translations/svg-badge.svg)](https://hosted.weblate.org/engage/blackhole/)
 
-### リポジトリに:star:をつけるのを忘れずに
+### Не забудзьцеся паставіць :star: у рэпазіторыі
 
 [![GitHub stars](https://img.shields.io/github/stars/Sangwan5688/BlackHole.svg?style=social&label=Star)](https://github.com//Sangwan5688/BlackHole) ![GitHub forks](https://img.shields.io/github/forks/Sangwan5688/BlackHole.svg?style=social&label=Forks) ![GitHub followers](https://img.shields.io/github/followers/Sangwan5688.svg?style=social&label=Follow)
 
-## ダウンロード
+## Спампаваць
 
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
      alt="Get it on IzzyDroid"
@@ -30,61 +30,60 @@
      alt="Join Telegram Channel"
      height="60">](https://t.me/blackhole_official)
 
-## 翻訳
+## Пераклады
 
-- [English :uk:](/README.md)
 - [Spanish :es:](/README.ES.md)
 - [Russian :ru:](/README.RU.md)
 - [French :fr:](/README.FR.md)
 - [Portuguese :brazil:](/README.PT.md)
-- [Belarusian :belarus:](/README.BE.md)
+- [Japanese :jp:](/README.JA.md)
 
-[Weblateでアプリを翻訳](https://hosted.weblate.org/projects/blackhole/translations/)
+[Пераклад праграмы на Weblate](https://hosted.weblate.org/projects/blackhole/translations/)
 
-## 特徴
+## Магчымасці
 
-- 最高のストリーミング品質(320kbps aac)
-- 曲、アルバム、アーティスト、プレイリストの検索
-- 言語別のプロモートプレイリスト
-- トレンドソング
-- アーティストとジャンルのラジオ
-- 15以上の音楽言語をサポート
-- ローカルおよびグローバルなSpotifyのトップソング
-- お気に入りへの曲の追加
-- プレイリスト対応
-- SpotifyとYouTubeからプレイリストをインポート
-- プレイリストをJSONファイルとしてインポート/エクスポート
-- プレイリストの共有
-- スリープタイマー
-- 歌詞のサポート
-- キュー管理
-- 視聴履歴の記録
-- ダークモード/アクセントカラー
-- カスタムグラディエントなどテーマオプション
-- ポートレートモードだけでなく、ランドスケープモードにも対応
-- オフライン再生用ダウンロード（320kbps、ID3タグ付き）
-- オンラインだけでなく、オフラインの曲も再生可能
-- タグの編集に対応
-- トレンド検索結果
-- YouTube検索サポート
-- YouTubeプレイリストのプロモート
-- ビデオをオーディオとして再生
-- 曲の自動レコメンド
-- 内蔵イコライザー
-- バックアップ＆リストア
-- 自動更新チェック
-- キャッシュ対応
-- サブスクリプションなし
-- 広告なし
+- Лепшая якасць струменевага прайгравання (320 кбіт/з aac)
+- Пошук песень, альбомаў, выканаўцаў і плэйлістоў
+- Прасоўваемыя плэйлісты з указаннем мовы
+- Папулярныя песні
+- Радыёстанцыі па выканаўцам і жанрам
+- Падтрымка 15+ музычных моў
+- Тутэйшыя і глабальныя лепшыя песні Spotify
+- Даданне песень у абранае
+- Падтрымка плэйлістоў
+- Імпарт плэйлістоў з Spotify і YouTube
+- Імпарт / Экспарт спісаў прайгравання як JSON файл
+- Магчымасць дзяліцца плэйлістамі
+- Таймер сну
+- Падтрымка лірыкі
+- Упраўленне чаргой
+- Запіс гісторыі праслухоўвання
+- Цёмны рэжым / колеры акцэнту
+- Карыстальніцкія градыенты і іншыя опцыі тэмы
+- Падтрымка партрэтнага і ландшафтнага рэжымаў
+- Спампоўка для аўтаномнага прайгравання (320 кбіт/с з ID3 тэгамі)
+- Прайграванне песень як у рэжыме анлайн, так і афлайн
+- Падтрымка рэдагавання тэгаў
+- Вынікі пошуку па трэндах
+- Падтрымка пошуку YouTube
+- Прасоўваныя плэйлісты Youtube
+- Прайграванне відэа як аўдыё
+- Аўтаматычныя рэкамендацыі песень
+- Убудаваны эквалайзер
+- Рэзервовае капіраванне і аднаўленне
+- Аўтаматычная праверка абнаўленняў
+- Падтрымка кэша
+- Без падпіскі
+- Без рэкламы
 
-他にもまだまだ...
-ご自身でお確かめください:)
+і многае іншае...  
+Праверце самі :)
 
-## スクリーンショット
+## Здымкі экрана
 
 <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png?raw=true" width="32%">
 
-## ライセンス
+## Ліцэнзія
 
 ```
 Copyright © 2021 Ankit Sangwan
@@ -111,40 +110,40 @@ how to obtain the original software, should clearly STATE ALL CHANGES made and s
 Use of this software under any "non-free" license is NOT permitted.
 ```
 
-詳しくは、[GNU 一般公衆利用許諾契約書](https://github.com/Sangwan5688/BlackHole/blob/main/LICENSE)をご覧ください。
+Больш падрабязную інфармацыю глядзіце ў [GNU General Public License](https://github.com/Sangwan5688/BlackHole/blob/main/LICENSE).
 
-## ソースからのビルド
+## Пабудова праекту з крыніцы
 
-1. Flutter SDKがインストールされていない場合は、[Flutter](https://flutter.dev/)の公式サイトをご覧ください。
-2. masterブランチから最新のソースコードを取得します。
+1. Калі ў вас не ўсталяваны Flutter SDK, наведайце афіцыйны [Flutter](https://flutter.dev/) сайт.
+2. Атрыманне апошняй версіі зыходнага кода з асноўнай галіны.
 
 ```
 git clone https://github.com/Sangwan5688/BlackHole.git
 ```
 
-3. Android StudioまたはVS Codeでアプリを実行します。もしくはコマンドラインから:
+3. Запусціце праграму з Android Studio або VS Code. Або праз камандны радок:
 
 ```
 flutter pub get
 flutter run
 ```
 
-## コントリビュート
+## Уклад у праект
 
-コントリビュートを歓迎します。コントリビュートする前に、[コントリビュートガイドライン](https://github.com/Sangwan5688/BlackHole/blob/main/CONTRIBUTING.md)をお読みください。
+Уклад у развіццё праекта вітаецца. Калі ласка, азнаёмцеся з нашым [кіраўніцтвам па ўнясенні ўкладаў](https://github.com/Sangwan5688/BlackHole/blob/main/CONTRIBUTING.md) перш чым уносіць іх.
 
-## 何か問題がありますか？
+## Сутыкнуліся з якой-небудзь праблемай?
 
-お客様が直面する可能性のある[一般的な問題](https://github.com/Sangwan5688/BlackHole/wiki/Common-Issues)をご覧ください。もしあなたの問題がそこにない場合は、お気軽にIssueをご作成ください :)
+Паглядзіце на некаторыя [агульныя праблемы](https://github.com/Sangwan5688/BlackHole/wiki/Common-Issues) з якімі вы можаце сутыкнуцца. Калі вашай праблемы там няма, не саромейцеся задаваць пытанне па дадзенай праблеме :)
 
-## ベータ版をテストしたいですか？ヘルプが必要ですか？？
+## Хочаце пратэставаць бэта-версію? Патрэбна дапамога??
 
-[Telegramチャンネル](https://t.me/blackhole_official)または[Telegramグループ](https://t.me/joinchat/fHDC1AWnOhw0ZmI9)に参加すると、プロジェクトのベータ版アップデートを受け取ることができます。
+Вы можаце далучыцца да нашага [канала Telegram](https://t.me/blackhole_official) або [групы Telegram](https://t.me/joinchat/fHDC1AWnOhw0ZmI9), калі ў вас ёсць якія-небудзь пытанні ці патрэбна дапамога з чымсьці, а таксама каб атрымаць бэта-абнаўленні праекта.
 
-## 私の作品を気に入っていただけましたか？
+## Спадабалася мая праца?
 
 <a href="https://www.buymeacoffee.com/ankitsangwan" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-## 最新情報
+## Што новага
 
-全てのchangelogは[wikiページ](https://github.com/Sangwan5688/BlackHole/wiki/Changelog)をご覧ください
+Каб прачытаць поўны спіс змен, наведайце [старонку вікі](https://github.com/Sangwan5688/BlackHole/wiki/Changelog)
