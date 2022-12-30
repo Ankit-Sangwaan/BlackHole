@@ -32,6 +32,7 @@ import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
+import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -163,31 +164,27 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                               if (value != null) {
                                                 SaavnAPI()
                                                     .getRadioSongs(
-                                                      stationId: value,
-                                                    )
-                                                    .then(
-                                                      (value) => Navigator.push(
-                                                        context,
-                                                        PageRouteBuilder(
-                                                          opaque: false,
-                                                          pageBuilder: (
-                                                            _,
-                                                            __,
-                                                            ___,
-                                                          ) =>
-                                                              PlayScreen(
-                                                            songsList: value,
-                                                            index: 0,
-                                                            offline: false,
-                                                            fromDownloads:
-                                                                false,
-                                                            fromMiniplayer:
-                                                                false,
-                                                            recommend: true,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    );
+                                                  stationId: value,
+                                                )
+                                                    .then((value) {
+                                                  PlayerInvoke.init(
+                                                    songsList: value,
+                                                    index: 0,
+                                                    isOffline: false,
+                                                  );
+                                                  Navigator.push(
+                                                    context,
+                                                    PageRouteBuilder(
+                                                      opaque: false,
+                                                      pageBuilder: (
+                                                        _,
+                                                        __,
+                                                        ___,
+                                                      ) =>
+                                                          const PlayScreen(),
+                                                    ),
+                                                  );
+                                                });
                                               }
                                             });
                                           },
@@ -258,19 +255,17 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                         flex: 3,
                                         child: GestureDetector(
                                           onTap: () {
+                                            PlayerInvoke.init(
+                                              songsList: data['Top Songs']!,
+                                              index: 0,
+                                              isOffline: false,
+                                            );
                                             Navigator.push(
                                               context,
                                               PageRouteBuilder(
                                                 opaque: false,
                                                 pageBuilder: (_, __, ___) =>
-                                                    PlayScreen(
-                                                  songsList: data['Top Songs']!,
-                                                  index: 0,
-                                                  offline: false,
-                                                  fromMiniplayer: false,
-                                                  fromDownloads: false,
-                                                  recommend: true,
-                                                ),
+                                                    const PlayScreen(),
                                               ),
                                             );
                                           },
@@ -359,22 +354,18 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                               size: 24.0,
                                             ),
                                             onPressed: () {
-                                              final List tempList =
-                                                  List.from(data['Top Songs']!);
-                                              tempList.shuffle();
+                                              PlayerInvoke.init(
+                                                songsList: data['Top Songs']!,
+                                                index: 0,
+                                                isOffline: false,
+                                                shuffle: true,
+                                              );
                                               Navigator.push(
                                                 context,
                                                 PageRouteBuilder(
                                                   opaque: false,
                                                   pageBuilder: (_, __, ___) =>
-                                                      PlayScreen(
-                                                    songsList: tempList,
-                                                    index: 0,
-                                                    offline: false,
-                                                    fromMiniplayer: false,
-                                                    fromDownloads: false,
-                                                    recommend: true,
-                                                  ),
+                                                      const PlayScreen(),
                                                 ),
                                               );
                                             },
@@ -708,6 +699,17 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                       )
                                                     : null,
                                                 onTap: () {
+                                                  if (entry.key ==
+                                                          'Top Songs' ||
+                                                      entry.key ==
+                                                          'Latest Release' ||
+                                                      entry.key == 'Singles') {
+                                                    PlayerInvoke.init(
+                                                      songsList: entry.value,
+                                                      index: index,
+                                                      isOffline: false,
+                                                    );
+                                                  }
                                                   Navigator.push(
                                                     context,
                                                     PageRouteBuilder(
@@ -723,20 +725,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                                       'Latest Release' ||
                                                                   entry.key ==
                                                                       'Singles')
-                                                              ? PlayScreen(
-                                                                  songsList:
-                                                                      entry
-                                                                          .value,
-                                                                  index: index,
-                                                                  offline:
-                                                                      false,
-                                                                  fromMiniplayer:
-                                                                      false,
-                                                                  fromDownloads:
-                                                                      false,
-                                                                  recommend:
-                                                                      true,
-                                                                )
+                                                              ? const PlayScreen()
                                                               : SongsListPage(
                                                                   listItem: entry
                                                                           .value[
@@ -758,7 +747,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                         ),
             ),
           ),
-          const MiniPlayer(),
+          MiniPlayer(),
         ],
       ),
     );

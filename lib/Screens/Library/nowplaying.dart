@@ -102,7 +102,7 @@ class _NowPlayingState extends State<NowPlaying> {
               },
             ),
           ),
-          const MiniPlayer(),
+          MiniPlayer(),
         ],
       ),
     );

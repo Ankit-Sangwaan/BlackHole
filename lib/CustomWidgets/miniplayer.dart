@@ -28,7 +28,13 @@ import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class MiniPlayer extends StatefulWidget {
-  const MiniPlayer({super.key});
+  static const MiniPlayer _instance = MiniPlayer._internal();
+
+  factory MiniPlayer() {
+    return _instance;
+  }
+
+  const MiniPlayer._internal();
 
   @override
   _MiniPlayerState createState() => _MiniPlayerState();
@@ -151,14 +157,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                     PageRouteBuilder(
                                       opaque: false,
                                       pageBuilder: (_, __, ___) =>
-                                          const PlayScreen(
-                                        songsList: [],
-                                        index: 1,
-                                        offline: null,
-                                        fromMiniplayer: true,
-                                        fromDownloads: false,
-                                        recommend: false,
-                                      ),
+                                          const PlayScreen(),
                                     ),
                                   );
                                 },

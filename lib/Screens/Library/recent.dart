@@ -22,6 +22,7 @@ import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/like_button.dart';
 import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
+import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -162,18 +163,17 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   onTap: () {
+                                    PlayerInvoke.init(
+                                      songsList: _songs,
+                                      index: index,
+                                      isOffline: false,
+                                    );
                                     Navigator.push(
                                       context,
                                       PageRouteBuilder(
                                         opaque: false,
-                                        pageBuilder: (_, __, ___) => PlayScreen(
-                                          songsList: _songs,
-                                          index: index,
-                                          offline: false,
-                                          fromDownloads: false,
-                                          fromMiniplayer: false,
-                                          recommend: true,
-                                        ),
+                                        pageBuilder: (_, __, ___) =>
+                                            const PlayScreen(),
                                       ),
                                     );
                                   },
@@ -183,7 +183,7 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
                     ),
             ),
           ),
-          const MiniPlayer(),
+          MiniPlayer(),
         ],
       ),
     );

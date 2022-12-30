@@ -29,7 +29,7 @@ import 'package:blackhole/CustomWidgets/playlist_head.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/Helpers/audio_query.dart';
 import 'package:blackhole/Screens/LocalMusic/localplaylists.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
+import 'package:blackhole/Services/player_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -409,7 +409,7 @@ class _DownloadedSongsState extends State<DownloadedSongs>
               ),
             ),
           ),
-          const MiniPlayer(),
+          MiniPlayer(),
         ],
       ),
     );
@@ -1247,18 +1247,11 @@ class _SongsTabState extends State<SongsTab>
                         ],
                       ),
                       onTap: () {
-                        Navigator.of(context).push(
-                          PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (_, __, ___) => PlayScreen(
-                              songsList: widget.songs,
-                              index: index,
-                              offline: true,
-                              fromDownloads: false,
-                              fromMiniplayer: false,
-                              recommend: false,
-                            ),
-                          ),
+                        PlayerInvoke.init(
+                          songsList: widget.songs,
+                          index: index,
+                          isOffline: true,
+                          recommend: false,
                         );
                       },
                     );

@@ -154,7 +154,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
             int.parse((item.extras!['expire_at'] ?? '0').toString());
         if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 > expiredAt) {
           Logger.root.info('youtube link expired');
-          _player!.seekToNext();
+          // _player!.seekToNext();
           // final index = queue.value.indexOf(item);
           // print(index);
           // _playlist.insert(

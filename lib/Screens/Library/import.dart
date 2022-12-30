@@ -133,7 +133,7 @@ class ImportPlaylist extends StatelessWidget {
               ),
             ),
           ),
-          const MiniPlayer(),
+          MiniPlayer(),
         ],
       ),
     );

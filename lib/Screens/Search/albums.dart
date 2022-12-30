@@ -246,7 +246,7 @@ class _AlbumSearchPageState extends State<AlbumSearchPage> {
                         ),
             ),
           ),
-          const MiniPlayer(),
+          MiniPlayer(),
         ],
       ),
     );

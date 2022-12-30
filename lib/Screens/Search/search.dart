@@ -17,6 +17,8 @@
  * Copyright (c) 2021-2022, Ankit Sangwan
  */
 
+import 'dart:developer';
+
 import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/download_button.dart';
@@ -31,6 +33,7 @@ import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Screens/Search/albums.dart';
 import 'package:blackhole/Screens/Search/artists.dart';
+import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -632,6 +635,15 @@ class _SearchPageState extends State<SearchPage> {
                                                     );
                                                   },
                                                   onTap: () {
+                                                    if (key == 'Songs') {
+                                                      PlayerInvoke.init(
+                                                        songsList: [
+                                                          value[index]
+                                                        ],
+                                                        index: 0,
+                                                        isOffline: false,
+                                                      );
+                                                    }
                                                     Navigator.push(
                                                       context,
                                                       PageRouteBuilder(
@@ -651,22 +663,7 @@ class _SearchPageState extends State<SearchPage> {
                                                                         as Map,
                                                                   )
                                                                 : key == 'Songs'
-                                                                    ? PlayScreen(
-                                                                        songsList: [
-                                                                          value[
-                                                                              index]
-                                                                        ],
-                                                                        index:
-                                                                            0,
-                                                                        offline:
-                                                                            false,
-                                                                        fromMiniplayer:
-                                                                            false,
-                                                                        fromDownloads:
-                                                                            false,
-                                                                        recommend:
-                                                                            true,
-                                                                      )
+                                                                    ? const PlayScreen()
                                                                     : SongsListPage(
                                                                         listItem:
                                                                             value[index]
@@ -685,6 +682,7 @@ class _SearchPageState extends State<SearchPage> {
                                   ),
                                 ),
                   onSubmitted: (String submittedQuery) {
+                    log('cleared2');
                     setState(
                       () {
                         fetched = false;
@@ -695,10 +693,15 @@ class _SearchPageState extends State<SearchPage> {
                       },
                     );
                   },
+                  onQueryCleared: () {
+                    setState(() {
+                      fromHome = true;
+                    });
+                  },
                 ),
               ),
             ),
-            const MiniPlayer(),
+            MiniPlayer(),
           ],
         ),
       ),

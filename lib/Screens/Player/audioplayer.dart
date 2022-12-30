@@ -44,59 +44,28 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:on_audio_query/on_audio_query.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class PlayScreen extends StatefulWidget {
-  final List songsList;
-  final bool fromMiniplayer;
-  final bool? offline;
-  final int index;
-  final bool recommend;
-  final bool fromDownloads;
-  const PlayScreen({
-    super.key,
-    required this.index,
-    required this.songsList,
-    required this.fromMiniplayer,
-    required this.offline,
-    required this.recommend,
-    required this.fromDownloads,
-  });
+  const PlayScreen({super.key});
   @override
   _PlayScreenState createState() => _PlayScreenState();
 }
 
 class _PlayScreenState extends State<PlayScreen> {
-  bool fromMiniplayer = false;
-  final String preferredQuality = Hive.box('settings')
-      .get('streamingQuality', defaultValue: '96 kbps')
-      .toString();
-  final String repeatMode =
-      Hive.box('settings').get('repeatMode', defaultValue: 'None').toString();
-  final bool enforceRepeat =
-      Hive.box('settings').get('enforceRepeat', defaultValue: false) as bool;
   final String gradientType = Hive.box('settings')
       .get('gradientType', defaultValue: 'halfDark')
       .toString();
   final bool getLyricsOnline =
       Hive.box('settings').get('getLyricsOnline', defaultValue: true) as bool;
 
-  List<MediaItem> globalQueue = [];
-  int globalIndex = 0;
-  List response = [];
-  bool offline = false;
-  bool fromDownloads = false;
-  String defaultCover = '';
   final MyTheme currentTheme = GetIt.I<MyTheme>();
   final ValueNotifier<List<Color?>?> gradientColor =
       ValueNotifier<List<Color?>?>(GetIt.I<MyTheme>().playGradientColor);
@@ -113,185 +82,6 @@ class _PlayScreenState extends State<PlayScreen> {
   }
 
   late Duration _time;
-
-  Future<void> main() async {
-    await Hive.openBox('Favorite Songs');
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    main();
-    response = widget.songsList;
-    globalIndex = widget.index;
-    if (globalIndex == -1) {
-      globalIndex = 0;
-    }
-    fromDownloads = widget.fromDownloads;
-    if (widget.offline == null) {
-      if (audioHandler.mediaItem.value?.extras!['url'].startsWith('http')
-          as bool) {
-        offline = false;
-      } else {
-        offline = true;
-      }
-    } else {
-      offline = widget.offline!;
-    }
-
-    fromMiniplayer = widget.fromMiniplayer;
-    if (!fromMiniplayer) {
-      if (!Platform.isAndroid) {
-        // Don't know why but it fixes the playback issue with iOS Side
-        audioHandler.stop();
-      }
-      if (offline) {
-        fromDownloads
-            ? setDownValues(response)
-            : (Platform.isWindows || Platform.isLinux)
-                ? setOffDesktopValues(response)
-                : setOffValues(response);
-      } else {
-        setValues(response);
-        updateNplay();
-      }
-    }
-  }
-
-  Future<MediaItem> setTags(SongModel response, Directory tempDir) async {
-    String playTitle = response.title;
-    playTitle == ''
-        ? playTitle = response.displayNameWOExt
-        : playTitle = response.title;
-    String playArtist = response.artist!;
-    playArtist == '<unknown>'
-        ? playArtist = 'Unknown'
-        : playArtist = response.artist!;
-
-    final String playAlbum = response.album!;
-    final int playDuration = response.duration ?? 180000;
-    final String imagePath = '${tempDir.path}/${response.displayNameWOExt}.jpg';
-
-    final MediaItem tempDict = MediaItem(
-      id: response.id.toString(),
-      album: playAlbum,
-      duration: Duration(milliseconds: playDuration),
-      title: playTitle.split('(')[0],
-      artist: playArtist,
-      genre: response.genre,
-      artUri: Uri.file(imagePath),
-      extras: {
-        'url': response.data,
-        'date_added': response.dateAdded,
-        'date_modified': response.dateModified,
-        'size': response.size,
-        'year': response.getMap['year'],
-      },
-    );
-    return tempDict;
-  }
-
-  void setOffDesktopValues(List response) {
-    getTemporaryDirectory().then((tempDir) async {
-      final File file = File('${tempDir.path}/cover.jpg');
-      if (!await file.exists()) {
-        final byteData = await rootBundle.load('assets/cover.jpg');
-        await file.writeAsBytes(
-          byteData.buffer
-              .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
-        );
-      }
-      globalQueue.addAll(
-        response.map(
-          (song) => MediaItem(
-            id: song['id'].toString(),
-            album: song['album'].toString(),
-            artist: song['artist'].toString(),
-            duration: Duration(
-              seconds: int.parse(
-                (song['duration'] == null || song['duration'] == 'null')
-                    ? '180'
-                    : song['duration'].toString(),
-              ),
-            ),
-            title: song['title'].toString(),
-            artUri: Uri.file(file.path),
-            genre: song['genre'].toString(),
-            extras: {
-              'url': song['path'].toString(),
-              'subtitle': song['subtitle'],
-              'quality': song['quality'],
-            },
-          ),
-        ),
-      );
-      updateNplay();
-    });
-  }
-
-  void setOffValues(List response) {
-    getTemporaryDirectory().then((tempDir) async {
-      final File file = File('${tempDir.path}/cover.jpg');
-      if (!await file.exists()) {
-        final byteData = await rootBundle.load('assets/cover.jpg');
-        await file.writeAsBytes(
-          byteData.buffer
-              .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes),
-        );
-      }
-      for (int i = 0; i < response.length; i++) {
-        globalQueue.add(
-          await setTags(response[i] as SongModel, tempDir),
-        );
-      }
-      updateNplay();
-    });
-  }
-
-  void setDownValues(List response) {
-    globalQueue.addAll(
-      response.map(
-        (song) => MediaItemConverter.downMapToMediaItem(song as Map),
-      ),
-    );
-    updateNplay();
-  }
-
-  void setValues(List response) {
-    globalQueue.addAll(
-      response.map(
-        (song) => MediaItemConverter.mapToMediaItem(
-          song as Map,
-          autoplay: widget.recommend,
-        ),
-      ),
-    );
-  }
-
-  Future<void> updateNplay() async {
-    await audioHandler.setShuffleMode(AudioServiceShuffleMode.none);
-    await audioHandler.updateQueue(globalQueue);
-    await audioHandler.skipToQueueItem(globalIndex);
-    await audioHandler.play();
-    if (enforceRepeat) {
-      switch (repeatMode) {
-        case 'None':
-          audioHandler.setRepeatMode(AudioServiceRepeatMode.none);
-          break;
-        case 'All':
-          audioHandler.setRepeatMode(AudioServiceRepeatMode.all);
-          break;
-        case 'One':
-          audioHandler.setRepeatMode(AudioServiceRepeatMode.one);
-          break;
-        default:
-          break;
-      }
-    } else {
-      audioHandler.setRepeatMode(AudioServiceRepeatMode.none);
-      Hive.box('settings').put('repeatMode', 'None');
-    }
-  }
 
   void updateBackgroundColors(List<Color?> value) {
     gradientColor.value = value;
@@ -318,6 +108,8 @@ class _PlayScreenState extends State<PlayScreen> {
         builder: (context, snapshot) {
           final MediaItem? mediaItem = snapshot.data;
           if (mediaItem == null) return const SizedBox();
+          final offline =
+              !mediaItem.extras!['url'].toString().startsWith('http');
           mediaItem.artUri.toString().startsWith('file')
               ? getColors(
                   imageProvider: FileImage(
@@ -1240,61 +1032,58 @@ class NowPlayingStream extends StatelessWidget {
                   contentPadding:
                       const EdgeInsets.only(left: 16.0, right: 10.0),
                   selected: index == queueState.queueIndex,
-                  trailing: index == queueState.queueIndex
-                      ? IconButton(
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      if (index == queueState.queueIndex)
+                        IconButton(
                           icon: const Icon(
                             Icons.bar_chart_rounded,
                           ),
                           tooltip: AppLocalizations.of(context)!.playing,
                           onPressed: () {},
                         )
-                      : queue[index]
-                              .extras!['url']
-                              .toString()
-                              .startsWith('http')
-                          ? Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                LikeButton(
-                                  mediaItem: queue[index],
-                                ),
-                                DownloadButton(
-                                  icon: 'download',
-                                  size: 25.0,
-                                  data: {
-                                    'id': queue[index].id,
-                                    'artist': queue[index].artist.toString(),
-                                    'album': queue[index].album.toString(),
-                                    'image': queue[index].artUri.toString(),
-                                    'duration': queue[index]
-                                        .duration!
-                                        .inSeconds
-                                        .toString(),
-                                    'title': queue[index].title,
-                                    'url':
-                                        queue[index].extras?['url'].toString(),
-                                    'year':
-                                        queue[index].extras?['year'].toString(),
-                                    'language': queue[index]
-                                        .extras?['language']
-                                        .toString(),
-                                    'genre': queue[index].genre?.toString(),
-                                    '320kbps': queue[index].extras?['320kbps'],
-                                    'has_lyrics':
-                                        queue[index].extras?['has_lyrics'],
-                                    'release_date':
-                                        queue[index].extras?['release_date'],
-                                    'album_id':
-                                        queue[index].extras?['album_id'],
-                                    'subtitle':
-                                        queue[index].extras?['subtitle'],
-                                    'perma_url':
-                                        queue[index].extras?['perma_url'],
-                                  },
-                                )
-                              ],
-                            )
-                          : const SizedBox(),
+                      else if (queue[index]
+                          .extras!['url']
+                          .toString()
+                          .startsWith('http')) ...[
+                        LikeButton(
+                          mediaItem: queue[index],
+                        ),
+                        DownloadButton(
+                          icon: 'download',
+                          size: 25.0,
+                          data: {
+                            'id': queue[index].id,
+                            'artist': queue[index].artist.toString(),
+                            'album': queue[index].album.toString(),
+                            'image': queue[index].artUri.toString(),
+                            'duration':
+                                queue[index].duration!.inSeconds.toString(),
+                            'title': queue[index].title,
+                            'url': queue[index].extras?['url'].toString(),
+                            'year': queue[index].extras?['year'].toString(),
+                            'language':
+                                queue[index].extras?['language'].toString(),
+                            'genre': queue[index].genre?.toString(),
+                            '320kbps': queue[index].extras?['320kbps'],
+                            'has_lyrics': queue[index].extras?['has_lyrics'],
+                            'release_date':
+                                queue[index].extras?['release_date'],
+                            'album_id': queue[index].extras?['album_id'],
+                            'subtitle': queue[index].extras?['subtitle'],
+                            'perma_url': queue[index].extras?['perma_url'],
+                          },
+                        )
+                      ] else
+                        const SizedBox(),
+                      ReorderableDragStartListener(
+                        index: index,
+                        enabled: index != queueState.queueIndex,
+                        child: const Icon(Icons.drag_handle_rounded),
+                      ),
+                    ],
+                  ),
                   leading: Row(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.end,

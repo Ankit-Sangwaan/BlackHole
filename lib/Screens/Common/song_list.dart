@@ -27,7 +27,7 @@ import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/playlist_popupmenu.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
+import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -211,20 +211,10 @@ class _SongsListPageState extends State<SongsListPage> {
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        PageRouteBuilder(
-                                          opaque: false,
-                                          pageBuilder: (_, __, ___) =>
-                                              PlayScreen(
-                                            songsList: songList,
-                                            index: 0,
-                                            offline: false,
-                                            fromDownloads: false,
-                                            fromMiniplayer: false,
-                                            recommend: true,
-                                          ),
-                                        ),
+                                      PlayerInvoke.init(
+                                        songsList: songList,
+                                        index: 0,
+                                        isOffline: false,
                                       );
                                     },
                                     child: Container(
@@ -292,22 +282,11 @@ class _SongsListPageState extends State<SongsListPage> {
                                 Expanded(
                                   child: GestureDetector(
                                     onTap: () {
-                                      final List tempList = List.from(songList);
-                                      tempList.shuffle();
-                                      Navigator.push(
-                                        context,
-                                        PageRouteBuilder(
-                                          opaque: false,
-                                          pageBuilder: (_, __, ___) =>
-                                              PlayScreen(
-                                            songsList: tempList,
-                                            index: 0,
-                                            offline: false,
-                                            fromDownloads: false,
-                                            fromMiniplayer: false,
-                                            recommend: true,
-                                          ),
-                                        ),
+                                      PlayerInvoke.init(
+                                        songsList: songList,
+                                        index: 0,
+                                        isOffline: false,
+                                        shuffle: true,
                                       );
                                     },
                                     child: Container(
@@ -432,21 +411,12 @@ class _SongsListPageState extends State<SongsListPage> {
                                 ],
                               ),
                               onTap: () {
-                                Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                    opaque: false,
-                                    pageBuilder: (_, __, ___) => PlayScreen(
-                                      songsList: songList,
-                                      index: songList.indexWhere(
-                                        (element) => element == entry,
-                                      ),
-                                      offline: false,
-                                      fromDownloads: false,
-                                      fromMiniplayer: false,
-                                      recommend: true,
-                                    ),
+                                PlayerInvoke.init(
+                                  songsList: songList,
+                                  index: songList.indexWhere(
+                                    (element) => element == entry,
                                   ),
+                                  isOffline: false,
                                 );
                               },
                             );
@@ -456,7 +426,7 @@ class _SongsListPageState extends State<SongsListPage> {
                     ),
             ),
           ),
-          const MiniPlayer(),
+          MiniPlayer(),
         ],
       ),
     );

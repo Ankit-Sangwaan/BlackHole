@@ -29,7 +29,7 @@ import 'package:blackhole/CustomWidgets/playlist_head.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Helpers/songs_count.dart' as songs_count;
 import 'package:blackhole/Screens/Library/show_songs.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
+import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -536,20 +536,12 @@ class _LikedSongsState extends State<LikedSongs>
                     ),
                     onPressed: () {
                       if (_songs.isNotEmpty) {
-                        final tempList = _songs.toList();
-                        tempList.shuffle();
-                        Navigator.of(context).push(
-                          PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (_, __, ___) => PlayScreen(
-                              songsList: tempList,
-                              index: 0,
-                              offline: false,
-                              fromMiniplayer: false,
-                              fromDownloads: false,
-                              recommend: false,
-                            ),
-                          ),
+                        PlayerInvoke.init(
+                          songsList: _songs,
+                          index: 0,
+                          isOffline: false,
+                          recommend: false,
+                          shuffle: true,
                         );
                       }
                     },
@@ -573,7 +565,7 @@ class _LikedSongsState extends State<LikedSongs>
               ),
             ),
           ),
-          const MiniPlayer(),
+          MiniPlayer(),
         ],
       ),
     );
@@ -662,18 +654,11 @@ class _SongsTabState extends State<SongsTab>
                         ),
                       ),
                       onTap: () {
-                        Navigator.of(context).push(
-                          PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (_, __, ___) => PlayScreen(
-                              songsList: widget.songs,
-                              index: index,
-                              offline: false,
-                              fromMiniplayer: false,
-                              fromDownloads: false,
-                              recommend: false,
-                            ),
-                          ),
+                        PlayerInvoke.init(
+                          songsList: widget.songs,
+                          index: index,
+                          isOffline: false,
+                          recommend: false,
                         );
                       },
                       title: Text(

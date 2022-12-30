@@ -31,6 +31,7 @@ class SearchBar extends StatefulWidget {
   final String? hintText;
   final TextEditingController controller;
   final Function(String)? onQueryChanged;
+  final Function()? onQueryCleared;
   final Function(String) onSubmitted;
   const SearchBar({
     super.key,
@@ -39,6 +40,7 @@ class SearchBar extends StatefulWidget {
     this.showClose = true,
     this.autofocus = false,
     this.onQueryChanged,
+    this.onQueryCleared,
     required this.body,
     required this.isYt,
     required this.controller,
@@ -123,6 +125,9 @@ class _SearchBarState extends State<SearchBar> {
                                     onPressed: () {
                                       widget.controller.text = '';
                                       suggestionsList.value = [];
+                                      if (widget.onQueryCleared != null) {
+                                        widget.onQueryCleared!.call();
+                                      }
                                     },
                                   ),
                                 );

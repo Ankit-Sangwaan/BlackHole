@@ -24,6 +24,7 @@ import 'package:blackhole/CustomWidgets/search_bar.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
+import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -269,6 +270,14 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                           setState(() {
                                             done = true;
                                           });
+                                          if (response != null) {
+                                            PlayerInvoke.init(
+                                              songsList: [response],
+                                              index: 0,
+                                              isOffline: false,
+                                              recommend: false,
+                                            );
+                                          }
                                           response == null
                                               ? ShowSnackBar().showSnackBar(
                                                   context,
@@ -282,14 +291,7 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                   PageRouteBuilder(
                                                     opaque: false,
                                                     pageBuilder: (_, __, ___) =>
-                                                        PlayScreen(
-                                                      fromMiniplayer: false,
-                                                      songsList: [response],
-                                                      index: 0,
-                                                      offline: false,
-                                                      fromDownloads: false,
-                                                      recommend: false,
-                                                    ),
+                                                        const PlayScreen(),
                                                   ),
                                                 );
                                         },
@@ -523,7 +525,7 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                 ),
               ),
             ),
-            const MiniPlayer(),
+            MiniPlayer(),
           ],
         ),
       ),

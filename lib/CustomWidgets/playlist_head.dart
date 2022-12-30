@@ -17,7 +17,7 @@
  * Copyright (c) 2021-2022, Ankit Sangwan
  */
 
-import 'package:blackhole/Screens/Player/audioplayer.dart';
+import 'package:blackhole/Services/player_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -52,20 +52,13 @@ class PlaylistHead extends StatelessWidget {
           const Spacer(),
           TextButton.icon(
             onPressed: () {
-              final tempList = songsList.toList();
-              tempList.shuffle();
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  opaque: false,
-                  pageBuilder: (_, __, ___) => PlayScreen(
-                    songsList: tempList,
-                    index: 0,
-                    offline: offline,
-                    fromMiniplayer: false,
-                    fromDownloads: fromDownloads,
-                    recommend: false,
-                  ),
-                ),
+              PlayerInvoke.init(
+                songsList: songsList,
+                index: 0,
+                isOffline: offline,
+                fromDownloads: fromDownloads,
+                recommend: false,
+                shuffle: true,
               );
             },
             icon: const Icon(Icons.shuffle_rounded),
@@ -76,18 +69,12 @@ class PlaylistHead extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
-              Navigator.of(context).push(
-                PageRouteBuilder(
-                  opaque: false,
-                  pageBuilder: (_, __, ___) => PlayScreen(
-                    songsList: songsList,
-                    index: 0,
-                    offline: offline,
-                    fromMiniplayer: false,
-                    fromDownloads: fromDownloads,
-                    recommend: false,
-                  ),
-                ),
+              PlayerInvoke.init(
+                songsList: songsList,
+                index: 0,
+                isOffline: offline,
+                fromDownloads: fromDownloads,
+                recommend: false,
               );
             },
             tooltip: AppLocalizations.of(context)!.shuffle,

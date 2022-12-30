@@ -23,6 +23,7 @@ import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
+import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -184,18 +185,18 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                     setState(() {
                                       done = true;
                                     });
+                                    PlayerInvoke.init(
+                                      songsList: [response],
+                                      index: 0,
+                                      isOffline: false,
+                                      recommend: false,
+                                    );
                                     Navigator.push(
                                       context,
                                       PageRouteBuilder(
                                         opaque: false,
-                                        pageBuilder: (_, __, ___) => PlayScreen(
-                                          songsList: [response],
-                                          index: 0,
-                                          recommend: false,
-                                          fromDownloads: false,
-                                          fromMiniplayer: false,
-                                          offline: false,
-                                        ),
+                                        pageBuilder: (_, __, ___) =>
+                                            const PlayScreen(),
                                       ),
                                     );
                                     // for (var i = 0;
@@ -279,7 +280,7 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
               ),
             ),
           ),
-          const MiniPlayer(),
+          MiniPlayer(),
         ],
       ),
     );

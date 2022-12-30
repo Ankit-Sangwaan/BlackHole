@@ -22,7 +22,7 @@ import 'dart:io';
 import 'package:blackhole/CustomWidgets/download_button.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Helpers/audio_query.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
+import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -116,18 +116,11 @@ class DataSearch extends SearchDelegate {
           overflow: TextOverflow.ellipsis,
         ),
         onTap: () async {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              opaque: false,
-              pageBuilder: (_, __, ___) => PlayScreen(
-                songsList: suggestionList,
-                index: index,
-                offline: true,
-                fromMiniplayer: false,
-                fromDownloads: false,
-                recommend: false,
-              ),
-            ),
+          PlayerInvoke.init(
+            songsList: suggestionList,
+            index: index,
+            isOffline: true,
+            recommend: false,
           );
         },
       ),
@@ -182,18 +175,11 @@ class DataSearch extends SearchDelegate {
           overflow: TextOverflow.ellipsis,
         ),
         onTap: () async {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              opaque: false,
-              pageBuilder: (_, __, ___) => PlayScreen(
-                songsList: suggestionList,
-                index: index,
-                offline: true,
-                fromMiniplayer: false,
-                fromDownloads: false,
-                recommend: false,
-              ),
-            ),
+          PlayerInvoke.init(
+            songsList: suggestionList,
+            index: index,
+            isOffline: true,
+            recommend: false,
           );
         },
       ),
@@ -346,18 +332,12 @@ class DownloadsSearch extends SearchDelegate {
                 ],
               ),
         onTap: () {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              opaque: false,
-              pageBuilder: (_, __, ___) => PlayScreen(
-                songsList: suggestionList,
-                index: index,
-                offline: isDowns,
-                fromMiniplayer: false,
-                fromDownloads: isDowns,
-                recommend: false,
-              ),
-            ),
+          PlayerInvoke.init(
+            songsList: suggestionList,
+            index: index,
+            isOffline: isDowns,
+            fromDownloads: isDowns,
+            recommend: false,
           );
         },
       ),
@@ -437,18 +417,12 @@ class DownloadsSearch extends SearchDelegate {
           overflow: TextOverflow.ellipsis,
         ),
         onTap: () {
-          Navigator.of(context).push(
-            PageRouteBuilder(
-              opaque: false,
-              pageBuilder: (_, __, ___) => PlayScreen(
-                songsList: suggestionList,
-                index: index,
-                offline: isDowns,
-                fromMiniplayer: false,
-                fromDownloads: isDowns,
-                recommend: false,
-              ),
-            ),
+          PlayerInvoke.init(
+            songsList: suggestionList,
+            index: index,
+            isOffline: isDowns,
+            fromDownloads: isDowns,
+            recommend: false,
           );
         },
       ),

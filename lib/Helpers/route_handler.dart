@@ -21,6 +21,7 @@ import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/Helpers/audio_query.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
+import 'package:blackhole/Services/player_service.dart';
 import 'package:flutter/material.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
@@ -96,18 +97,16 @@ class SaavnUrlHandler extends StatelessWidget {
   Widget build(BuildContext context) {
     SaavnAPI().getSongFromToken(token, type).then((value) {
       if (type == 'song') {
+        PlayerInvoke.init(
+          songsList: value['songs'] as List,
+          index: 0,
+          isOffline: false,
+        );
         Navigator.pushReplacement(
           context,
           PageRouteBuilder(
             opaque: false,
-            pageBuilder: (_, __, ___) => PlayScreen(
-              songsList: value['songs'] as List,
-              index: 0,
-              offline: false,
-              fromDownloads: false,
-              recommend: true,
-              fromMiniplayer: false,
-            ),
+            pageBuilder: (_, __, ___) => const PlayScreen(),
           ),
         );
       }
@@ -144,18 +143,17 @@ class OfflinePlayHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     playOfflineSong(id).then((value) {
+      PlayerInvoke.init(
+        songsList: value[1] as List<SongModel>,
+        index: value[0] as int,
+        isOffline: true,
+        recommend: false,
+      );
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
           opaque: false,
-          pageBuilder: (_, __, ___) => PlayScreen(
-            songsList: value[1] as List<SongModel>,
-            index: value[0] as int,
-            offline: true,
-            fromDownloads: false,
-            recommend: false,
-            fromMiniplayer: false,
-          ),
+          pageBuilder: (_, __, ___) => const PlayScreen(),
         ),
       );
     });

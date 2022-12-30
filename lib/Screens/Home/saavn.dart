@@ -32,6 +32,7 @@ import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Library/liked.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Screens/Search/artists.dart';
+import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -177,18 +178,17 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                           HorizontalAlbumsList(
                             songsList: recentList,
                             onTap: (int idx) {
+                              PlayerInvoke.init(
+                                songsList: recentList,
+                                index: idx,
+                                isOffline: false,
+                              );
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
                                   opaque: false,
-                                  pageBuilder: (_, __, ___) => PlayScreen(
-                                    songsList: recentList,
-                                    index: idx,
-                                    offline: false,
-                                    fromDownloads: false,
-                                    fromMiniplayer: false,
-                                    recommend: true,
-                                  ),
+                                  pageBuilder: (_, __, ___) =>
+                                      const PlayScreen(),
                                 ),
                               );
                             },
@@ -592,45 +592,40 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                         SaavnAPI()
                                             .getRadioSongs(stationId: value)
                                             .then((value) {
-                                          value.shuffle();
+                                          PlayerInvoke.init(
+                                            songsList: value,
+                                            index: 0,
+                                            isOffline: false,
+                                            shuffle: true,
+                                          );
                                           Navigator.push(
                                             context,
                                             PageRouteBuilder(
                                               opaque: false,
                                               pageBuilder: (_, __, ___) =>
-                                                  PlayScreen(
-                                                songsList: value,
-                                                index: 0,
-                                                offline: false,
-                                                fromDownloads: false,
-                                                fromMiniplayer: false,
-                                                recommend: true,
-                                              ),
+                                                  const PlayScreen(),
                                             ),
                                           );
                                         });
                                       }
                                     });
                                   } else {
+                                    if (item['type'] == 'song') {
+                                      PlayerInvoke.init(
+                                        songsList: currentSongList as List,
+                                        index: currentSongList.indexWhere(
+                                          (e) => e['id'] == item['id'],
+                                        ),
+                                        isOffline: false,
+                                      );
+                                    }
                                     Navigator.push(
                                       context,
                                       PageRouteBuilder(
                                         opaque: false,
                                         pageBuilder: (_, __, ___) =>
                                             item['type'] == 'song'
-                                                ? PlayScreen(
-                                                    songsList:
-                                                        currentSongList as List,
-                                                    index: currentSongList
-                                                        .indexWhere(
-                                                      (e) =>
-                                                          e['id'] == item['id'],
-                                                    ),
-                                                    offline: false,
-                                                    fromDownloads: false,
-                                                    fromMiniplayer: false,
-                                                    recommend: true,
-                                                  )
+                                                ? const PlayScreen()
                                                 : SongsListPage(
                                                     listItem: item,
                                                   ),
