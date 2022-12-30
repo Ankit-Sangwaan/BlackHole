@@ -21,7 +21,6 @@ import 'dart:io';
 
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/miniplayer.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -314,13 +313,7 @@ class _SongsListState extends State<SongsList> {
                                     fromDownloads: offline,
                                     recommend: false,
                                   );
-                                  Navigator.of(context).push(
-                                    PageRouteBuilder(
-                                      opaque: false, // set to false
-                                      pageBuilder: (_, __, ___) =>
-                                          const PlayScreen(),
-                                    ),
-                                  );
+                                  Navigator.pushNamed(context, '/player');
                                 },
                               );
                       },

@@ -30,7 +30,6 @@ import 'package:blackhole/Helpers/extensions.dart';
 import 'package:blackhole/Helpers/format.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Library/liked.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Screens/Search/artists.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -183,14 +182,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                 index: idx,
                                 isOffline: false,
                               );
-                              Navigator.push(
-                                context,
-                                PageRouteBuilder(
-                                  opaque: false,
-                                  pageBuilder: (_, __, ___) =>
-                                      const PlayScreen(),
-                                ),
-                              );
+                              Navigator.pushNamed(context, '/player');
                             },
                           ),
                         ],
@@ -598,13 +590,9 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                             isOffline: false,
                                             shuffle: true,
                                           );
-                                          Navigator.push(
+                                          Navigator.pushNamed(
                                             context,
-                                            PageRouteBuilder(
-                                              opaque: false,
-                                              pageBuilder: (_, __, ___) =>
-                                                  const PlayScreen(),
-                                            ),
+                                            '/player',
                                           );
                                         });
                                       }
@@ -619,18 +607,21 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                         isOffline: false,
                                       );
                                     }
-                                    Navigator.push(
-                                      context,
-                                      PageRouteBuilder(
-                                        opaque: false,
-                                        pageBuilder: (_, __, ___) =>
-                                            item['type'] == 'song'
-                                                ? const PlayScreen()
-                                                : SongsListPage(
-                                                    listItem: item,
-                                                  ),
-                                      ),
-                                    );
+                                    item['type'] == 'song'
+                                        ? Navigator.pushNamed(
+                                            context,
+                                            '/player',
+                                          )
+                                        : Navigator.push(
+                                            context,
+                                            PageRouteBuilder(
+                                              opaque: false,
+                                              pageBuilder: (_, __, ___) =>
+                                                  SongsListPage(
+                                                listItem: item,
+                                              ),
+                                            ),
+                                          );
                                   }
                                 },
                                 child: SizedBox(

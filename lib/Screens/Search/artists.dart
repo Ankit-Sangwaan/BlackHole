@@ -31,7 +31,6 @@ import 'package:blackhole/CustomWidgets/playlist_popupmenu.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -172,17 +171,9 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                     index: 0,
                                                     isOffline: false,
                                                   );
-                                                  Navigator.push(
+                                                  Navigator.pushNamed(
                                                     context,
-                                                    PageRouteBuilder(
-                                                      opaque: false,
-                                                      pageBuilder: (
-                                                        _,
-                                                        __,
-                                                        ___,
-                                                      ) =>
-                                                          const PlayScreen(),
-                                                    ),
+                                                    '/player',
                                                   );
                                                 });
                                               }
@@ -260,13 +251,9 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                               index: 0,
                                               isOffline: false,
                                             );
-                                            Navigator.push(
+                                            Navigator.pushNamed(
                                               context,
-                                              PageRouteBuilder(
-                                                opaque: false,
-                                                pageBuilder: (_, __, ___) =>
-                                                    const PlayScreen(),
-                                              ),
+                                              '/player',
                                             );
                                           },
                                           child: Container(
@@ -360,13 +347,9 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                 isOffline: false,
                                                 shuffle: true,
                                               );
-                                              Navigator.push(
+                                              Navigator.pushNamed(
                                                 context,
-                                                PageRouteBuilder(
-                                                  opaque: false,
-                                                  pageBuilder: (_, __, ___) =>
-                                                      const PlayScreen(),
-                                                ),
+                                                '/player',
                                               );
                                             },
                                             tooltip:
@@ -710,29 +693,31 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                       isOffline: false,
                                                     );
                                                   }
-                                                  Navigator.push(
-                                                    context,
-                                                    PageRouteBuilder(
-                                                      opaque: false,
-                                                      pageBuilder: (
-                                                        _,
-                                                        __,
-                                                        ___,
-                                                      ) =>
-                                                          (entry.key ==
-                                                                      'Top Songs' ||
-                                                                  entry.key ==
-                                                                      'Latest Release' ||
-                                                                  entry.key ==
-                                                                      'Singles')
-                                                              ? const PlayScreen()
-                                                              : SongsListPage(
-                                                                  listItem: entry
-                                                                          .value[
-                                                                      index] as Map,
-                                                                ),
-                                                    ),
-                                                  );
+                                                  (entry.key == 'Top Songs' ||
+                                                          entry.key ==
+                                                              'Latest Release' ||
+                                                          entry.key ==
+                                                              'Singles')
+                                                      ? Navigator.pushNamed(
+                                                          context,
+                                                          '/player',
+                                                        )
+                                                      : Navigator.push(
+                                                          context,
+                                                          PageRouteBuilder(
+                                                            opaque: false,
+                                                            pageBuilder: (
+                                                              _,
+                                                              __,
+                                                              ___,
+                                                            ) =>
+                                                                SongsListPage(
+                                                              listItem: entry
+                                                                      .value[
+                                                                  index] as Map,
+                                                            ),
+                                                          ),
+                                                        );
                                                 },
                                               );
                                             },

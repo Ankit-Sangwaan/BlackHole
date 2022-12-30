@@ -23,7 +23,6 @@ import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/search_bar.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -286,13 +285,9 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                   )!
                                                       .ytLiveAlert,
                                                 )
-                                              : Navigator.push(
+                                              : Navigator.pushNamed(
                                                   context,
-                                                  PageRouteBuilder(
-                                                    opaque: false,
-                                                    pageBuilder: (_, __, ___) =>
-                                                        const PlayScreen(),
-                                                  ),
+                                                  '/player',
                                                 );
                                         },
                                         child: rotated

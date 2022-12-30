@@ -22,7 +22,6 @@ import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -191,14 +190,7 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                       isOffline: false,
                                       recommend: false,
                                     );
-                                    Navigator.push(
-                                      context,
-                                      PageRouteBuilder(
-                                        opaque: false,
-                                        pageBuilder: (_, __, ___) =>
-                                            const PlayScreen(),
-                                      ),
-                                    );
+                                    Navigator.pushNamed(context, '/player');
                                     // for (var i = 0;
                                     //     i < searchedList.length;
                                     //     i++) {

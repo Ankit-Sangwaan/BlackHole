@@ -30,7 +30,6 @@ import 'package:blackhole/CustomWidgets/playlist_head.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/Helpers/picker.dart';
 import 'package:blackhole/Screens/Library/liked.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -534,12 +533,7 @@ class _DownloadsState extends State<Downloads>
                           recommend: false,
                           shuffle: true,
                         );
-                        Navigator.of(context).push(
-                          PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (_, __, ___) => const PlayScreen(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/player');
                       }
                     },
                   ),
@@ -972,12 +966,7 @@ class _DownSongsTabState extends State<DownSongsTab>
                           fromDownloads: true,
                           recommend: false,
                         );
-                        Navigator.of(context).push(
-                          PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (_, __, ___) => const PlayScreen(),
-                          ),
-                        );
+                        Navigator.pushNamed(context, '/player');
                       },
                       title: Text(
                         '${widget.songs[index]['title']}',

@@ -30,7 +30,6 @@ import 'package:blackhole/CustomWidgets/search_bar.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
-import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Screens/Search/albums.dart';
 import 'package:blackhole/Screens/Search/artists.dart';
 import 'package:blackhole/Services/player_service.dart';
@@ -644,33 +643,33 @@ class _SearchPageState extends State<SearchPage> {
                                                         isOffline: false,
                                                       );
                                                     }
-                                                    Navigator.push(
-                                                      context,
-                                                      PageRouteBuilder(
-                                                        opaque: false,
-                                                        pageBuilder: (
-                                                          _,
-                                                          __,
-                                                          ___,
-                                                        ) =>
-                                                            key == 'Artists' ||
-                                                                    (key == 'Top Result' &&
-                                                                        value[0]['type'] ==
-                                                                            'artist')
-                                                                ? ArtistSearchPage(
-                                                                    data: value[
-                                                                            index]
-                                                                        as Map,
-                                                                  )
-                                                                : key == 'Songs'
-                                                                    ? const PlayScreen()
-                                                                    : SongsListPage(
-                                                                        listItem:
-                                                                            value[index]
-                                                                                as Map,
-                                                                      ),
-                                                      ),
-                                                    );
+                                                    key == 'Songs'
+                                                        ? Navigator.pushNamed(
+                                                            context,
+                                                            '/player',
+                                                          )
+                                                        : Navigator.push(
+                                                            context,
+                                                            PageRouteBuilder(
+                                                              opaque: false,
+                                                              pageBuilder: (
+                                                                _,
+                                                                __,
+                                                                ___,
+                                                              ) =>
+                                                                  key == 'Artists' ||
+                                                                          (key == 'Top Result' &&
+                                                                              value[0]['type'] == 'artist')
+                                                                      ? ArtistSearchPage(
+                                                                          data: value[index]
+                                                                              as Map,
+                                                                        )
+                                                                      : SongsListPage(
+                                                                          listItem:
+                                                                              value[index] as Map,
+                                                                        ),
+                                                            ),
+                                                          );
                                                   },
                                                 );
                                               },

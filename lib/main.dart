@@ -249,6 +249,12 @@ class _MyAppState extends State<MyApp> {
       },
       navigatorKey: navigatorKey,
       onGenerateRoute: (RouteSettings settings) {
+        if (settings.name == '/player') {
+          return PageRouteBuilder(
+            opaque: false,
+            pageBuilder: (_, __, ___) => const PlayScreen(),
+          );
+        }
         return HandleRoute.handleRoute(settings.name);
       },
     );

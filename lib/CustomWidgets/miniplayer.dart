@@ -153,13 +153,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                               ListTile(
                                 dense: useDense,
                                 onTap: () {
-                                  Navigator.of(context).push(
-                                    PageRouteBuilder(
-                                      opaque: false,
-                                      pageBuilder: (_, __, ___) =>
-                                          const PlayScreen(),
-                                    ),
-                                  );
+                                  Navigator.pushNamed(context, '/player');
                                 },
                                 title: Text(
                                   mediaItem.title,
