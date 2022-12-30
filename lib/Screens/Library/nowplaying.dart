@@ -34,6 +34,14 @@ class NowPlaying extends StatefulWidget {
 
 class _NowPlayingState extends State<NowPlaying> {
   final AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return GradientContainer(
@@ -76,6 +84,7 @@ class _NowPlayingState extends State<NowPlaying> {
                             return mediaItem == null
                                 ? const SizedBox()
                                 : BouncyImageSliverScrollView(
+                                    scrollController: _scrollController,
                                     title: AppLocalizations.of(context)!
                                         .nowPlaying,
                                     localImage: mediaItem.artUri!

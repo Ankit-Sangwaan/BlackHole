@@ -72,6 +72,7 @@ class _PlayScreenState extends State<PlayScreen> {
   final PanelController _panelController = PanelController();
   final AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
   GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
+  late Duration _time;
 
   void sleepTimer(int time) {
     audioHandler.customAction('sleepTimer', {'time': time});
@@ -81,7 +82,110 @@ class _PlayScreenState extends State<PlayScreen> {
     audioHandler.customAction('sleepCounter', {'count': count});
   }
 
-  late Duration _time;
+  Future<dynamic> setTimer(
+    BuildContext context,
+    BuildContext? scaffoldContext,
+  ) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return SimpleDialog(
+          title: Center(
+            child: Text(
+              AppLocalizations.of(context)!.selectDur,
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          ),
+          children: [
+            Center(
+              child: SizedBox(
+                height: 200,
+                width: 200,
+                child: CupertinoTheme(
+                  data: CupertinoThemeData(
+                    primaryColor: Theme.of(context).colorScheme.secondary,
+                    textTheme: CupertinoTextThemeData(
+                      dateTimePickerTextStyle: TextStyle(
+                        fontSize: 16,
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  ),
+                  child: CupertinoTimerPicker(
+                    mode: CupertinoTimerPickerMode.hm,
+                    onTimerDurationChanged: (value) {
+                      _time = value;
+                    },
+                  ),
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                TextButton(
+                  style: TextButton.styleFrom(
+                    foregroundColor: Theme.of(context).colorScheme.secondary,
+                  ),
+                  onPressed: () {
+                    sleepTimer(0);
+                    Navigator.pop(context);
+                  },
+                  child: Text(AppLocalizations.of(context)!.cancel),
+                ),
+                const SizedBox(
+                  width: 10,
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    foregroundColor:
+                        Theme.of(context).colorScheme.secondary == Colors.white
+                            ? Colors.black
+                            : Colors.white,
+                  ),
+                  onPressed: () {
+                    sleepTimer(_time.inMinutes);
+                    Navigator.pop(context);
+                    ShowSnackBar().showSnackBar(
+                      context,
+                      '${AppLocalizations.of(context)!.sleepTimerSetFor} ${_time.inMinutes} ${AppLocalizations.of(context)!.minutes}',
+                    );
+                  },
+                  child: Text(AppLocalizations.of(context)!.ok),
+                ),
+                const SizedBox(
+                  width: 20,
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<dynamic> setCounter() async {
+    await showTextInputDialog(
+      context: context,
+      title: AppLocalizations.of(context)!.enterSongsCount,
+      initialText: '',
+      keyboardType: TextInputType.number,
+      onSubmitted: (String value) {
+        sleepCounter(
+          int.parse(value),
+        );
+        Navigator.pop(context);
+        ShowSnackBar().showSnackBar(
+          context,
+          '${AppLocalizations.of(context)!.sleepTimerSetFor} $value ${AppLocalizations.of(context)!.songs}',
+        );
+      },
+    );
+  }
 
   void updateBackgroundColors(List<Color?> value) {
     gradientColor.value = value;
@@ -619,111 +723,6 @@ class _PlayScreenState extends State<PlayScreen> {
           // );
         },
       ),
-    );
-  }
-
-  Future<dynamic> setTimer(
-    BuildContext context,
-    BuildContext? scaffoldContext,
-  ) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return SimpleDialog(
-          title: Center(
-            child: Text(
-              AppLocalizations.of(context)!.selectDur,
-              style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-          ),
-          children: [
-            Center(
-              child: SizedBox(
-                height: 200,
-                width: 200,
-                child: CupertinoTheme(
-                  data: CupertinoThemeData(
-                    primaryColor: Theme.of(context).colorScheme.secondary,
-                    textTheme: CupertinoTextThemeData(
-                      dateTimePickerTextStyle: TextStyle(
-                        fontSize: 16,
-                        color: Theme.of(context).colorScheme.secondary,
-                      ),
-                    ),
-                  ),
-                  child: CupertinoTimerPicker(
-                    mode: CupertinoTimerPickerMode.hm,
-                    onTimerDurationChanged: (value) {
-                      _time = value;
-                    },
-                  ),
-                ),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: Theme.of(context).colorScheme.secondary,
-                  ),
-                  onPressed: () {
-                    sleepTimer(0);
-                    Navigator.pop(context);
-                  },
-                  child: Text(AppLocalizations.of(context)!.cancel),
-                ),
-                const SizedBox(
-                  width: 10,
-                ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-                    foregroundColor:
-                        Theme.of(context).colorScheme.secondary == Colors.white
-                            ? Colors.black
-                            : Colors.white,
-                  ),
-                  onPressed: () {
-                    sleepTimer(_time.inMinutes);
-                    Navigator.pop(context);
-                    ShowSnackBar().showSnackBar(
-                      context,
-                      '${AppLocalizations.of(context)!.sleepTimerSetFor} ${_time.inMinutes} ${AppLocalizations.of(context)!.minutes}',
-                    );
-                  },
-                  child: Text(AppLocalizations.of(context)!.ok),
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-              ],
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  Future<dynamic> setCounter() async {
-    await showTextInputDialog(
-      context: context,
-      title: AppLocalizations.of(context)!.enterSongsCount,
-      initialText: '',
-      keyboardType: TextInputType.number,
-      onSubmitted: (String value) {
-        sleepCounter(
-          int.parse(value),
-        );
-        Navigator.pop(context);
-        ShowSnackBar().showSnackBar(
-          context,
-          '${AppLocalizations.of(context)!.sleepTimerSetFor} $value ${AppLocalizations.of(context)!.songs}',
-        );
-      },
     );
   }
 }

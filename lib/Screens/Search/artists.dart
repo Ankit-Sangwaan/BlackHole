@@ -55,6 +55,13 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
   String sortOrder = '';
   Map<String, List> data = {};
   bool fetched = false;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,6 +102,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                           20,
                         )
                       : BouncyImageSliverScrollView(
+                          scrollController: _scrollController,
                           actions: [
                             IconButton(
                               icon: const Icon(Icons.share_rounded),

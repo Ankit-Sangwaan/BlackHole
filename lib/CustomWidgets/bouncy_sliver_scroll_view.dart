@@ -24,7 +24,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class BouncyImageSliverScrollView extends StatelessWidget {
-  final ScrollController? scrollController;
+  final ScrollController scrollController;
   final SliverList sliverList;
   final bool shrinkWrap;
   final List<Widget>? actions;
@@ -34,7 +34,7 @@ class BouncyImageSliverScrollView extends StatelessWidget {
   final String placeholderImage;
   BouncyImageSliverScrollView({
     super.key,
-    this.scrollController,
+    required this.scrollController,
     this.shrinkWrap = false,
     required this.sliverList,
     required this.title,
@@ -74,8 +74,8 @@ class BouncyImageSliverScrollView extends StatelessWidget {
                   image: AssetImage(placeholderImage),
                 ),
               );
-    final bool rotated =
-        MediaQuery.of(context).size.height < MediaQuery.of(context).size.width;
+    // final bool rotated =
+    // MediaQuery.of(context).size.height < MediaQuery.of(context).size.width;
     final double expandedHeight = MediaQuery.of(context).size.height * 0.4;
 
     return CustomScrollView(
@@ -83,36 +83,53 @@ class BouncyImageSliverScrollView extends StatelessWidget {
       shrinkWrap: shrinkWrap,
       physics: const BouncingScrollPhysics(),
       slivers: [
-        SliverAppBar(
-          elevation: 0,
-          stretch: true,
-          pinned: true,
-          centerTitle: true,
-          // floating: true,
-          // backgroundColor: Colors.transparent,
-          expandedHeight: expandedHeight,
-          actions: actions,
-          title: Opacity(
-            opacity: 1 - _opacity.value,
-            child: Text(
-              title,
+        AnimatedBuilder(
+          animation: scrollController,
+          child: SizedBox.expand(
+            child: ShaderMask(
+              shaderCallback: (rect) {
+                return const LinearGradient(
+                  begin: Alignment.center,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.black,
+                    Colors.transparent,
+                  ],
+                ).createShader(
+                  Rect.fromLTRB(
+                    0,
+                    0,
+                    rect.width,
+                    rect.height,
+                  ),
+                );
+              },
+              blendMode: BlendMode.dstIn,
+              child: image,
             ),
           ),
-
-          flexibleSpace: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              double top = constraints.biggest.height;
-              if (top > expandedHeight) {
-                top = expandedHeight;
-              }
-
-              _opacity.value = (top - 80) / (expandedHeight - 80);
-              if (_opacity.value < 0.1) {
-                _opacity.value = 0;
-              }
-              return FlexibleSpaceBar(
+          builder: (context, child) {
+            if (scrollController.offset.roundToDouble() > expandedHeight - 80) {
+              _opacity.value = 1;
+            } else {
+              scrollController.offset.roundToDouble() / (expandedHeight - 80) >
+                      0
+                  ? _opacity.value = scrollController.offset.roundToDouble() /
+                      (expandedHeight - 80)
+                  : _opacity.value = 0;
+            }
+            return SliverAppBar(
+              elevation: 0,
+              stretch: true,
+              pinned: true,
+              centerTitle: true,
+              // floating: true,
+              backgroundColor: _opacity.value < 0.6 ? Colors.transparent : null,
+              expandedHeight: expandedHeight,
+              actions: actions,
+              flexibleSpace: FlexibleSpaceBar(
                 title: Opacity(
-                  opacity: max(0, _opacity.value),
+                  opacity: max(0, min(1 - _opacity.value, 1)),
                   child: Text(
                     title,
                     textAlign: TextAlign.center,
@@ -120,52 +137,10 @@ class BouncyImageSliverScrollView extends StatelessWidget {
                   ),
                 ),
                 centerTitle: true,
-                background: Stack(
-                  children: [
-                    SizedBox.expand(
-                      child: ShaderMask(
-                        shaderCallback: (rect) {
-                          return const LinearGradient(
-                            begin: Alignment.center,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              Colors.black,
-                              Colors.transparent,
-                            ],
-                          ).createShader(
-                            Rect.fromLTRB(
-                              0,
-                              0,
-                              rect.width,
-                              rect.height,
-                            ),
-                          );
-                        },
-                        blendMode: BlendMode.dstIn,
-                        child: image,
-                      ),
-                    ),
-                    if (rotated)
-                      Align(
-                        alignment: const Alignment(-0.85, 0.5),
-                        child: Card(
-                          elevation: 5,
-                          color: Colors.transparent,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7.0),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          child: SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.3,
-                            child: image,
-                          ),
-                        ),
-                      ),
-                  ],
-                ),
-              );
-            },
-          ),
+                background: child,
+              ),
+            );
+          },
         ),
         sliverList,
       ],

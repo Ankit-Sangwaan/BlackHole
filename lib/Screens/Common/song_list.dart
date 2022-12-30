@@ -18,7 +18,7 @@
  */
 
 import 'package:blackhole/APIs/api.dart';
-import 'package:blackhole/CustomWidgets/bouncy_sliver_scroll_view.dart';
+import 'package:blackhole/CustomWidgets/bouncy_playlist_header_scroll_view.dart';
 import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/download_button.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
@@ -161,7 +161,7 @@ class _SongsListPageState extends State<SongsListPage> {
                   ? const Center(
                       child: CircularProgressIndicator(),
                     )
-                  : BouncyImageSliverScrollView(
+                  : BouncyPlaylistHeaderScrollView(
                       scrollController: _scrollController,
                       actions: [
                         MultiDownloadButton(
@@ -187,6 +187,18 @@ class _SongsListPageState extends State<SongsListPage> {
                       title: unescape.convert(
                         widget.listItem['title']?.toString() ?? 'Songs',
                       ),
+                      subtitle: widget.listItem['subtitle']?.toString(),
+                      onPlayTap: () => PlayerInvoke.init(
+                        songsList: songList,
+                        index: 0,
+                        isOffline: false,
+                      ),
+                      onShuffleTap: () => PlayerInvoke.init(
+                        songsList: songList,
+                        index: 0,
+                        isOffline: false,
+                        shuffle: true,
+                      ),
                       placeholderImage: 'assets/album.png',
                       imageUrl: widget.listItem['image']
                           ?.toString()
@@ -201,157 +213,23 @@ class _SongsListPageState extends State<SongsListPage> {
                           ),
                       sliverList: SliverList(
                         delegate: SliverChildListDelegate([
-                          Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      PlayerInvoke.init(
-                                        songsList: songList,
-                                        index: 0,
-                                        isOffline: false,
-                                      );
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(
-                                        top: 10,
-                                        bottom: 10,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(100.0),
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary,
-                                        // color: Colors.white,
-                                        boxShadow: const [
-                                          BoxShadow(
-                                            color: Colors.black26,
-                                            blurRadius: 5.0,
-                                            offset: Offset(0.0, 3.0),
-                                          )
-                                        ],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 10.0,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.play_arrow_rounded,
-                                              color: Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary ==
-                                                      Colors.white
-                                                  ? Colors.black
-                                                  : Colors.white,
-                                              size: 26.0,
-                                            ),
-                                            const SizedBox(width: 5.0),
-                                            Text(
-                                              AppLocalizations.of(context)!
-                                                  .play,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18.0,
-                                                color: Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary ==
-                                                        Colors.white
-                                                    ? Colors.black
-                                                    : Colors.white,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            const SizedBox(width: 10.0),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                          if (songList.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 20.0,
+                                top: 5.0,
+                                bottom: 5.0,
+                              ),
+                              child: Text(
+                                AppLocalizations.of(context)!.songs,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18.0,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                 ),
-                                const SizedBox(width: 20),
-                                Expanded(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      PlayerInvoke.init(
-                                        songsList: songList,
-                                        index: 0,
-                                        isOffline: false,
-                                        shuffle: true,
-                                      );
-                                    },
-                                    child: Container(
-                                      margin: const EdgeInsets.only(
-                                        top: 10,
-                                        bottom: 10,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(100.0),
-                                        border: Border.all(
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? Colors.white
-                                              : Colors.black,
-                                        ),
-                                        // boxShadow: const [
-                                        //   BoxShadow(
-                                        //     color: Colors.black26,
-                                        //     blurRadius: 5.0,
-                                        //     offset: Offset(0.0, 3.0),
-                                        //   )
-                                        // ],
-                                      ),
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 10.0,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Icon(
-                                              Icons.shuffle_rounded,
-                                              color: Theme.of(context)
-                                                          .brightness ==
-                                                      Brightness.dark
-                                                  ? Colors.white
-                                                  : Colors.black,
-                                              size: 24.0,
-                                            ),
-                                            const SizedBox(width: 5.0),
-                                            Text(
-                                              AppLocalizations.of(context)!
-                                                  .shuffle,
-                                              style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 18.0,
-                                                color: Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.dark
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
-                          ),
                           ...songList.map((entry) {
                             return ListTile(
                               contentPadding: const EdgeInsets.only(left: 15.0),

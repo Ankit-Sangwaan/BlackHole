@@ -17,8 +17,6 @@
  * Copyright (c) 2021-2022, Ankit Sangwan
  */
 
-import 'dart:developer';
-
 import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/download_button.dart';
@@ -681,7 +679,6 @@ class _SearchPageState extends State<SearchPage> {
                                   ),
                                 ),
                   onSubmitted: (String submittedQuery) {
-                    log('cleared2');
                     setState(
                       () {
                         fetched = false;
