@@ -433,6 +433,8 @@
   "@proxySet": {},
   "proxySetSub": "Change Proxy IP and Port",
   "@proxySetSub": {},
+  "radio": "Radio",
+  "@radio": {},
   "rememberChoice": "Remember my choice",
   "@rememberChoice": {},
   "remove": "Remove",

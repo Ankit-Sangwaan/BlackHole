@@ -144,7 +144,81 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                         MainAxisAlignment.spaceEvenly,
                                     children: [
                                       Expanded(
-                                        flex: 5,
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            PlayerInvoke.init(
+                                              songsList: data['Top Songs']!,
+                                              index: 0,
+                                              isOffline: false,
+                                            );
+                                            Navigator.pushNamed(
+                                              context,
+                                              '/player',
+                                            );
+                                          },
+                                          child: Container(
+                                            margin: const EdgeInsets.only(
+                                              top: 10,
+                                              bottom: 10,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(100.0),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .secondary,
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: Colors.black26,
+                                                  blurRadius: 5.0,
+                                                  offset: Offset(0.0, 3.0),
+                                                )
+                                              ],
+                                            ),
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                vertical: 10.0,
+                                              ),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    Icons.play_arrow_rounded,
+                                                    color: Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? Colors.white
+                                                        : Colors.black,
+                                                    size: 26.0,
+                                                  ),
+                                                  const SizedBox(width: 5.0),
+                                                  Text(
+                                                    AppLocalizations.of(
+                                                      context,
+                                                    )!
+                                                        .play,
+                                                    style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontSize: 18.0,
+                                                      color: Theme.of(context)
+                                                                  .brightness ==
+                                                              Brightness.dark
+                                                          ? Colors.white
+                                                          : Colors.black,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      Expanded(
                                         child: GestureDetector(
                                           onTap: () {
                                             ShowSnackBar().showSnackBar(
@@ -194,16 +268,13 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                             decoration: BoxDecoration(
                                               borderRadius:
                                                   BorderRadius.circular(100.0),
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                              boxShadow: const [
-                                                BoxShadow(
-                                                  color: Colors.black26,
-                                                  blurRadius: 5.0,
-                                                  offset: Offset(0.0, 3.0),
-                                                )
-                                              ],
+                                              border: Border.all(
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.black,
+                                              ),
                                             ),
                                             child: Padding(
                                               padding:
@@ -229,7 +300,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                     AppLocalizations.of(
                                                       context,
                                                     )!
-                                                        .playRadio,
+                                                        .radio,
                                                     style: TextStyle(
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -240,76 +311,6 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                               Colors.white
                                                           ? Colors.black
                                                           : Colors.white,
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 20),
-                                      Expanded(
-                                        flex: 3,
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            PlayerInvoke.init(
-                                              songsList: data['Top Songs']!,
-                                              index: 0,
-                                              isOffline: false,
-                                            );
-                                            Navigator.pushNamed(
-                                              context,
-                                              '/player',
-                                            );
-                                          },
-                                          child: Container(
-                                            margin: const EdgeInsets.only(
-                                              top: 10,
-                                              bottom: 10,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(100.0),
-                                              border: Border.all(
-                                                color: Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.dark
-                                                    ? Colors.white
-                                                    : Colors.black,
-                                              ),
-                                            ),
-                                            child: Padding(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                vertical: 10.0,
-                                              ),
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.center,
-                                                children: [
-                                                  Icon(
-                                                    Icons.play_arrow_rounded,
-                                                    color: Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.dark
-                                                        ? Colors.white
-                                                        : Colors.black,
-                                                    size: 26.0,
-                                                  ),
-                                                  const SizedBox(width: 5.0),
-                                                  Text(
-                                                    'Top',
-                                                    style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontSize: 18.0,
-                                                      color: Theme.of(context)
-                                                                  .brightness ==
-                                                              Brightness.dark
-                                                          ? Colors.white
-                                                          : Colors.black,
                                                     ),
                                                     textAlign: TextAlign.center,
                                                   ),
@@ -337,9 +338,9 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                           ),
                                         ),
                                         child: Padding(
-                                          padding: const EdgeInsets.all(3.0),
-                                          child: IconButton(
-                                            icon: Icon(
+                                          padding: const EdgeInsets.all(10.0),
+                                          child: GestureDetector(
+                                            child: Icon(
                                               Icons.shuffle_rounded,
                                               color: Theme.of(context)
                                                           .brightness ==
@@ -348,7 +349,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                   : Colors.black,
                                               size: 24.0,
                                             ),
-                                            onPressed: () {
+                                            onTap: () {
                                               PlayerInvoke.init(
                                                 songsList: data['Top Songs']!,
                                                 index: 0,
@@ -360,9 +361,6 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                 '/player',
                                               );
                                             },
-                                            tooltip:
-                                                AppLocalizations.of(context)!
-                                                    .shuffle,
                                           ),
                                         ),
                                       ),
@@ -527,19 +525,20 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                       },
                                                     ),
                                                     const Spacer(),
-                                                    if (data['Top Songs'] !=
-                                                        null)
-                                                      MultiDownloadButton(
-                                                        data:
-                                                            data['Top Songs']!,
-                                                        playlistName: widget
-                                                                .data['title']
-                                                                ?.toString() ??
-                                                            'Songs',
-                                                      ),
-                                                    const SizedBox(
-                                                      width: 5,
-                                                    ),
+                                                    // removed as it wasn't useful
+                                                    // if (data['Top Songs'] !=
+                                                    //     null)
+                                                    // MultiDownloadButton(
+                                                    //   data:
+                                                    //       data['Top Songs']!,
+                                                    //   playlistName: widget
+                                                    //           .data['title']
+                                                    //           ?.toString() ??
+                                                    //       'Songs',
+                                                    // ),
+                                                    // const SizedBox(
+                                                    //   width: 5,
+                                                    // ),
                                                   ],
                                                 ),
                                               ],
