@@ -672,5 +672,7 @@
   "shareLogs": "लॉग शेयर करें",
   "@shareLogs": {},
   "shareLogsSub": "वर्तमान सत्र लॉग साझा करें",
-  "@shareLogsSub": {}
+  "@shareLogsSub": {},
+  "radio": "रेडियो",
+  "@radio": {}
 }
