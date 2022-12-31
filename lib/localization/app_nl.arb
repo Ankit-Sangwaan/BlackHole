@@ -676,5 +676,7 @@
   "shareLogs": "Logboeken delen",
   "@shareLogs": {},
   "shareLogsSub": "Deel de logboeken van de huidige sessies",
-  "@shareLogsSub": {}
+  "@shareLogsSub": {},
+  "radio": "Radio",
+  "@radio": {}
 }
