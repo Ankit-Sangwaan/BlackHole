@@ -676,5 +676,7 @@
   "shareLogsSub": "Sdílet protokoly aktuálních relací",
   "@shareLogsSub": {},
   "shareLogs": "Sdílet protokoly",
-  "@shareLogs": {}
+  "@shareLogs": {},
+  "radio": "Rádio",
+  "@radio": {}
 }
