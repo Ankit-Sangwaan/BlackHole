@@ -660,5 +660,7 @@
   "shareLogs": "שיתוף יומנים",
   "@shareLogs": {},
   "shareLogsSub": "שיתוף יומני הפעילות הנוכחית",
-  "@shareLogsSub": {}
+  "@shareLogsSub": {},
+  "radio": "רדיו",
+  "@radio": {}
 }
