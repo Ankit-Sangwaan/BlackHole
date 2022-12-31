@@ -30,6 +30,7 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
   final List<Widget>? actions;
   final String title;
   final String? subtitle;
+  final String? secondarySubtitle;
   final String? imageUrl;
   final bool localImage;
   final String placeholderImage;
@@ -42,6 +43,7 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
     required this.sliverList,
     required this.title,
     this.subtitle,
+    this.secondarySubtitle,
     this.placeholderImage = 'assets/cover.jpg',
     this.localImage = false,
     this.imageUrl,
@@ -80,10 +82,14 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                   image: AssetImage(placeholderImage),
                 ),
               );
-    // final bool rotated =
-    // MediaQuery.of(context).size.height < MediaQuery.of(context).size.width;
-    final double expandedHeight = MediaQuery.of(context).size.width * 0.6;
-    final double screenWidth = MediaQuery.of(context).size.width * 0.5;
+    final bool rotated =
+        MediaQuery.of(context).size.height < MediaQuery.of(context).size.width;
+    final double expandedHeight = rotated
+        ? MediaQuery.of(context).size.width * 0.35
+        : MediaQuery.of(context).size.width * 0.6;
+    final double screenWidth = rotated
+        ? MediaQuery.of(context).size.width * 0.3
+        : MediaQuery.of(context).size.width * 0.5;
 
     return CustomScrollView(
       controller: scrollController,
@@ -103,7 +109,7 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15.0, right: 5.0),
                         child: Card(
-                          elevation: 0,
+                          elevation: 5,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
                               10.0,
@@ -130,10 +136,10 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                           )!,
                           child: Column(
                             mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 title,
-                                textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
@@ -141,6 +147,45 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
+                              if (subtitle != null && subtitle!.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: 3.0,
+                                  ),
+                                  child: Text(
+                                    subtitle!,
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .color,
+                                    ),
+                                  ),
+                                ),
+                              if (secondarySubtitle != null &&
+                                  secondarySubtitle!.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: 3.0,
+                                  ),
+                                  child: Text(
+                                    secondarySubtitle!,
+                                    softWrap: false,
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 3,
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Theme.of(context)
+                                          .textTheme
+                                          .caption!
+                                          .color,
+                                    ),
+                                  ),
+                                ),
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,

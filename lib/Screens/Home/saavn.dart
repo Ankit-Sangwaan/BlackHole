@@ -467,6 +467,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                   .where((e) => e['type'] == 'song')
                                   .toList();
                               final subTitle = getSubTitle(item);
+                              item['subtitle'] = subTitle;
                               if (item.isEmpty) return const SizedBox();
                               return GestureDetector(
                                 onLongPress: () {

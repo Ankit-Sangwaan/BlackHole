@@ -250,6 +250,9 @@ class _YouTubeState extends State<YouTube>
                                 itemBuilder: (context, idx) {
                                   final item =
                                       searchedList[index]['playlists'][idx];
+                                  item['subtitle'] = item['type'] != 'video'
+                                      ? '${item["count"]} Tracks | ${item["description"]}'
+                                      : '${item["count"]} | ${item["description"]}';
                                   return GestureDetector(
                                     onTap: () {
                                       item['type'] == 'video'
@@ -277,6 +280,11 @@ class _YouTubeState extends State<YouTube>
                                                           .toString(),
                                                   playlistName:
                                                       item['title'].toString(),
+                                                  playlistSubtitle:
+                                                      '${item['count'].toString()} Songs',
+                                                  playlistSecondarySubtitle:
+                                                      item['description']
+                                                          ?.toString(),
                                                 ),
                                               ),
                                             );
@@ -344,9 +352,7 @@ class _YouTubeState extends State<YouTube>
                                                         TextOverflow.ellipsis,
                                                   ),
                                                   Text(
-                                                    item['type'] != 'video'
-                                                        ? '${item["count"]} Tracks | ${item["description"]}'
-                                                        : '${item["count"]} | ${item["description"]}',
+                                                    item['subtitle'].toString(),
                                                     textAlign: TextAlign.center,
                                                     softWrap: false,
                                                     overflow:

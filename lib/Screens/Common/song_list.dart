@@ -187,7 +187,9 @@ class _SongsListPageState extends State<SongsListPage> {
                       title: unescape.convert(
                         widget.listItem['title']?.toString() ?? 'Songs',
                       ),
-                      subtitle: widget.listItem['subtitle']?.toString(),
+                      subtitle: '${songList.length} Songs',
+                      secondarySubtitle:
+                          widget.listItem['subtitle']?.toString(),
                       onPlayTap: () => PlayerInvoke.init(
                         songsList: songList,
                         index: 0,

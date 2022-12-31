@@ -581,7 +581,6 @@ class SaavnAPI {
         );
       }
     } catch (e) {
-      log('Error in fetchSongDetails: $e');
       Logger.root.severe('Error in fetchSongDetails: $e');
     }
     return {};

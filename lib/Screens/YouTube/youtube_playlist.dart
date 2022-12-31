@@ -33,11 +33,15 @@ import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 class YouTubePlaylist extends StatefulWidget {
   final String playlistId;
   final String playlistName;
+  final String? playlistSubtitle;
+  final String? playlistSecondarySubtitle;
   final String playlistImage;
   const YouTubePlaylist({
     super.key,
     required this.playlistId,
     required this.playlistName,
+    required this.playlistSubtitle,
+    required this.playlistSecondarySubtitle,
     required this.playlistImage,
   });
 
@@ -97,6 +101,8 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                     BouncyPlaylistHeaderScrollView(
                       scrollController: _scrollController,
                       title: widget.playlistName,
+                      subtitle: widget.playlistSubtitle,
+                      secondarySubtitle: widget.playlistSecondarySubtitle,
                       imageUrl: widget.playlistImage,
                       onPlayTap: () async {
                         setState(() {
@@ -177,6 +183,9 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                     left: 5.0,
                                   ),
                                   child: ListTile(
+                                    contentPadding: const EdgeInsets.only(
+                                      left: 15.0,
+                                    ),
                                     leading: Card(
                                       elevation: 8,
                                       shape: RoundedRectangleBorder(

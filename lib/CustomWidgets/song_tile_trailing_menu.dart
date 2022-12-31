@@ -139,17 +139,20 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
           ...mediaItem.artist.toString().split(', ').map(
                 (artist) => PopupMenuItem(
                   value: artist,
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.person_rounded,
-                        color: Theme.of(context).iconTheme.color,
-                      ),
-                      const SizedBox(width: 10.0),
-                      Text(
-                        '${AppLocalizations.of(context)!.viewArtist} ($artist)',
-                      ),
-                    ],
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.person_rounded,
+                          color: Theme.of(context).iconTheme.color,
+                        ),
+                        const SizedBox(width: 10.0),
+                        Text(
+                          '${AppLocalizations.of(context)!.viewArtist} ($artist)',
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

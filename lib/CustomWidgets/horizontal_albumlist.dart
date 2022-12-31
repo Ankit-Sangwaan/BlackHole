@@ -267,7 +267,7 @@ class HorizontalAlbumsList extends StatelessWidget {
                                   fontWeight: FontWeight.w500,
                                 ),
                               ),
-                              if (subTitle != '')
+                              if (subTitle.isNotEmpty)
                                 Text(
                                   subTitle,
                                   textAlign: TextAlign.center,
