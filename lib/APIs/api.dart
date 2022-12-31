@@ -165,6 +165,13 @@ class SaavnAPI {
                   await FormatResponse.formatSongsResponse(responseList, type),
             };
           }
+          if (type == 'mix') {
+            final List responseList = getMain['list'] as List;
+            return {
+              'songs':
+                  await FormatResponse.formatSongsResponse(responseList, type),
+            };
+          }
           final List responseList = getMain['songs'] as List;
           return {
             'songs':

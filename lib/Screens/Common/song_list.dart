@@ -128,7 +128,29 @@ class _SongsListPageState extends State<SongsListPage> {
               fetched = true;
               loading = false;
             });
-            if (value['error'].toString() != '') {
+            if (value['error'] != null && value['error'].toString() != '') {
+              ShowSnackBar().showSnackBar(
+                context,
+                'Error: ${value["error"]}',
+                duration: const Duration(seconds: 3),
+              );
+            }
+          });
+          break;
+        case 'mix':
+          SaavnAPI()
+              .getSongFromToken(
+            widget.listItem['perma_url'].toString().split('/').last,
+            'mix',
+          )
+              .then((value) {
+            setState(() {
+              songList = value['songs'] as List;
+              fetched = true;
+              loading = false;
+            });
+
+            if (value['error'] != null && value['error'].toString() != '') {
               ShowSnackBar().showSnackBar(
                 context,
                 'Error: ${value["error"]}',
@@ -149,6 +171,14 @@ class _SongsListPageState extends State<SongsListPage> {
               fetched = true;
               loading = false;
             });
+
+            if (value['error'] != null && value['error'].toString() != '') {
+              ShowSnackBar().showSnackBar(
+                context,
+                'Error: ${value["error"]}',
+                duration: const Duration(seconds: 3),
+              );
+            }
           });
           break;
         default:

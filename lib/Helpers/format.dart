@@ -54,6 +54,7 @@ class FormatResponse {
         case 'album':
         case 'playlist':
         case 'show':
+        case 'mix':
           response = await formatSingleSongResponse(responseList[i] as Map);
           break;
         default:
@@ -549,6 +550,7 @@ class FormatResponse {
         'new_trending',
         'charts',
         'new_albums',
+        'tag_mixes',
         'top_playlists',
         'radio',
         'city_mod',
