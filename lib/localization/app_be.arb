@@ -664,5 +664,7 @@
   "shareLogsSub": "Падзяліцеся логамі бягучых сеансаў",
   "@shareLogsSub": {},
   "shareLogs": "Абагуліць логі",
-  "@shareLogs": {}
+  "@shareLogs": {},
+  "radio": "Радыё",
+  "@radio": {}
 }
