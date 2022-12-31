@@ -93,9 +93,13 @@ class _SaavnHomePageState extends State<SaavnHomePage>
       case 'radio_station':
         return 'Radio • ${item['subtitle']?.toString().unescape()}';
       case 'playlist':
-        return 'Playlist • ${item['subtitle']?.toString().unescape() ?? 'JioSaavn'}';
+        return 'Playlist • ${(item['subtitle']?.toString() ?? '').isEmpty ? 'JioSaavn' : item['subtitle'].toString().unescape()}';
       case 'song':
         return 'Single • ${item['artist']?.toString().unescape()}';
+      case 'mix':
+        return 'Mix • ${(item['subtitle']?.toString() ?? '').isEmpty ? 'JioSaavn' : item['subtitle'].toString().unescape()}';
+      case 'show':
+        return 'Podcast • ${(item['subtitle']?.toString() ?? '').isEmpty ? 'JioSaavn' : item['subtitle'].toString().unescape()}';
       case 'album':
         final artists = item['more_info']?['artistMap']?['artists']
             .map((artist) => artist['name'])
@@ -325,7 +329,8 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                                             FontWeight.w500,
                                                       ),
                                                     ),
-                                                    if (subtitle != null)
+                                                    if (subtitle != null &&
+                                                        subtitle.isNotEmpty)
                                                       Text(
                                                         subtitle,
                                                         textAlign:
@@ -467,7 +472,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                   .where((e) => e['type'] == 'song')
                                   .toList();
                               final subTitle = getSubTitle(item);
-                              item['subtitle'] = subTitle;
+                              item['subTitle'] = subTitle;
                               if (item.isEmpty) return const SizedBox();
                               return GestureDetector(
                                 onLongPress: () {
