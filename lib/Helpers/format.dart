@@ -35,8 +35,10 @@ class FormatResponse {
 
     final Uint8List encrypted = base64.decode(input);
     final List<int> decrypted = desECB.decrypt(encrypted);
-    final String decoded =
-        utf8.decode(decrypted).replaceAll(RegExp(r'\.mp4.*'), '.mp4');
+    final String decoded = utf8
+        .decode(decrypted)
+        .replaceAll(RegExp(r'\.mp4.*'), '.mp4')
+        .replaceAll(RegExp(r'\.m4a.*'), '.m4a');
     return decoded.replaceAll('http:', 'https:');
   }
 
@@ -51,16 +53,19 @@ class FormatResponse {
         case 'song':
         case 'album':
         case 'playlist':
+        case 'show':
           response = await formatSingleSongResponse(responseList[i] as Map);
           break;
         default:
           break;
       }
 
-      if (response!.containsKey('Error')) {
+      if (response != null && response.containsKey('Error')) {
         log('Error at index $i inside FormatSongsResponse: ${response["Error"]}');
       } else {
-        searchedList.add(response);
+        if (response != null) {
+          searchedList.add(response);
+        }
       }
     }
     return searchedList;

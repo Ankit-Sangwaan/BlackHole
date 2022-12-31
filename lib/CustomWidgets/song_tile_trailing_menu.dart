@@ -88,8 +88,9 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
           child: Row(
             children: [
               Icon(
-                Icons.queue_music_rounded,
+                Icons.playlist_play_rounded,
                 color: Theme.of(context).iconTheme.color,
+                size: 26.0,
               ),
               const SizedBox(width: 10.0),
               Text(AppLocalizations.of(context)!.playNext),
@@ -101,7 +102,7 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
           child: Row(
             children: [
               Icon(
-                Icons.playlist_add_rounded,
+                Icons.queue_music_rounded,
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),
@@ -269,8 +270,9 @@ class _YtSongTileTrailingMenuState extends State<YtSongTileTrailingMenu> {
           child: Row(
             children: [
               Icon(
-                Icons.queue_music_rounded,
+                Icons.playlist_play_rounded,
                 color: Theme.of(context).iconTheme.color,
+                size: 26.0,
               ),
               const SizedBox(width: 10.0),
               Text(AppLocalizations.of(context)!.playNext),
@@ -282,7 +284,7 @@ class _YtSongTileTrailingMenuState extends State<YtSongTileTrailingMenu> {
           child: Row(
             children: [
               Icon(
-                Icons.playlist_add_rounded,
+                Icons.queue_music_rounded,
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),

@@ -55,7 +55,7 @@ class _PlaylistPopupMenuState extends State<PlaylistPopupMenu> {
           child: Row(
             children: [
               Icon(
-                Icons.playlist_add_rounded,
+                Icons.queue_music_rounded,
                 color: Theme.of(context).iconTheme.color,
               ),
               const SizedBox(width: 10.0),

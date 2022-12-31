@@ -87,7 +87,13 @@ class SaavnAPI {
       return myClient.get(url, headers: headers);
     }
     return get(url, headers: headers).onError((error, stackTrace) {
-      return Response(error.toString(), 404);
+      return Response(
+        {
+          'status': 'failure',
+          'error': error.toString(),
+        }.toString(),
+        404,
+      );
     });
   }
 
@@ -135,8 +141,7 @@ class SaavnAPI {
           }
         }
       } catch (e) {
-        log('Error in getSongFromToken: $e');
-        Logger.root.severe('Error in getSongFromToken: $e');
+        Logger.root.severe('Error in getSongFromToken with -1: $e');
       }
       return {'songs': List.empty()};
     } else {
@@ -146,7 +151,20 @@ class SaavnAPI {
         final res = await getResponse(params);
         if (res.statusCode == 200) {
           final Map getMain = json.decode(res.body) as Map;
-          if (type == 'album' || type == 'playlist') return getMain;
+          if (getMain['status'] == 'failure') {
+            Logger.root.severe('Error in getSongFromToken response: $getMain');
+            return {'songs': List.empty()};
+          }
+          if (type == 'album' || type == 'playlist') {
+            return getMain;
+          }
+          if (type == 'show') {
+            final List responseList = getMain['episodes'] as List;
+            return {
+              'songs':
+                  await FormatResponse.formatSongsResponse(responseList, type),
+            };
+          }
           final List responseList = getMain['songs'] as List;
           return {
             'songs':
@@ -155,7 +173,6 @@ class SaavnAPI {
           };
         }
       } catch (e) {
-        log('Error in getSongFromToken: $e');
         Logger.root.severe('Error in getSongFromToken: $e');
       }
       return {'songs': List.empty()};

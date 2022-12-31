@@ -32,6 +32,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:html_unescape/html_unescape_small.dart';
+import 'package:logging/logging.dart';
 import 'package:share_plus/share_plus.dart';
 
 class SongsListPage extends StatefulWidget {
@@ -77,75 +78,99 @@ class _SongsListPageState extends State<SongsListPage> {
 
   void _fetchSongs() {
     loading = true;
-    switch (widget.listItem['type'].toString()) {
-      case 'songs':
-        SaavnAPI()
-            .fetchSongSearchResults(
-          searchQuery: widget.listItem['id'].toString(),
-          page: page,
-        )
-            .then((value) {
+    try {
+      switch (widget.listItem['type'].toString()) {
+        case 'songs':
+          SaavnAPI()
+              .fetchSongSearchResults(
+            searchQuery: widget.listItem['id'].toString(),
+            page: page,
+          )
+              .then((value) {
+            setState(() {
+              songList.addAll(value['songs'] as List);
+              fetched = true;
+              loading = false;
+            });
+            if (value['error'].toString() != '') {
+              ShowSnackBar().showSnackBar(
+                context,
+                'Error: ${value["error"]}',
+                duration: const Duration(seconds: 3),
+              );
+            }
+          });
+          break;
+        case 'album':
+          SaavnAPI()
+              .fetchAlbumSongs(widget.listItem['id'].toString())
+              .then((value) {
+            setState(() {
+              songList = value['songs'] as List;
+              fetched = true;
+              loading = false;
+            });
+            if (value['error'].toString() != '') {
+              ShowSnackBar().showSnackBar(
+                context,
+                'Error: ${value["error"]}',
+                duration: const Duration(seconds: 3),
+              );
+            }
+          });
+          break;
+        case 'playlist':
+          SaavnAPI()
+              .fetchPlaylistSongs(widget.listItem['id'].toString())
+              .then((value) {
+            setState(() {
+              songList = value['songs'] as List;
+              fetched = true;
+              loading = false;
+            });
+            if (value['error'].toString() != '') {
+              ShowSnackBar().showSnackBar(
+                context,
+                'Error: ${value["error"]}',
+                duration: const Duration(seconds: 3),
+              );
+            }
+          });
+          break;
+        case 'show':
+          SaavnAPI()
+              .getSongFromToken(
+            widget.listItem['perma_url'].toString().split('/').last,
+            'show',
+          )
+              .then((value) {
+            setState(() {
+              songList = value['songs'] as List;
+              fetched = true;
+              loading = false;
+            });
+          });
+          break;
+        default:
           setState(() {
-            songList.addAll(value['songs'] as List);
             fetched = true;
             loading = false;
           });
-          if (value['error'].toString() != '') {
-            ShowSnackBar().showSnackBar(
-              context,
-              'Error: ${value["error"]}',
-              duration: const Duration(seconds: 3),
-            );
-          }
-        });
-        break;
-      case 'album':
-        SaavnAPI()
-            .fetchAlbumSongs(widget.listItem['id'].toString())
-            .then((value) {
-          setState(() {
-            songList = value['songs'] as List;
-            fetched = true;
-            loading = false;
-          });
-          if (value['error'].toString() != '') {
-            ShowSnackBar().showSnackBar(
-              context,
-              'Error: ${value["error"]}',
-              duration: const Duration(seconds: 3),
-            );
-          }
-        });
-        break;
-      case 'playlist':
-        SaavnAPI()
-            .fetchPlaylistSongs(widget.listItem['id'].toString())
-            .then((value) {
-          setState(() {
-            songList = value['songs'] as List;
-            fetched = true;
-            loading = false;
-          });
-          if (value['error'].toString() != '') {
-            ShowSnackBar().showSnackBar(
-              context,
-              'Error: ${value["error"]}',
-              duration: const Duration(seconds: 3),
-            );
-          }
-        });
-        break;
-      default:
-        setState(() {
-          fetched = true;
-          loading = false;
-        });
-        ShowSnackBar().showSnackBar(
-          context,
-          'Error: Unsupported Type ${widget.listItem['type']}',
-          duration: const Duration(seconds: 3),
-        );
-        break;
+          ShowSnackBar().showSnackBar(
+            context,
+            'Error: Unsupported Type ${widget.listItem['type']}',
+            duration: const Duration(seconds: 3),
+          );
+          break;
+      }
+    } catch (e) {
+      setState(() {
+        fetched = true;
+        loading = false;
+      });
+      Logger.root.severe(
+        'Error in song_list with type ${widget.listItem["type"].toString()}: $e',
+      );
     }
   }
 
@@ -164,11 +189,12 @@ class _SongsListPageState extends State<SongsListPage> {
                   : BouncyPlaylistHeaderScrollView(
                       scrollController: _scrollController,
                       actions: [
-                        MultiDownloadButton(
-                          data: songList,
-                          playlistName:
-                              widget.listItem['title']?.toString() ?? 'Songs',
-                        ),
+                        if (songList.isNotEmpty)
+                          MultiDownloadButton(
+                            data: songList,
+                            playlistName:
+                                widget.listItem['title']?.toString() ?? 'Songs',
+                          ),
                         IconButton(
                           icon: const Icon(Icons.share_rounded),
                           tooltip: AppLocalizations.of(context)!.share,
