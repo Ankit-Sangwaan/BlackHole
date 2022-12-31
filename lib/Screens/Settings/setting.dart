@@ -34,7 +34,7 @@ import 'package:blackhole/Screens/Settings/player_gradient.dart';
 import 'package:blackhole/Screens/Top Charts/top.dart' as top_screen;
 import 'package:blackhole/Services/ext_storage_provider.dart';
 import 'package:blackhole/main.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+// import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -3519,18 +3519,18 @@ class _SettingPageState extends State<SettingPage> {
                                   value['LatestVersion'].toString(),
                                   appVersion!,
                                 )) {
-                                  List? abis = await Hive.box('settings')
-                                      .get('supportedAbis') as List?;
+                                  // List? abis = await Hive.box('settings')
+                                  //     .get('supportedAbis') as List?;
 
-                                  if (abis == null) {
-                                    final DeviceInfoPlugin deviceInfo =
-                                        DeviceInfoPlugin();
-                                    final AndroidDeviceInfo androidDeviceInfo =
-                                        await deviceInfo.androidInfo;
-                                    abis = androidDeviceInfo.supportedAbis;
-                                    await Hive.box('settings')
-                                        .put('supportedAbis', abis);
-                                  }
+                                  // if (abis == null) {
+                                  //   final DeviceInfoPlugin deviceInfo =
+                                  //       DeviceInfoPlugin();
+                                  //   final AndroidDeviceInfo androidDeviceInfo =
+                                  //       await deviceInfo.androidInfo;
+                                  //   abis = androidDeviceInfo.supportedAbis;
+                                  //   await Hive.box('settings')
+                                  //       .put('supportedAbis', abis);
+                                  // }
                                   ShowSnackBar().showSnackBar(
                                     context,
                                     AppLocalizations.of(context)!
@@ -3544,33 +3544,38 @@ class _SettingPageState extends State<SettingPage> {
                                           AppLocalizations.of(context)!.update,
                                       onPressed: () {
                                         Navigator.pop(context);
-                                        if (abis!.contains('arm64-v8a')) {
-                                          launchUrl(
-                                            Uri.parse(
-                                              value['arm64-v8a'] as String,
-                                            ),
-                                            mode:
-                                                LaunchMode.externalApplication,
-                                          );
-                                        } else {
-                                          if (abis.contains('armeabi-v7a')) {
-                                            launchUrl(
-                                              Uri.parse(
-                                                value['armeabi-v7a'] as String,
-                                              ),
-                                              mode: LaunchMode
-                                                  .externalApplication,
-                                            );
-                                          } else {
-                                            launchUrl(
-                                              Uri.parse(
-                                                value['universal'] as String,
-                                              ),
-                                              mode: LaunchMode
-                                                  .externalApplication,
-                                            );
-                                          }
-                                        }
+                                        launchUrl(
+                                          Uri.parse(
+                                            value['LatestUrl'].toString(),
+                                          ),
+                                        );
+                                        // if (abis!.contains('arm64-v8a')) {
+                                        //   launchUrl(
+                                        //     Uri.parse(
+                                        //       value['arm64-v8a'] as String,
+                                        //     ),
+                                        //     mode:
+                                        //         LaunchMode.externalApplication,
+                                        //   );
+                                        // } else {
+                                        //   if (abis.contains('armeabi-v7a')) {
+                                        //     launchUrl(
+                                        //       Uri.parse(
+                                        //         value['armeabi-v7a'] as String,
+                                        //       ),
+                                        //       mode: LaunchMode
+                                        //           .externalApplication,
+                                        //     );
+                                        //   } else {
+                                        //     launchUrl(
+                                        //       Uri.parse(
+                                        //         value['universal'] as String,
+                                        //       ),
+                                        //       mode: LaunchMode
+                                        //           .externalApplication,
+                                        //     );
+                                        //   }
+                                        // }
                                       },
                                     ),
                                   );
@@ -4056,8 +4061,8 @@ class SpotifyCountry {
                     onChanged: (value) {
                       top_screen.localSongs = [];
                       region = countries[idx];
-                      top_screen.fetched = false;
-                      top_screen.fetchFinished.value = false;
+                      top_screen.localFetched = false;
+                      top_screen.localFetchFinished.value = false;
                       Hive.box('settings').put('region', region);
                       Navigator.pop(context);
                     },
@@ -4066,8 +4071,7 @@ class SpotifyCountry {
                   onTap: () {
                     top_screen.localSongs = [];
                     region = countries[idx];
-                    top_screen.fetched = false;
-                    top_screen.fetchFinished.value = false;
+                    top_screen.localFetchFinished.value = false;
                     Hive.box('settings').put('region', region);
                     Navigator.pop(context);
                   },

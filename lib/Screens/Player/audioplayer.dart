@@ -1036,55 +1036,63 @@ class NowPlayingStream extends StatelessWidget {
                   selected: index == queueState.queueIndex,
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
-                    children: [
-                      if (index == queueState.queueIndex)
-                        IconButton(
-                          icon: const Icon(
-                            Icons.bar_chart_rounded,
-                          ),
-                          tooltip: AppLocalizations.of(context)!.playing,
-                          onPressed: () {},
-                        )
-                      else if (queue[index]
-                          .extras!['url']
-                          .toString()
-                          .startsWith('http')) ...[
-                        LikeButton(
-                          mediaItem: queue[index],
-                        ),
-                        DownloadButton(
-                          icon: 'download',
-                          size: 25.0,
-                          data: {
-                            'id': queue[index].id,
-                            'artist': queue[index].artist.toString(),
-                            'album': queue[index].album.toString(),
-                            'image': queue[index].artUri.toString(),
-                            'duration':
-                                queue[index].duration!.inSeconds.toString(),
-                            'title': queue[index].title,
-                            'url': queue[index].extras?['url'].toString(),
-                            'year': queue[index].extras?['year'].toString(),
-                            'language':
-                                queue[index].extras?['language'].toString(),
-                            'genre': queue[index].genre?.toString(),
-                            '320kbps': queue[index].extras?['320kbps'],
-                            'has_lyrics': queue[index].extras?['has_lyrics'],
-                            'release_date':
-                                queue[index].extras?['release_date'],
-                            'album_id': queue[index].extras?['album_id'],
-                            'subtitle': queue[index].extras?['subtitle'],
-                            'perma_url': queue[index].extras?['perma_url'],
-                          },
-                        )
-                      ] else
-                        const SizedBox(),
-                      ReorderableDragStartListener(
-                        index: index,
-                        enabled: index != queueState.queueIndex,
-                        child: const Icon(Icons.drag_handle_rounded),
-                      ),
-                    ],
+                    children: (index == queueState.queueIndex)
+                        ? [
+                            IconButton(
+                              icon: const Icon(
+                                Icons.bar_chart_rounded,
+                              ),
+                              tooltip: AppLocalizations.of(context)!.playing,
+                              onPressed: () {},
+                            )
+                          ]
+                        : [
+                            if (queue[index]
+                                .extras!['url']
+                                .toString()
+                                .startsWith('http')) ...[
+                              LikeButton(
+                                mediaItem: queue[index],
+                              ),
+                              DownloadButton(
+                                icon: 'download',
+                                size: 25.0,
+                                data: {
+                                  'id': queue[index].id,
+                                  'artist': queue[index].artist.toString(),
+                                  'album': queue[index].album.toString(),
+                                  'image': queue[index].artUri.toString(),
+                                  'duration': queue[index]
+                                      .duration!
+                                      .inSeconds
+                                      .toString(),
+                                  'title': queue[index].title,
+                                  'url': queue[index].extras?['url'].toString(),
+                                  'year':
+                                      queue[index].extras?['year'].toString(),
+                                  'language': queue[index]
+                                      .extras?['language']
+                                      .toString(),
+                                  'genre': queue[index].genre?.toString(),
+                                  '320kbps': queue[index].extras?['320kbps'],
+                                  'has_lyrics':
+                                      queue[index].extras?['has_lyrics'],
+                                  'release_date':
+                                      queue[index].extras?['release_date'],
+                                  'album_id': queue[index].extras?['album_id'],
+                                  'subtitle': queue[index].extras?['subtitle'],
+                                  'perma_url':
+                                      queue[index].extras?['perma_url'],
+                                },
+                              )
+                            ],
+                            ReorderableDragStartListener(
+                              key: Key(queue[index].id),
+                              index: index,
+                              enabled: index != queueState.queueIndex,
+                              child: const Icon(Icons.drag_handle_rounded),
+                            ),
+                          ],
                   ),
                   leading: Row(
                     mainAxisSize: MainAxisSize.min,
@@ -1395,7 +1403,7 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                         ? null
                         : () {
                             tapped.value = true;
-                            Future.delayed(const Duration(seconds: 3),
+                            Future.delayed(const Duration(seconds: 2),
                                 () async {
                               tapped.value = false;
                             });
@@ -1597,128 +1605,140 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                       onTap: () {
                         tapped.value = false;
                       },
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          gradient: RadialGradient(
-                            colors: [
-                              Colors.black.withOpacity(0.6),
-                              Colors.black.withOpacity(0.7),
-                            ],
-                          ),
+                      child: Card(
+                        color: Colors.black26,
+                        elevation: 0.0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
                         ),
-                        child: Column(
-                          children: [
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: IconButton(
-                                  tooltip:
-                                      AppLocalizations.of(context)!.songInfo,
-                                  onPressed: () {
-                                    final Map details =
-                                        MediaItemConverter.mediaItemToMap(
-                                      widget.mediaItem,
-                                    );
-                                    details['duration'] =
-                                        '${int.parse(details["duration"].toString()) ~/ 60}:${int.parse(details["duration"].toString()) % 60}';
-                                    // style: Theme.of(context).textTheme.caption,
-                                    if (widget.mediaItem.extras?['size'] !=
-                                        null) {
-                                      details.addEntries([
-                                        MapEntry(
-                                          'date_modified',
-                                          DateTime.fromMillisecondsSinceEpoch(
-                                            int.parse(
-                                                  widget.mediaItem
-                                                      .extras!['date_modified']
-                                                      .toString(),
-                                                ) *
-                                                1000,
-                                          ).toString().split('.').first,
-                                        ),
-                                        MapEntry(
-                                          'size',
-                                          '${((widget.mediaItem.extras!['size'] as int) / (1024 * 1024)).toStringAsFixed(2)} MB',
-                                        ),
-                                      ]);
-                                    }
-                                    PopupDialog().showPopup(
-                                      context: context,
-                                      child: GradientCard(
-                                        child: SingleChildScrollView(
-                                          physics:
-                                              const BouncingScrollPhysics(),
-                                          padding: const EdgeInsets.all(25.0),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: details.keys.map((e) {
-                                              return SelectableText.rich(
-                                                TextSpan(
-                                                  children: <TextSpan>[
-                                                    TextSpan(
-                                                      text:
-                                                          '${e[0].toUpperCase()}${e.substring(1)}: '
-                                                              .replaceAll(
-                                                        '_',
-                                                        ' ',
+                        clipBehavior: Clip.antiAlias,
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: RadialGradient(
+                              colors: [
+                                Colors.black.withOpacity(0.4),
+                                Colors.black.withOpacity(0.7),
+                              ],
+                            ),
+                          ),
+                          child: Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: IconButton(
+                                    tooltip:
+                                        AppLocalizations.of(context)!.songInfo,
+                                    onPressed: () {
+                                      final Map details =
+                                          MediaItemConverter.mediaItemToMap(
+                                        widget.mediaItem,
+                                      );
+                                      details['duration'] =
+                                          '${int.parse(details["duration"].toString()) ~/ 60}:${int.parse(details["duration"].toString()) % 60}';
+                                      // style: Theme.of(context).textTheme.caption,
+                                      if (widget.mediaItem.extras?['size'] !=
+                                          null) {
+                                        details.addEntries([
+                                          MapEntry(
+                                            'date_modified',
+                                            DateTime.fromMillisecondsSinceEpoch(
+                                              int.parse(
+                                                    widget
+                                                        .mediaItem
+                                                        .extras![
+                                                            'date_modified']
+                                                        .toString(),
+                                                  ) *
+                                                  1000,
+                                            ).toString().split('.').first,
+                                          ),
+                                          MapEntry(
+                                            'size',
+                                            '${((widget.mediaItem.extras!['size'] as int) / (1024 * 1024)).toStringAsFixed(2)} MB',
+                                          ),
+                                        ]);
+                                      }
+                                      PopupDialog().showPopup(
+                                        context: context,
+                                        child: GradientCard(
+                                          child: SingleChildScrollView(
+                                            physics:
+                                                const BouncingScrollPhysics(),
+                                            padding: const EdgeInsets.all(25.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: details.keys.map((e) {
+                                                return SelectableText.rich(
+                                                  TextSpan(
+                                                    children: <TextSpan>[
+                                                      TextSpan(
+                                                        text:
+                                                            '${e[0].toUpperCase()}${e.substring(1)}: '
+                                                                .replaceAll(
+                                                          '_',
+                                                          ' ',
+                                                        ),
+                                                        style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .textTheme
+                                                                  .bodyText1!
+                                                                  .color,
+                                                        ),
                                                       ),
-                                                      style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        color: Theme.of(context)
-                                                            .textTheme
-                                                            .bodyText1!
-                                                            .color,
+                                                      TextSpan(
+                                                        text: details[e]
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.normal,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    TextSpan(
-                                                      text:
-                                                          details[e].toString(),
-                                                      style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.normal,
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                showCursor: true,
-                                                cursorColor: Colors.black,
-                                                cursorRadius:
-                                                    const Radius.circular(5),
-                                              );
-                                            }).toList(),
+                                                    ],
+                                                  ),
+                                                  showCursor: true,
+                                                  cursorColor: Colors.black,
+                                                  cursorRadius:
+                                                      const Radius.circular(5),
+                                                );
+                                              }).toList(),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                  icon: const Icon(Icons.info_rounded),
-                                  color: Theme.of(context).iconTheme.color,
+                                      );
+                                    },
+                                    icon: const Icon(Icons.info_rounded),
+                                    color: Theme.of(context).iconTheme.color,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const Spacer(),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: IconButton(
-                                  tooltip: AppLocalizations.of(context)!
-                                      .addToPlaylist,
-                                  onPressed: () {
-                                    AddToPlaylist().addToPlaylist(
-                                      context,
-                                      widget.mediaItem,
-                                    );
-                                  },
-                                  icon: const Icon(Icons.playlist_add_rounded),
-                                  color: Theme.of(context).iconTheme.color,
+                              const Spacer(),
+                              Align(
+                                alignment: Alignment.bottomRight,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: IconButton(
+                                    tooltip: AppLocalizations.of(context)!
+                                        .addToPlaylist,
+                                    onPressed: () {
+                                      AddToPlaylist().addToPlaylist(
+                                        context,
+                                        widget.mediaItem,
+                                      );
+                                    },
+                                    icon:
+                                        const Icon(Icons.playlist_add_rounded),
+                                    color: Theme.of(context).iconTheme.color,
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),
@@ -1946,8 +1966,8 @@ class NameNControls extends StatelessWidget {
                           mediaItem.duration ?? Duration.zero,
                         );
                     return SeekBar(
-                      width: width,
-                      height: height,
+                      // width: width,
+                      // height: height,
                       duration: positionData.duration,
                       position: positionData.position,
                       bufferedPosition: positionData.bufferedPosition,

@@ -30,8 +30,8 @@ class SeekBar extends StatefulWidget {
   final Duration position;
   final Duration bufferedPosition;
   final bool offline;
-  final double width;
-  final double height;
+  // final double width;
+  // final double height;
   final ValueChanged<Duration>? onChanged;
   final ValueChanged<Duration>? onChangeEnd;
 
@@ -40,8 +40,8 @@ class SeekBar extends StatefulWidget {
     required this.position,
     required this.offline,
     required this.audioHandler,
-    required this.width,
-    required this.height,
+    // required this.width,
+    // required this.height,
     this.bufferedPosition = Duration.zero,
     this.onChanged,
     this.onChangeEnd,
@@ -133,7 +133,7 @@ class _SeekBarState extends State<SeekBar> {
         //   ),
         Positioned(
           right: 25.0,
-          top: widget.height / 30,
+          top: 10,
           child: StreamBuilder<double>(
             stream: widget.audioHandler.speed,
             builder: (context, snapshot) {
@@ -165,7 +165,7 @@ class _SeekBarState extends State<SeekBar> {
         ),
         Positioned(
           left: 25.0,
-          bottom: widget.height / 30,
+          bottom: 10,
           child: Text(
             RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
                     .firstMatch('$_position')
@@ -175,7 +175,7 @@ class _SeekBarState extends State<SeekBar> {
         ),
         Positioned(
           right: 25.0,
-          bottom: widget.height / 30,
+          bottom: 10,
           child: Text(
             RegExp(r'((^0*[1-9]\d*:)?\d{2}:\d{2})\.\d+$')
                     .firstMatch('$_duration')

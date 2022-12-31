@@ -4,7 +4,7 @@ description: An Open Source Music Player App.
 # Prevent accidental publishing to pub.dev.
 publish_to: "none"
 
-version: 1.15.4+35
+version: 1.15.5+36
 
 environment:
   sdk: ">=2.17.0 <3.0.0"
@@ -18,7 +18,7 @@ dependencies:
   carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.5
   dart_des: ^1.0.2
-  device_info_plus: ^8.0.0
+  # device_info_plus: ^8.0.0 # removed coz of fdroid
   file_picker: ^5.2.4
   flip_card: ^0.6.0
   flutter:

@@ -34,8 +34,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 List localSongs = [];
 List globalSongs = [];
-bool fetched = false;
-final ValueNotifier<bool> fetchFinished = ValueNotifier<bool>(false);
+bool localFetched = false;
+bool globalFetched = false;
+final ValueNotifier<bool> localFetchFinished = ValueNotifier<bool>(false);
+final ValueNotifier<bool> globalFetchFinished = ValueNotifier<bool>(false);
 
 class TopCharts extends StatefulWidget {
   final PageController pageController;
@@ -47,8 +49,11 @@ class TopCharts extends StatefulWidget {
 
 class _TopChartsState extends State<TopCharts>
     with AutomaticKeepAliveClientMixin<TopCharts> {
+  final ValueNotifier<bool> localFetchFinished = ValueNotifier<bool>(false);
+
   @override
   bool get wantKeepAlive => true;
+
   @override
   Widget build(BuildContext cntxt) {
     super.build(context);
@@ -231,7 +236,11 @@ Future<void> scrapData(String type, {bool signIn = false}) async {
               localSongs = temp;
             }
           }
-          fetchFinished.value = true;
+          if (type == 'Global') {
+            globalFetchFinished.value = true;
+          } else {
+            localFetchFinished.value = true;
+          }
         }
       },
     );
@@ -264,7 +273,11 @@ Future<void> scrapData(String type, {bool signIn = false}) async {
         localSongs = temp;
       }
     }
-    fetchFinished.value = true;
+    if (type == 'Global') {
+      globalFetchFinished.value = true;
+    } else {
+      localFetchFinished.value = true;
+    }
   }
 }
 
@@ -278,7 +291,11 @@ class TopPage extends StatefulWidget {
 class _TopPageState extends State<TopPage>
     with AutomaticKeepAliveClientMixin<TopPage> {
   Future<void> getCachedData(String type) async {
-    fetched = true;
+    if (type == 'Global') {
+      globalFetched = true;
+    } else {
+      localFetched = true;
+    }
     if (type == 'Global') {
       globalSongs = await Hive.box('cache')
           .get('${type}_chart', defaultValue: []) as List;
@@ -303,12 +320,12 @@ class _TopPageState extends State<TopPage>
   Widget build(BuildContext context) {
     super.build(context);
     final bool isGlobal = widget.type == 'Global';
-    if (!fetched) {
+    if ((isGlobal && !globalFetched) || (!isGlobal && !localFetched)) {
       getCachedData(widget.type);
       scrapData(widget.type);
     }
     return ValueListenableBuilder(
-      valueListenable: fetchFinished,
+      valueListenable: isGlobal ? globalFetchFinished : localFetchFinished,
       builder: (BuildContext context, bool value, Widget? child) {
         final List showList = isGlobal ? globalSongs : localSongs;
         return Column(

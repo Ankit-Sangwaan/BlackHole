@@ -43,7 +43,8 @@ class PlayerInvoke {
   }) async {
     final int globalIndex = index < 0 ? 0 : index;
     bool? offline = isOffline;
-    if (shuffle) songsList.shuffle();
+    final List finalList = songsList.toList();
+    if (shuffle) finalList.shuffle();
     if (offline == null) {
       if (audioHandler.mediaItem.value?.extras!['url'].startsWith('http')
           as bool) {
@@ -62,12 +63,12 @@ class PlayerInvoke {
       }
       if (offline) {
         fromDownloads
-            ? setDownValues(songsList, globalIndex)
+            ? setDownValues(finalList, globalIndex)
             : (Platform.isWindows || Platform.isLinux)
-                ? setOffDesktopValues(songsList, globalIndex)
-                : setOffValues(songsList, globalIndex);
+                ? setOffDesktopValues(finalList, globalIndex)
+                : setOffValues(finalList, globalIndex);
       } else {
-        setValues(songsList, globalIndex, recommend: recommend);
+        setValues(finalList, globalIndex, recommend: recommend);
       }
     }
   }
