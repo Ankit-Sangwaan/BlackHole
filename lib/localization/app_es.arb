@@ -672,5 +672,7 @@
   "shareLogs": "Compartir los registros",
   "@shareLogs": {},
   "shareLogsSub": "Compartir los registros de las sesiones actuales",
-  "@shareLogsSub": {}
+  "@shareLogsSub": {},
+  "radio": "Radio",
+  "@radio": {}
 }
