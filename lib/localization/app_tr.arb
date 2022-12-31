@@ -676,5 +676,7 @@
   "shareLogs": "Günlükleri Paylaş",
   "@shareLogs": {},
   "shareLogsSub": "Geçerli oturum günlüklerini paylaşın",
-  "@shareLogsSub": {}
+  "@shareLogsSub": {},
+  "radio": "Radyo",
+  "@radio": {}
 }
