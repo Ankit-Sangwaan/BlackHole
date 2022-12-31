@@ -664,5 +664,7 @@
   "shareLogs": "ਲੌਗ ਸ਼ੇਅਰ ਕਰੋ",
   "@shareLogs": {},
   "shareLogsSub": "ਮੌਜੂਦਾ ਸੈਸ਼ਨਾਂ ਦੇ ਲੌਗਾਂ ਨੂੰ ਸਾਂਝਾ ਕਰੋ",
-  "@shareLogsSub": {}
+  "@shareLogsSub": {},
+  "radio": "ਰੇਡੀਓ",
+  "@radio": {}
 }
