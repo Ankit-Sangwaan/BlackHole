@@ -32,6 +32,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
+
       # Setup the flutter environment.
       - uses: subosito/flutter-action@v2
         with:
@@ -43,7 +44,7 @@ jobs:
           echo keyPassword=\${{ secrets.KEY_PASSWORD }} > ${{env.PROPERTIES_PATH}}
           echo keyAlias=\${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
           echo storeFile=\${{ secrets.STORE_FILE }} >> ${{env.PROPERTIES_PATH}}
-          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ${{ secrets.STORE_FILE }}
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > \${{ secrets.STORE_FILE }}
 
       # Get flutter dependencies.
       - run: flutter pub get
