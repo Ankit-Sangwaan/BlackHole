@@ -36,7 +36,7 @@ import 'package:blackhole/Screens/Settings/setting.dart';
 import 'package:blackhole/Screens/Top Charts/top.dart';
 import 'package:blackhole/Screens/YouTube/youtube_home.dart';
 import 'package:blackhole/Services/ext_storage_provider.dart';
-// import 'package:device_info_plus/device_info_plus.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -150,16 +150,16 @@ class _HomePageState extends State<HomePage> {
               value['LatestVersion'] as String,
               appVersion!,
             )) {
-              // List? abis =
-              // await Hive.box('settings').get('supportedAbis') as List?;
+              List? abis =
+                  await Hive.box('settings').get('supportedAbis') as List?;
 
-              // if (abis == null) {
-              // final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-              // final AndroidDeviceInfo androidDeviceInfo =
-              //     await deviceInfo.androidInfo;
-              // abis = androidDeviceInfo.supportedAbis;
-              // await Hive.box('settings').put('supportedAbis', abis);
-              // }
+              if (abis == null) {
+                final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                final AndroidDeviceInfo androidDeviceInfo =
+                    await deviceInfo.androidInfo;
+                abis = androidDeviceInfo.supportedAbis;
+                await Hive.box('settings').put('supportedAbis', abis);
+              }
 
               ShowSnackBar().showSnackBar(
                 context,
