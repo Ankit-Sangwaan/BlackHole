@@ -74,9 +74,11 @@ packages:
   audiotagger:
     dependency: "direct main"
     description:
-      name: audiotagger
-      url: "https://pub.dartlang.org"
-    source: hosted
+      path: "."
+      ref: "90f2db5"
+      resolved-ref: "90f2db54680c25d11e279466044ba13fd701bad7"
+      url: "https://github.com/Sangwan5688/Audiotagger"
+    source: git
     version: "2.2.1"
   boolean_selector:
     dependency: transitive
@@ -190,6 +192,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.2"
+  device_info_plus:
+    dependency: "direct main"
+    description:
+      name: device_info_plus
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "8.0.0"
+  device_info_plus_platform_interface:
+    dependency: transitive
+    description:
+      name: device_info_plus_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.0.0"
   fading_edge_scrollview:
     dependency: transitive
     description:

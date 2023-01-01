@@ -12,13 +12,16 @@ environment:
 dependencies:
   app_links: 2.2.2
   audio_service: ^0.18.8
-  audiotagger: ^2.2.1
+  audiotagger:
+    git:
+      url: https://github.com/Sangwan5688/Audiotagger
+      ref: 90f2db5
   # bitsdojo_window: ^0.1.1+1 #For Desktops
   cached_network_image: ^3.2.3
   carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.5
   dart_des: ^1.0.2
-  # device_info_plus: ^8.0.0 # removed coz of fdroid
+  device_info_plus: ^8.0.0
   file_picker: ^5.2.4
   flip_card: ^0.6.0
   flutter:
