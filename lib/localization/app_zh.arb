@@ -351,7 +351,7 @@
   "@ok": {},
   "rename": "重命名",
   "@rename": {},
-  "showHere": "显示",
+  "showHere": "在此显示",
   "@showHere": {},
   "miniButtonsSub": "点击修改音乐通知界面显示的按钮",
   "@miniButtonsSub": {},
@@ -674,5 +674,11 @@
   "viral": "飙升",
   "@viral": {},
   "signInSpotify": "登录 Spotify",
-  "@signInSpotify": {}
+  "@signInSpotify": {},
+  "shareLogsSub": "分享当前会话日志",
+  "@shareLogsSub": {},
+  "radio": "电台",
+  "@radio": {},
+  "shareLogs": "分享日志",
+  "@shareLogs": {}
 }
