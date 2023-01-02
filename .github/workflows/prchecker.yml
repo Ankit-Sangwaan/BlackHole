@@ -41,10 +41,10 @@ jobs:
 
       - run: |
           echo storePassword=${{ secrets.STORE_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
-          echo keyPassword=${{ secrets.KEY_PASSWORD }} > ${{env.PROPERTIES_PATH}}
+          echo keyPassword=${{ secrets.KEY_PASSWORD }} >> ${{env.PROPERTIES_PATH}}
           echo keyAlias=${{ secrets.KEY_ALIAS }} >> ${{env.PROPERTIES_PATH}}
           echo storeFile=/home/runner/work/BlackHole/BlackHole/android/app/keystore.jks >> ${{env.PROPERTIES_PATH}}
-          echo "${{ secrets.KEYSTORE }}" | base64 --decode > /home/runner/work/BlackHole/BlackHole/android/app/keystore.jks
+          echo ${{ secrets.KEYSTORE }} | base64 --decode > /home/runner/work/BlackHole/BlackHole/android/app/keystore.jks
 
       # Get flutter dependencies.
       - run: flutter pub get
