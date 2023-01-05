@@ -668,5 +668,7 @@
   "shareLogs": "Condividi i registri",
   "@shareLogs": {},
   "shareLogsSub": "Condividi i registri delle sessioni correnti",
-  "@shareLogsSub": {}
+  "@shareLogsSub": {},
+  "radio": "Radio",
+  "@radio": {}
 }
