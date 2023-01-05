@@ -678,5 +678,7 @@
   "shareLogs": "Protokolle teilen",
   "@shareLogs": {},
   "shareLogsSub": "Aktuelle Sitzungsprotokolle teilen",
-  "@shareLogsSub": {}
+  "@shareLogsSub": {},
+  "radio": "Radio",
+  "@radio": {}
 }
