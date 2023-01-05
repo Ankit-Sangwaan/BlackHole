@@ -678,5 +678,7 @@
   "shareLogs": "Partager les journaux",
   "@shareLogs": {},
   "shareLogsSub": "Partager les journaux des sessions en cours",
-  "@shareLogsSub": {}
+  "@shareLogsSub": {},
+  "radio": "Radio",
+  "@radio": {}
 }
