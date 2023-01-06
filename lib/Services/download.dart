@@ -17,7 +17,6 @@
  * Copyright (c) 2021-2022, Ankit Sangwan
  */
 
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:audiotagger/audiotagger.dart';
@@ -316,7 +315,6 @@ class Download with ChangeNotifier {
       await File('$dlPath/$fileName')
           .create(recursive: true)
           .then((value) => filepath = value.path);
-      // print('created audio file');
 
       await File('$appPath/$artname')
           .create(recursive: true)
@@ -325,16 +323,15 @@ class Download with ChangeNotifier {
       await [
         Permission.manageExternalStorage,
       ].request();
+
       await File('$dlPath/$fileName')
           .create(recursive: true)
           .then((value) => filepath = value.path);
-      // print('created audio file');
+
       await File('$appPath/$artname')
           .create(recursive: true)
           .then((value) => filepath2 = value.path);
     }
-    // debugPrint('Audio path $filepath');
-    // debugPrint('Image path $filepath2');
     String kUrl = data['url'].toString();
 
     if (data['url'].toString().contains('google')) {
@@ -346,8 +343,6 @@ class Download with ChangeNotifier {
       if (kUrl == 'null') {
         kUrl = data['url'].toString();
       }
-      log("low quality is ${data['lowUrl']}");
-      log("high quality is ${data['highUrl']}");
     } else {
       kUrl = kUrl.replaceAll(
         '_96.',
@@ -371,7 +366,6 @@ class Download with ChangeNotifier {
         }
       } catch (e) {
         Logger.root.severe('Error in download: $e');
-        // print('Error: $e');
       }
     }).onDone(() async {
       if (download) {
@@ -397,7 +391,6 @@ class Download with ChangeNotifier {
               : '';
         } catch (e) {
           Logger.root.severe('Error fetching lyrics: $e');
-          // log('Error fetching lyrics: $e');
           lyrics = '';
         }
         // commented out not to use FFmpeg as it increases the size of the app
@@ -436,8 +429,7 @@ class Download with ChangeNotifier {
         //   // await File(filepath!).delete();
         //   // filepath = filepath!.replaceAll('.m4a', '.$downloadFormat');
         // }
-
-        // debugPrint('Started tag editing');
+        Logger.root.info('Started tag editing');
         final Tag tag = Tag(
           title: data['title'].toString(),
           artist: data['artist'].toString(),
@@ -464,11 +456,9 @@ class Download with ChangeNotifier {
             // });
           } catch (e) {
             Logger.root.severe('Error editing tags: $e');
-            log('Failed to edit tags');
           }
         }
         client.close();
-        // debugPrint('Done');
         lastDownloadId = data['id'].toString();
         progress = 0.0;
         notifyListeners();

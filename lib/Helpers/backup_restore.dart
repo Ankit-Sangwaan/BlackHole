@@ -103,11 +103,11 @@ Future<void> createBackup(
         );
       }
     } catch (e) {
+      Logger.root.severe('Error in creating backup', e);
       ShowSnackBar().showSnackBar(
         context,
         '${AppLocalizations.of(context)!.failedCreateBackup}\nError: $e',
       );
-      Logger.root.severe('Error in creating backup: $e');
     }
   } else {
     ShowSnackBar().showSnackBar(
@@ -153,10 +153,10 @@ Future<void> restore(
     ShowSnackBar()
         .showSnackBar(context, AppLocalizations.of(context)!.importSuccess);
   } catch (e) {
+    Logger.root.severe('Error in restoring backup', e);
     ShowSnackBar().showSnackBar(
       context,
       '${AppLocalizations.of(context)!.failedImport}\nError: $e',
     );
-    Logger.root.severe('Error in restoring backup: $e');
   }
 }

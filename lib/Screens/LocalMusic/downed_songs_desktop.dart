@@ -17,7 +17,6 @@
  * Copyright (c) 2021-2022, Ankit Sangwan
  */
 
-import 'dart:developer';
 import 'dart:io';
 
 // import 'package:blackhole/CustomWidgets/add_playlist.dart';
@@ -35,6 +34,7 @@ import 'package:blackhole/Services/player_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
+import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 
 class DownloadedSongsDesktop extends StatefulWidget {
@@ -121,7 +121,7 @@ class _DownloadedSongsDesktopState extends State<DownloadedSongsDesktop>
           }
         }
       } catch (e) {
-        log('Failed to listSync "$path"');
+        Logger.root.severe('Failed to listSync "$path"', e);
       }
     }
   }

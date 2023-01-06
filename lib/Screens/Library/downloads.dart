@@ -308,7 +308,7 @@ class _DownloadsState extends State<Downloads>
         '${AppLocalizations.of(context)!.deleted} ${song['title']}',
       );
     } catch (e) {
-      Logger.root.severe('Failed to delete $audioFile.path\nError: $e');
+      Logger.root.severe('Failed to delete $audioFile.path', e);
       ShowSnackBar().showSnackBar(
         context,
         '${AppLocalizations.of(context)!.failedDelete}: ${audioFile.path}\nError: $e',
@@ -828,7 +828,7 @@ Future<Map> editTags(Map song, BuildContext context) async {
                   );
                 }
               } catch (e) {
-                Logger.root.severe('Failed to edit tags: $e');
+                Logger.root.severe('Failed to edit tags', e);
                 ShowSnackBar().showSnackBar(
                   context,
                   '${AppLocalizations.of(context)!.failedTagEdit}\nError: $e',

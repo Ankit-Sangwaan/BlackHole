@@ -30,6 +30,7 @@ import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/playlist_popupmenu.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
+import 'package:blackhole/Helpers/image_resolution_modifier.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -127,11 +128,8 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                           title: widget.data['title']?.toString() ??
                               AppLocalizations.of(context)!.songs,
                           placeholderImage: 'assets/artist.png',
-                          imageUrl: widget.data['image']
-                              .toString()
-                              .replaceAll('http:', 'https:')
-                              .replaceAll('50x50', '500x500')
-                              .replaceAll('150x150', '500x500'),
+                          imageUrl:
+                              getImageUrl(widget.data['image'].toString()),
                           sliverList: SliverList(
                             delegate: SliverChildListDelegate(
                               [

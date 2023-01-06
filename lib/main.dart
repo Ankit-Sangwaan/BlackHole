@@ -45,6 +45,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 
@@ -109,6 +110,7 @@ Future<void> startService() async {
 
 Future<void> openHiveBox(String boxName, {bool limit = false}) async {
   final box = await Hive.openBox(boxName).onError((error, stackTrace) async {
+    Logger.root.severe('Failed to open $boxName Box', error, stackTrace);
     final Directory dir = await getApplicationDocumentsDirectory();
     final String dirPath = dir.path;
     File dbFile = File('$dirPath/$boxName.hive');
@@ -169,7 +171,7 @@ class _MyAppState extends State<MyApp> {
         handleSharedText(value, navigatorKey);
       },
       onError: (err) {
-        // print("ERROR in getTextStream: $err");
+        Logger.root.severe('ERROR in getTextStream: $err');
       },
     );
 
@@ -177,6 +179,9 @@ class _MyAppState extends State<MyApp> {
     ReceiveSharingIntent.getInitialText().then(
       (String? value) {
         if (value != null) handleSharedText(value, navigatorKey);
+      },
+      onError: (err) {
+        Logger.root.severe('ERROR in getInitialTextStream: $err');
       },
     );
   }

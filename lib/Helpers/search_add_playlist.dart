@@ -182,7 +182,6 @@ class SearchAddPlaylist {
             await SaavnAPI().fetchTopSearchResult('$trackName by $artistName');
         addMapToPlaylist(playName, result[0] as Map);
       } catch (e) {
-        // print('Error in $_done: $e');
         Logger.root.severe('Error in $done: $e');
       }
     }
@@ -209,7 +208,6 @@ class SearchAddPlaylist {
             await SaavnAPI().fetchTopSearchResult('$trackName by $artistName');
         addMapToPlaylist(playName, result[0] as Map);
       } catch (e) {
-        // print('Error in $_done: $e');
         Logger.root.severe('Error in $done: $e');
       }
     }

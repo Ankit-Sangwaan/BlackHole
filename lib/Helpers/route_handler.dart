@@ -23,11 +23,13 @@ import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class HandleRoute {
   static Route? handleRoute(String? url) {
+    Logger.root.info('received route url: $url');
     if (url == null) return null;
     if (url.contains('saavn')) {
       final RegExpMatch? songResult =
@@ -56,10 +58,10 @@ class HandleRoute {
       }
     } else if (url.contains('spotify')) {
       // TODO: Add support for spotify links
-      // print('it is a spotify link');
+      Logger.root.info('received spotify link');
     } else if (url.contains('youtube')) {
       // TODO: Add support for youtube links
-      // print('it is an youtube link');
+      Logger.root.info('received youtube link');
       final RegExpMatch? videoId =
           RegExp(r'.*\.com\/watch\?v=(.*)\?').firstMatch('$url?');
       if (videoId != null) {

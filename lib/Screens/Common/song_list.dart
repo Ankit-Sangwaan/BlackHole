@@ -27,6 +27,7 @@ import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/playlist_popupmenu.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
+import 'package:blackhole/Helpers/image_resolution_modifier.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -259,17 +260,8 @@ class _SongsListPageState extends State<SongsListPage> {
                         shuffle: true,
                       ),
                       placeholderImage: 'assets/album.png',
-                      imageUrl: widget.listItem['image']
-                          ?.toString()
-                          .replaceAll('http:', 'https:')
-                          .replaceAll(
-                            '50x50',
-                            '500x500',
-                          )
-                          .replaceAll(
-                            '150x150',
-                            '500x500',
-                          ),
+                      imageUrl:
+                          getImageUrl(widget.listItem['image']?.toString()),
                       sliverList: SliverList(
                         delegate: SliverChildListDelegate([
                           if (songList.isNotEmpty)

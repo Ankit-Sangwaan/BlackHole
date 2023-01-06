@@ -20,6 +20,7 @@
 import 'package:blackhole/CustomWidgets/like_button.dart';
 import 'package:blackhole/CustomWidgets/on_hover.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
+import 'package:blackhole/Helpers/image_resolution_modifier.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -110,11 +111,7 @@ class HorizontalAlbumsList extends StatelessWidget {
                           fit: BoxFit.cover,
                           image: AssetImage('assets/cover.jpg'),
                         ),
-                        imageUrl: item['image']
-                            .toString()
-                            .replaceAll('http:', 'https:')
-                            .replaceAll('50x50', '500x500')
-                            .replaceAll('150x150', '500x500'),
+                        imageUrl: getImageUrl(item['image'].toString()),
                         placeholder: (context, url) => Image(
                           fit: BoxFit.cover,
                           image: (item['type'] == 'playlist' ||
@@ -160,11 +157,7 @@ class HorizontalAlbumsList extends StatelessWidget {
                       fit: BoxFit.cover,
                       image: AssetImage('assets/cover.jpg'),
                     ),
-                    imageUrl: item['image']
-                        .toString()
-                        .replaceAll('http:', 'https:')
-                        .replaceAll('50x50', '500x500')
-                        .replaceAll('150x150', '500x500'),
+                    imageUrl: getImageUrl(item['image'].toString()),
                     placeholder: (context, url) => Image(
                       fit: BoxFit.cover,
                       image: (item['type'] == 'playlist' ||

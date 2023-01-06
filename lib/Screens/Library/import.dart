@@ -30,6 +30,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:logging/logging.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -236,6 +237,9 @@ Future<void> importYt(
       final Map data = await SearchAddPlaylist.addYtPlaylist(link);
       if (data.isNotEmpty) {
         if (data['title'] == '' && data['count'] == 0) {
+          Logger.root.severe(
+            'Failed to import YT playlist. Data not empty but title or the count is empty.',
+          );
           ShowSnackBar().showSnackBar(
             context,
             '${AppLocalizations.of(context)!.failedImport}\n${AppLocalizations.of(context)!.confirmViewable}',
@@ -260,6 +264,9 @@ Future<void> importYt(
           );
         }
       } else {
+        Logger.root.severe(
+          'Failed to import YT playlist. Data is empty.',
+        );
         ShowSnackBar().showSnackBar(
           context,
           AppLocalizations.of(context)!.failedImport,
@@ -305,6 +312,9 @@ Future<void> importResso(
           ),
         );
       } else {
+        Logger.root.severe(
+          'Failed to import Resso playlist. Data is empty.',
+        );
         ShowSnackBar().showSnackBar(
           context,
           AppLocalizations.of(context)!.failedImport,
@@ -348,6 +358,9 @@ Future<void> importSpotify(
       ),
     );
   } else {
+    Logger.root.severe(
+      'Failed to import Spotify playlist. Data is empty.',
+    );
     ShowSnackBar().showSnackBar(
       context,
       AppLocalizations.of(context)!.failedImport,
@@ -404,6 +417,7 @@ Future<void> importJioSaavn(
         addPlaylist(playName, data['tracks'] as List);
         playlistNames.add(playName);
       } else {
+        Logger.root.severe('Failed to import JioSaavn playlist. data is empty');
         ShowSnackBar().showSnackBar(
           context,
           AppLocalizations.of(context)!.failedImport,

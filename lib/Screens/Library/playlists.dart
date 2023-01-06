@@ -128,268 +128,261 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                         );
                       },
                     ),
-                    if (playlistNames.length > 1)
-                      ListTile(
-                        title:
-                            Text(AppLocalizations.of(context)!.mergePlaylists),
-                        leading: SizedBox.square(
-                          dimension: 50,
-                          child: Center(
-                            child: Icon(
-                              Icons.merge_type_rounded,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
+                    ListTile(
+                      title: Text(AppLocalizations.of(context)!.mergePlaylists),
+                      leading: SizedBox.square(
+                        dimension: 50,
+                        child: Center(
+                          child: Icon(
+                            Icons.merge_type_rounded,
+                            color: Theme.of(context).iconTheme.color,
                           ),
                         ),
-                        onTap: () async {
-                          final List<int> checked = [];
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return StatefulBuilder(
-                                builder: (
-                                  BuildContext context,
-                                  StateSetter setStt,
-                                ) {
-                                  return AlertDialog(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                        10.0,
-                                      ),
+                      ),
+                      onTap: () async {
+                        final List<int> checked = [];
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return StatefulBuilder(
+                              builder: (
+                                BuildContext context,
+                                StateSetter setStt,
+                              ) {
+                                return AlertDialog(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      10.0,
                                     ),
-                                    content: SizedBox(
-                                      width: 500,
-                                      child: ListView.builder(
-                                        shrinkWrap: true,
-                                        physics: const BouncingScrollPhysics(),
-                                        padding: const EdgeInsets.fromLTRB(
-                                          0,
-                                          30,
-                                          0,
-                                          10,
-                                        ),
-                                        itemCount: playlistNames.length,
-                                        itemBuilder: (context, index) {
-                                          final String name =
-                                              playlistNames[index].toString();
-                                          final String showName =
-                                              playlistDetails.containsKey(name)
-                                                  ? playlistDetails[name]
-                                                              ['name']
-                                                          ?.toString() ??
-                                                      name
-                                                  : name;
-                                          return CheckboxListTile(
-                                            activeColor: Theme.of(context)
-                                                .colorScheme
-                                                .secondary,
-                                            checkColor: Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary ==
-                                                    Colors.white
-                                                ? Colors.black
-                                                : null,
-                                            value: checked.contains(index),
-                                            onChanged: (value) {
-                                              if (value ?? false) {
-                                                checked.add(index);
-                                              } else {
-                                                checked.remove(index);
-                                              }
-                                              setStt(() {});
-                                            },
-                                            title: Text(
-                                              showName,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            subtitle:
-                                                playlistDetails[name] == null ||
-                                                        playlistDetails[name]
-                                                                ['count'] ==
-                                                            null ||
-                                                        playlistDetails[name]
-                                                                ['count'] ==
-                                                            0
-                                                    ? null
-                                                    : Text(
-                                                        '${playlistDetails[name]['count']} ${AppLocalizations.of(context)!.songs}',
-                                                      ),
-                                            secondary: (playlistDetails[
-                                                            name] ==
-                                                        null ||
-                                                    playlistDetails[name]
-                                                            ['imagesList'] ==
-                                                        null ||
-                                                    (playlistDetails[name]
-                                                                ['imagesList']
-                                                            as List)
-                                                        .isEmpty)
-                                                ? Card(
-                                                    elevation: 5,
-                                                    color: Colors.transparent,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                        7.0,
-                                                      ),
-                                                    ),
-                                                    clipBehavior:
-                                                        Clip.antiAlias,
-                                                    child: SizedBox(
-                                                      height: 50,
-                                                      width: 50,
-                                                      child: name ==
-                                                              'Favorite Songs'
-                                                          ? const Image(
-                                                              image: AssetImage(
-                                                                'assets/cover.jpg',
-                                                              ),
-                                                            )
-                                                          : const Image(
-                                                              image: AssetImage(
-                                                                'assets/album.png',
-                                                              ),
-                                                            ),
-                                                    ),
-                                                  )
-                                                : Collage(
-                                                    imageList:
-                                                        playlistDetails[name]
-                                                                ['imagesList']
-                                                            as List,
-                                                    showGrid: true,
-                                                    placeholderImage:
-                                                        'assets/cover.jpg',
-                                                  ),
-                                          );
-                                        },
+                                  ),
+                                  content: SizedBox(
+                                    width: 500,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: const BouncingScrollPhysics(),
+                                      padding: const EdgeInsets.fromLTRB(
+                                        0,
+                                        30,
+                                        0,
+                                        10,
                                       ),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          foregroundColor:
-                                              Theme.of(context).brightness ==
-                                                      Brightness.dark
-                                                  ? Colors.white
-                                                  : Colors.grey[700],
-                                        ),
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          AppLocalizations.of(
-                                            context,
-                                          )!
-                                              .cancel,
-                                        ),
-                                      ),
-                                      TextButton(
-                                        style: TextButton.styleFrom(
-                                          foregroundColor: Theme.of(context)
+                                      itemCount: playlistNames.length,
+                                      itemBuilder: (context, index) {
+                                        final String name =
+                                            playlistNames[index].toString();
+                                        final String showName =
+                                            playlistDetails.containsKey(name)
+                                                ? playlistDetails[name]['name']
+                                                        ?.toString() ??
+                                                    name
+                                                : name;
+                                        return CheckboxListTile(
+                                          activeColor: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                          checkColor: Theme.of(context)
                                                       .colorScheme
                                                       .secondary ==
                                                   Colors.white
                                               ? Colors.black
                                               : null,
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                        ),
-                                        onPressed: () async {
-                                          try {
-                                            final List<String>
-                                                playlistsToMerge = checked
-                                                    .map(
-                                                      (int e) =>
-                                                          playlistNames[e]
-                                                              .toString(),
-                                                    )
-                                                    .toList();
-                                            if (playlistsToMerge
-                                                .contains('Favorite Songs')) {
-                                              playlistsToMerge
-                                                  .remove('Favorite Songs');
-                                              playlistsToMerge.insert(
-                                                0,
-                                                'Favorite Songs',
-                                              );
+                                          value: checked.contains(index),
+                                          onChanged: (value) {
+                                            if (value ?? false) {
+                                              checked.add(index);
+                                            } else {
+                                              checked.remove(index);
                                             }
-                                            if (playlistsToMerge.length > 1) {
-                                              final finalMap = {};
-                                              for (final String playlistName
-                                                  in playlistsToMerge
-                                                      .sublist(1)) {
-                                                try {
-                                                  final Box playlistBox =
-                                                      await Hive.openBox(
-                                                    playlistName,
-                                                  );
-                                                  final Map songsMap =
-                                                      playlistBox.toMap();
-                                                  finalMap.addAll(songsMap);
-                                                  await playlistDetails
-                                                      .remove(playlistName);
-                                                  playlistNames
-                                                      .remove(playlistName);
-                                                  await playlistBox
-                                                      .deleteFromDisk();
-                                                } catch (e) {
-                                                  Logger.root.severe(
-                                                    'Error merging $playlistName: $e',
-                                                  );
-                                                  ShowSnackBar().showSnackBar(
-                                                    context,
-                                                    'Error merging $playlistName: $e',
-                                                  );
-                                                }
-                                              }
-                                              final Box finalPlaylistBox =
-                                                  await Hive.openBox(
-                                                playlistsToMerge.first,
-                                              );
-                                              finalPlaylistBox.putAll(finalMap);
-
-                                              await settingsBox.put(
-                                                'playlistDetails',
-                                                playlistDetails,
-                                              );
-
-                                              await settingsBox.put(
-                                                'playlistNames',
-                                                playlistNames,
-                                              );
-                                            }
-                                          } catch (e) {
-                                            Logger.root.severe(
-                                              'Error merging playlists: $e',
-                                            );
-                                            ShowSnackBar().showSnackBar(
-                                              context,
-                                              'Error: $e',
+                                            setStt(() {});
+                                          },
+                                          title: Text(
+                                            showName,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          subtitle:
+                                              playlistDetails[name] == null ||
+                                                      playlistDetails[name]
+                                                              ['count'] ==
+                                                          null ||
+                                                      playlistDetails[name]
+                                                              ['count'] ==
+                                                          0
+                                                  ? null
+                                                  : Text(
+                                                      '${playlistDetails[name]['count']} ${AppLocalizations.of(context)!.songs}',
+                                                    ),
+                                          secondary: (playlistDetails[name] ==
+                                                      null ||
+                                                  playlistDetails[name]
+                                                          ['imagesList'] ==
+                                                      null ||
+                                                  (playlistDetails[name]
+                                                              ['imagesList']
+                                                          as List)
+                                                      .isEmpty)
+                                              ? Card(
+                                                  elevation: 5,
+                                                  color: Colors.transparent,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                      7.0,
+                                                    ),
+                                                  ),
+                                                  clipBehavior: Clip.antiAlias,
+                                                  child: SizedBox(
+                                                    height: 50,
+                                                    width: 50,
+                                                    child: name ==
+                                                            'Favorite Songs'
+                                                        ? const Image(
+                                                            image: AssetImage(
+                                                              'assets/cover.jpg',
+                                                            ),
+                                                          )
+                                                        : const Image(
+                                                            image: AssetImage(
+                                                              'assets/album.png',
+                                                            ),
+                                                          ),
+                                                  ),
+                                                )
+                                              : Collage(
+                                                  imageList:
+                                                      playlistDetails[name]
+                                                              ['imagesList']
+                                                          as List,
+                                                  showGrid: true,
+                                                  placeholderImage:
+                                                      'assets/cover.jpg',
+                                                ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                        foregroundColor:
+                                            Theme.of(context).brightness ==
+                                                    Brightness.dark
+                                                ? Colors.white
+                                                : Colors.grey[700],
+                                      ),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        AppLocalizations.of(
+                                          context,
+                                        )!
+                                            .cancel,
+                                      ),
+                                    ),
+                                    TextButton(
+                                      style: TextButton.styleFrom(
+                                        foregroundColor: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary ==
+                                                Colors.white
+                                            ? Colors.black
+                                            : null,
+                                        backgroundColor: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                      ),
+                                      onPressed: () async {
+                                        try {
+                                          final List<String> playlistsToMerge =
+                                              checked
+                                                  .map(
+                                                    (int e) => playlistNames[e]
+                                                        .toString(),
+                                                  )
+                                                  .toList();
+                                          if (playlistsToMerge
+                                              .contains('Favorite Songs')) {
+                                            playlistsToMerge
+                                                .remove('Favorite Songs');
+                                            playlistsToMerge.insert(
+                                              0,
+                                              'Favorite Songs',
                                             );
                                           }
-                                          Navigator.pop(context);
-                                        },
-                                        child: Text(
-                                          AppLocalizations.of(
+                                          if (playlistsToMerge.length > 1) {
+                                            final finalMap = {};
+                                            for (final String playlistName
+                                                in playlistsToMerge
+                                                    .sublist(1)) {
+                                              try {
+                                                final Box playlistBox =
+                                                    await Hive.openBox(
+                                                  playlistName,
+                                                );
+                                                final Map songsMap =
+                                                    playlistBox.toMap();
+                                                finalMap.addAll(songsMap);
+                                                await playlistDetails
+                                                    .remove(playlistName);
+                                                playlistNames
+                                                    .remove(playlistName);
+                                                await playlistBox
+                                                    .deleteFromDisk();
+                                              } catch (e) {
+                                                Logger.root.severe(
+                                                  'Error merging $playlistName: $e',
+                                                );
+                                                ShowSnackBar().showSnackBar(
+                                                  context,
+                                                  'Error merging $playlistName: $e',
+                                                );
+                                              }
+                                            }
+                                            final Box finalPlaylistBox =
+                                                await Hive.openBox(
+                                              playlistsToMerge.first,
+                                            );
+                                            finalPlaylistBox.putAll(finalMap);
+
+                                            await settingsBox.put(
+                                              'playlistDetails',
+                                              playlistDetails,
+                                            );
+
+                                            await settingsBox.put(
+                                              'playlistNames',
+                                              playlistNames,
+                                            );
+                                          }
+                                        } catch (e) {
+                                          Logger.root.severe(
+                                            'Error merging playlists: $e',
+                                          );
+                                          ShowSnackBar().showSnackBar(
                                             context,
-                                          )!
-                                              .ok,
-                                        ),
+                                            'Error: $e',
+                                          );
+                                        }
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text(
+                                        AppLocalizations.of(
+                                          context,
+                                        )!
+                                            .ok,
                                       ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          );
-                        },
-                      ),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
+                        );
+                      },
+                    ),
                     ValueListenableBuilder(
                       valueListenable: settingsBox.listenable(),
                       builder: (

@@ -145,11 +145,11 @@ Future<List> importPlaylist(BuildContext context, List playlistNames) async {
     );
     return playlistNames;
   } catch (e) {
+    Logger.root.severe('Error while importing playlist', e);
     ShowSnackBar().showSnackBar(
       context,
       '${AppLocalizations.of(context)!.failedImport}\nError: $e',
     );
-    Logger.root.severe('Error while importing playlist: $e');
   }
   return playlistNames;
 }

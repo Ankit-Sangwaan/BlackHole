@@ -18,6 +18,7 @@
  */
 
 import 'package:audio_service/audio_service.dart';
+import 'package:blackhole/Helpers/image_resolution_modifier.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class MediaItemConverter {
@@ -64,10 +65,7 @@ class MediaItemConverter {
       ),
       title: song['title'].toString(),
       artUri: Uri.parse(
-        song['image']
-            .toString()
-            .replaceAll('50x50', '500x500')
-            .replaceAll('150x150', '500x500'),
+        getImageUrl(song['image'].toString()),
       ),
       genre: song['language'].toString(),
       extras: {
