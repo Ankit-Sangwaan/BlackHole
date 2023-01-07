@@ -484,22 +484,15 @@ class FormatResponse {
   static Future<Map> formatHomePageData(Map data) async {
     try {
       if (data['new_trending'] != null) {
-        data['new_trending'] = await formatSongsInList(
-          data['new_trending'] as List,
-          fetchDetails: false,
-        );
+        data['new_trending'] =
+            await formatSongsInList(data['new_trending'] as List);
       }
       if (data['new_albums'] != null) {
-        data['new_albums'] = await formatSongsInList(
-          data['new_albums'] as List,
-          fetchDetails: false,
-        );
+        data['new_albums'] =
+            await formatSongsInList(data['new_albums'] as List);
       }
       if (data['city_mod'] != null) {
-        data['city_mod'] = await formatSongsInList(
-          data['city_mod'] as List,
-          fetchDetails: true,
-        );
+        data['city_mod'] = await formatSongsInList(data['city_mod'] as List);
       }
       final List promoList = [];
       final List promoListTemp = [];
@@ -514,10 +507,8 @@ class FormatResponse {
         }
       });
       for (int i = 0; i < promoList.length; i++) {
-        data[promoList[i]] = await formatSongsInList(
-          data[promoList[i]] as List,
-          fetchDetails: false,
-        );
+        data[promoList[i]] =
+            await formatSongsInList(data[promoList[i]] as List);
       }
       data['collections'] = [
         'new_trending',
@@ -541,10 +532,8 @@ class FormatResponse {
     try {
       final List promoList = data['collections_temp'] as List;
       for (int i = 0; i < promoList.length; i++) {
-        data[promoList[i]] = await formatSongsInList(
-          data[promoList[i]] as List,
-          fetchDetails: true,
-        );
+        data[promoList[i]] =
+            await formatSongsInList(data[promoList[i]] as List);
       }
       data['collections'].addAll(promoList);
       data['collections_temp'] = [];
@@ -554,26 +543,21 @@ class FormatResponse {
     return data;
   }
 
-  static Future<List> formatSongsInList(
-    List list, {
-    required bool fetchDetails,
-  }) async {
+  static Future<List> formatSongsInList(List list) async {
     if (list.isNotEmpty) {
       for (int i = 0; i < list.length; i++) {
         final Map item = list[i] as Map;
         if (item['type'] == 'song') {
           if (item['mini_obj'] as bool? ?? false) {
-            if (fetchDetails) {
-              Map cachedDetails = Hive.box('cache')
-                  .get(item['id'].toString(), defaultValue: {}) as Map;
-              if (cachedDetails.isEmpty) {
-                cachedDetails =
-                    await SaavnAPI().fetchSongDetails(item['id'].toString());
-                Hive.box('cache')
-                    .put(cachedDetails['id'].toString(), cachedDetails);
-              }
-              list[i] = cachedDetails;
+            Map cachedDetails = Hive.box('cache')
+                .get(item['id'].toString(), defaultValue: {}) as Map;
+            if (cachedDetails.isEmpty) {
+              cachedDetails =
+                  await SaavnAPI().fetchSongDetails(item['id'].toString());
+              Hive.box('cache')
+                  .put(cachedDetails['id'].toString(), cachedDetails);
             }
+            list[i] = cachedDetails;
             continue;
           }
           list[i] = await formatSingleSongResponse(item);
