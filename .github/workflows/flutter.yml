@@ -83,3 +83,16 @@ jobs:
             New commit pushed to [${{ github.event.repository.name }}](${{ github.event.repository.html_url }}) by [${{ github.event.head_commit.author.name }}](${{ github.event.head_commit.author.html_url }}).
             Commit message: ${{ github.event.head_commit.message }}
           document: build/app/outputs/apk/release/app-arm64-v8a-release.apk
+
+      - name: Report failure on Telegram
+        uses: appleboy/telegram-action@master
+        if: ${{ failure() }}
+        with:
+          to: ${{ secrets.TELEGRAM_CHAT_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          format: markdown
+          disable_web_page_preview: true
+          message: |
+            Build Failed!! @Sangwan5688
+            Commit was pushed to [${{ github.event.repository.name }}](${{ github.event.repository.html_url }}) by [${{ github.event.head_commit.author.name }}](${{ github.event.head_commit.author.html_url }}).
+            Commit message: ${{ github.event.head_commit.message }}
