@@ -22,6 +22,7 @@ import 'package:blackhole/APIs/spotify_api.dart';
 import 'package:blackhole/CustomWidgets/custom_physics.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
 import 'package:blackhole/Helpers/countrycodes.dart';
+import 'package:blackhole/Helpers/spotify_helper.dart';
 // import 'package:blackhole/Helpers/countrycodes.dart';
 import 'package:blackhole/Screens/Search/search.dart';
 import 'package:blackhole/Screens/Settings/setting.dart';
@@ -190,21 +191,14 @@ Future<List> getChartDetails(String accessToken, String type) async {
 }
 
 Future<void> scrapData(String type, {bool signIn = false}) async {
-  String code;
-  String accessToken = Hive.box('settings')
-      .get('spotifyAccessToken', defaultValue: 'null')
-      .toString();
-  String refreshToken = Hive.box('settings')
-      .get('spotifyRefreshToken', defaultValue: 'null')
-      .toString();
   final bool spotifySigned =
       Hive.box('settings').get('spotifySigned', defaultValue: false) as bool;
 
   if (!spotifySigned && !signIn) {
     return;
   }
-
-  if (accessToken == 'null' || refreshToken == 'null') {
+  final String? accessToken = await retriveAccessToken();
+  if (accessToken == null) {
     launchUrl(
       Uri.parse(
         SpotifyApi().requestAuthorization(),
@@ -215,7 +209,7 @@ Future<void> scrapData(String type, {bool signIn = false}) async {
       onAppLink: (Uri uri, String link) async {
         closeInAppWebView();
         if (link.contains('code=')) {
-          code = link.split('code=')[1];
+          final code = link.split('code=')[1];
           Hive.box('settings').put('spotifyAppCode', code);
           final currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
           final List<String> data =
@@ -227,6 +221,7 @@ Future<void> scrapData(String type, {bool signIn = false}) async {
             Hive.box('settings')
                 .put('spotifyTokenExpireAt', currentTime + int.parse(data[2]));
           }
+
           final temp = await getChartDetails(data[0], type);
           if (temp.isNotEmpty) {
             Hive.box('cache').put('${type}_chart', temp);
@@ -245,25 +240,6 @@ Future<void> scrapData(String type, {bool signIn = false}) async {
       },
     );
   } else {
-    final double expiredAt = Hive.box('settings')
-        .get('spotifyTokenExpireAt', defaultValue: 0) as double;
-    final currentTime = DateTime.now().millisecondsSinceEpoch / 1000;
-    if ((currentTime + 60) >= expiredAt) {
-      final List<String> data =
-          await SpotifyApi().getAccessToken(refreshToken: refreshToken);
-      if (data.isNotEmpty) {
-        Hive.box('settings').put('spotifySigned', true);
-        accessToken = data[0];
-        Hive.box('settings').put('spotifyAccessToken', data[0]);
-        if (data[1] != 'null') {
-          refreshToken = data[1];
-          Hive.box('settings').put('spotifyRefreshToken', data[1]);
-        }
-        Hive.box('settings')
-            .put('spotifyTokenExpireAt', currentTime + int.parse(data[2]));
-      }
-    }
-
     final temp = await getChartDetails(accessToken, type);
     if (temp.isNotEmpty) {
       Hive.box('cache').put('${type}_chart', temp);

@@ -92,7 +92,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
       case 'charts':
         return '';
       case 'radio_station':
-        return 'Radio • ${item['subtitle']?.toString().unescape()}';
+        return 'Radio • ${(item['subtitle']?.toString() ?? '').isEmpty ? 'JioSaavn' : item['subtitle']?.toString().unescape()}';
       case 'playlist':
         return 'Playlist • ${(item['subtitle']?.toString() ?? '').isEmpty ? 'JioSaavn' : item['subtitle'].toString().unescape()}';
       case 'song':

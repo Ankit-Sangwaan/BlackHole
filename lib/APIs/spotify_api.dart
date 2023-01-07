@@ -177,13 +177,32 @@ class SpotifyApi {
       );
 
       if (response.statusCode == 200) {
-        final result = jsonDecode(response.body);
+        final result = await jsonDecode(response.body);
         final List tracks = result['items'] as List;
         final int total = result['total'] as int;
         return {'tracks': tracks, 'total': total};
       }
     } catch (e) {
       Logger.root.severe('Error in getting spotify playlist tracks: $e');
+    }
+    return {};
+  }
+
+  Future<Map> getTrackDetails(String accessToken, String trackId) async {
+    final Uri path = Uri.parse(
+      '$spotifyApiBaseUrl/tracks/$trackId',
+    );
+    final response = await get(
+      path,
+      headers: {
+        'Authorization': 'Bearer $accessToken',
+        'Accept': 'application/json'
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final result = jsonDecode(response.body) as Map;
+      return result;
     }
     return {};
   }

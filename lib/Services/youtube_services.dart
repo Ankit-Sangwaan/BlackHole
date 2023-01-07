@@ -43,6 +43,11 @@ class YouTubeServices {
     return results;
   }
 
+  Future<Video> getVideoFromId(String id) async {
+    final Video result = await yt.videos.get(id);
+    return result;
+  }
+
   Future<Playlist> getPlaylistDetails(String id) async {
     final Playlist metadata = await yt.playlists.get(id);
     return metadata;

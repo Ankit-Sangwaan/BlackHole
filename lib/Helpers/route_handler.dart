@@ -18,13 +18,19 @@
  */
 
 import 'package:blackhole/APIs/api.dart';
+import 'package:blackhole/APIs/spotify_api.dart';
 import 'package:blackhole/Helpers/audio_query.dart';
+import 'package:blackhole/Helpers/spotify_helper.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
+import 'package:blackhole/Screens/Search/search.dart';
 import 'package:blackhole/Services/player_service.dart';
+import 'package:blackhole/Services/youtube_services.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logging/logging.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class HandleRoute {
@@ -59,20 +65,30 @@ class HandleRoute {
     } else if (url.contains('spotify')) {
       // TODO: Add support for spotify links
       Logger.root.info('received spotify link');
+      final RegExpMatch? songResult =
+          RegExp(r'.*spotify.com.*?\/(track)\/(.*?)[/?]').firstMatch('$url/');
+      if (songResult != null) {
+        return PageRouteBuilder(
+          opaque: false,
+          pageBuilder: (_, __, ___) => SpotifyUrlHandler(
+            id: songResult[2]!,
+            type: songResult[1]!,
+          ),
+        );
+      }
     } else if (url.contains('youtube')) {
       // TODO: Add support for youtube links
       Logger.root.info('received youtube link');
       final RegExpMatch? videoId =
-          RegExp(r'.*\.com\/watch\?v=(.*)\?').firstMatch('$url?');
+          RegExp(r'.*\.com\/watch\?v=(.*?)[/?]').firstMatch('$url/');
       if (videoId != null) {
-        // TODO: Extract audio data and play audio
-        // return PageRouteBuilder(
-        //   opaque: false,
-        //   pageBuilder: (_, __, ___) => YtUrlHandler(
-        //     id: songResult[1]!,
-        //     type: song,
-        //   ),
-        // );
+        return PageRouteBuilder(
+          opaque: false,
+          pageBuilder: (_, __, ___) => YtUrlHandler(
+            id: videoId[1]!,
+            type: 'video',
+          ),
+        );
       }
     } else {
       final RegExpMatch? fileResult =
@@ -124,6 +140,74 @@ class SaavnUrlHandler extends StatelessWidget {
         );
       }
     });
+    return Container();
+  }
+}
+
+class SpotifyUrlHandler extends StatelessWidget {
+  final String id;
+  final String type;
+  const SpotifyUrlHandler({super.key, required this.id, required this.type});
+
+  @override
+  Widget build(BuildContext context) {
+    if (type == 'track') {
+      callSpotifyFunction((String accessToken) {
+        SpotifyApi().getTrackDetails(accessToken, id).then((value) {
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              opaque: false,
+              pageBuilder: (_, __, ___) => SearchPage(
+                query: (value['artists'] != null &&
+                        (value['artists'] as List).isNotEmpty)
+                    ? '${value["name"]} by ${value["artists"][0]["name"]}'
+                    : value['name'].toString(),
+              ),
+            ),
+          );
+        });
+      });
+    }
+    return Container();
+  }
+}
+
+class YtUrlHandler extends StatelessWidget {
+  final String id;
+  final String type;
+  const YtUrlHandler({super.key, required this.id, required this.type});
+
+  @override
+  Widget build(BuildContext context) {
+    if (type == 'video') {
+      YouTubeServices().getVideoFromId(id).then((Video value) async {
+        final Map? response = await YouTubeServices().formatVideo(
+          video: value,
+          quality: Hive.box('settings')
+              .get(
+                'ytQuality',
+                defaultValue: 'Low',
+              )
+              .toString(),
+        );
+        if (response != null) {
+          PlayerInvoke.init(
+            songsList: [response],
+            index: 0,
+            isOffline: false,
+            recommend: false,
+          );
+        }
+        Navigator.pushReplacement(
+          context,
+          PageRouteBuilder(
+            opaque: false,
+            pageBuilder: (_, __, ___) => const PlayScreen(),
+          ),
+        );
+      });
+    }
     return Container();
   }
 }
