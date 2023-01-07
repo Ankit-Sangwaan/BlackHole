@@ -656,5 +656,11 @@
   "top": "Legjobb",
   "@top": {},
   "viral": "Virális",
-  "@viral": {}
+  "@viral": {},
+  "radio": "Rádió",
+  "@radio": {},
+  "openInSpotify": "Nyisd meg Spotify-on",
+  "@openInSpotify": {},
+  "signInSpotify": "Bejelentkezés Spotifyba",
+  "@signInSpotify": {}
 }
