@@ -95,11 +95,10 @@ Future<void> startService() async {
     config: AudioServiceConfig(
       androidNotificationChannelId: 'com.shadow.blackhole.channel.audio',
       androidNotificationChannelName: 'BlackHole',
-      androidNotificationOngoing: true,
       androidNotificationIcon: 'drawable/ic_stat_music_note',
       androidShowNotificationBadge: true,
-      // androidStopForegroundOnPause: Hive.box('settings')
-      // .get('stopServiceOnPause', defaultValue: true) as bool,
+      androidStopForegroundOnPause: false,
+      // Hive.box('settings').get('stopServiceOnPause', defaultValue: true) as bool,
       notificationColor: Colors.grey[900],
     ),
   );

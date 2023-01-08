@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.Android.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.Android.AppWidgetContainer">
+<!--    <Button-->
+<!--        android:id="@+id/bhwidget_previousbtn"-->
+<!--        style="@style/Widget.Android.AppWidget.InnerView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:contentDescription="@string/appwidget_text"-->
+<!--        android:text="Previous"-->
+<!--        android:textSize="24sp"-->
+<!--        android:textStyle="bold|italic" />-->
+
+    <Button
+        android:id="@+id/bhwidget_playbtn"
+        style="@style/Widget.Android.AppWidget.InnerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:contentDescription="@string/appwidget_text"
+        android:text="Play"
+        android:textSize="24sp"
+        android:textStyle="bold|italic" />
+
+<!--    <Button-->
+<!--        android:id="@+id/bhwidget_nextbtn"-->
+<!--        style="@style/Widget.Android.AppWidget.InnerView"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:contentDescription="@string/appwidget_text"-->
+<!--        android:text="Next"-->
+<!--        android:textSize="24sp"-->
+<!--        android:textStyle="bold|italic" />-->
+
+</LinearLayout>
