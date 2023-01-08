@@ -666,5 +666,15 @@
   "top": "Atas",
   "@top": {},
   "viral": "Viral",
-  "@viral": {}
+  "@viral": {},
+  "signInSpotify": "Masuk ke Spotify",
+  "@signInSpotify": {},
+  "openInSpotify": "Buka di Spotify",
+  "@openInSpotify": {},
+  "shareLogs": "Bagi log",
+  "@shareLogs": {},
+  "shareLogsSub": "Bagi log sesi saat ini",
+  "@shareLogsSub": {},
+  "radio": "Radio",
+  "@radio": {}
 }
