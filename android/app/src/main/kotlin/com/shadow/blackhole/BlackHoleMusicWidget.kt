@@ -26,13 +26,14 @@ internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManage
     // Construct the RemoteViews object
     val views = RemoteViews(context.packageName, R.layout.black_hole_music_widget)
 
-    val intent = Intent(context, MainActivity::class.java);
+    // val intent = Intent(context, MainActivity::class.java);
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse("app://blackhole/play"))
 
     // val intent = Intent(Intent.ACTION_VIEW)
     // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
     val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
-    views.setOnClickPendingIntent(R.id.bhwidget_playbtn, pendingIntent)
+    views.setOnClickPendingIntent(R.id.button_play_pause, pendingIntent)
 
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views)

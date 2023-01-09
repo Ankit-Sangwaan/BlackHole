@@ -26,6 +26,7 @@ import 'package:audio_session/audio_session.dart';
 import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/Helpers/logging.dart';
 import 'package:blackhole/Helpers/mediaitem_converter.dart';
+import 'package:blackhole/Helpers/playlist.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -481,6 +482,23 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   @override
   Future<void> skipToNext() => _player!.seekToNext();
 
+  /// This is called when the user presses the "like" button.
+  @override
+  Future<void> fastForward() async {
+    if (mediaItem.value?.id != null) {
+      addItemToPlaylist('Favorite Songs', mediaItem.value!);
+      _broadcastState(_player!.playbackEvent);
+    }
+  }
+
+  @override
+  Future<void> rewind() async {
+    if (mediaItem.value?.id != null) {
+      removeLiked(mediaItem.value!.id);
+      _broadcastState(_player!.playbackEvent);
+    }
+  }
+
   @override
   Future<void> skipToPrevious() async {
     resetOnSkip =
@@ -667,6 +685,10 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   /// Broadcasts the current state to all clients.
   void _broadcastState(PlaybackEvent event) {
     final playing = _player!.playing;
+    bool liked = false;
+    if (mediaItem.value != null) {
+      liked = checkPlaylist('Favorite Songs', mediaItem.value!.id);
+    }
     final queueIndex = getQueueIndex(
       event.currentIndex,
       _player!.shuffleIndices,
@@ -675,9 +697,11 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     playbackState.add(
       playbackState.value.copyWith(
         controls: [
+          if (liked) MediaControl.rewind else MediaControl.fastForward,
           MediaControl.skipToPrevious,
           if (playing) MediaControl.pause else MediaControl.play,
           MediaControl.skipToNext,
+          // workaround to add like button
           MediaControl.stop,
         ],
         systemActions: const {
@@ -685,7 +709,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
           MediaAction.seekForward,
           MediaAction.seekBackward,
         },
-        androidCompactActionIndices: const [0, 1, 2],
+        androidCompactActionIndices: const [0, 2, 3],
         processingState: const {
           ProcessingState.idle: AudioProcessingState.idle,
           ProcessingState.loading: AudioProcessingState.loading,
