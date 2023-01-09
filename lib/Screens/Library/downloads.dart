@@ -533,7 +533,6 @@ class _DownloadsState extends State<Downloads>
                           recommend: false,
                           shuffle: true,
                         );
-                        Navigator.pushNamed(context, '/player');
                       }
                     },
                   ),
@@ -966,7 +965,6 @@ class _DownSongsTabState extends State<DownSongsTab>
                           fromDownloads: true,
                           recommend: false,
                         );
-                        Navigator.pushNamed(context, '/player');
                       },
                       title: Text(
                         '${widget.songs[index]['title']}',

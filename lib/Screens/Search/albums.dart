@@ -182,6 +182,7 @@ class _AlbumSearchPageState extends State<AlbumSearchPage> {
                                               overflow: TextOverflow.ellipsis,
                                             ),
                                       leading: Card(
+                                        margin: EdgeInsets.zero,
                                         elevation: 8,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(

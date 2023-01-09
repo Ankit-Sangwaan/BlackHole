@@ -118,6 +118,7 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
                                 },
                                 child: ListTile(
                                   leading: Card(
+                                    margin: EdgeInsets.zero,
                                     elevation: 5,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(7.0),

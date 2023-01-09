@@ -619,6 +619,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                       TextOverflow.ellipsis,
                                                 ),
                                                 leading: Card(
+                                                  margin: EdgeInsets.zero,
                                                   elevation: 8,
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:

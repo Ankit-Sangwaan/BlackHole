@@ -302,6 +302,7 @@ class _SongsListPageState extends State<SongsListPage> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               leading: Card(
+                                margin: EdgeInsets.zero,
                                 elevation: 8,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(7.0),

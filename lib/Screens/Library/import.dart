@@ -433,6 +433,7 @@ Future<void> fetchPlaylists(
                   AppLocalizations.of(context)!.importPublicPlaylist,
                 ),
                 leading: Card(
+                  margin: EdgeInsets.zero,
                   elevation: 0,
                   color: Colors.transparent,
                   child: SizedBox.square(
@@ -472,6 +473,7 @@ Future<void> fetchPlaylists(
                           : '$playTotal ${AppLocalizations.of(context)!.songs}',
                     ),
                     leading: Card(
+                      margin: EdgeInsets.zero,
                       elevation: 8,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(7.0),

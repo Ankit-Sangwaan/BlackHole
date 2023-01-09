@@ -183,10 +183,8 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                     left: 5.0,
                                   ),
                                   child: ListTile(
-                                    contentPadding: const EdgeInsets.only(
-                                      left: 15.0,
-                                    ),
                                     leading: Card(
+                                      margin: EdgeInsets.zero,
                                       elevation: 8,
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(
@@ -235,23 +233,9 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                         text: entry.title,
                                       );
                                     },
-                                    subtitle: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            entry.author,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        Text(
-                                          entry.duration
-                                              .toString()
-                                              .split('.')[0]
-                                              .replaceFirst('0:0', ''),
-                                        ),
-                                      ],
+                                    subtitle: Text(
+                                      entry.author,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
                                     onTap: () async {
                                       setState(() {

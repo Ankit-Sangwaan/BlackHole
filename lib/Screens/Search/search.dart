@@ -532,6 +532,7 @@ class _SearchPageState extends State<SearchPage> {
                                                           value[0]['type'] ==
                                                               'album'),
                                                   leading: Card(
+                                                    margin: EdgeInsets.zero,
                                                     elevation: 8,
                                                     shape:
                                                         RoundedRectangleBorder(

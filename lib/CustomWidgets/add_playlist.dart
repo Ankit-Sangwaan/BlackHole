@@ -86,6 +86,7 @@ class AddToOffPlaylist {
                     itemBuilder: (context, index) {
                       return ListTile(
                         leading: Card(
+                          margin: EdgeInsets.zero,
                           elevation: 5,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(7.0),

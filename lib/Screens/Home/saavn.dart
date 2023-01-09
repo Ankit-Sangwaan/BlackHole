@@ -22,6 +22,7 @@ import 'dart:io';
 import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/CustomWidgets/collage.dart';
 import 'package:blackhole/CustomWidgets/horizontal_albumlist.dart';
+import 'package:blackhole/CustomWidgets/horizontal_albumlist_separated.dart';
 import 'package:blackhole/CustomWidgets/like_button.dart';
 import 'package:blackhole/CustomWidgets/on_hover.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
@@ -179,7 +180,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                               ),
                             ],
                           ),
-                          HorizontalAlbumsList(
+                          HorizontalAlbumsListSeparated(
                             songsList: recentList,
                             onTap: (int idx) {
                               PlayerInvoke.init(

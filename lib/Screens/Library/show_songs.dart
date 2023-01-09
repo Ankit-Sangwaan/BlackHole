@@ -248,6 +248,7 @@ class _SongsListState extends State<SongsList> {
                             ? const SizedBox()
                             : ListTile(
                                 leading: Card(
+                                  margin: EdgeInsets.zero,
                                   elevation: 5,
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(7.0),
@@ -313,7 +314,6 @@ class _SongsListState extends State<SongsList> {
                                     fromDownloads: offline,
                                     recommend: false,
                                   );
-                                  Navigator.pushNamed(context, '/player');
                                 },
                               );
                       },
