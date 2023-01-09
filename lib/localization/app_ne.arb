@@ -656,5 +656,15 @@
   "ytStreamQuality": "युटुब स्ट्रिमिङ गुणस्तर",
   "@ytStreamQuality": {},
   "upNext": "अर्को माथि",
-  "@upNext": {}
+  "@upNext": {},
+  "shareLogsSub": "हालको सत्र लगहरू साझा गर्नुहोस्",
+  "@shareLogsSub": {},
+  "openInSpotify": "स्पोटीफाइमा खोल्नुहोस्",
+  "@openInSpotify": {},
+  "signInSpotify": "स्पोटीफाइमा साइन इन गर्नुहोस्",
+  "@signInSpotify": {},
+  "shareLogs": "लगहरू साझा गर्नुहोस्",
+  "@shareLogs": {},
+  "radio": "रेडियो",
+  "@radio": {}
 }
