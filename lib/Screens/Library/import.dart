@@ -147,8 +147,7 @@ Future<void> importFile(
   List playlistNames,
   Box settingsBox,
 ) async {
-  final newPlaylistNames = await importPlaylist(context, playlistNames);
-  settingsBox.put('playlistNames', newPlaylistNames);
+  await importFilePlaylist(context, playlistNames);
 }
 
 Future<void> connectToSpotify(

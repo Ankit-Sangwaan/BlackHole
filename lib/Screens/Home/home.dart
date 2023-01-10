@@ -241,6 +241,7 @@ class _HomePageState extends State<HomePage> {
           if (autoBackPath == '') {
             ExtStorageProvider.getExtStorage(
               dirName: 'BlackHole/Backups',
+              writeAccess: true,
             ).then((value) {
               Hive.box('settings').put('autoBackPath', value);
               createBackup(

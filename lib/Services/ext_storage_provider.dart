@@ -38,7 +38,10 @@ class ExtStorageProvider {
   }
 
   // getting external storage path
-  static Future<String?> getExtStorage({required String dirName}) async {
+  static Future<String?> getExtStorage({
+    required String dirName,
+    required bool writeAccess,
+  }) async {
     Directory? directory;
 
     try {
@@ -63,6 +66,9 @@ class ExtStorageProvider {
           }
           if (await directory.exists()) {
             try {
+              if (writeAccess) {
+                await requestPermission(Permission.manageExternalStorage);
+              }
               // if directory exists then returning the complete path
               return newPath;
             } catch (e) {

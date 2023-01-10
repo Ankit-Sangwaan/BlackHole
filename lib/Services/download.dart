@@ -115,8 +115,10 @@ class Download with ChangeNotifier {
 
     filename = '${filename.replaceAll(avoid, "").replaceAll("  ", " ")}.m4a';
     if (dlPath == '') {
-      final String? temp =
-          await ExtStorageProvider.getExtStorage(dirName: 'Music');
+      final String? temp = await ExtStorageProvider.getExtStorage(
+        dirName: 'Music',
+        writeAccess: true,
+      );
       dlPath = temp!;
     }
     if (data['url'].toString().contains('google') && createYoutubeFolder) {

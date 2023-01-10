@@ -24,7 +24,6 @@ import 'dart:io';
 import 'package:audio_service/audio_service.dart';
 import 'package:audio_session/audio_session.dart';
 import 'package:blackhole/APIs/api.dart';
-import 'package:blackhole/Helpers/logging.dart';
 import 'package:blackhole/Helpers/mediaitem_converter.dart';
 import 'package:blackhole/Helpers/playlist.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
@@ -119,10 +118,10 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   }
 
   Future<void> _init() async {
+    Logger.root.info('starting audio service');
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
 
-    await initializeLogging();
     await startService();
 
     speed.debounceTime(const Duration(milliseconds: 250)).listen((speed) {
@@ -174,30 +173,29 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         _recentSubject.add([item]);
 
         if (recommend && item.extras!['autoplay'] as bool) {
-          Future.delayed(const Duration(seconds: 1), () async {
-            final List<MediaItem> mediaQueue = queue.value;
-            final int index = mediaQueue.indexOf(item);
-            final int queueLength = mediaQueue.length;
-            if (queueLength - index > 2) {
-              await Future.delayed(const Duration(seconds: 10), () {});
-            }
-            if (item == mediaItem.value) {
-              final List value = await SaavnAPI().getReco(item.id);
-              value.shuffle();
-              // final List value = await SaavnAPI().getRadioSongs(
-              //     stationId: stationId!, count: queueLength - index - 20);
+          final List<MediaItem> mediaQueue = queue.value;
+          final int index = mediaQueue.indexOf(item);
+          final int queueLength = mediaQueue.length;
+          if (queueLength - index < 5) {
+            Future.delayed(const Duration(seconds: 1), () async {
+              if (item == mediaItem.value) {
+                final List value = await SaavnAPI().getReco(item.id);
+                value.shuffle();
+                // final List value = await SaavnAPI().getRadioSongs(
+                //     stationId: stationId!, count: queueLength - index - 20);
 
-              for (int i = 0; i < value.length; i++) {
-                final element = MediaItemConverter.mapToMediaItem(
-                  value[i] as Map,
-                  addedByAutoplay: true,
-                );
-                if (!mediaQueue.contains(element)) {
-                  addQueueItem(element);
+                for (int i = 0; i < value.length; i++) {
+                  final element = MediaItemConverter.mapToMediaItem(
+                    value[i] as Map,
+                    addedByAutoplay: true,
+                  );
+                  if (!mediaQueue.contains(element)) {
+                    addQueueItem(element);
+                  }
                 }
               }
-            }
-          });
+            });
+          }
         }
       }
     });

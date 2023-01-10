@@ -393,7 +393,9 @@ class _TopPageState extends State<TopPage>
                         onSelected: (int? value) async {
                           if (value == 0) {
                             await launchUrl(
-                              Uri.parse(showList[index]['url'].toString()),
+                              Uri.parse(
+                                showList[index]['spotifyUrl'].toString(),
+                              ),
                               mode: LaunchMode.externalApplication,
                             );
                           }

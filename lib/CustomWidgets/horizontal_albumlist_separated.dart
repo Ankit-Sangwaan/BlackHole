@@ -71,75 +71,79 @@ class HorizontalAlbumsListSeparated extends StatelessWidget {
   Widget build(BuildContext context) {
     final bool rotated =
         MediaQuery.of(context).size.height < MediaQuery.of(context).size.width;
+    final double portion = (songsList.length <= 4) ? 1.0 : 0.875;
     final double listSize = rotated
-        ? MediaQuery.of(context).size.height * 0.875
-        : MediaQuery.of(context).size.width * 0.875;
+        ? MediaQuery.of(context).size.height * portion
+        : MediaQuery.of(context).size.width * portion;
     return SizedBox(
-      height: 74 * 4,
-      child: ListView.builder(
-        physics: PagingScrollPhysics(itemDimension: listSize),
-        scrollDirection: Axis.horizontal,
-        shrinkWrap: true,
-        itemExtent: listSize,
-        itemCount: (songsList.length / 4).ceil(),
-        itemBuilder: (context, index) {
-          final itemGroup = songsList.skip(index * 4).take(4);
-          return SizedBox(
-            height: 72 * 4,
-            width: listSize,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: itemGroup.map((item) {
-                final subTitle = getSubTitle(item as Map);
-                return ListTile(
-                  title: Text(
-                    formatString(item['title']?.toString()),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  subtitle: Text(
-                    subTitle,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  leading: Card(
-                    margin: EdgeInsets.zero,
-                    elevation: 5,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(7.0),
+      height: songsList.length < 4 ? songsList.length * 74 : 74 * 4,
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: ListView.builder(
+          physics: PagingScrollPhysics(itemDimension: listSize),
+          scrollDirection: Axis.horizontal,
+          shrinkWrap: true,
+          itemExtent: listSize,
+          itemCount: (songsList.length / 4).ceil(),
+          itemBuilder: (context, index) {
+            final itemGroup = songsList.skip(index * 4).take(4);
+            return SizedBox(
+              height: 72 * 4,
+              width: listSize,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: itemGroup.map((item) {
+                  final subTitle = getSubTitle(item as Map);
+                  return ListTile(
+                    title: Text(
+                      formatString(item['title']?.toString()),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    clipBehavior: Clip.antiAlias,
-                    child: CachedNetworkImage(
-                      fit: BoxFit.cover,
-                      errorWidget: (context, _, __) => const Image(
-                        fit: BoxFit.cover,
-                        image: AssetImage('assets/cover.jpg'),
+                    subtitle: Text(
+                      subTitle,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    leading: Card(
+                      margin: EdgeInsets.zero,
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7.0),
                       ),
-                      imageUrl: getImageUrl(item['image'].toString()),
-                      placeholder: (context, url) => Image(
+                      clipBehavior: Clip.antiAlias,
+                      child: CachedNetworkImage(
                         fit: BoxFit.cover,
-                        image: (item['type'] == 'playlist' ||
-                                item['type'] == 'album')
-                            ? const AssetImage(
-                                'assets/album.png',
-                              )
-                            : item['type'] == 'artist'
-                                ? const AssetImage(
-                                    'assets/artist.png',
-                                  )
-                                : const AssetImage(
-                                    'assets/cover.jpg',
-                                  ),
+                        errorWidget: (context, _, __) => const Image(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/cover.jpg'),
+                        ),
+                        imageUrl: getImageUrl(item['image'].toString()),
+                        placeholder: (context, url) => Image(
+                          fit: BoxFit.cover,
+                          image: (item['type'] == 'playlist' ||
+                                  item['type'] == 'album')
+                              ? const AssetImage(
+                                  'assets/album.png',
+                                )
+                              : item['type'] == 'artist'
+                                  ? const AssetImage(
+                                      'assets/artist.png',
+                                    )
+                                  : const AssetImage(
+                                      'assets/cover.jpg',
+                                    ),
+                        ),
                       ),
                     ),
-                  ),
-                  trailing: SongTileTrailingMenu(
-                    data: item,
-                  ),
-                  onTap: () => onTap(songsList.indexOf(item)),
-                );
-              }).toList(),
-            ),
-          );
-        },
+                    trailing: SongTileTrailingMenu(
+                      data: item,
+                    ),
+                    onTap: () => onTap(songsList.indexOf(item)),
+                  );
+                }).toList(),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
