@@ -27,6 +27,7 @@ import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/Helpers/mediaitem_converter.dart';
 import 'package:blackhole/Helpers/playlist.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
+import 'package:blackhole/Services/youtube_services.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
@@ -154,16 +155,24 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
             int.parse((item.extras!['expire_at'] ?? '0').toString());
         if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 > expiredAt) {
           Logger.root.info('youtube link expired');
-          // _player!.seekToNext();
-          // final index = queue.value.indexOf(item);
-          // print(index);
-          // _playlist.insert(
-          //   index,
-          //   AudioSource.uri(
-          //     Uri.parse(newUrl),
-          //   ),
-          // );
-          // _playlist.removeAt(index);
+          YouTubeServices().refreshLink(item.id).then((newData) {
+            if (newData != null) {
+              final MediaItem newItem = item.copyWith(
+                extras: item.extras!
+                  ..['url'] = newData['url']
+                  ..['expire_at'] = newData['expire_at'],
+              );
+
+              final int? index = _player!.currentIndex;
+              _player!.pause();
+              _playlist.insert(index! + 1, _itemToSource(newItem)).then((_) {
+                _playlist.removeAt(index).then((_) {
+                  _player!.play();
+                });
+              });
+              updateMediaItem(newItem);
+            }
+          });
         }
       }
 
@@ -299,6 +308,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
           Uri.file(
             (downloadsBox.get(mediaItem.id) as Map)['path'].toString(),
           ),
+          tag: mediaItem.id,
         );
       } else {
         // if (cacheSong) {

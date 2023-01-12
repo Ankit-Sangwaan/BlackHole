@@ -20,6 +20,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -46,6 +47,14 @@ class YouTubeServices {
   Future<Video> getVideoFromId(String id) async {
     final Video result = await yt.videos.get(id);
     return result;
+  }
+
+  Future<Map?> refreshLink(String id) async {
+    final Video res = await getVideoFromId(id);
+    final String quality =
+        Hive.box('settings').get('quality', defaultValue: 'Low').toString();
+    final Map? data = await formatVideo(video: res, quality: quality);
+    return data;
   }
 
   Future<Playlist> getPlaylistDetails(String id) async {
