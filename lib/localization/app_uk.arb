@@ -651,10 +651,20 @@
   "@mergePlaylists": {},
   "playRadio": "Грати радіо",
   "@playRadio": {},
-  "topCharts": "Кращі сходні",
+  "topCharts": "Топ-чарти",
   "@topCharts": {},
   "viral": "Вірусні",
   "@viral": {},
   "top": "Кращі",
-  "@top": {}
+  "@top": {},
+  "radio": "Радіо",
+  "@radio": {},
+  "shareLogs": "Поділитися логами",
+  "@shareLogs": {},
+  "openInSpotify": "Відкрити в Spotify",
+  "@openInSpotify": {},
+  "shareLogsSub": "Поділіться журналами поточних сеансів",
+  "@shareLogsSub": {},
+  "signInSpotify": "Увійдіть у Spotify",
+  "@signInSpotify": {}
 }
