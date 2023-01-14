@@ -678,5 +678,7 @@
   "shareLogsSub": "Geçerli oturum günlüklerini paylaşın",
   "@shareLogsSub": {},
   "radio": "Radyo",
-  "@radio": {}
+  "@radio": {},
+  "cantFind": "Aradığınızı bulamıyor musunuz? ",
+  "@cantFind": {}
 }
