@@ -32,7 +32,17 @@ class YtMusicService {
   };
   static const userAgent =
       'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) Gecko/20100101 Firefox/88.0';
-  static const Map<String, String> endpoints = {'search': 'search'};
+  static const Map<String, String> endpoints = {
+    'search': 'search',
+    'browse': 'browse',
+    'get_song': 'player',
+    'get_playlist': 'playlist',
+    'get_album': 'album',
+    'get_artist': 'artist',
+    'get_video': 'video',
+    'get_channel': 'channel',
+    'get_lyrics': 'lyrics',
+  };
   static const filters = [
     'albums',
     'artists',
@@ -45,6 +55,7 @@ class YtMusicService {
   static const scopes = ['library', 'uploads'];
 
   Map<String, String>? headers;
+  Map<String, dynamic>? context;
 
   Map<String, String> initializeHeaders() {
     return {
@@ -193,7 +204,7 @@ class YtMusicService {
     }
   }
 
-  dynamic nav(Map root, List items) {
+  dynamic nav(dynamic root, List items) {
     try {
       dynamic res = root;
       for (final item in items) {
@@ -210,6 +221,8 @@ class YtMusicService {
     if (!headers!.containsKey('X-Goog-Visitor-Id')) {
       headers!['X-Goog-Visitor-Id'] = await getVisitorId(headers) ?? '';
     }
+    context = initializeContext();
+    context!['context']['client']['hl'] = 'en';
   }
 
   Future<List<Map>> search(
@@ -221,67 +234,166 @@ class YtMusicService {
     if (headers == null) {
       await init();
     }
-    final context = initializeContext();
-    context['context']['client']['hl'] = 'en';
-    context['query'] = query;
-    final params = getSearchParams(
-      filter: filter,
-      scope: scope,
-      ignoreSpelling: ignoreSpelling,
-    );
-    if (params != null) {
-      context['params'] = params;
-    }
-    final List<Map> searchResults = [];
-    final res = await sendRequest(endpoints['search']!, context, headers);
-    if (!res.containsKey('contents')) {
+    try {
+      final body = Map.from(context!);
+      body['query'] = query;
+      final params = getSearchParams(
+        filter: filter,
+        scope: scope,
+        ignoreSpelling: ignoreSpelling,
+      );
+      if (params != null) {
+        body['params'] = params;
+      }
+      final List<Map> searchResults = [];
+      final res = await sendRequest(endpoints['search']!, body, headers);
+      if (!res.containsKey('contents')) {
+        return List.empty();
+      }
+
+      Map<String, dynamic> results = {};
+
+      if ((res['contents'] as Map).containsKey('tabbedSearchResultsRenderer')) {
+        final tabIndex =
+            (scope == null || filter != null) ? 0 : scopes.indexOf(scope) + 1;
+        results = res['contents']['tabbedSearchResultsRenderer']['tabs']
+            [tabIndex]['tabRenderer']['content'] as Map<String, dynamic>;
+      } else {
+        results = res['contents'] as Map<String, dynamic>;
+      }
+
+      final List finalResults = nav(results, [
+            'sectionListRenderer',
+            'contents',
+            0,
+            'musicShelfRenderer',
+            'contents'
+          ]) as List? ??
+          [];
+
+      for (final item in finalResults) {
+        final String id = nav(item, [
+          'musicResponsiveListItemRenderer',
+          'playlistItemData',
+          'videoId'
+        ]).toString();
+        final String image = nav(item, [
+          'musicResponsiveListItemRenderer',
+          'thumbnail',
+          'musicThumbnailRenderer',
+          'thumbnail',
+          'thumbnails',
+          0,
+          'url'
+        ]).toString();
+        final String title = nav(item, [
+          'musicResponsiveListItemRenderer',
+          'flexColumns',
+          0,
+          'musicResponsiveListItemFlexColumnRenderer',
+          'text',
+          'runs',
+          0,
+          'text'
+        ]).toString();
+        final String subtitle = nav(item, [
+          'musicResponsiveListItemRenderer',
+          'flexColumns',
+          1,
+          'musicResponsiveListItemFlexColumnRenderer',
+          'text',
+          'runs',
+          0,
+          'text'
+        ]).toString();
+        searchResults.add({
+          'id': id,
+          'title': title,
+          'artist': subtitle,
+          'subtitle': subtitle,
+          'image': image,
+        });
+      }
+      return searchResults;
+    } catch (e) {
+      Logger.root.severe('Error in yt search', e);
       return List.empty();
     }
+  }
 
-    Map<String, dynamic> results = {};
-
-    if ((res['contents'] as Map).containsKey('tabbedSearchResultsRenderer')) {
-      final tabIndex =
-          (scope == null || filter != null) ? 0 : scopes.indexOf(scope) + 1;
-      results = res['contents']['tabbedSearchResultsRenderer']['tabs'][tabIndex]
-          ['tabRenderer']['content'] as Map<String, dynamic>;
-    } else {
-      results = res['contents'] as Map<String, dynamic>;
+  Future<List<Map>> getPlaylistDetails(String playlistId) async {
+    if (headers == null) {
+      await init();
     }
-
-    final List finalResults =
-        nav(results, ['sectionListRenderer', 'contents']) as List<dynamic>? ??
-            [];
-
-    if (finalResults.length < 2 && results.containsKey('itemSectionRenderer')) {
-      return List.empty();
+    try {
+      final browseId =
+          playlistId.startsWith('VL') ? playlistId : 'VL$playlistId';
+      final body = Map.from(context!);
+      body['browseId'] = browseId;
+      final Map response =
+          await sendRequest(endpoints['browse']!, body, headers);
+      final List finalResults = nav(response, [
+            'contents',
+            'singleColumnBrowseResultsRenderer',
+            'tabs',
+            0,
+            'tabRenderer',
+            'content',
+            'sectionListRenderer',
+            'contents',
+            0,
+            'musicPlaylistShelfRenderer',
+            'contents'
+          ]) as List? ??
+          [];
+      final List<Map> results = [];
+      for (final item in finalResults) {
+        final String id = nav(item, [
+          'musicResponsiveListItemRenderer',
+          'playlistItemData',
+          'videoId'
+        ]).toString();
+        final String image = nav(item, [
+          'musicResponsiveListItemRenderer',
+          'thumbnail',
+          'musicThumbnailRenderer',
+          'thumbnail',
+          'thumbnails',
+          0,
+          'url'
+        ]).toString();
+        final String title = nav(item, [
+          'musicResponsiveListItemRenderer',
+          'flexColumns',
+          0,
+          'musicResponsiveListItemFlexColumnRenderer',
+          'text',
+          'runs',
+          0,
+          'text'
+        ]).toString();
+        final String subtitle = nav(item, [
+          'musicResponsiveListItemRenderer',
+          'flexColumns',
+          1,
+          'musicResponsiveListItemFlexColumnRenderer',
+          'text',
+          'runs',
+          0,
+          'text'
+        ]).toString();
+        results.add({
+          'id': id,
+          'title': title,
+          'artist': subtitle,
+          'subtitle': subtitle,
+          'image': image,
+        });
+      }
+      return results;
+    } catch (e) {
+      Logger.root.severe('Error in ytmusic getPlaylistDetails', e);
+      return [];
     }
-
-    for (final item
-        in finalResults[0]['musicShelfRenderer']['contents'] as List) {
-      final String id = item['musicResponsiveListItemRenderer']
-              ['playlistItemData']['videoId']
-          .toString();
-      final String image = item['musicResponsiveListItemRenderer']['thumbnail']
-              ['musicThumbnailRenderer']['thumbnail']['thumbnails'][0]['url']
-          .toString();
-      final String title = item['musicResponsiveListItemRenderer']
-                      ['flexColumns'][0]
-                  ['musicResponsiveListItemFlexColumnRenderer']['text']['runs']
-              [0]['text']
-          .toString();
-      final String subtitle = item['musicResponsiveListItemRenderer']
-                      ['flexColumns'][1]
-                  ['musicResponsiveListItemFlexColumnRenderer']['text']['runs']
-              [0]['text']
-          .toString();
-      searchResults.add({
-        'id': id,
-        'title': title,
-        'subtitle': subtitle,
-        'image': image,
-      });
-    }
-    return searchResults;
   }
 }

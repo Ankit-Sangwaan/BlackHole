@@ -28,10 +28,8 @@ import 'package:blackhole/Services/youtube_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:hive/hive.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class SongTileTrailingMenu extends StatefulWidget {
   final Map data;
@@ -224,7 +222,7 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
 }
 
 class YtSongTileTrailingMenu extends StatefulWidget {
-  final Video data;
+  final Map data;
   const YtSongTileTrailingMenu({super.key, required this.data});
 
   @override
@@ -338,22 +336,14 @@ class _YtSongTileTrailingMenuState extends State<YtSongTileTrailingMenu> {
             context,
             MaterialPageRoute(
               builder: (context) => SearchPage(
-                query: widget.data.title.split('|')[0].split('(')[0],
+                query: widget.data['title'].toString(),
               ),
             ),
           );
         }
         if (value == 1 || value == 2 || value == 3) {
           YouTubeServices()
-              .formatVideo(
-            video: widget.data,
-            quality: Hive.box('settings')
-                .get(
-                  'ytQuality',
-                  defaultValue: 'Low',
-                )
-                .toString(),
-          )
+              .formatVideoFromId(widget.data['id'].toString())
               .then((songMap) {
             final MediaItem mediaItem =
                 MediaItemConverter.mapToMediaItem(songMap!);
@@ -370,12 +360,12 @@ class _YtSongTileTrailingMenuState extends State<YtSongTileTrailingMenu> {
         }
         if (value == 4) {
           launchUrl(
-            Uri.parse(widget.data.url),
+            Uri.parse('https://youtube.com/watch?v=${widget.data["id"]}'),
             mode: LaunchMode.externalApplication,
           );
         }
         if (value == 5) {
-          Share.share(widget.data.url);
+          Share.share('https://youtube.com/watch?v=${widget.data["id"]}');
         }
       },
     );

@@ -49,6 +49,25 @@ class YouTubeServices {
     return result;
   }
 
+  Future<Map?> formatVideoFromId(String id) async {
+    final Video vid = await getVideoFromId(id);
+    final Map? response = await formatVideo(
+      video: vid,
+      quality: Hive.box('settings')
+          .get(
+            'ytQuality',
+            defaultValue: 'Low',
+          )
+          .toString(),
+      // preferM4a: Hive.box(
+      //         'settings')
+      //     .get('preferM4a',
+      //         defaultValue:
+      //             true) as bool
+    );
+    return response;
+  }
+
   Future<Map?> refreshLink(String id) async {
     final Video res = await getVideoFromId(id);
     final String quality =

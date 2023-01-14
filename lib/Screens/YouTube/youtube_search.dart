@@ -22,7 +22,7 @@ import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/search_bar.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
-// import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
+import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
 import 'package:blackhole/Services/yt_music.dart';
@@ -30,7 +30,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class YouTubeSearchPage extends StatefulWidget {
   final String query;
@@ -163,7 +162,7 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                         ),
                                       ),
                                       subtitle: Text(
-                                        searchedList[index]['subtitle']
+                                        searchedList[index]['artist']
                                             .toString(),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -199,29 +198,17 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                           ),
                                         ),
                                       ),
+                                      trailing: YtSongTileTrailingMenu(
+                                        data: searchedList[index],
+                                      ),
                                       onTap: () async {
                                         setState(() {
                                           done = false;
                                         });
-                                        final Video vid =
-                                            await YouTubeServices()
-                                                .getVideoFromId(
-                                          searchedList[index]['id'].toString(),
-                                        );
                                         final Map? response =
-                                            await YouTubeServices().formatVideo(
-                                          video: vid,
-                                          quality: Hive.box('settings')
-                                              .get(
-                                                'ytQuality',
-                                                defaultValue: 'Low',
-                                              )
-                                              .toString(),
-                                          // preferM4a: Hive.box(
-                                          //         'settings')
-                                          //     .get('preferM4a',
-                                          //         defaultValue:
-                                          //             true) as bool
+                                            await YouTubeServices()
+                                                .formatVideoFromId(
+                                          searchedList[index]['id'].toString(),
                                         );
                                         setState(() {
                                           done = true;

@@ -24,11 +24,11 @@ import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
+import 'package:blackhole/Services/yt_music.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class YouTubePlaylist extends StatefulWidget {
   final String playlistId;
@@ -51,7 +51,7 @@ class YouTubePlaylist extends StatefulWidget {
 
 class _YouTubePlaylistState extends State<YouTubePlaylist> {
   bool status = false;
-  List<Video> searchedList = [];
+  List<Map> searchedList = [];
   bool fetched = false;
   bool done = true;
   List ytSearch =
@@ -62,16 +62,22 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
   void initState() {
     if (!status) {
       status = true;
-      YouTubeServices().getPlaylistSongs(widget.playlistId).then((value) {
-        if (value.isNotEmpty) {
-          setState(() {
-            searchedList = value;
-            fetched = true;
-          });
-        } else {
-          status = false;
-        }
+      YtMusicService().getPlaylistDetails(widget.playlistId).then((value) {
+        setState(() {
+          searchedList = value;
+          fetched = true;
+        });
       });
+      // YouTubeServices().getPlaylistSongs(widget.playlistId).then((value) {
+      //   if (value.isNotEmpty) {
+      //     setState(() {
+      //       searchedList = value;
+      //       fetched = true;
+      //     });
+      //   } else {
+      //     status = false;
+      //   }
+      // });
     }
     super.initState();
   }
@@ -110,14 +116,8 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                         });
 
                         final Map? response =
-                            await YouTubeServices().formatVideo(
-                          video: searchedList.first,
-                          quality: Hive.box('settings')
-                              .get(
-                                'ytQuality',
-                                defaultValue: 'Low',
-                              )
-                              .toString(),
+                            await YouTubeServices().formatVideoFromId(
+                          searchedList.first['id'].toString(),
                         );
                         setState(() {
                           done = true;
@@ -136,14 +136,8 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                         });
 
                         final Map? response =
-                            await YouTubeServices().formatVideo(
-                          video: searchedList.first,
-                          quality: Hive.box('settings')
-                              .get(
-                                'ytQuality',
-                                defaultValue: 'Low',
-                              )
-                              .toString(),
+                            await YouTubeServices().formatVideoFromId(
+                          searchedList.first['id'].toString(),
                         );
                         setState(() {
                           done = true;
@@ -177,7 +171,7 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                 ),
                               ),
                             ...searchedList.map(
-                              (Video entry) {
+                              (Map entry) {
                                 return Padding(
                                   padding: const EdgeInsets.only(
                                     left: 5.0,
@@ -197,19 +191,13 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                         child: CachedNetworkImage(
                                           fit: BoxFit.cover,
                                           errorWidget: (context, _, __) =>
-                                              CachedNetworkImage(
+                                              const Image(
                                             fit: BoxFit.cover,
-                                            imageUrl:
-                                                entry.thumbnails.standardResUrl,
-                                            errorWidget: (context, _, __) =>
-                                                const Image(
-                                              fit: BoxFit.cover,
-                                              image: AssetImage(
-                                                'assets/cover.jpg',
-                                              ),
+                                            image: AssetImage(
+                                              'assets/cover.jpg',
                                             ),
                                           ),
-                                          imageUrl: entry.thumbnails.maxResUrl,
+                                          imageUrl: entry['image'].toString(),
                                           placeholder: (context, url) =>
                                               const Image(
                                             fit: BoxFit.cover,
@@ -221,7 +209,7 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                       ),
                                     ),
                                     title: Text(
-                                      entry.title,
+                                      entry['title'].toString(),
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w500,
@@ -230,11 +218,11 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                     onLongPress: () {
                                       copyToClipboard(
                                         context: context,
-                                        text: entry.title,
+                                        text: entry['title'].toString(),
                                       );
                                     },
                                     subtitle: Text(
-                                      entry.author,
+                                      entry['artist'].toString(),
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     onTap: () async {
@@ -243,14 +231,9 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                       });
 
                                       final Map? response =
-                                          await YouTubeServices().formatVideo(
-                                        video: entry,
-                                        quality: Hive.box('settings')
-                                            .get(
-                                              'ytQuality',
-                                              defaultValue: 'Low',
-                                            )
-                                            .toString(),
+                                          await YouTubeServices()
+                                              .formatVideoFromId(
+                                        entry['id'].toString(),
                                       );
                                       setState(() {
                                         done = true;
