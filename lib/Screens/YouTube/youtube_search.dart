@@ -215,105 +215,227 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                 )
                               : Stack(
                                   children: [
-                                    ListView.builder(
-                                      itemCount: searchedList.length,
-                                      physics: const BouncingScrollPhysics(),
-                                      shrinkWrap: true,
-                                      padding: const EdgeInsets.fromLTRB(
-                                        5,
-                                        80,
-                                        10,
-                                        0,
+                                    SingleChildScrollView(
+                                      padding: const EdgeInsets.only(
+                                        left: 10,
+                                        right: 10,
+                                        top: 60,
                                       ),
-                                      itemBuilder: (context, index) {
-                                        return ListTile(
-                                          title: Text(
-                                            searchedList[index]['title']
-                                                .toString(),
-                                            overflow: TextOverflow.ellipsis,
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                          subtitle: Text(
-                                            searchedList[index]['subtitle']
-                                                .toString(),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                          contentPadding: const EdgeInsets.only(
-                                            left: 15.0,
-                                          ),
-                                          leading: Card(
-                                            margin: EdgeInsets.zero,
-                                            elevation: 8,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                7.0,
-                                              ),
-                                            ),
-                                            clipBehavior: Clip.antiAlias,
-                                            child: CachedNetworkImage(
-                                              fit: BoxFit.cover,
-                                              errorWidget: (context, _, __) =>
-                                                  const Image(
-                                                fit: BoxFit.cover,
-                                                image: AssetImage(
-                                                  'assets/cover.jpg',
-                                                ),
-                                              ),
-                                              imageUrl: searchedList[index]
-                                                      ['image']
-                                                  .toString(),
-                                              placeholder: (context, url) =>
-                                                  const Image(
-                                                fit: BoxFit.cover,
-                                                image: AssetImage(
-                                                  'assets/cover.jpg',
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          trailing: YtSongTileTrailingMenu(
-                                            data: searchedList[index],
-                                          ),
-                                          onTap: () async {
-                                            setState(() {
-                                              done = false;
-                                            });
-                                            final Map? response =
-                                                await YouTubeServices()
-                                                    .formatVideoFromId(
-                                              id: searchedList[index]['id']
-                                                  .toString(),
-                                              data: searchedList[index],
-                                            );
-                                            setState(() {
-                                              done = true;
-                                            });
-                                            if (response != null) {
-                                              PlayerInvoke.init(
-                                                songsList: [response],
-                                                index: 0,
-                                                isOffline: false,
-                                                recommend: false,
-                                              );
+                                      physics: const BouncingScrollPhysics(),
+                                      child: Column(
+                                        children: searchedList.map(
+                                          (Map section) {
+                                            if (section['items'] == null ||
+                                                (section['title'] != 'Songs' &&
+                                                    section['title'] !=
+                                                        'Videos')) {
+                                              return const SizedBox();
                                             }
-                                            response == null
-                                                ? ShowSnackBar().showSnackBar(
-                                                    context,
-                                                    AppLocalizations.of(
-                                                      context,
-                                                    )!
-                                                        .ytLiveAlert,
-                                                  )
-                                                : Navigator.pushNamed(
-                                                    context,
-                                                    '/player',
-                                                  );
+                                            return Column(
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                    left: 15,
+                                                    top: 20,
+                                                    bottom: 5,
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        section['title']
+                                                            .toString(),
+                                                        style: TextStyle(
+                                                          color:
+                                                              Theme.of(context)
+                                                                  .colorScheme
+                                                                  .secondary,
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                        ),
+                                                      ),
+                                                      //   if (section['title'] !=
+                                                      //       'Top Result')
+                                                      //     Row(
+                                                      //       mainAxisAlignment:
+                                                      //           MainAxisAlignment
+                                                      //               .end,
+                                                      //       children: [
+                                                      //         GestureDetector(
+                                                      //           onTap: () {},
+                                                      //           child: Row(
+                                                      //             children: [
+                                                      //               Text(
+                                                      //                 AppLocalizations
+                                                      //                         .of(
+                                                      //                   context,
+                                                      //                 )!
+                                                      //                     .viewAll,
+                                                      //                 style:
+                                                      //                     TextStyle(
+                                                      //                   color: Theme
+                                                      //                           .of(
+                                                      //                     context,
+                                                      //                   )
+                                                      //                       .textTheme
+                                                      //                       .caption!
+                                                      //                       .color,
+                                                      //                   fontWeight:
+                                                      //                       FontWeight
+                                                      //                           .w800,
+                                                      //                 ),
+                                                      //               ),
+                                                      //               Icon(
+                                                      //                 Icons
+                                                      //                     .chevron_right_rounded,
+                                                      //                 color: Theme
+                                                      //                         .of(
+                                                      //                   context,
+                                                      //                 )
+                                                      //                     .textTheme
+                                                      //                     .caption!
+                                                      //                     .color,
+                                                      //               ),
+                                                      //             ],
+                                                      //           ),
+                                                      //         ),
+                                                      //       ],
+                                                      //     ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                ListView.builder(
+                                                  physics:
+                                                      const NeverScrollableScrollPhysics(),
+                                                  shrinkWrap: true,
+                                                  itemCount:
+                                                      (section['items'] as List)
+                                                          .length,
+                                                  itemBuilder: (context, idx) {
+                                                    return ListTile(
+                                                      title: Text(
+                                                        section['items'][idx]
+                                                                ['title']
+                                                            .toString(),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                        ),
+                                                      ),
+                                                      subtitle: Text(
+                                                        section['items'][idx]
+                                                                ['subtitle']
+                                                            .toString(),
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                      ),
+                                                      contentPadding:
+                                                          const EdgeInsets.only(
+                                                        left: 15.0,
+                                                      ),
+                                                      leading: Card(
+                                                        margin: EdgeInsets.zero,
+                                                        elevation: 8,
+                                                        shape:
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                            7.0,
+                                                          ),
+                                                        ),
+                                                        clipBehavior:
+                                                            Clip.antiAlias,
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          fit: BoxFit.cover,
+                                                          errorWidget: (
+                                                            context,
+                                                            _,
+                                                            __,
+                                                          ) =>
+                                                              const Image(
+                                                            fit: BoxFit.cover,
+                                                            image: AssetImage(
+                                                              'assets/cover.jpg',
+                                                            ),
+                                                          ),
+                                                          imageUrl:
+                                                              section['items']
+                                                                          [idx]
+                                                                      ['image']
+                                                                  .toString(),
+                                                          placeholder:
+                                                              (context, url) =>
+                                                                  const Image(
+                                                            fit: BoxFit.cover,
+                                                            image: AssetImage(
+                                                              'assets/cover.jpg',
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                      trailing:
+                                                          YtSongTileTrailingMenu(
+                                                        data: section['items']
+                                                            [idx] as Map,
+                                                      ),
+                                                      onTap: () async {
+                                                        setState(() {
+                                                          done = false;
+                                                        });
+                                                        final Map? response =
+                                                            await YouTubeServices()
+                                                                .formatVideoFromId(
+                                                          id: section['items']
+                                                                  [idx]['id']
+                                                              .toString(),
+                                                          data: section['items']
+                                                              [idx] as Map,
+                                                        );
+                                                        setState(() {
+                                                          done = true;
+                                                        });
+                                                        if (response != null) {
+                                                          PlayerInvoke.init(
+                                                            songsList: [
+                                                              response
+                                                            ],
+                                                            index: 0,
+                                                            isOffline: false,
+                                                            recommend: false,
+                                                          );
+                                                        }
+                                                        response == null
+                                                            ? ShowSnackBar()
+                                                                .showSnackBar(
+                                                                context,
+                                                                AppLocalizations
+                                                                        .of(
+                                                                  context,
+                                                                )!
+                                                                    .ytLiveAlert,
+                                                              )
+                                                            : Navigator
+                                                                .pushNamed(
+                                                                context,
+                                                                '/player',
+                                                              );
+                                                      },
+                                                    );
+                                                  },
+                                                ),
+                                              ],
+                                            );
                                           },
-                                        );
-                                      },
+                                        ).toList(),
+                                      ),
                                     ),
                                     if (!done)
                                       Center(
