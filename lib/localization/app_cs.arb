@@ -678,5 +678,7 @@
   "shareLogs": "Sdílet protokoly",
   "@shareLogs": {},
   "radio": "Rádio",
-  "@radio": {}
+  "@radio": {},
+  "cantFind": "Nemůžete najít, co hledáte? ",
+  "@cantFind": {}
 }
