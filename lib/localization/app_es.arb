@@ -674,5 +674,7 @@
   "shareLogsSub": "Compartir los registros de las sesiones actuales",
   "@shareLogsSub": {},
   "radio": "Radio",
-  "@radio": {}
+  "@radio": {},
+  "cantFind": "¿No encuentra lo que busca? ",
+  "@cantFind": {}
 }
