@@ -61,6 +61,7 @@ Future<void> main() async {
   }
   await openHiveBox('settings');
   await openHiveBox('downloads');
+  await openHiveBox('stats');
   await openHiveBox('Favorite Songs');
   await openHiveBox('cache', limit: true);
   if (Platform.isAndroid) {

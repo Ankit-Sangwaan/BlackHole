@@ -22,6 +22,7 @@ import 'package:blackhole/CustomWidgets/search_bar.dart';
 import 'package:blackhole/Screens/YouTube/youtube_playlist.dart';
 import 'package:blackhole/Screens/YouTube/youtube_search.dart';
 import 'package:blackhole/Services/youtube_services.dart';
+import 'package:blackhole/Services/yt_music.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
@@ -138,7 +139,7 @@ class _YouTubeState extends State<YouTube>
                 ),
               ),
         onQueryChanged: (changedQuery) {
-          return YouTubeServices().getSearchSuggestions(query: changedQuery);
+          return YtMusicService().getSearchSuggestions(query: changedQuery);
         },
         onSubmitted: (submittedQuery) {
           Navigator.push(

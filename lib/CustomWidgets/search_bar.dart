@@ -17,6 +17,8 @@
  * Copyright (c) 2021-2022, Ankit Sangwan
  */
 
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
@@ -228,8 +230,10 @@ class _SearchBarState extends State<SearchBar> {
                               ),
                               elevation: 8.0,
                               child: SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height - 250.0,
+                                height: min(
+                                  MediaQuery.of(context).size.height / 1.75,
+                                  70.0 * suggestedList.length,
+                                ),
                                 child: ListView.builder(
                                   physics: const BouncingScrollPhysics(),
                                   padding: const EdgeInsets.only(

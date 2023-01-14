@@ -1204,12 +1204,6 @@ class NowPlayingStream extends StatelessWidget {
                   ),
                   onTap: () {
                     audioHandler.skipToQueueItem(index);
-                    _updateScrollController(
-                      scrollController,
-                      queueState.queueIndex ?? 0,
-                      queuePosition.toInt(),
-                      queue.length,
-                    );
                   },
                 ),
               ),

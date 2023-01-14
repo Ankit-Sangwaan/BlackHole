@@ -42,6 +42,7 @@ class YtMusicService {
     'get_video': 'video',
     'get_channel': 'channel',
     'get_lyrics': 'lyrics',
+    'search_suggestions': 'music/get_search_suggestions',
   };
   static const filters = [
     'albums',
@@ -56,6 +57,14 @@ class YtMusicService {
 
   Map<String, String>? headers;
   Map<String, dynamic>? context;
+
+  static final YtMusicService _singleton = YtMusicService._internal();
+
+  factory YtMusicService() {
+    return _singleton;
+  }
+
+  YtMusicService._internal();
 
   Map<String, String> initializeHeaders() {
     return {
@@ -317,6 +326,45 @@ class YtMusicService {
       return searchResults;
     } catch (e) {
       Logger.root.severe('Error in yt search', e);
+      return List.empty();
+    }
+  }
+
+  Future<List<String>> getSearchSuggestions({
+    required String query,
+    String? scope,
+    bool ignoreSpelling = false,
+    String? filter = 'songs',
+  }) async {
+    if (headers == null) {
+      await init();
+    }
+    try {
+      final body = Map.from(context!);
+      body['input'] = query;
+      final Map response =
+          await sendRequest(endpoints['search_suggestions']!, body, headers);
+      final List finalResult = nav(response, [
+            'contents',
+            0,
+            'searchSuggestionsSectionRenderer',
+            'contents'
+          ]) as List? ??
+          [];
+      final List<String> results = [];
+      for (final item in finalResult) {
+        results.add(
+          nav(item, [
+            'searchSuggestionRenderer',
+            'navigationEndpoint',
+            'searchEndpoint',
+            'query'
+          ]).toString(),
+        );
+      }
+      return results;
+    } catch (e) {
+      Logger.root.severe('Error in yt search suggestions', e);
       return List.empty();
     }
   }

@@ -1396,29 +1396,53 @@ class _SettingPageState extends State<SettingPage> {
                                             ),
                                           ),
                                           children: order.map((e) {
-                                            return CheckboxListTile(
+                                            return Row(
                                               key: Key(e),
-                                              dense: true,
-                                              activeColor: Theme.of(context)
-                                                  .colorScheme
-                                                  .secondary,
-                                              checkColor: Theme.of(context)
-                                                          .colorScheme
-                                                          .secondary ==
-                                                      Colors.white
-                                                  ? Colors.black
-                                                  : null,
-                                              value: checked.contains(e),
-                                              title: Text(e),
-                                              onChanged: (bool? value) {
-                                                setStt(
-                                                  () {
-                                                    value!
-                                                        ? checked.add(e)
-                                                        : checked.remove(e);
-                                                  },
-                                                );
-                                              },
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                ReorderableDragStartListener(
+                                                  index: order.indexOf(e),
+                                                  child: const Icon(
+                                                    Icons.drag_handle_rounded,
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  child: SizedBox(
+                                                    child: CheckboxListTile(
+                                                      dense: true,
+                                                      contentPadding:
+                                                          const EdgeInsets.only(
+                                                        left: 16.0,
+                                                      ),
+                                                      activeColor:
+                                                          Theme.of(context)
+                                                              .colorScheme
+                                                              .secondary,
+                                                      checkColor: Theme.of(
+                                                                context,
+                                                              )
+                                                                  .colorScheme
+                                                                  .secondary ==
+                                                              Colors.white
+                                                          ? Colors.black
+                                                          : null,
+                                                      value:
+                                                          checked.contains(e),
+                                                      title: Text(e),
+                                                      onChanged: (bool? value) {
+                                                        setStt(
+                                                          () {
+                                                            value!
+                                                                ? checked.add(e)
+                                                                : checked
+                                                                    .remove(e);
+                                                          },
+                                                        );
+                                                      },
+                                                    ),
+                                                  ),
+                                                ),
+                                              ],
                                             );
                                           }).toList(),
                                         ),
