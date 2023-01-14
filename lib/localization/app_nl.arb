@@ -678,5 +678,7 @@
   "shareLogsSub": "Deel de logboeken van de huidige sessies",
   "@shareLogsSub": {},
   "radio": "Radio",
-  "@radio": {}
+  "@radio": {},
+  "cantFind": "Kun je niet vinden wat je zoekt? ",
+  "@cantFind": {}
 }
