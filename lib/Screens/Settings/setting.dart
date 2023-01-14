@@ -3108,7 +3108,7 @@ class _SettingPageState extends State<SettingPage> {
                             final Directory tempDir =
                                 await getTemporaryDirectory();
                             final files = <XFile>[
-                              XFile('${tempDir.path}/logs/logs.log')
+                              XFile('${tempDir.path}/logs/logs.txt')
                             ];
                             Share.shareXFiles(files);
                           },

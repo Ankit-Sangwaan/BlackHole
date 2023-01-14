@@ -147,7 +147,7 @@ class _SearchBarState extends State<SearchBar> {
                         if (widget.isYt) {
                           Future.delayed(
                             const Duration(
-                              milliseconds: 400,
+                              milliseconds: 600,
                             ),
                             () async {
                               if (tempQuery == val &&

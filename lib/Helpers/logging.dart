@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 
 Future<void> initializeLogging() async {
   final Directory tempDir = await getTemporaryDirectory();
-  final File logFile = File('${tempDir.path}/logs/logs.log');
+  final File logFile = File('${tempDir.path}/logs/logs.txt');
   if (!await logFile.exists()) {
     await logFile.create(recursive: true);
   }
