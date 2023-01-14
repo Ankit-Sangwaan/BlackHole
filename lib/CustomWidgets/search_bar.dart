@@ -19,8 +19,11 @@
 
 import 'dart:math';
 
+import 'package:blackhole/Screens/YouTube/youtube_search.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 
 class SearchBar extends StatefulWidget {
@@ -201,6 +204,37 @@ class _SearchBarState extends State<SearchBar> {
                 ),
               ),
             ),
+            if (!widget.isYt)
+              Padding(
+                padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+                child: RichText(
+                  text: TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        style: const TextStyle(color: Colors.grey),
+                        text: AppLocalizations.of(context)!.cantFind,
+                      ),
+                      TextSpan(
+                        text: AppLocalizations.of(context)!.searchYt,
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.push(
+                              context,
+                              PageRouteBuilder(
+                                opaque: false,
+                                pageBuilder: (_, __, ___) => YouTubeSearchPage(
+                                  query: query.isNotEmpty
+                                      ? query
+                                      : widget.controller.text,
+                                ),
+                              ),
+                            );
+                          },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ValueListenableBuilder(
               valueListenable: hide,
               builder: (
@@ -256,6 +290,21 @@ class _SearchBarState extends State<SearchBar> {
                                           suggestedList[index].toString(),
                                         );
                                         hide.value = true;
+                                        List searchQueries =
+                                            Hive.box('settings').get(
+                                          'search',
+                                          defaultValue: [],
+                                        ) as List;
+                                        searchQueries.insert(
+                                          0,
+                                          suggestedList[index].toString(),
+                                        );
+                                        if (searchQueries.length > 10) {
+                                          searchQueries =
+                                              searchQueries.sublist(0, 10);
+                                        }
+                                        Hive.box('settings')
+                                            .put('search', searchQueries);
                                       },
                                     );
                                   },

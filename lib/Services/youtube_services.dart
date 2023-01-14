@@ -49,7 +49,7 @@ class YouTubeServices {
     return result;
   }
 
-  Future<Map?> formatVideoFromId(String id) async {
+  Future<Map?> formatVideoFromId({required String id, Map? data}) async {
     final Video vid = await getVideoFromId(id);
     final Map? response = await formatVideo(
       video: vid,
@@ -59,6 +59,7 @@ class YouTubeServices {
             defaultValue: 'Low',
           )
           .toString(),
+      data: data,
       // preferM4a: Hive.box(
       //         'settings')
       //     .get('preferM4a',
@@ -314,6 +315,7 @@ class YouTubeServices {
   Future<Map?> formatVideo({
     required Video video,
     required String quality,
+    Map? data,
     // bool preferM4a = true,
   }) async {
     if (video.duration?.inSeconds == null) return null;
@@ -325,10 +327,10 @@ class YouTubeServices {
         (DateTime.now().millisecondsSinceEpoch ~/ 1000 + 3600 * 5.5).toString();
     return {
       'id': video.id.value,
-      'album': video.author,
+      'album': data?['album'] ?? video.author,
       'duration': video.duration?.inSeconds.toString(),
-      'title': video.title,
-      'artist': video.author,
+      'title': data?['title'] ?? video.title,
+      'artist': data?['artist'] ?? video.author,
       'image': video.thumbnails.maxResUrl,
       'secondImage': video.thumbnails.highResUrl,
       'language': 'YouTube',
@@ -342,7 +344,7 @@ class YouTubeServices {
       'has_lyrics': 'false',
       'release_date': video.publishDate.toString(),
       'album_id': video.channelId.value,
-      'subtitle': video.author,
+      'subtitle': data?['subtitle'] ?? video.author,
       'perma_url': video.url,
     };
     // For invidous

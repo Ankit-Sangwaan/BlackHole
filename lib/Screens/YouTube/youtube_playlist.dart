@@ -117,7 +117,8 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
 
                         final Map? response =
                             await YouTubeServices().formatVideoFromId(
-                          searchedList.first['id'].toString(),
+                          id: searchedList.first['id'].toString(),
+                          data: searchedList.first,
                         );
                         setState(() {
                           done = true;
@@ -137,7 +138,8 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
 
                         final Map? response =
                             await YouTubeServices().formatVideoFromId(
-                          searchedList.first['id'].toString(),
+                          id: searchedList.first['id'].toString(),
+                          data: searchedList.first,
                         );
                         setState(() {
                           done = true;
@@ -222,7 +224,7 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                       );
                                     },
                                     subtitle: Text(
-                                      entry['artist'].toString(),
+                                      entry['subtitle'].toString(),
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     onTap: () async {
@@ -233,7 +235,8 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                       final Map? response =
                                           await YouTubeServices()
                                               .formatVideoFromId(
-                                        entry['id'].toString(),
+                                        id: entry['id'].toString(),
+                                        data: entry,
                                       );
                                       setState(() {
                                         done = true;

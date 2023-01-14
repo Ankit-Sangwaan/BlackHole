@@ -343,7 +343,10 @@ class _YtSongTileTrailingMenuState extends State<YtSongTileTrailingMenu> {
         }
         if (value == 1 || value == 2 || value == 3) {
           YouTubeServices()
-              .formatVideoFromId(widget.data['id'].toString())
+              .formatVideoFromId(
+            id: widget.data['id'].toString(),
+            data: widget.data,
+          )
               .then((songMap) {
             final MediaItem mediaItem =
                 MediaItemConverter.mapToMediaItem(songMap!);

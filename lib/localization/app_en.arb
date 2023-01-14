@@ -87,6 +87,8 @@
   "@cancel": {},
   "cantAddToQueue": "Can't add Online Song to Offline Queue",
   "@cantAddToQueue": {},
+  "cantFind": "Can't find what you are looking for? ",
+  "@cantFind": {},
   "canvasColor": "Canvas Color",
   "@canvasColor": {},
   "canvasColorSub": "Color of Background Canvas",

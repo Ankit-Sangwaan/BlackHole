@@ -168,7 +168,7 @@ class _SearchPageState extends State<SearchPage> {
                           child: Column(
                             children: [
                               const SizedBox(
-                                height: 70,
+                                height: 100,
                               ),
                               Align(
                                 alignment: Alignment.topLeft,
@@ -331,7 +331,7 @@ class _SearchPageState extends State<SearchPage> {
                               ? nothingFound(context)
                               : SingleChildScrollView(
                                   padding: const EdgeInsets.only(
-                                    top: 70,
+                                    top: 100,
                                   ),
                                   physics: const BouncingScrollPhysics(),
                                   child: Column(

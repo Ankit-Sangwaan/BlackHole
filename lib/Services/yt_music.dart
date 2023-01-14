@@ -305,20 +305,44 @@ class YtMusicService {
           0,
           'text'
         ]).toString();
-        final String subtitle = nav(item, [
+        final List subtitleList = nav(item, [
           'musicResponsiveListItemRenderer',
           'flexColumns',
           1,
           'musicResponsiveListItemFlexColumnRenderer',
           'text',
-          'runs',
-          0,
-          'text'
-        ]).toString();
+          'runs'
+        ]) as List;
+        int count = 0;
+        String album = '';
+        String artist = '';
+        String duration = '';
+        String subtitle = '';
+        for (final element in subtitleList) {
+          // ignore: use_string_buffers
+          subtitle += element['text'].toString();
+          if (element['text'].trim() == '•') {
+            count++;
+          } else {
+            if (count == 0) {
+              if (element['text'].toString().trim() == '&') {
+                artist += ', ';
+              } else {
+                artist += element['text'].toString();
+              }
+            } else if (count == 1) {
+              album += element['text'].toString();
+            } else if (count == 2) {
+              duration += element['text'].toString();
+            }
+          }
+        }
         searchResults.add({
           'id': id,
           'title': title,
-          'artist': subtitle,
+          'artist': artist,
+          'album': album,
+          'duration': duration,
           'subtitle': subtitle,
           'image': image,
         });
@@ -420,20 +444,44 @@ class YtMusicService {
           0,
           'text'
         ]).toString();
-        final String subtitle = nav(item, [
+        final List subtitleList = nav(item, [
           'musicResponsiveListItemRenderer',
           'flexColumns',
           1,
           'musicResponsiveListItemFlexColumnRenderer',
           'text',
-          'runs',
-          0,
-          'text'
-        ]).toString();
+          'runs'
+        ]) as List;
+        int count = 0;
+        String album = '';
+        String artist = '';
+        String duration = '';
+        String subtitle = '';
+        for (final element in subtitleList) {
+          // ignore: use_string_buffers
+          subtitle += element['text'].toString();
+          if (element['text'].trim() == '•') {
+            count++;
+          } else {
+            if (count == 0) {
+              if (element['text'].toString().trim() == '&') {
+                artist += ', ';
+              } else {
+                artist += element['text'].toString();
+              }
+            } else if (count == 1) {
+              album += element['text'].toString();
+            } else if (count == 2) {
+              duration += element['text'].toString();
+            }
+          }
+        }
         results.add({
           'id': id,
           'title': title,
-          'artist': subtitle,
+          'artist': artist,
+          'album': album,
+          'duration': duration,
           'subtitle': subtitle,
           'image': image,
         });

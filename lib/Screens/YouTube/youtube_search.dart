@@ -46,6 +46,8 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
   bool done = true;
   bool liveSearch =
       Hive.box('settings').get('liveSearch', defaultValue: true) as bool;
+  List searchHistory =
+      Hive.box('settings').get('search', defaultValue: []) as List;
   // List ytSearch =
   // Hive.box('settings').get('ytSearch', defaultValue: []) as List;
   // bool showHistory =
@@ -74,12 +76,18 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
     if (boxSize > 250) boxSize = 250;
     if (!status) {
       status = true;
-      YtMusicService().search(query == '' ? widget.query : query).then((value) {
-        setState(() {
-          searchedList = value;
-          fetched = true;
+      if (query.isEmpty && widget.query.isEmpty) {
+        fetched = true;
+      } else {
+        YtMusicService()
+            .search(query == '' ? widget.query : query)
+            .then((value) {
+          setState(() {
+            searchedList = value;
+            fetched = true;
+          });
         });
-      });
+      }
       // YouTubeServices()
       //     .fetchSearchResults(query == '' ? widget.query : query)
       //     .then((value) {
@@ -123,162 +131,233 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                       ? const Center(
                           child: CircularProgressIndicator(),
                         )
-                      : searchedList.isEmpty
-                          ? emptyScreen(
-                              context,
-                              0,
-                              ':( ',
-                              100,
-                              AppLocalizations.of(
-                                context,
-                              )!
-                                  .sorry,
-                              60,
-                              AppLocalizations.of(
-                                context,
-                              )!
-                                  .resultsNotFound,
-                              20,
-                            )
-                          : Stack(
-                              children: [
-                                ListView.builder(
-                                  itemCount: searchedList.length,
-                                  physics: const BouncingScrollPhysics(),
-                                  shrinkWrap: true,
-                                  padding: const EdgeInsets.fromLTRB(
-                                    5,
-                                    80,
-                                    10,
-                                    0,
+                      : (query.isEmpty && widget.query.isEmpty)
+                          ? SingleChildScrollView(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 15,
+                              ),
+                              physics: const BouncingScrollPhysics(),
+                              child: Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 70,
                                   ),
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                      title: Text(
-                                        searchedList[index]['title'].toString(),
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                      ),
-                                      subtitle: Text(
-                                        searchedList[index]['artist']
-                                            .toString(),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      contentPadding: const EdgeInsets.only(
-                                        left: 15.0,
-                                      ),
-                                      leading: Card(
-                                        margin: EdgeInsets.zero,
-                                        elevation: 8,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            7.0,
-                                          ),
-                                        ),
-                                        clipBehavior: Clip.antiAlias,
-                                        child: CachedNetworkImage(
-                                          fit: BoxFit.cover,
-                                          errorWidget: (context, _, __) =>
-                                              const Image(
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(
-                                              'assets/cover.jpg',
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: Wrap(
+                                      children: List<Widget>.generate(
+                                        searchHistory.length,
+                                        (int index) {
+                                          return Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 5.0,
                                             ),
-                                          ),
-                                          imageUrl: searchedList[index]['image']
-                                              .toString(),
-                                          placeholder: (context, url) =>
-                                              const Image(
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(
-                                              'assets/cover.jpg',
+                                            child: GestureDetector(
+                                              child: Chip(
+                                                label: Text(
+                                                  searchHistory[index]
+                                                      .toString(),
+                                                ),
+                                                labelStyle: TextStyle(
+                                                  color: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyText1!
+                                                      .color,
+                                                  fontWeight: FontWeight.normal,
+                                                ),
+                                                onDeleted: () {
+                                                  setState(() {
+                                                    searchHistory
+                                                        .removeAt(index);
+                                                    Hive.box('settings').put(
+                                                      'search',
+                                                      searchHistory,
+                                                    );
+                                                  });
+                                                },
+                                              ),
+                                              onTap: () {
+                                                setState(
+                                                  () {
+                                                    fetched = false;
+                                                    query = searchHistory[index]
+                                                        .toString()
+                                                        .trim();
+                                                    status = false;
+                                                  },
+                                                );
+                                              },
                                             ),
-                                          ),
-                                        ),
-                                      ),
-                                      trailing: YtSongTileTrailingMenu(
-                                        data: searchedList[index],
-                                      ),
-                                      onTap: () async {
-                                        setState(() {
-                                          done = false;
-                                        });
-                                        final Map? response =
-                                            await YouTubeServices()
-                                                .formatVideoFromId(
-                                          searchedList[index]['id'].toString(),
-                                        );
-                                        setState(() {
-                                          done = true;
-                                        });
-                                        if (response != null) {
-                                          PlayerInvoke.init(
-                                            songsList: [response],
-                                            index: 0,
-                                            isOffline: false,
-                                            recommend: false,
                                           );
-                                        }
-                                        response == null
-                                            ? ShowSnackBar().showSnackBar(
-                                                context,
-                                                AppLocalizations.of(
-                                                  context,
-                                                )!
-                                                    .ytLiveAlert,
-                                              )
-                                            : Navigator.pushNamed(
-                                                context,
-                                                '/player',
-                                              );
-                                      },
-                                    );
-                                  },
-                                ),
-                                if (!done)
-                                  Center(
-                                    child: SizedBox.square(
-                                      dimension: boxSize,
-                                      child: Card(
-                                        elevation: 10,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                        ),
-                                        clipBehavior: Clip.antiAlias,
-                                        child: GradientContainer(
-                                          child: Center(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceEvenly,
-                                              children: [
-                                                CircularProgressIndicator(
-                                                  valueColor:
-                                                      AlwaysStoppedAnimation<
-                                                          Color>(
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary,
-                                                  ),
-                                                  strokeWidth: 5,
-                                                ),
-                                                Text(
-                                                  AppLocalizations.of(
-                                                    context,
-                                                  )!
-                                                      .fetchingStream,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
+                                        },
                                       ),
                                     ),
-                                  )
-                              ],
-                            ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : searchedList.isEmpty
+                              ? emptyScreen(
+                                  context,
+                                  0,
+                                  ':( ',
+                                  100,
+                                  AppLocalizations.of(
+                                    context,
+                                  )!
+                                      .sorry,
+                                  60,
+                                  AppLocalizations.of(
+                                    context,
+                                  )!
+                                      .resultsNotFound,
+                                  20,
+                                )
+                              : Stack(
+                                  children: [
+                                    ListView.builder(
+                                      itemCount: searchedList.length,
+                                      physics: const BouncingScrollPhysics(),
+                                      shrinkWrap: true,
+                                      padding: const EdgeInsets.fromLTRB(
+                                        5,
+                                        80,
+                                        10,
+                                        0,
+                                      ),
+                                      itemBuilder: (context, index) {
+                                        return ListTile(
+                                          title: Text(
+                                            searchedList[index]['title']
+                                                .toString(),
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                          subtitle: Text(
+                                            searchedList[index]['subtitle']
+                                                .toString(),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 15.0,
+                                          ),
+                                          leading: Card(
+                                            margin: EdgeInsets.zero,
+                                            elevation: 8,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                7.0,
+                                              ),
+                                            ),
+                                            clipBehavior: Clip.antiAlias,
+                                            child: CachedNetworkImage(
+                                              fit: BoxFit.cover,
+                                              errorWidget: (context, _, __) =>
+                                                  const Image(
+                                                fit: BoxFit.cover,
+                                                image: AssetImage(
+                                                  'assets/cover.jpg',
+                                                ),
+                                              ),
+                                              imageUrl: searchedList[index]
+                                                      ['image']
+                                                  .toString(),
+                                              placeholder: (context, url) =>
+                                                  const Image(
+                                                fit: BoxFit.cover,
+                                                image: AssetImage(
+                                                  'assets/cover.jpg',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          trailing: YtSongTileTrailingMenu(
+                                            data: searchedList[index],
+                                          ),
+                                          onTap: () async {
+                                            setState(() {
+                                              done = false;
+                                            });
+                                            final Map? response =
+                                                await YouTubeServices()
+                                                    .formatVideoFromId(
+                                              id: searchedList[index]['id']
+                                                  .toString(),
+                                              data: searchedList[index],
+                                            );
+                                            setState(() {
+                                              done = true;
+                                            });
+                                            if (response != null) {
+                                              PlayerInvoke.init(
+                                                songsList: [response],
+                                                index: 0,
+                                                isOffline: false,
+                                                recommend: false,
+                                              );
+                                            }
+                                            response == null
+                                                ? ShowSnackBar().showSnackBar(
+                                                    context,
+                                                    AppLocalizations.of(
+                                                      context,
+                                                    )!
+                                                        .ytLiveAlert,
+                                                  )
+                                                : Navigator.pushNamed(
+                                                    context,
+                                                    '/player',
+                                                  );
+                                          },
+                                        );
+                                      },
+                                    ),
+                                    if (!done)
+                                      Center(
+                                        child: SizedBox.square(
+                                          dimension: boxSize,
+                                          child: Card(
+                                            elevation: 10,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(15),
+                                            ),
+                                            clipBehavior: Clip.antiAlias,
+                                            child: GradientContainer(
+                                              child: Center(
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
+                                                  children: [
+                                                    CircularProgressIndicator(
+                                                      valueColor:
+                                                          AlwaysStoppedAnimation<
+                                                              Color>(
+                                                        Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                      ),
+                                                      strokeWidth: 5,
+                                                    ),
+                                                    Text(
+                                                      AppLocalizations.of(
+                                                        context,
+                                                      )!
+                                                          .fetchingStream,
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                  ],
+                                ),
                 ),
               ),
             ),
