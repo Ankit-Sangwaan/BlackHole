@@ -635,7 +635,7 @@
   "@ytDownQuality": {},
   "ytDownQualitySub": "Hogere kwaliteit neemt meer ruimte in beslag",
   "@ytDownQualitySub": {},
-  "ytLiveAlert": "Deze video wordt gelivestreamed. Wacht tot de livestream is afgelopen en probeer het opnieuw.",
+  "ytLiveAlert": "Deze video wordt gelivestreamd of er is een fout opgetreden. Wacht tot de livestream is afgelopen of probeer het opnieuw.",
   "@ytLiveAlert": {},
   "ytStreamQuality": "YouTube-streamingkwaliteit",
   "@ytStreamQuality": {},
