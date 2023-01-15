@@ -599,7 +599,7 @@
   "@undo": {},
   "yes": "Evet",
   "@yes": {},
-  "ytLiveAlert": "Video yayında. Lütfen canlı yayın bitene kadar bekleyin ve tekrar deneyin.",
+  "ytLiveAlert": "Ya video yayında ya da bir hata oluştu. Lütfen canlı yayın bitene kadar bekleyin veya tekrar deneyin.",
   "@ytLiveAlert": {},
   "viewArtist": "Sanatçıyı görüntüle",
   "@viewArtist": {},
