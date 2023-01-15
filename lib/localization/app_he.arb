@@ -662,5 +662,11 @@
   "shareLogsSub": "שיתוף יומני הפעילות הנוכחית",
   "@shareLogsSub": {},
   "radio": "רדיו",
-  "@radio": {}
+  "@radio": {},
+  "aboard": "ממריאים",
+  "@aboard": {},
+  "cantFind": "לא מצאת את מבוקשך? ",
+  "@cantFind": {},
+  "supportEq": "תמיכה באקוולייזר",
+  "@supportEq": {}
 }
