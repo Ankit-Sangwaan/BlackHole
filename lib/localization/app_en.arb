@@ -663,7 +663,7 @@
   "@ytDownQuality": {},
   "ytDownQualitySub": "Higher quality uses more disk space",
   "@ytDownQualitySub": {},
-  "ytLiveAlert": "Video is live. Please wait until the live stream finishes and try again.",
+  "ytLiveAlert": "Either Video is live or some error occured. Please wait until the live stream finishes or try again.",
   "@ytLiveAlert": {},
   "ytStreamQuality": "YouTube Streaming Quality",
   "@ytStreamQuality": {},

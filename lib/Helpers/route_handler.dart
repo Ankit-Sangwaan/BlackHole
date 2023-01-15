@@ -27,10 +27,8 @@ import 'package:blackhole/Screens/Search/search.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logging/logging.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class HandleRoute {
@@ -181,16 +179,7 @@ class YtUrlHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (type == 'video') {
-      YouTubeServices().getVideoFromId(id).then((Video value) async {
-        final Map? response = await YouTubeServices().formatVideo(
-          video: value,
-          quality: Hive.box('settings')
-              .get(
-                'ytQuality',
-                defaultValue: 'Low',
-              )
-              .toString(),
-        );
+      YouTubeServices().formatVideoFromId(id: id).then((Map? response) async {
         if (response != null) {
           PlayerInvoke.init(
             songsList: [response],

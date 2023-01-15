@@ -23,6 +23,7 @@ import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/search_bar.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
+import 'package:blackhole/Screens/YouTube/youtube_playlist.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
 import 'package:blackhole/Services/yt_music.dart';
@@ -225,10 +226,15 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                       child: Column(
                                         children: searchedList.map(
                                           (Map section) {
+                                            final List underDevelopment = [
+                                              'Artists',
+                                              'Albums',
+                                              'Top result'
+                                            ];
                                             if (section['items'] == null ||
-                                                (section['title'] != 'Songs' &&
-                                                    section['title'] !=
-                                                        'Videos')) {
+                                                underDevelopment.contains(
+                                                  section['title'],
+                                                )) {
                                               return const SizedBox();
                                             }
                                             return Column(
@@ -316,6 +322,10 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                       (section['items'] as List)
                                                           .length,
                                                   itemBuilder: (context, idx) {
+                                                    final itemType =
+                                                        section['items'][idx]
+                                                                ['type']
+                                                            .toString();
                                                     return ListTile(
                                                       title: Text(
                                                         section['items'][idx]
@@ -347,7 +357,9 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(
-                                                            7.0,
+                                                            itemType == 'Artist'
+                                                                ? 50.0
+                                                                : 7.0,
                                                           ),
                                                         ),
                                                         clipBehavior:
@@ -381,52 +393,113 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                           ),
                                                         ),
                                                       ),
-                                                      trailing:
-                                                          YtSongTileTrailingMenu(
-                                                        data: section['items']
-                                                            [idx] as Map,
-                                                      ),
+                                                      trailing: (itemType ==
+                                                                  'Song' ||
+                                                              itemType ==
+                                                                  'Video')
+                                                          ? YtSongTileTrailingMenu(
+                                                              data: section[
+                                                                      'items']
+                                                                  [idx] as Map,
+                                                            )
+                                                          : null,
                                                       onTap: () async {
-                                                        setState(() {
-                                                          done = false;
-                                                        });
-                                                        final Map? response =
-                                                            await YouTubeServices()
-                                                                .formatVideoFromId(
-                                                          id: section['items']
-                                                                  [idx]['id']
-                                                              .toString(),
-                                                          data: section['items']
-                                                              [idx] as Map,
-                                                        );
-                                                        setState(() {
-                                                          done = true;
-                                                        });
-                                                        if (response != null) {
-                                                          PlayerInvoke.init(
-                                                            songsList: [
-                                                              response
-                                                            ],
-                                                            index: 0,
-                                                            isOffline: false,
-                                                            recommend: false,
+                                                        if (itemType ==
+                                                            'Artist') {
+                                                          // under Development
+                                                          // YtMusicService()
+                                                          //     .getArtistDetails(
+                                                          //   section['items']
+                                                          //           [idx]['id']
+                                                          //       .toString(),
+                                                          // );
+                                                        }
+                                                        if (itemType ==
+                                                            'Playlist') {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  YouTubePlaylist(
+                                                                playlistId: section[
+                                                                            'items']
+                                                                        [
+                                                                        idx]['id']
+                                                                    .toString(),
+                                                                playlistName: section['items']
+                                                                            [
+                                                                            idx]
+                                                                        [
+                                                                        'title']
+                                                                    .toString(),
+                                                                playlistSubtitle:
+                                                                    section['items'][idx]
+                                                                            [
+                                                                            'countSongs']
+                                                                        .toString(),
+                                                                playlistSecondarySubtitle:
+                                                                    section['items'][idx]
+                                                                            [
+                                                                            'subtitle']
+                                                                        .toString(),
+                                                                playlistImage: (section['items'][idx]
+                                                                            [
+                                                                            'images']
+                                                                        as List)
+                                                                    .last
+                                                                    .toString(),
+                                                              ),
+                                                            ),
                                                           );
                                                         }
-                                                        response == null
-                                                            ? ShowSnackBar()
-                                                                .showSnackBar(
-                                                                context,
-                                                                AppLocalizations
-                                                                        .of(
+                                                        if (itemType ==
+                                                                'Song' ||
+                                                            itemType ==
+                                                                'Video') {
+                                                          setState(() {
+                                                            done = false;
+                                                          });
+                                                          final Map? response =
+                                                              await YouTubeServices()
+                                                                  .formatVideoFromId(
+                                                            id: section['items']
+                                                                    [idx]['id']
+                                                                .toString(),
+                                                            data:
+                                                                section['items']
+                                                                        [idx]
+                                                                    as Map,
+                                                          );
+                                                          setState(() {
+                                                            done = true;
+                                                          });
+                                                          if (response !=
+                                                              null) {
+                                                            PlayerInvoke.init(
+                                                              songsList: [
+                                                                response
+                                                              ],
+                                                              index: 0,
+                                                              isOffline: false,
+                                                              recommend: false,
+                                                            );
+                                                          }
+                                                          response == null
+                                                              ? ShowSnackBar()
+                                                                  .showSnackBar(
                                                                   context,
-                                                                )!
-                                                                    .ytLiveAlert,
-                                                              )
-                                                            : Navigator
-                                                                .pushNamed(
-                                                                context,
-                                                                '/player',
-                                                              );
+                                                                  AppLocalizations
+                                                                          .of(
+                                                                    context,
+                                                                  )!
+                                                                      .ytLiveAlert,
+                                                                )
+                                                              : Navigator
+                                                                  .pushNamed(
+                                                                  context,
+                                                                  '/player',
+                                                                );
+                                                        }
                                                       },
                                                     );
                                                   },

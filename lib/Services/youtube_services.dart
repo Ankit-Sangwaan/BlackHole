@@ -44,13 +44,21 @@ class YouTubeServices {
     return results;
   }
 
-  Future<Video> getVideoFromId(String id) async {
-    final Video result = await yt.videos.get(id);
-    return result;
+  Future<Video?> getVideoFromId(String id) async {
+    try {
+      final Video result = await yt.videos.get(id);
+      return result;
+    } catch (e) {
+      Logger.root.severe('Error while getting video from id', e);
+      return null;
+    }
   }
 
   Future<Map?> formatVideoFromId({required String id, Map? data}) async {
-    final Video vid = await getVideoFromId(id);
+    final Video? vid = await getVideoFromId(id);
+    if (vid == null) {
+      return null;
+    }
     final Map? response = await formatVideo(
       video: vid,
       quality: Hive.box('settings')
@@ -70,7 +78,10 @@ class YouTubeServices {
   }
 
   Future<Map?> refreshLink(String id) async {
-    final Video res = await getVideoFromId(id);
+    final Video? res = await getVideoFromId(id);
+    if (res == null) {
+      return null;
+    }
     final String quality =
         Hive.box('settings').get('quality', defaultValue: 'Low').toString();
     final Map? data = await formatVideo(video: res, quality: quality);
@@ -327,10 +338,10 @@ class YouTubeServices {
         (DateTime.now().millisecondsSinceEpoch ~/ 1000 + 3600 * 5.5).toString();
     return {
       'id': video.id.value,
-      'album': data?['album'] ?? video.author,
+      'album': (data?['album'] ?? '') != '' ? data!['album'] : video.author,
       'duration': video.duration?.inSeconds.toString(),
-      'title': data?['title'] ?? video.title,
-      'artist': data?['artist'] ?? video.author,
+      'title': (data?['title'] ?? '') != '' ? data!['title'] : video.title,
+      'artist': (data?['artist'] ?? '') != '' ? data!['artist'] : video.author,
       'image': video.thumbnails.maxResUrl,
       'secondImage': video.thumbnails.highResUrl,
       'language': 'YouTube',
@@ -344,7 +355,8 @@ class YouTubeServices {
       'has_lyrics': 'false',
       'release_date': video.publishDate.toString(),
       'album_id': video.channelId.value,
-      'subtitle': data?['subtitle'] ?? video.author,
+      'subtitle':
+          (data?['subtitle'] ?? '') != '' ? data!['subtitle'] : video.author,
       'perma_url': video.url,
     };
     // For invidous

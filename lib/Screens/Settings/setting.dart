@@ -3570,38 +3570,33 @@ class _SettingPageState extends State<SettingPage> {
                                           AppLocalizations.of(context)!.update,
                                       onPressed: () {
                                         Navigator.pop(context);
-                                        launchUrl(
-                                          Uri.parse(
-                                            value['LatestUrl'].toString(),
-                                          ),
-                                        );
-                                        // if (abis!.contains('arm64-v8a')) {
-                                        //   launchUrl(
-                                        //     Uri.parse(
-                                        //       value['arm64-v8a'] as String,
-                                        //     ),
-                                        //     mode:
-                                        //         LaunchMode.externalApplication,
-                                        //   );
-                                        // } else {
-                                        //   if (abis.contains('armeabi-v7a')) {
-                                        //     launchUrl(
-                                        //       Uri.parse(
-                                        //         value['armeabi-v7a'] as String,
-                                        //       ),
-                                        //       mode: LaunchMode
-                                        //           .externalApplication,
-                                        //     );
-                                        //   } else {
-                                        //     launchUrl(
-                                        //       Uri.parse(
-                                        //         value['universal'] as String,
-                                        //       ),
-                                        //       mode: LaunchMode
-                                        //           .externalApplication,
-                                        //     );
-                                        //   }
-                                        // }
+                                        if (abis!.contains('arm64-v8a')) {
+                                          launchUrl(
+                                            Uri.parse(
+                                              value['arm64-v8a'] as String,
+                                            ),
+                                            mode:
+                                                LaunchMode.externalApplication,
+                                          );
+                                        } else {
+                                          if (abis.contains('armeabi-v7a')) {
+                                            launchUrl(
+                                              Uri.parse(
+                                                value['armeabi-v7a'] as String,
+                                              ),
+                                              mode: LaunchMode
+                                                  .externalApplication,
+                                            );
+                                          } else {
+                                            launchUrl(
+                                              Uri.parse(
+                                                value['universal'] as String,
+                                              ),
+                                              mode: LaunchMode
+                                                  .externalApplication,
+                                            );
+                                          }
+                                        }
                                       },
                                     ),
                                   );
