@@ -273,7 +273,7 @@
   "@downingAlbum": {},
   "enterName": "Entre su nombre",
   "@enterName": {},
-  "ytLiveAlert": "El Video es en directo. Por favor, espere hasta finalice e intente nuevamente.",
+  "ytLiveAlert": "Este video se está transmitiendo en vivo o se produjo un error. Espere a que finalice la transmisión en vivo o vuelva a intentarlo.",
   "@ytLiveAlert": {},
   "dec": "Descendente",
   "@dec": {},
