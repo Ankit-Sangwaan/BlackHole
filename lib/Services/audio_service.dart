@@ -586,6 +586,30 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       _equalizer.setEnabled(extras!['value'] as bool);
     }
 
+    if (name == 'fastForward') {
+      try {
+        const stepInterval = Duration(seconds: 10);
+        Duration newPosition = _player!.position + stepInterval;
+        if (newPosition < Duration.zero) newPosition = Duration.zero;
+        if (newPosition > _player!.duration!) newPosition = _player!.duration!;
+        _player!.seek(newPosition);
+      } catch (e) {
+        Logger.root.severe('Error in fastForward', e);
+      }
+    }
+
+    if (name == 'rewind') {
+      try {
+        const stepInterval = Duration(seconds: 10);
+        Duration newPosition = _player!.position - stepInterval;
+        if (newPosition < Duration.zero) newPosition = Duration.zero;
+        if (newPosition > _player!.duration!) newPosition = _player!.duration!;
+        _player!.seek(newPosition);
+      } catch (e) {
+        Logger.root.severe('Error in rewind', e);
+      }
+    }
+
     if (name == 'getEqualizerParams') {
       return getEqParms();
     }

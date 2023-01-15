@@ -1399,11 +1399,22 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                           tapped.value = false;
                         });
                       },
+                onDoubleTapDown: (details) {
+                  if (details.globalPosition.dx <= widget.width * 2 / 5) {
+                    widget.audioHandler.customAction('rewind');
+                  }
+                  if (details.globalPosition.dx > widget.width * 2 / 5 &&
+                      details.globalPosition.dx < widget.width * 3 / 5) {
+                    widget.cardKey.currentState!.toggleCard();
+                  }
+                  if (details.globalPosition.dx >= widget.width * 3 / 5) {
+                    widget.audioHandler.customAction('fastForward');
+                  }
+                },
                 onDoubleTap: !enabled
                     ? null
                     : () {
                         Feedback.forLongPress(context);
-                        widget.cardKey.currentState!.toggleCard();
                       },
                 onHorizontalDragEnd: !enabled
                     ? null
