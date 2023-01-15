@@ -24,6 +24,7 @@ import 'package:blackhole/Helpers/spotify_helper.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Screens/Search/search.dart';
+import 'package:blackhole/Screens/YouTube/youtube_playlist.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
 import 'package:flutter/material.dart';
@@ -74,17 +75,17 @@ class HandleRoute {
           ),
         );
       }
-    } else if (url.contains('youtube')) {
+    } else if (url.contains('youtube') || url.contains('youtu.be')) {
       // TODO: Add support for youtube links
       Logger.root.info('received youtube link');
       final RegExpMatch? videoId =
-          RegExp(r'.*\.com\/watch\?v=(.*?)[/?&]').firstMatch('$url/');
+          RegExp(r'.*[\?\/](v|list)[=\/](.*?)[\/\?&#]').firstMatch('$url/');
       if (videoId != null) {
         return PageRouteBuilder(
           opaque: false,
           pageBuilder: (_, __, ___) => YtUrlHandler(
-            id: videoId[1]!,
-            type: 'video',
+            id: videoId[2]!,
+            type: videoId[1]!,
           ),
         );
       }
@@ -178,7 +179,7 @@ class YtUrlHandler extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (type == 'video') {
+    if (type == 'v') {
       YouTubeServices().formatVideoFromId(id: id).then((Map? response) async {
         if (response != null) {
           PlayerInvoke.init(
@@ -196,8 +197,23 @@ class YtUrlHandler extends StatelessWidget {
           ),
         );
       });
+    } else if (type == 'list') {
+      Future.delayed(const Duration(milliseconds: 500), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => YouTubePlaylist(
+              playlistId: id,
+              playlistImage: '',
+              playlistName: '',
+              playlistSubtitle: '',
+              playlistSecondarySubtitle: '',
+            ),
+          ),
+        );
+      });
     }
-    return Container();
+    return const SizedBox();
   }
 }
 
@@ -232,6 +248,6 @@ class OfflinePlayHandler extends StatelessWidget {
         ),
       );
     });
-    return Container();
+    return const SizedBox();
   }
 }
