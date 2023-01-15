@@ -78,7 +78,7 @@ class HandleRoute {
       // TODO: Add support for youtube links
       Logger.root.info('received youtube link');
       final RegExpMatch? videoId =
-          RegExp(r'.*\.com\/watch\?v=(.*?)[/?]').firstMatch('$url/');
+          RegExp(r'.*\.com\/watch\?v=(.*?)[/?&]').firstMatch('$url/');
       if (videoId != null) {
         return PageRouteBuilder(
           opaque: false,
