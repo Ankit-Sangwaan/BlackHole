@@ -623,7 +623,7 @@
   "@useDominantFullScreenSub": {},
   "ytDownQuality": "Kvalita stahování z YouTube",
   "@ytDownQuality": {},
-  "ytLiveAlert": "Video je živě. Počkejte prosím, než stream skončí, a zkuste to znovu.",
+  "ytLiveAlert": "Buď je video právě živě vysílané, nebo se vyskytla chyba. Počkejte, dokud živý přenos neskončí, nebo to zkuste znovu.",
   "@ytLiveAlert": {},
   "welcome": "Vítejte",
   "@welcome": {},
