@@ -591,7 +591,7 @@
   "@yesReplace": {},
   "youTube": "YouTube",
   "@youTube": {},
-  "ytLiveAlert": "La vidéo est en direct. Merci d'attendre qu'elle se termine puis réessayer.",
+  "ytLiveAlert": "Soit la vidéo est en direct, soit une erreur s'est produite. Veuillez attendre la fin de la diffusion en direct ou réessayer.",
   "@ytLiveAlert": {},
   "useDominantFullScreen": "Utiliser une couleur dominante pour l'ensemble de l'écran de lecture",
   "@useDominantFullScreen": {},
@@ -680,5 +680,7 @@
   "shareLogsSub": "Partager les journaux des sessions en cours",
   "@shareLogsSub": {},
   "radio": "Radio",
-  "@radio": {}
+  "@radio": {},
+  "cantFind": "Vous ne trouvez pas ce que vous cherchez ? ",
+  "@cantFind": {}
 }
