@@ -601,7 +601,7 @@
   "@yes": {},
   "yesReplace": "是，但替换旧文件",
   "@yesReplace": {},
-  "ytLiveAlert": "该视频为直播内容，请等待直播结束后重试",
+  "ytLiveAlert": "视频为直播内容或者发生了一些错误，请等待直播结束或者重试",
   "@ytLiveAlert": {},
   "useDominantFullScreenSub": "将歌曲图片的颜色作为整个背景的主色调。仅当 '播放界面使用主色调' 选项开启时可用",
   "@useDominantFullScreenSub": {},
@@ -680,5 +680,7 @@
   "radio": "电台",
   "@radio": {},
   "shareLogs": "分享日志",
-  "@shareLogs": {}
+  "@shareLogs": {},
+  "cantFind": "无法找到你所寻找的东西？ ",
+  "@cantFind": {}
 }
