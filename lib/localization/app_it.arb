@@ -187,7 +187,7 @@
   "@copied": {},
   "ytStreamQualitySub": "Una qualità più alta utilizza più dati",
   "@ytStreamQualitySub": {},
-  "ytLiveAlert": "Questo video è in diretta. Attendi fino alla fine della diretta e riprova.",
+  "ytLiveAlert": "Il video è in diretta o si è verificato un errore. Attendere il termine del flusso live o riprovare.",
   "@ytLiveAlert": {},
   "contactUs": "Contattaci",
   "@contactUs": {},
