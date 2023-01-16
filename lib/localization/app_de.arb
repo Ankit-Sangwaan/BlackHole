@@ -415,7 +415,7 @@
   "@checkUpdate": {},
   "contactUsSub": "Rückmeldungen erwünscht!",
   "@contactUsSub": {},
-  "equalizer": "Equalizer",
+  "equalizer": "Klangregelung (Equalizer)",
   "@equalizer": {},
   "prefReq": "Könntest du uns ein paar Dinge sagen?",
   "@prefReq": {},
@@ -515,7 +515,7 @@
   "@tg": {},
   "genre": "Genre",
   "@genre": {},
-  "genres": "Genres",
+  "genres": "Musikrichtungen",
   "@genres": {},
   "gmail": "Gmail",
   "@gmail": {},
@@ -567,7 +567,7 @@
   "@ui": {},
   "watchVideo": "Video ansehen",
   "@watchVideo": {},
-  "ytLiveAlert": "Das Video ist live. Bitte warte, bis der Live-Stream beendet ist und versuche es erneut.",
+  "ytLiveAlert": "Entweder ist das Video live oder es ist ein Fehler aufgetreten. Bitte warten Sie, bis der Live-Stream beendet ist oder versuchen Sie es erneut.",
   "@ytLiveAlert": {},
   "useDominant": "Dominante Farbe für Abspielbildschirm verwenden",
   "@useDominant": {},
@@ -680,5 +680,7 @@
   "shareLogsSub": "Aktuelle Sitzungsprotokolle teilen",
   "@shareLogsSub": {},
   "radio": "Radio",
-  "@radio": {}
+  "@radio": {},
+  "cantFind": "Nichts Passendes gefunden? ",
+  "@cantFind": {}
 }
