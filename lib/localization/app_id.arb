@@ -676,5 +676,7 @@
   "shareLogsSub": "Bagi log sesi saat ini",
   "@shareLogsSub": {},
   "radio": "Radio",
-  "@radio": {}
+  "@radio": {},
+  "cantFind": "Tidak bisa menemukan apa yang Anda cari? ",
+  "@cantFind": {}
 }
