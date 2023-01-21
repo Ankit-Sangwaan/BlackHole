@@ -27,12 +27,12 @@ import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/playlist_popupmenu.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
+import 'package:blackhole/Helpers/extensions.dart';
 import 'package:blackhole/Helpers/image_resolution_modifier.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:html_unescape/html_unescape_small.dart';
 import 'package:logging/logging.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -53,7 +53,6 @@ class _SongsListPageState extends State<SongsListPage> {
   bool loading = false;
   List songList = [];
   bool fetched = false;
-  HtmlUnescape unescape = HtmlUnescape();
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -241,9 +240,8 @@ class _SongsListPageState extends State<SongsListPage> {
                               widget.listItem['title']?.toString() ?? 'Songs',
                         ),
                       ],
-                      title: unescape.convert(
-                        widget.listItem['title']?.toString() ?? 'Songs',
-                      ),
+                      title: widget.listItem['title']?.toString().unescape() ??
+                          'Songs',
                       subtitle: '${songList.length} Songs',
                       secondarySubtitle:
                           widget.listItem['subTitle']?.toString() ??

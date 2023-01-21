@@ -1239,6 +1239,7 @@ class ArtWorkWidget extends StatefulWidget {
 class _ArtWorkWidgetState extends State<ArtWorkWidget> {
   final ValueNotifier<bool> dragging = ValueNotifier<bool>(false);
   final ValueNotifier<bool> tapped = ValueNotifier<bool>(false);
+  final ValueNotifier<int> doubletapped = ValueNotifier<int>(0);
   final ValueNotifier<bool> done = ValueNotifier<bool>(false);
   Map lyrics = {'id': '', 'lyrics': ''};
 
@@ -1402,6 +1403,10 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                 onDoubleTapDown: (details) {
                   if (details.globalPosition.dx <= widget.width * 2 / 5) {
                     widget.audioHandler.customAction('rewind');
+                    doubletapped.value = -1;
+                    Future.delayed(const Duration(milliseconds: 500), () async {
+                      doubletapped.value = 0;
+                    });
                   }
                   if (details.globalPosition.dx > widget.width * 2 / 5 &&
                       details.globalPosition.dx < widget.width * 3 / 5) {
@@ -1409,6 +1414,10 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                   }
                   if (details.globalPosition.dx >= widget.width * 3 / 5) {
                     widget.audioHandler.customAction('fastForward');
+                    doubletapped.value = 1;
+                    Future.delayed(const Duration(milliseconds: 500), () async {
+                      doubletapped.value = 0;
+                    });
                   }
                 },
                 onDoubleTap: !enabled
@@ -1593,6 +1602,67 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                         return Visibility(
                           visible: value,
                           child: child!,
+                        );
+                      },
+                    ),
+                    ValueListenableBuilder(
+                      valueListenable: doubletapped,
+                      child: const Icon(
+                        Icons.forward_10_rounded,
+                        size: 60.0,
+                      ),
+                      builder: (
+                        BuildContext context,
+                        int value,
+                        Widget? child,
+                      ) {
+                        return Visibility(
+                          visible: value != 0,
+                          child: Card(
+                            color: Colors.transparent,
+                            elevation: 0.0,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            child: SizedBox.expand(
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: value == 1
+                                        ? [
+                                            Colors.transparent,
+                                            Colors.black.withOpacity(0.4),
+                                            Colors.black.withOpacity(0.7),
+                                          ]
+                                        : [
+                                            Colors.black.withOpacity(0.7),
+                                            Colors.black.withOpacity(0.4),
+                                            Colors.transparent,
+                                          ],
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Visibility(
+                                      visible: value == -1,
+                                      child: const Icon(
+                                        Icons.replay_10_rounded,
+                                        size: 60.0,
+                                      ),
+                                    ),
+                                    const SizedBox(),
+                                    Visibility(
+                                      visible: value == 1,
+                                      child: child!,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                         );
                       },
                     ),
@@ -1815,8 +1885,8 @@ class NameNControls extends StatelessWidget {
             : height > 500
                 ? height * 0.2
                 : height * 0.3);
-    final double nowplayingBoxHeight =
-        height > 500 ? height * 0.4 : height * 0.15;
+    const double nowplayingBoxHeight = 62;
+    // height > 500 ? height * 0.4 : height * 0.15;
     final bool useFullScreenGradient = Hive.box('settings')
         .get('useFullScreenGradient', defaultValue: false) as bool;
     final List<String> artists = mediaItem.artist.toString().split(', ');
@@ -2108,7 +2178,7 @@ class NameNControls extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: nowplayingBoxHeight,
               ),
             ],

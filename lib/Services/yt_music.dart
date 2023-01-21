@@ -19,6 +19,7 @@
 
 import 'dart:convert';
 
+import 'package:blackhole/Helpers/extensions.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
@@ -56,6 +57,7 @@ class YtMusicService {
   static const scopes = ['library', 'uploads'];
 
   Map<String, String>? headers;
+  int? signatureTimestamp;
   Map<String, dynamic>? context;
 
   static final YtMusicService _singleton = YtMusicService._internal();
@@ -446,6 +448,68 @@ class YtMusicService {
     } catch (e) {
       Logger.root.severe('Error in yt search suggestions', e);
       return List.empty();
+    }
+  }
+
+  int getDatestamp() {
+    final DateTime now = DateTime.now();
+    final DateTime epoch = DateTime.fromMillisecondsSinceEpoch(0);
+    final Duration difference = now.difference(epoch);
+    final int days = difference.inDays;
+    return days;
+  }
+
+  Future<Map> getSongData({required String videoId}) async {
+    if (headers == null) {
+      await init();
+    }
+    try {
+      signatureTimestamp = signatureTimestamp ?? getDatestamp() - 1;
+      final body = Map.from(context!);
+      body['playbackContext'] = {
+        'contentPlaybackContext': {'signatureTimestamp': signatureTimestamp},
+      };
+      body['video_id'] = videoId;
+      final Map response =
+          await sendRequest(endpoints['get_song']!, body, headers);
+      int maxBitrate = 0;
+      String? url;
+      final formats = await nav(response, ['streamingData', 'formats']) as List;
+      for (final element in formats) {
+        if (element['bitrate'] != null) {
+          if (int.parse(element['bitrate'].toString()) > maxBitrate) {
+            maxBitrate = int.parse(element['bitrate'].toString());
+            url = element['signatureCipher'].toString();
+          }
+        }
+      }
+      // final adaptiveFormats =
+      //     await nav(response, ['streamingData', 'adaptiveFormats']) as List;
+      // for (final element in adaptiveFormats) {
+      //   if (element['bitrate'] != null) {
+      //     if (int.parse(element['bitrate'].toString()) > maxBitrate) {
+      //       maxBitrate = int.parse(element['bitrate'].toString());
+      //       url = element['signatureCipher'].toString();
+      //     }
+      //   }
+      // }
+      final videoDetails = await nav(response, ['videoDetails']) as Map;
+      final reg = RegExp('url=(.*)');
+      final matches = reg.firstMatch(url!);
+      final String result = matches!.group(1).toString().unescape();
+      return {
+        'id': videoDetails['videoId'],
+        'title': videoDetails['title'],
+        'artist': videoDetails['author'],
+        'duration': videoDetails['lengthSeconds'],
+        'url': result,
+        'views': videoDetails['viewCount'],
+        'image': (videoDetails['thumbnail']['thumbnails'].last)['url'],
+        'images': videoDetails['thumbnail']['thumbnails'].map((e) => e['url']),
+      };
+    } catch (e) {
+      Logger.root.severe('Error in yt get song data', e);
+      return {};
     }
   }
 

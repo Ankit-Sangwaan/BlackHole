@@ -470,6 +470,30 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                                         [idx]
                                                                     as Map,
                                                           );
+                                                          if (itemType ==
+                                                              'Song') {
+                                                            final Map
+                                                                response2 =
+                                                                await YtMusicService()
+                                                                    .getSongData(
+                                                              videoId: section[
+                                                                          'items']
+                                                                      [
+                                                                      idx]['id']
+                                                                  .toString(),
+                                                            );
+                                                            if (response !=
+                                                                    null &&
+                                                                response2[
+                                                                        'image'] !=
+                                                                    null) {
+                                                              response[
+                                                                  'image'] = response2[
+                                                                      'image'] ??
+                                                                  response[
+                                                                      'image'];
+                                                            }
+                                                          }
                                                           setState(() {
                                                             done = true;
                                                           });

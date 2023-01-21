@@ -54,7 +54,11 @@ class YouTubeServices {
     }
   }
 
-  Future<Map?> formatVideoFromId({required String id, Map? data}) async {
+  Future<Map?> formatVideoFromId({
+    required String id,
+    Map? data,
+    bool? getUrl,
+  }) async {
     final Video? vid = await getVideoFromId(id);
     if (vid == null) {
       return null;
@@ -68,6 +72,7 @@ class YouTubeServices {
           )
           .toString(),
       data: data,
+      getUrl: getUrl ?? true,
       // preferM4a: Hive.box(
       //         'settings')
       //     .get('preferM4a',
@@ -327,15 +332,20 @@ class YouTubeServices {
     required Video video,
     required String quality,
     Map? data,
+    bool getUrl = true,
     // bool preferM4a = true,
   }) async {
     if (video.duration?.inSeconds == null) return null;
-    final List<String> urls = await getUri(video);
-    final String finalUrl = quality == 'High' ? urls.last : urls.first;
-    final String expireAt = RegExp('expire=(.*?)&')
-            .firstMatch(finalUrl)!
-            .group(1) ??
-        (DateTime.now().millisecondsSinceEpoch ~/ 1000 + 3600 * 5.5).toString();
+    List<String> urls = [];
+    String finalUrl = '';
+    String expireAt = '0';
+    if (getUrl) {
+      urls = await getUri(video);
+      finalUrl = quality == 'High' ? urls.last : urls.first;
+      expireAt = RegExp('expire=(.*?)&').firstMatch(finalUrl)!.group(1) ??
+          (DateTime.now().millisecondsSinceEpoch ~/ 1000 + 3600 * 5.5)
+              .toString();
+    }
     return {
       'id': video.id.value,
       'album': (data?['album'] ?? '') != '' ? data!['album'] : video.author,

@@ -34,7 +34,6 @@ dependencies:
   get_it: ^7.2.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  html_unescape: ^2.0.0
   just_audio: ^0.9.30
   # Discontinued, Use just_audio_windows instead.
   # just_audio_libwinmedia: ^0.0.4 # For windows and linux.
