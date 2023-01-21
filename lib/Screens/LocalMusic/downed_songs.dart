@@ -119,10 +119,13 @@ class _DownloadedSongsState extends State<DownloadedSongs>
   }
 
   Future<void> getData() async {
+    Logger.root.info('Requesting permission to access local songs');
     await offlineAudioQuery.requestPermission();
     tempPath ??= (await getTemporaryDirectory()).path;
+    Logger.root.info('Getting local playlists');
     playlistDetails = await offlineAudioQuery.getPlaylists();
     if (widget.cachedSongs == null) {
+      Logger.root.info('Cache empty, calling audioQuery');
       _songs = (await offlineAudioQuery.getSongs(
         sortType: songSortTypes[sortValue],
         orderType: songOrderTypes[orderValue],
@@ -137,10 +140,13 @@ class _DownloadedSongsState extends State<DownloadedSongs>
           )
           .toList();
     } else {
+      Logger.root.info('Setting songs to cached songs');
       _songs = widget.cachedSongs!;
     }
     added = true;
+    Logger.root.info('got ${_songs.length} songs');
     setState(() {});
+    Logger.root.info('setting albums and artists');
     for (int i = 0; i < _songs.length; i++) {
       try {
         if (_albums.containsKey(_songs[i].album ?? 'Unknown')) {
@@ -167,9 +173,11 @@ class _DownloadedSongsState extends State<DownloadedSongs>
         Logger.root.severe('Error in sorting songs: $e');
       }
     }
+    Logger.root.info('albums and artists set');
   }
 
   Future<void> sortSongs(int sortVal, int order) async {
+    Logger.root.info('Sorting songs');
     switch (sortVal) {
       case 0:
         _songs.sort(
@@ -211,6 +219,7 @@ class _DownloadedSongsState extends State<DownloadedSongs>
     if (order == 1) {
       _songs = _songs.reversed.toList();
     }
+    Logger.root.info('Done Sorting songs');
   }
 
   @override

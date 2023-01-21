@@ -13,10 +13,18 @@ Future<void> initializeLogging() async {
   await logFile.writeAsString('');
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) async {
-    log('${record.level.name}: ${record.time}: record.message: ${record.message}\nrecord.error: ${record.error}\nrecord.stackTrace: ${record.stackTrace}\n\n');
-    await logFile.writeAsString(
-      '${record.level.name}: ${record.time}: record.message: ${record.message}\nrecord.error: ${record.error}\nrecord.stackTrace: ${record.stackTrace}\n\n',
-      mode: FileMode.append,
-    );
+    if (record.level.name == 'ERROR') {
+      log('${record.level.name}: ${record.time}: record.message: ${record.message}\nrecord.error: ${record.error}\nrecord.stackTrace: ${record.stackTrace}\n\n');
+      await logFile.writeAsString(
+        '${record.level.name}: ${record.time}: record.message: ${record.message}\nrecord.error: ${record.error}\nrecord.stackTrace: ${record.stackTrace}\n\n',
+        mode: FileMode.append,
+      );
+    } else {
+      log('${record.level.name}: ${record.time}: record.message: ${record.message}\n\n');
+      await logFile.writeAsString(
+        '${record.level.name}: ${record.time}: record.message: ${record.message}\n\n',
+        mode: FileMode.append,
+      );
+    }
   });
 }

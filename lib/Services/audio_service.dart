@@ -155,7 +155,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
             int.parse((item.extras!['expire_at'] ?? '0').toString());
         if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 > expiredAt) {
           Logger.root.info('youtube link expired');
+          _player!.pause();
           YouTubeServices().refreshLink(item.id).then((newData) {
+            Logger.root.info('received new link');
             if (newData != null) {
               final MediaItem newItem = item.copyWith(
                 extras: item.extras!
@@ -164,13 +166,15 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
               );
 
               final int? index = _player!.currentIndex;
-              _player!.pause();
-              _playlist.insert(index! + 1, _itemToSource(newItem)).then((_) {
-                _playlist.removeAt(index).then((_) {
+              Logger.root.info('removing old item');
+              _playlist.removeAt(index!).then((_) {
+                Logger.root.info('inserting new item');
+                _playlist.insert(index + 1, _itemToSource(newItem)).then((_) {
+                  Logger.root.info('playing new item');
                   _player!.play();
                 });
               });
-              updateMediaItem(newItem);
+              // updateMediaItem(newItem);
             }
           });
         }
