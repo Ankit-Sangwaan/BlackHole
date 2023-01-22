@@ -160,6 +160,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
           final int index = mediaQueue.indexOf(item);
           final int queueLength = mediaQueue.length;
           if (queueLength - index < 5) {
+            Logger.root.info('less than 5 songs remaining, adding more songs');
             Future.delayed(const Duration(seconds: 1), () async {
               if (item == mediaItem.value) {
                 final List value = await SaavnAPI().getReco(item.id);
@@ -413,6 +414,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     final bool withPipeline =
         Hive.box('settings').get('supportEq', defaultValue: false) as bool;
     if (withPipeline && Platform.isAndroid) {
+      Logger.root.info('starting with eq pipeline');
       final AudioPipeline pipeline = AudioPipeline(
         androidAudioEffects: [
           _equalizer,
@@ -420,11 +422,13 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       );
       _player = AudioPlayer(audioPipeline: pipeline);
     } else {
+      Logger.root.info('starting without eq pipeline');
       _player = AudioPlayer();
     }
   }
 
   Future<void> addRecentlyPlayed(MediaItem mediaitem) async {
+    Logger.root.info('adding ${mediaitem.id} to recently played');
     List recentList = await Hive.box('cache')
         .get('recentSongs', defaultValue: [])?.toList() as List;
 
@@ -443,6 +447,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
   Future<void> addLastQueue(List<MediaItem> queue) async {
     if (queue.first.genre != 'YouTube') {
+      Logger.root.info('saving last queue');
       final lastQueue =
           queue.map((item) => MediaItemConverter.mediaItemToMap(item)).toList();
       Hive.box('cache').put('lastQueue', lastQueue);
