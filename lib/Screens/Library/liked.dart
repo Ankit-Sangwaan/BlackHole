@@ -659,6 +659,7 @@ class _SongsTabState extends State<SongsTab>
                           index: index,
                           isOffline: false,
                           recommend: false,
+                          playlistBox: widget.playlistName,
                         );
                       },
                       title: Text(

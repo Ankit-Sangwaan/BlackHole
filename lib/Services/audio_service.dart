@@ -310,6 +310,23 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
                       ..['url'] = newData['url']
                       ..['expire_at'] = newData['expire_at'],
                   );
+                  final String? boxName =
+                      mediaItem.extras!['playlistBox']?.toString();
+                  if (boxName != null) {
+                    Logger.root.info('linked with playlist $boxName');
+                    if (Hive.box(mediaItem.extras!['playlistBox'].toString())
+                        .containsKey(mediaItem.id)) {
+                      Logger.root.info('updating item in playlist $boxName');
+                      Hive.box(mediaItem.extras!['playlistBox'].toString()).put(
+                        mediaItem.id,
+                        MediaItemConverter.mediaItemToMap(newItem),
+                      );
+                      // put(
+                      //   mediaItem.id,
+                      //   MediaItemConverter.mediaItemToMap(newItem),
+                      // );
+                    }
+                  }
                   Logger.root.info('inserting new item');
                   audioSource = AudioSource.uri(
                     Uri.parse(

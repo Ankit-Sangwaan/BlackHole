@@ -51,6 +51,7 @@ class MediaItemConverter {
     Map song, {
     bool addedByAutoplay = false,
     bool autoplay = true,
+    String? playlistBox,
   }) {
     return MediaItem(
       id: song['id'].toString(),
@@ -81,9 +82,10 @@ class MediaItemConverter {
         'album_id': song['album_id'],
         'subtitle': song['subtitle'],
         'perma_url': song['perma_url'],
+        'expire_at': song['expire_at'],
         'addedByAutoplay': addedByAutoplay,
         'autoplay': autoplay,
-        'expire_at': song['expire_at'],
+        'playlistBox': playlistBox,
       },
     );
   }

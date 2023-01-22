@@ -40,6 +40,7 @@ class PlayerInvoke {
     bool recommend = true,
     bool fromDownloads = false,
     bool shuffle = false,
+    String? playlistBox,
   }) async {
     final int globalIndex = index < 0 ? 0 : index;
     bool? offline = isOffline;
@@ -68,7 +69,12 @@ class PlayerInvoke {
                 ? setOffDesktopValues(finalList, globalIndex)
                 : setOffValues(finalList, globalIndex);
       } else {
-        setValues(finalList, globalIndex, recommend: recommend);
+        setValues(
+          finalList,
+          globalIndex,
+          recommend: recommend,
+          playlistBox: playlistBox,
+        );
       }
     }
   }
@@ -178,13 +184,19 @@ class PlayerInvoke {
     updateNplay(queue, index);
   }
 
-  static void setValues(List response, int index, {bool recommend = true}) {
+  static void setValues(
+    List response,
+    int index, {
+    bool recommend = true,
+    String? playlistBox,
+  }) {
     final List<MediaItem> queue = [];
     queue.addAll(
       response.map(
         (song) => MediaItemConverter.mapToMediaItem(
           song as Map,
           autoplay: recommend,
+          playlistBox: playlistBox,
         ),
       ),
     );
