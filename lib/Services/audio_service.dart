@@ -150,36 +150,6 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         }
       }
 
-      if (item.genre == 'YouTube') {
-        final int expiredAt =
-            int.parse((item.extras!['expire_at'] ?? '0').toString());
-        if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 > expiredAt) {
-          Logger.root.info('youtube link expired');
-          _player!.pause();
-          YouTubeServices().refreshLink(item.id).then((newData) {
-            Logger.root.info('received new link');
-            if (newData != null) {
-              final MediaItem newItem = item.copyWith(
-                extras: item.extras!
-                  ..['url'] = newData['url']
-                  ..['expire_at'] = newData['expire_at'],
-              );
-
-              final int? index = _player!.currentIndex;
-              Logger.root.info('removing old item');
-              _playlist.removeAt(index!).then((_) {
-                Logger.root.info('inserting new item');
-                _playlist.insert(index + 1, _itemToSource(newItem)).then((_) {
-                  Logger.root.info('playing new item');
-                  _player!.play();
-                });
-              });
-              // updateMediaItem(newItem);
-            }
-          });
-        }
-      }
-
       if (item.artUri.toString().startsWith('http') &&
           item.genre != 'YouTube') {
         addRecentlyPlayed(item);
@@ -325,6 +295,41 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         //     ),
         //   );
         // } else {
+        if (mediaItem.genre == 'YouTube') {
+          final int expiredAt =
+              int.parse((mediaItem.extras!['expire_at'] ?? '0').toString());
+          if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
+              expiredAt) {
+            Logger.root.info('youtube link expired for ${mediaItem.title}');
+            YouTubeServices().refreshLink(mediaItem.id).then(
+              (newData) {
+                Logger.root.info('received new link for ${mediaItem.title}');
+                if (newData != null) {
+                  final MediaItem newItem = mediaItem.copyWith(
+                    extras: mediaItem.extras!
+                      ..['url'] = newData['url']
+                      ..['expire_at'] = newData['expire_at'],
+                  );
+                  Logger.root.info('inserting new item');
+                  audioSource = AudioSource.uri(
+                    Uri.parse(
+                      newItem.extras!['url'].toString().replaceAll(
+                            '_96.',
+                            "_${preferredQuality.replaceAll(' kbps', '')}.",
+                          ),
+                    ),
+                  );
+                  final index =
+                      queue.value.indexWhere((item) => item.id == newItem.id);
+                  _mediaItemExpando[audioSource] = mediaItem;
+                  _playlist
+                      .removeAt(index)
+                      .then((value) => _playlist.insert(index, audioSource));
+                }
+              },
+            );
+          }
+        }
         audioSource = AudioSource.uri(
           Uri.parse(
             mediaItem.extras!['url'].toString().replaceAll(
@@ -333,7 +338,6 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
                 ),
           ),
         );
-        // }
       }
     }
 
