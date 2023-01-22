@@ -36,6 +36,7 @@ Superbe Lecteur de Musique fait avec Flutter !
 - [Français :fr:](/README.FR.md)
 - [Japonais :jp:](/README.JA.md)
 - [Belarusian :belarus:](/README.BE.md)
+- [Indonesian :indonesia:](/README.ID.md)
 
 Merci à [Euri](https://github.com/EuriNaiz) et [Nikita](https://github.com/TireX228) pour les traductions
 

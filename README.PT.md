@@ -36,6 +36,7 @@ Um reprodutor de música incrível para todas as suas necessidades!
 - [Russian :ru:](/README.RU.md)
 - [Japanese :jp:](/README.JA.md)
 - [Belarusian :belarus:](/README.BE.md)
+- [Indonesian :indonesia:](/README.ID.md)
 
 Obrigado à [Lucas](https://github.com/LucasPJS) e [LuanRT](https://github.com/LuanRT) por esta tradução.
 

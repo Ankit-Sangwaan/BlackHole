@@ -35,6 +35,7 @@ Un increible reproductor de música basado en Flutter
 - [Russian :ru:](/README.RU.md)
 - [Japanese :jp:](/README.JA.md)
 - [Belarusian :belarus:](/README.BE.md)
+- [Indonesian :indonesia:](/README.ID.md)
 
 Gracias a [Euri](https://github.com/EuriNaiz) por esta traducción
 

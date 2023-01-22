@@ -2,90 +2,89 @@
 
 # BlackHole
 
-オープンソースの音楽プレイヤーアプリです！
+Sebuah Pemutar Musik Sumber Terbuka untuk semua kebutuhanmu!
 
 [![made-with-flutter](https://img.shields.io/badge/Made%20with-Flutter-1f425f.svg)](https://flutter.dev/) ![Release](https://img.shields.io/github/v/release/Sangwan5688/BlackHole) ![Downloads](https://img.shields.io/github/downloads/Sangwan5688/BlackHole/total)
 [![Build](https://github.com/Sangwan5688/BlackHole/actions/workflows/flutter.yml/badge.svg)](https://github.com/Sangwan5688/BlackHole/actions/workflows/flutter.yml)
 [![Translation-Status](https://hosted.weblate.org/widgets/blackhole/-/translations/svg-badge.svg)](https://hosted.weblate.org/engage/blackhole/)
 
-### リポジトリに:star:をつけるのを忘れずに
+### Jangan lupa :star: repo ini
 
 [![GitHub stars](https://img.shields.io/github/stars/Sangwan5688/BlackHole.svg?style=social&label=Star)](https://github.com//Sangwan5688/BlackHole) ![GitHub forks](https://img.shields.io/github/forks/Sangwan5688/BlackHole.svg?style=social&label=Forks) ![GitHub followers](https://img.shields.io/github/followers/Sangwan5688.svg?style=social&label=Follow)
 
-## ダウンロード
+## Unduh
 
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
-     alt="Get it on IzzyDroid"
+     alt="Dapatkan di IzzyDroid"
      height="100">](https://android.izzysoft.de/repo/apk/com.shadow.blackhole)
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-     alt="Get it on F-Droid"
+     alt="Dapatkan di F-Droid"
      height="100">](https://f-droid.org/packages/com.shadow.blackhole/)
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [<img src="https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white"
-     alt="Download from GitHub"
+     alt="Unduh dari GitHub"
      height="60">](https://github.com/Sangwan5688/BlackHole/releases)
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 [<img src="https://img.shields.io/badge/Telegram-2CA5E0?logo=telegram&logoColor=white"
-     alt="Join Telegram Channel"
+     alt="Gabung saluran telegram"
      height="60">](https://t.me/blackhole_official)
 
-## 翻訳
+## Terjemahan
 
-- [English :uk:](/README.md)
 - [Spanish :es:](/README.ES.md)
 - [Russian :ru:](/README.RU.md)
 - [French :fr:](/README.FR.md)
 - [Portuguese :brazil:](/README.PT.md)
+- [Japanese :jp:](/README.JA.md)
 - [Belarusian :belarus:](/README.BE.md)
-- [Indonesian :indonesia:](/README.ID.md)
 
-[Weblateでアプリを翻訳](https://hosted.weblate.org/projects/blackhole/translations/)
+[Terjemakan Aplikasi di Weblate](https://hosted.weblate.org/projects/blackhole/translations/)
 
-## 特徴
+## Fitur
 
-- 最高のストリーミング品質(320kbps aac)
-- 曲、アルバム、アーティスト、プレイリストの検索
-- 言語別のプロモートプレイリスト
-- トレンドソング
-- アーティストとジャンルのラジオ
-- 15以上の音楽言語をサポート
-- ローカルおよびグローバルなSpotifyのトップソング
-- お気に入りへの曲の追加
-- プレイリスト対応
-- SpotifyとYouTubeからプレイリストをインポート
-- プレイリストをJSONファイルとしてインポート/エクスポート
-- プレイリストの共有
-- スリープタイマー
-- 歌詞のサポート
-- キュー管理
-- 視聴履歴の記録
-- ダークモード/アクセントカラー
-- カスタムグラディエントなどテーマオプション
-- ポートレートモードだけでなく、ランドスケープモードにも対応
-- オフライン再生用ダウンロード（320kbps、ID3タグ付き）
-- オンラインだけでなく、オフラインの曲も再生可能
-- タグの編集に対応
-- トレンド検索結果
-- YouTube検索サポート
-- YouTubeプレイリストのプロモート
-- ビデオをオーディオとして再生
-- 曲の自動レコメンド
-- 内蔵イコライザー
-- バックアップ＆リストア
-- 自動更新チェック
-- キャッシュ対応
-- サブスクリプションなし
-- 広告なし
+- Kualitas siaran terbaik (320kbit aac)
+- Lagu, Album, Artis dan Pencarian Daftar Putar
+- Daftar Putar yang Dipromosikan dalam Bahasa yang Spesifik
+- Lagu yang sedang tren
+- Artis dan Genre Radio
+- Mendukung 15+ bahasa musik
+- Lokal dan Global Lagu Spotify Terbaik
+- Tambah Lagu ke Favorit
+- Dukungan Daftar Putar
+- Impor Daftar Putar dari Spotify & YouTube
+- Impor/Ekspor Daftar Putar sebagai fail JSON
+- Bagikan Daftar Putar
+- Pengatur waktu tidur
+- Dukungan Lirik
+- Manajemen Antrean
+- Mendengarkan riwayat rekaman
+- Mode gelap / warna aksen
+- Gradien Kustom dan opsi Tema lainnya
+- Mendukung mode Potret dan juga Lanskap
+- Unduh untuk mainkan secara luring (320kbps dengan ID3 tag)
+- Mainkan lagu secara Daring dan juga Luring 
+- Mendukung pengeditan tag
+- Hasil Pencarian Trending
+- Dukungan Pencarian YouTube
+- Daftar Putar Youtube yang dipromosikan
+- Putar video sebagai audio
+- Rekomendasi Lagu Otomatis
+- Equalizer Bawaan
+- Cadangkan & Pulihkan
+- Cek Pembaruan Otomatis
+- Dukungan Cache
+- Tanpa Langganan
+- Tanpa Iklan
 
-他にもまだまだ...
-ご自身でお確かめください:)
+dan lebih banyak lagi...
+Periksa sendiri :)
 
-## スクリーンショット
+## Tangkapan Layar
 
 <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png?raw=true" width="32%">
 
-## ライセンス
+## Lisensi
 
 ```
 Copyright © 2021 Ankit Sangwan
@@ -112,40 +111,40 @@ how to obtain the original software, should clearly STATE ALL CHANGES made and s
 Use of this software under any "non-free" license is NOT permitted.
 ```
 
-詳しくは、[GNU 一般公衆利用許諾契約書](https://github.com/Sangwan5688/BlackHole/blob/main/LICENSE)をご覧ください。
+Lihat [GNU General Public License](https://github.com/Sangwan5688/BlackHole/blob/main/LICENSE) untuk lebih detail.
 
-## ソースからのビルド
+## Buat dari sumber
 
-1. Flutter SDKがインストールされていない場合は、[Flutter](https://flutter.dev/)の公式サイトをご覧ください。
-2. masterブランチから最新のソースコードを取得します。
+1. Jika belum menginstall SDK Flutter, harap kunjungi web [Flutter](https://flutter.dev/) resmi.
+2. Ambil kode program dari cabang master.
 
 ```
 git clone https://github.com/Sangwan5688/BlackHole.git
 ```
 
-3. Android StudioまたはVS Codeでアプリを実行します。もしくはコマンドラインから:
+3. Jalankan aplikasi dengan Android Studio atau VS Code. Atau dengan baris perintah:
 
 ```
 flutter pub get
 flutter run
 ```
 
-## コントリビュート
+## Kontribusi
 
-コントリビュートを歓迎します。コントリビュートする前に、[コントリビュートガイドライン](https://github.com/Sangwan5688/BlackHole/blob/main/CONTRIBUTING.md)をお読みください。
+Kontribusi dipersilakan. Tolong baca [pedoman kontribusi](https://github.com/Sangwan5688/BlackHole/blob/main/CONTRIBUTING.md) kami sebelum berkontribusi.
 
-## 何か問題がありますか？
+## Mengalami masalah?
 
-お客様が直面する可能性のある[一般的な問題](https://github.com/Sangwan5688/BlackHole/wiki/Common-Issues)をご覧ください。もしあなたの問題がそこにない場合は、お気軽にIssueをご作成ください :)
+Lihat pada beberapa [masalah umum](https://github.com/Sangwan5688/BlackHole/wiki/Common-Issues) yang mungkin kamu alami. Jika masalahmu tidak ada disana, silakan untuk membuka Issue :)
 
-## ベータ版をテストしたいですか？ヘルプが必要ですか？？
+## Ingin mencoba versi Beta? Butuh bantuan??
 
-[Telegramチャンネル](https://t.me/blackhole_official)または[Telegramグループ](https://t.me/joinchat/fHDC1AWnOhw0ZmI9)に参加すると、プロジェクトのベータ版アップデートを受け取ることができます。
+Kamu dapat bergabung ke [Saluran Telegram](https://t.me/blackhole_official) atau [Grup Telegram](https://t.me/joinchat/fHDC1AWnOhw0ZmI9), Jika kamu memiliki pertanyaan, atau membutuhkan bantuan dengan sesuatu serta untuk mendapatkan pembaruan proyek beta.
 
-## 私の作品を気に入っていただけましたか？
+## Menyukai hasil kerja saya?
 
-<a href="https://www.buymeacoffee.com/ankitsangwan" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
+<a href="https://www.buymeacoffee.com/ankitsangwan" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Belikan saya kopi" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-## 最新情報
+## Apa Yang Baru
 
-全てのchangelogは[wikiページ](https://github.com/Sangwan5688/BlackHole/wiki/Changelog)をご覧ください
+Untuk membaca seluruh daftar perubahan kunjungi [halaman wiki](https://github.com/Sangwan5688/BlackHole/wiki/Changelog)

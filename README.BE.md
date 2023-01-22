@@ -37,6 +37,7 @@
 - [French :fr:](/README.FR.md)
 - [Portuguese :brazil:](/README.PT.md)
 - [Japanese :jp:](/README.JA.md)
+- [Indonesian :indonesia:](/README.ID.md)
 
 [Пераклад праграмы на Weblate](https://hosted.weblate.org/projects/blackhole/translations/)
 
