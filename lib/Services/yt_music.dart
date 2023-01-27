@@ -573,10 +573,13 @@ class YtMusicService {
           'runs'
         ]) as List;
         int count = 0;
+        String year = '';
         String album = '';
         String artist = '';
+        String albumArtist = '';
         String duration = '';
         String subtitle = '';
+        year = '';
         for (final element in subtitleList) {
           // ignore: use_string_buffers
           subtitle += element['text'].toString();
@@ -588,6 +591,9 @@ class YtMusicService {
                 artist += ', ';
               } else {
                 artist += element['text'].toString();
+                if (albumArtist == '') {
+                  albumArtist = element['text'].toString();
+                }
               }
             } else if (count == 1) {
               album += element['text'].toString();
@@ -598,12 +604,21 @@ class YtMusicService {
         }
         results.add({
           'id': id,
+          'type': 'song',
           'title': title,
           'artist': artist,
+          'genre': 'YouTube',
+          'language': 'YouTube',
+          'year': year,
+          'album_artist': albumArtist,
           'album': album,
           'duration': duration,
           'subtitle': subtitle,
           'image': image,
+          'perma_url': 'https://www.youtube.com/watch?v=$id',
+          'url': '',
+          'release_date': '',
+          'album_id': '',
         });
       }
       return results;

@@ -21,6 +21,7 @@ import 'package:blackhole/CustomWidgets/bouncy_playlist_header_scroll_view.dart'
 import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/miniplayer.dart';
+import 'package:blackhole/CustomWidgets/playlist_popupmenu.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
@@ -110,6 +111,12 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                       subtitle: widget.playlistSubtitle,
                       secondarySubtitle: widget.playlistSecondarySubtitle,
                       imageUrl: widget.playlistImage,
+                      actions: [
+                        PlaylistPopupMenu(
+                          data: searchedList,
+                          title: widget.playlistName,
+                        ),
+                      ],
                       onPlayTap: () async {
                         setState(() {
                           done = false;
@@ -231,19 +238,14 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                       setState(() {
                                         done = false;
                                       });
-
-                                      final Map? response =
-                                          await YouTubeServices()
-                                              .formatVideoFromId(
-                                        id: entry['id'].toString(),
-                                        data: entry,
-                                      );
+                                      final int index =
+                                          searchedList.indexOf(entry);
                                       setState(() {
                                         done = true;
                                       });
                                       PlayerInvoke.init(
-                                        songsList: [response],
-                                        index: 0,
+                                        songsList: searchedList,
+                                        index: index,
                                         isOffline: false,
                                         recommend: false,
                                       );

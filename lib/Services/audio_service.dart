@@ -272,6 +272,53 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     }
   }
 
+  void refreshLink(MediaItem mediaItem) {
+    YouTubeServices().refreshLink(mediaItem.id).then(
+      (newData) {
+        Logger.root.info('received new link for ${mediaItem.title}');
+        if (newData != null) {
+          Hive.box('ytlinkcache').put(
+            newData['id'],
+            {'url': newData['url'], 'expire_at': newData['expire_at']},
+          );
+          final MediaItem newItem = mediaItem.copyWith(
+            extras: mediaItem.extras!
+              ..['url'] = newData['url']
+              ..['duration'] = newData['duration']
+              ..['expire_at'] = newData['expire_at'],
+          );
+          final String? boxName = mediaItem.extras!['playlistBox']?.toString();
+          if (boxName != null) {
+            Logger.root.info('linked with playlist $boxName');
+            if (Hive.box(mediaItem.extras!['playlistBox'].toString())
+                .containsKey(mediaItem.id)) {
+              Logger.root.info('updating item in playlist $boxName');
+              Hive.box(mediaItem.extras!['playlistBox'].toString()).put(
+                mediaItem.id,
+                MediaItemConverter.mediaItemToMap(newItem),
+              );
+              // put(
+              //   mediaItem.id,
+              //   MediaItemConverter.mediaItemToMap(newItem),
+              // );
+            }
+          }
+          Logger.root.info('inserting new item');
+          final audioSource = AudioSource.uri(
+            Uri.parse(
+              newItem.extras!['url'].toString(),
+            ),
+          );
+          final index = queue.value.indexWhere((item) => item.id == newItem.id);
+          _mediaItemExpando[audioSource] = mediaItem;
+          _playlist
+              .removeAt(index)
+              .then((value) => _playlist.insert(index, audioSource));
+        }
+      },
+    );
+  }
+
   AudioSource _itemToSource(MediaItem mediaItem) {
     AudioSource audioSource;
     if (mediaItem.artUri.toString().startsWith('file:')) {
@@ -301,51 +348,32 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
               int.parse((mediaItem.extras!['expire_at'] ?? '0').toString());
           if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
               expiredAt) {
-            Logger.root.info('youtube link expired for ${mediaItem.title}');
-            YouTubeServices().refreshLink(mediaItem.id).then(
-              (newData) {
-                Logger.root.info('received new link for ${mediaItem.title}');
-                if (newData != null) {
-                  final MediaItem newItem = mediaItem.copyWith(
-                    extras: mediaItem.extras!
-                      ..['url'] = newData['url']
-                      ..['expire_at'] = newData['expire_at'],
-                  );
-                  final String? boxName =
-                      mediaItem.extras!['playlistBox']?.toString();
-                  if (boxName != null) {
-                    Logger.root.info('linked with playlist $boxName');
-                    if (Hive.box(mediaItem.extras!['playlistBox'].toString())
-                        .containsKey(mediaItem.id)) {
-                      Logger.root.info('updating item in playlist $boxName');
-                      Hive.box(mediaItem.extras!['playlistBox'].toString()).put(
-                        mediaItem.id,
-                        MediaItemConverter.mediaItemToMap(newItem),
-                      );
-                      // put(
-                      //   mediaItem.id,
-                      //   MediaItemConverter.mediaItemToMap(newItem),
-                      // );
-                    }
-                  }
-                  Logger.root.info('inserting new item');
-                  audioSource = AudioSource.uri(
-                    Uri.parse(
-                      newItem.extras!['url'].toString().replaceAll(
-                            '_96.',
-                            "_${preferredQuality.replaceAll(' kbps', '')}.",
-                          ),
-                    ),
-                  );
-                  final index =
-                      queue.value.indexWhere((item) => item.id == newItem.id);
-                  _mediaItemExpando[audioSource] = mediaItem;
-                  _playlist
-                      .removeAt(index)
-                      .then((value) => _playlist.insert(index, audioSource));
-                }
-              },
+            Logger.root.info(
+              'youtube link expired for ${mediaItem.title}, searching cache',
             );
+            if (Hive.box('ytlinkcache').containsKey(mediaItem.id)) {
+              final Map cachedData =
+                  Hive.box('ytlinkcache').get(mediaItem.id) as Map;
+              final int cachedExpiredAt =
+                  int.parse(cachedData['expire_at'].toString());
+              if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
+                  cachedExpiredAt) {
+                Logger.root.info(
+                  'youtube link expired for ${mediaItem.title}, refreshing',
+                );
+                refreshLink(mediaItem);
+              } else {
+                Logger.root
+                    .info('youtube link found in cache for ${mediaItem.title}');
+                audioSource =
+                    AudioSource.uri(Uri.parse(cachedData['url'].toString()));
+              }
+            } else {
+              Logger.root.info(
+                'youtube link not found in cache for ${mediaItem.title}, refreshing',
+              );
+              refreshLink(mediaItem);
+            }
           }
         }
         audioSource = AudioSource.uri(

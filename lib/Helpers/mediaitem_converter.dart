@@ -59,7 +59,9 @@ class MediaItemConverter {
       artist: song['artist'].toString(),
       duration: Duration(
         seconds: int.parse(
-          (song['duration'] == null || song['duration'] == 'null')
+          (song['duration'] == null ||
+                  song['duration'] == 'null' ||
+                  song['duration'] == '')
               ? '180'
               : song['duration'].toString(),
         ),
@@ -97,7 +99,9 @@ class MediaItemConverter {
       artist: song['artist'].toString(),
       duration: Duration(
         seconds: int.parse(
-          (song['duration'] == null || song['duration'] == 'null')
+          (song['duration'] == null ||
+                  song['duration'] == 'null' ||
+                  song['duration'] == '')
               ? '180'
               : song['duration'].toString(),
         ),
