@@ -731,7 +731,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                       ],
                                     );
                                   },
-                                ).toList(),
+                                ),
                               ],
                             ),
                           ),

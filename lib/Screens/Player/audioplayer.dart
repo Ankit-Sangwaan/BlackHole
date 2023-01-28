@@ -1953,27 +1953,25 @@ class NameNControls extends StatelessWidget {
                         ),
                       ),
                     if (mediaItem.artist != null)
-                      ...artists
-                          .map(
-                            (String artist) => PopupMenuItem<String>(
-                              value: artist,
-                              child: SingleChildScrollView(
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.person_rounded,
-                                    ),
-                                    const SizedBox(width: 10.0),
-                                    Text(
-                                      '${AppLocalizations.of(context)!.viewArtist} ($artist)',
-                                    ),
-                                  ],
+                      ...artists.map(
+                        (String artist) => PopupMenuItem<String>(
+                          value: artist,
+                          child: SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.person_rounded,
                                 ),
-                              ),
+                                const SizedBox(width: 10.0),
+                                Text(
+                                  '${AppLocalizations.of(context)!.viewArtist} ($artist)',
+                                ),
+                              ],
                             ),
-                          )
-                          .toList()
+                          ),
+                        ),
+                      )
                   ],
                   child: Center(
                     child: Padding(
