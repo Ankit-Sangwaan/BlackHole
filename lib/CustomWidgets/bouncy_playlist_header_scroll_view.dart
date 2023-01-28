@@ -161,7 +161,7 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                                       fontSize: 12,
                                       color: Theme.of(context)
                                           .textTheme
-                                          .caption!
+                                          .bodySmall!
                                           .color,
                                     ),
                                   ),
@@ -181,7 +181,7 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                                       fontSize: 12,
                                       color: Theme.of(context)
                                           .textTheme
-                                          .caption!
+                                          .bodySmall!
                                           .color,
                                     ),
                                   ),

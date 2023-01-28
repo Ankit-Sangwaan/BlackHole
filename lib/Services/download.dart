@@ -520,7 +520,7 @@ class Download with ChangeNotifier {
         Logger.root.info('Everything done, showing snackbar');
         ShowSnackBar().showSnackBar(
           context,
-          '"${data['title'].toString()}" ${AppLocalizations.of(context)!.downed}',
+          '"${data['title']}" ${AppLocalizations.of(context)!.downed}',
         );
       } else {
         download = true;

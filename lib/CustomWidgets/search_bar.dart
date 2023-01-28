@@ -216,6 +216,9 @@ class _SearchBarState extends State<SearchBar> {
                       ),
                       TextSpan(
                         text: AppLocalizations.of(context)!.searchYt,
+                        style: TextStyle(
+                          color: Theme.of(context).textTheme.bodyLarge!.color,
+                        ),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
                             Navigator.push(

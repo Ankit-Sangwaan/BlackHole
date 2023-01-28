@@ -419,7 +419,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                                 .secondary
                                                             : Theme.of(context)
                                                                 .textTheme
-                                                                .bodyText1!
+                                                                .bodyLarge!
                                                                 .color,
                                                         fontWeight: category ==
                                                                 ''
@@ -460,7 +460,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                                 .secondary
                                                             : Theme.of(context)
                                                                 .textTheme
-                                                                .bodyText1!
+                                                                .bodyLarge!
                                                                 .color,
                                                         fontWeight: category ==
                                                                 'latest'
@@ -502,7 +502,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                                 .secondary
                                                             : Theme.of(context)
                                                                 .textTheme
-                                                                .bodyText1!
+                                                                .bodyLarge!
                                                                 .color,
                                                         fontWeight: category ==
                                                                 'alphabetical'

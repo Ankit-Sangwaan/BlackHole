@@ -828,7 +828,7 @@ class _SettingPageState extends State<SettingPage> {
                                     fontSize: 12,
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText1!
+                                        .bodyLarge!
                                         .color,
                                   ),
                                   underline: const SizedBox(),
@@ -875,7 +875,7 @@ class _SettingPageState extends State<SettingPage> {
                                     fontSize: 12,
                                     color: Theme.of(context)
                                         .textTheme
-                                        .bodyText1!
+                                        .bodyLarge!
                                         .color,
                                   ),
                                   underline: const SizedBox(),
@@ -957,7 +957,7 @@ class _SettingPageState extends State<SettingPage> {
                             style: TextStyle(
                               fontSize: 12,
                               color:
-                                  Theme.of(context).textTheme.bodyText1!.color,
+                                  Theme.of(context).textTheme.bodyLarge!.color,
                             ),
                             underline: const SizedBox(),
                             onChanged: (String? themeChoice) {
@@ -1960,7 +1960,7 @@ class _SettingPageState extends State<SettingPage> {
                             style: TextStyle(
                               fontSize: 12,
                               color:
-                                  Theme.of(context).textTheme.bodyText1!.color,
+                                  Theme.of(context).textTheme.bodyLarge!.color,
                             ),
                             underline: const SizedBox(),
                             onChanged: (String? newValue) {
@@ -2003,7 +2003,7 @@ class _SettingPageState extends State<SettingPage> {
                             style: TextStyle(
                               fontSize: 12,
                               color:
-                                  Theme.of(context).textTheme.bodyText1!.color,
+                                  Theme.of(context).textTheme.bodyLarge!.color,
                             ),
                             underline: const SizedBox(),
                             onChanged: (String? newValue) {
@@ -2161,7 +2161,7 @@ class _SettingPageState extends State<SettingPage> {
                             style: TextStyle(
                               fontSize: 12,
                               color:
-                                  Theme.of(context).textTheme.bodyText1!.color,
+                                  Theme.of(context).textTheme.bodyLarge!.color,
                             ),
                             underline: const SizedBox(),
                             onChanged: (String? newValue) {
@@ -2206,7 +2206,7 @@ class _SettingPageState extends State<SettingPage> {
                             style: TextStyle(
                               fontSize: 12,
                               color:
-                                  Theme.of(context).textTheme.bodyText1!.color,
+                                  Theme.of(context).textTheme.bodyLarge!.color,
                             ),
                             underline: const SizedBox(),
                             onChanged: (String? newValue) {
@@ -2489,7 +2489,7 @@ class _SettingPageState extends State<SettingPage> {
                             style: TextStyle(
                               fontSize: 12,
                               color:
-                                  Theme.of(context).textTheme.bodyText1!.color,
+                                  Theme.of(context).textTheme.bodyLarge!.color,
                             ),
                             underline: const SizedBox(),
                             onChanged: (String? newValue) {
@@ -2593,7 +2593,7 @@ class _SettingPageState extends State<SettingPage> {
                                                                 .secondary
                                                             : Theme.of(context)
                                                                 .textTheme
-                                                                .bodyText1!
+                                                                .bodyLarge!
                                                                 .color,
                                                         fontWeight: !value
                                                             ? FontWeight.w600
@@ -2632,7 +2632,7 @@ class _SettingPageState extends State<SettingPage> {
                                                                 .secondary
                                                             : Theme.of(context)
                                                                 .textTheme
-                                                                .bodyText1!
+                                                                .bodyLarge!
                                                                 .color,
                                                         fontWeight: value
                                                             ? FontWeight.w600

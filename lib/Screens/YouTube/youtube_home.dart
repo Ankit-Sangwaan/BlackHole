@@ -282,7 +282,7 @@ class _YouTubeState extends State<YouTube>
                                                   playlistName:
                                                       item['title'].toString(),
                                                   playlistSubtitle:
-                                                      '${item['count'].toString()} Songs',
+                                                      '${item['count']} Songs',
                                                   playlistSecondarySubtitle:
                                                       item['description']
                                                           ?.toString(),
@@ -362,7 +362,7 @@ class _YouTubeState extends State<YouTube>
                                                       fontSize: 11,
                                                       color: Theme.of(context)
                                                           .textTheme
-                                                          .caption!
+                                                          .bodySmall!
                                                           .color,
                                                     ),
                                                   ),

@@ -127,11 +127,13 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                           id: searchedList.first['id'].toString(),
                           data: searchedList.first,
                         );
+                        final List<Map> playList = List.from(searchedList);
+                        playList[0] = response!;
                         setState(() {
                           done = true;
                         });
                         PlayerInvoke.init(
-                          songsList: [response],
+                          songsList: playList,
                           index: 0,
                           isOffline: false,
                           recommend: false,
@@ -142,17 +144,19 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                         setState(() {
                           done = false;
                         });
-
+                        final List<Map> playList = List.from(searchedList);
+                        playList.shuffle();
                         final Map? response =
                             await YouTubeServices().formatVideoFromId(
-                          id: searchedList.first['id'].toString(),
-                          data: searchedList.first,
+                          id: playList.first['id'].toString(),
+                          data: playList.first,
                         );
+                        playList[0] = response!;
                         setState(() {
                           done = true;
                         });
                         PlayerInvoke.init(
-                          songsList: [response],
+                          songsList: playList,
                           index: 0,
                           isOffline: false,
                           recommend: false,
@@ -238,14 +242,18 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                       setState(() {
                                         done = false;
                                       });
-                                      final int index =
-                                          searchedList.indexOf(entry);
+                                      final Map? response =
+                                          await YouTubeServices()
+                                              .formatVideoFromId(
+                                        id: entry['id'].toString(),
+                                        data: entry,
+                                      );
                                       setState(() {
                                         done = true;
                                       });
                                       PlayerInvoke.init(
-                                        songsList: searchedList,
-                                        index: index,
+                                        songsList: [response],
+                                        index: 0,
                                         isOffline: false,
                                         recommend: false,
                                       );

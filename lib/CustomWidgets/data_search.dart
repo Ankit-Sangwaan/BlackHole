@@ -196,7 +196,7 @@ class DataSearch extends SearchDelegate {
       hintColor: Colors.white70,
       primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.white),
       textTheme: theme.textTheme.copyWith(
-        headline6:
+        titleLarge:
             const TextStyle(fontWeight: FontWeight.normal, color: Colors.white),
       ),
       inputDecorationTheme:
@@ -439,7 +439,7 @@ class DownloadsSearch extends SearchDelegate {
       hintColor: Colors.white70,
       primaryIconTheme: theme.primaryIconTheme.copyWith(color: Colors.white),
       textTheme: theme.textTheme.copyWith(
-        headline6:
+        titleLarge:
             const TextStyle(fontWeight: FontWeight.normal, color: Colors.white),
       ),
       inputDecorationTheme:

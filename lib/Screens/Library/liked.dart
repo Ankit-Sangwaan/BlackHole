@@ -143,16 +143,17 @@ class _LikedSongsState extends State<LikedSongs>
         ]);
       }
 
-      if (_artists.containsKey(element['artist'])) {
-        final List<Map> tempArtist = _artists[element['artist']]!;
-        tempArtist.add(element);
-        _artists
-            .addEntries([MapEntry(element['artist'].toString(), tempArtist)]);
-      } else {
-        _artists.addEntries([
-          MapEntry(element['artist'].toString(), [element])
-        ]);
-      }
+      element['artist'].toString().split(', ').forEach((singleArtist) {
+        if (_artists.containsKey(singleArtist)) {
+          final List<Map> tempArtist = _artists[singleArtist]!;
+          tempArtist.add(element);
+          _artists.addEntries([MapEntry(singleArtist, tempArtist)]);
+        } else {
+          _artists.addEntries([
+            MapEntry(singleArtist, [element])
+          ]);
+        }
+      });
 
       if (_genres.containsKey(element['genre'])) {
         final List<Map> tempGenre = _genres[element['genre']]!;
@@ -294,10 +295,12 @@ class _LikedSongsState extends State<LikedSongs>
       }
       _albums[song['album']]!.remove(song);
 
-      if (_artists[song['artist']]!.length == 1) {
-        _sortedArtistKeysList.remove(song['artist']);
-      }
-      _artists[song['artist']]!.remove(song);
+      song['artist'].toString().split(', ').forEach((singleArtist) {
+        if (_artists[singleArtist]!.length == 1) {
+          _sortedArtistKeysList.remove(singleArtist);
+        }
+        _artists[singleArtist]!.remove(song);
+      });
 
       if (_genres[song['genre']]!.length == 1) {
         _sortedGenreKeysList.remove(song['genre']);
@@ -779,7 +782,7 @@ class _AlbumsTabState extends State<AlbumsTab>
                       ? '${widget.albums[widget.sortedAlbumKeysList[index]]!.length} ${AppLocalizations.of(context)!.song}'
                       : '${widget.albums[widget.sortedAlbumKeysList[index]]!.length} ${AppLocalizations.of(context)!.songs}',
                   style: TextStyle(
-                    color: Theme.of(context).textTheme.caption!.color,
+                    color: Theme.of(context).textTheme.bodySmall!.color,
                   ),
                 ),
                 onTap: () {

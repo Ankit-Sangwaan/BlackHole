@@ -162,7 +162,7 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                 labelStyle: TextStyle(
                                                   color: Theme.of(context)
                                                       .textTheme
-                                                      .bodyText1!
+                                                      .bodyLarge!
                                                       .color,
                                                   fontWeight: FontWeight.normal,
                                                 ),

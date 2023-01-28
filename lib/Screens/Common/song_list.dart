@@ -199,7 +199,7 @@ class _SongsListPageState extends State<SongsListPage> {
         loading = false;
       });
       Logger.root.severe(
-        'Error in song_list with type ${widget.listItem["type"].toString()}: $e',
+        'Error in song_list with type ${widget.listItem["type"]}: $e',
       );
     }
   }

@@ -270,7 +270,7 @@ class HorizontalAlbumsList extends StatelessWidget {
                                     fontSize: 11,
                                     color: Theme.of(context)
                                         .textTheme
-                                        .caption!
+                                        .bodySmall!
                                         .color,
                                   ),
                                 )
