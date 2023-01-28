@@ -1885,8 +1885,8 @@ class NameNControls extends StatelessWidget {
             : height > 500
                 ? height * 0.2
                 : height * 0.3);
-    const double nowplayingBoxHeight = 62;
-    // height > 500 ? height * 0.4 : height * 0.15;
+    final double nowplayingBoxHeight =
+        min(62, height > 500 ? height * 0.4 : height * 0.15);
     final bool useFullScreenGradient = Hive.box('settings')
         .get('useFullScreenGradient', defaultValue: false) as bool;
     final List<String> artists = mediaItem.artist.toString().split(', ');
@@ -2176,7 +2176,7 @@ class NameNControls extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: nowplayingBoxHeight,
               ),
             ],
