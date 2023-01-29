@@ -259,6 +259,7 @@ class YtMusicService {
       final List<Map> searchResults = [];
       final res = await sendRequest(endpoints['search']!, body, headers);
       if (!res.containsKey('contents')) {
+        Logger.root.info('YtMusic returned no contents');
         return List.empty();
       }
 
@@ -276,6 +277,7 @@ class YtMusicService {
           'content'
         ]) as Map<String, dynamic>;
       } else {
+        Logger.root.info('tabbedSearchResultsRenderer not found');
         results = res['contents'] as Map<String, dynamic>;
       }
 
@@ -335,6 +337,7 @@ class YtMusicService {
             'text',
             'runs'
           ]) as List;
+          Logger.root.info('Looping child elements of "$title"');
           int count = 0;
           String type = '';
           String album = '';
