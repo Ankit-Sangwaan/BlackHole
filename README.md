@@ -16,16 +16,16 @@ An Open-Source Music Player App for all your needs!
 
 [<img src="get_github.png"
      alt="Download from GitHub"
-     height="100">](https://github.com/Sangwan5688/BlackHole/releases)
+     height="90">](https://github.com/Sangwan5688/BlackHole/releases)
 [<img src="get_telegram.png"
      alt="Join Telegram Channel"
-     height="100">](https://t.me/blackhole_official)
+     height="90">](https://t.me/blackhole_official)
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
-     height="100">](https://f-droid.org/packages/com.shadow.blackhole/)
+     height="90">](https://f-droid.org/packages/com.shadow.blackhole/)
 [<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
      alt="Get it on IzzyDroid"
-     height="100">](https://android.izzysoft.de/repo/apk/com.shadow.blackhole)
+     height="90">](https://android.izzysoft.de/repo/apk/com.shadow.blackhole)
 
 ## Translations
 
