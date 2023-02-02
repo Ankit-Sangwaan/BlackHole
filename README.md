@@ -14,21 +14,18 @@ An Open-Source Music Player App for all your needs!
 
 ## Download
 
-[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
-     alt="Get it on IzzyDroid"
-     height="100">](https://android.izzysoft.de/repo/apk/com.shadow.blackhole)
+[<img src="get_github.png"
+     alt="Download from GitHub"
+     height="100">](https://github.com/Sangwan5688/BlackHole/releases)
+[<img src="get_telegram.png"
+     alt="Join Telegram Channel"
+     height="100">](https://t.me/blackhole_official)
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
      alt="Get it on F-Droid"
      height="100">](https://f-droid.org/packages/com.shadow.blackhole/)
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[<img src="https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white"
-     alt="Download from GitHub"
-     height="60">](https://github.com/Sangwan5688/BlackHole/releases)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[<img src="https://img.shields.io/badge/Telegram-2CA5E0?logo=telegram&logoColor=white"
-     alt="Join Telegram Channel"
-     height="60">](https://t.me/blackhole_official)
+[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
+     alt="Get it on IzzyDroid"
+     height="100">](https://android.izzysoft.de/repo/apk/com.shadow.blackhole)
 
 ## Translations
 
