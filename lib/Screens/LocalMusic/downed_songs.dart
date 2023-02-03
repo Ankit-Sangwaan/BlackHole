@@ -119,63 +119,67 @@ class _DownloadedSongsState extends State<DownloadedSongs>
   }
 
   Future<void> getData() async {
-    Logger.root.info('Requesting permission to access local songs');
-    await offlineAudioQuery.requestPermission();
-    tempPath ??= (await getTemporaryDirectory()).path;
-    Logger.root.info('Getting local playlists');
-    playlistDetails = await offlineAudioQuery.getPlaylists();
-    if (widget.cachedSongs == null) {
-      Logger.root.info('Cache empty, calling audioQuery');
-      final receivedSongs = await offlineAudioQuery.getSongs(
-        sortType: songSortTypes[sortValue],
-        orderType: songOrderTypes[orderValue],
-      );
-      Logger.root.info('Received ${receivedSongs.length} songs, filtering');
-      _songs = receivedSongs
-          .where(
-            (i) =>
-                (i.duration ?? 60000) > 1000 * minDuration &&
-                (i.isMusic! || i.isPodcast! || i.isAudioBook!) &&
-                (includeOrExclude
-                    ? checkIncludedOrExcluded(i)
-                    : !checkIncludedOrExcluded(i)),
-          )
-          .toList();
-    } else {
-      Logger.root.info('Setting songs to cached songs');
-      _songs = widget.cachedSongs!;
-    }
-    added = true;
-    Logger.root.info('got ${_songs.length} songs');
-    setState(() {});
-    Logger.root.info('setting albums and artists');
-    for (int i = 0; i < _songs.length; i++) {
-      try {
-        if (_albums.containsKey(_songs[i].album ?? 'Unknown')) {
-          _albums[_songs[i].album ?? 'Unknown']!.add(_songs[i]);
-        } else {
-          _albums[_songs[i].album ?? 'Unknown'] = [_songs[i]];
-          _sortedAlbumKeysList.add(_songs[i].album ?? 'Unknown');
-        }
-
-        if (_artists.containsKey(_songs[i].artist ?? 'Unknown')) {
-          _artists[_songs[i].artist ?? 'Unknown']!.add(_songs[i]);
-        } else {
-          _artists[_songs[i].artist ?? 'Unknown'] = [_songs[i]];
-          _sortedArtistKeysList.add(_songs[i].artist ?? 'Unknown');
-        }
-
-        if (_genres.containsKey(_songs[i].genre ?? 'Unknown')) {
-          _genres[_songs[i].genre ?? 'Unknown']!.add(_songs[i]);
-        } else {
-          _genres[_songs[i].genre ?? 'Unknown'] = [_songs[i]];
-          _sortedGenreKeysList.add(_songs[i].genre ?? 'Unknown');
-        }
-      } catch (e) {
-        Logger.root.severe('Error in sorting songs: $e');
+    try {
+      Logger.root.info('Requesting permission to access local songs');
+      await offlineAudioQuery.requestPermission();
+      tempPath ??= (await getTemporaryDirectory()).path;
+      Logger.root.info('Getting local playlists');
+      playlistDetails = await offlineAudioQuery.getPlaylists();
+      if (widget.cachedSongs == null) {
+        Logger.root.info('Cache empty, calling audioQuery');
+        final receivedSongs = await offlineAudioQuery.getSongs(
+          sortType: songSortTypes[sortValue],
+          orderType: songOrderTypes[orderValue],
+        );
+        Logger.root.info('Received ${receivedSongs.length} songs, filtering');
+        _songs = receivedSongs
+            .where(
+              (i) =>
+                  (i.duration ?? 60000) > 1000 * minDuration &&
+                  (i.isMusic! || i.isPodcast! || i.isAudioBook!) &&
+                  (includeOrExclude
+                      ? checkIncludedOrExcluded(i)
+                      : !checkIncludedOrExcluded(i)),
+            )
+            .toList();
+      } else {
+        Logger.root.info('Setting songs to cached songs');
+        _songs = widget.cachedSongs!;
       }
+      added = true;
+      Logger.root.info('got ${_songs.length} songs');
+      setState(() {});
+      Logger.root.info('setting albums and artists');
+      for (int i = 0; i < _songs.length; i++) {
+        try {
+          if (_albums.containsKey(_songs[i].album ?? 'Unknown')) {
+            _albums[_songs[i].album ?? 'Unknown']!.add(_songs[i]);
+          } else {
+            _albums[_songs[i].album ?? 'Unknown'] = [_songs[i]];
+            _sortedAlbumKeysList.add(_songs[i].album ?? 'Unknown');
+          }
+
+          if (_artists.containsKey(_songs[i].artist ?? 'Unknown')) {
+            _artists[_songs[i].artist ?? 'Unknown']!.add(_songs[i]);
+          } else {
+            _artists[_songs[i].artist ?? 'Unknown'] = [_songs[i]];
+            _sortedArtistKeysList.add(_songs[i].artist ?? 'Unknown');
+          }
+
+          if (_genres.containsKey(_songs[i].genre ?? 'Unknown')) {
+            _genres[_songs[i].genre ?? 'Unknown']!.add(_songs[i]);
+          } else {
+            _genres[_songs[i].genre ?? 'Unknown'] = [_songs[i]];
+            _sortedGenreKeysList.add(_songs[i].genre ?? 'Unknown');
+          }
+        } catch (e) {
+          Logger.root.severe('Error in sorting songs', e);
+        }
+      }
+      Logger.root.info('albums and artists set');
+    } catch (e) {
+      Logger.root.severe('Error in getData', e);
     }
-    Logger.root.info('albums and artists set');
   }
 
   Future<void> sortSongs(int sortVal, int order) async {
