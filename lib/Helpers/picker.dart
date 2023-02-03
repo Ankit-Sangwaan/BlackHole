@@ -21,6 +21,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class Picker {
@@ -30,6 +31,7 @@ class Picker {
   }) async {
     final String? temp =
         await FilePicker.platform.getDirectoryPath(dialogTitle: message);
+    Logger.root.info('Selected folder: $temp');
     return (temp == '/' || temp == null) ? '' : temp;
   }
 

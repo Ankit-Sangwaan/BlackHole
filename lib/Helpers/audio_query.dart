@@ -21,6 +21,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:logging/logging.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class OfflineAudioQuery {
@@ -38,10 +39,12 @@ class OfflineAudioQuery {
     OrderType? orderType,
     String? path,
   }) async {
+    Logger.root.info(
+      'Getting songs with path: $path, sortType: $sortType, orderType: $orderType',
+    );
     return audioQuery.querySongs(
       sortType: sortType ?? SongSortType.DATE_ADDED,
       orderType: orderType ?? OrderType.DESC_OR_GREATER,
-      uriType: UriType.EXTERNAL,
       path: path,
     );
   }

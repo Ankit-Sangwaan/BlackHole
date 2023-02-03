@@ -126,10 +126,12 @@ class _DownloadedSongsState extends State<DownloadedSongs>
     playlistDetails = await offlineAudioQuery.getPlaylists();
     if (widget.cachedSongs == null) {
       Logger.root.info('Cache empty, calling audioQuery');
-      _songs = (await offlineAudioQuery.getSongs(
+      final receivedSongs = await offlineAudioQuery.getSongs(
         sortType: songSortTypes[sortValue],
         orderType: songOrderTypes[orderValue],
-      ))
+      );
+      Logger.root.info('Received ${receivedSongs.length} songs, filtering');
+      _songs = receivedSongs
           .where(
             (i) =>
                 (i.duration ?? 60000) > 1000 * minDuration &&
