@@ -179,6 +179,7 @@ class _DownloadedSongsState extends State<DownloadedSongs>
       Logger.root.info('albums and artists set');
     } catch (e) {
       Logger.root.severe('Error in getData', e);
+      added = true;
     }
   }
 

@@ -73,7 +73,7 @@ class HorizontalAlbumsListSeparated extends StatelessWidget {
         MediaQuery.of(context).size.height < MediaQuery.of(context).size.width;
     final double portion = (songsList.length <= 4) ? 1.0 : 0.875;
     final double listSize = rotated
-        ? MediaQuery.of(context).size.height * portion
+        ? MediaQuery.of(context).size.width * portion / 2
         : MediaQuery.of(context).size.width * portion;
     return SizedBox(
       height: songsList.length < 4 ? songsList.length * 74 : 74 * 4,
