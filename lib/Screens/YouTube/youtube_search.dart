@@ -426,28 +426,28 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                                         [
                                                                         idx]['id']
                                                                     .toString(),
-                                                                playlistName: section['items']
-                                                                            [
-                                                                            idx]
-                                                                        [
-                                                                        'title']
-                                                                    .toString(),
-                                                                playlistSubtitle:
-                                                                    section['items'][idx]
-                                                                            [
-                                                                            'countSongs']
-                                                                        .toString(),
-                                                                playlistSecondarySubtitle:
-                                                                    section['items'][idx]
-                                                                            [
-                                                                            'subtitle']
-                                                                        .toString(),
-                                                                playlistImage: (section['items'][idx]
-                                                                            [
-                                                                            'images']
-                                                                        as List)
-                                                                    .last
-                                                                    .toString(),
+                                                                // playlistName: section['items']
+                                                                //             [
+                                                                //             idx]
+                                                                //         [
+                                                                //         'title']
+                                                                //     .toString(),
+                                                                // playlistSubtitle:
+                                                                //     section['items'][idx]
+                                                                //             [
+                                                                //             'countSongs']
+                                                                //         .toString(),
+                                                                // playlistSecondarySubtitle:
+                                                                //     section['items'][idx]
+                                                                //             [
+                                                                //             'subtitle']
+                                                                //         .toString(),
+                                                                // playlistImage: (section['items'][idx]
+                                                                //             [
+                                                                //             'images']
+                                                                //         as List)
+                                                                //     .last
+                                                                //     .toString(),
                                                               ),
                                                             ),
                                                           );

@@ -186,7 +186,11 @@ class PlayerInvoke {
     updateNplay(queue, index);
   }
 
-  static void refreshYtLink2(Map playItem, String? playlistBox) {
+  static void refreshYtLink2({
+    required Map playItem,
+    String? playlistBox,
+    required String cached,
+  }) {
     YouTubeServices().refreshLink(playItem['id'].toString()).then(
       (newData) {
         Logger.root.info('received new link for ${playItem["title"]}');
@@ -196,7 +200,11 @@ class PlayerInvoke {
           playItem['expire_at'] = newData['expire_at'];
           Hive.box('ytlinkcache').put(
             newData['id'],
-            {'url': newData['url'], 'expire_at': newData['expire_at']},
+            {
+              'url': newData['url'],
+              'expire_at': newData['expire_at'],
+              'cached': cached,
+            },
           );
           if (playlistBox != null) {
             Logger.root.info('linked with playlist $playlistBox');
@@ -214,16 +222,24 @@ class PlayerInvoke {
   }
 
   static void refreshYtLink(Map playItem, String? playlistBox) {
+    final bool cacheSong =
+        Hive.box('settings').get('cacheSong', defaultValue: true) as bool;
     final int expiredAt = int.parse((playItem['expire_at'] ?? '0').toString());
     if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 > expiredAt) {
       Logger.root.info('youtube link expired for ${playItem["title"]}');
       if (Hive.box('ytlinkcache').containsKey(playItem['id'])) {
         final Map cache = Hive.box('ytlinkcache').get(playItem['id']) as Map;
         final int expiredAt = int.parse((cache['expire_at'] ?? '0').toString());
-        if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 > expiredAt) {
+        final String wasCacheEnabled = cache['cached'].toString();
+        if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 > expiredAt &&
+            wasCacheEnabled != 'true') {
           Logger.root
               .info('youtube link expired in cache for ${playItem["title"]}');
-          refreshYtLink2(playItem, playlistBox);
+          refreshYtLink2(
+            playItem: playItem,
+            playlistBox: playlistBox,
+            cached: cacheSong.toString(),
+          );
         } else {
           Logger.root
               .info('youtube link found in cache for ${playItem["title"]}');
@@ -241,7 +257,11 @@ class PlayerInvoke {
           }
         }
       } else {
-        refreshYtLink2(playItem, playlistBox);
+        refreshYtLink2(
+          playItem: playItem,
+          playlistBox: playlistBox,
+          cached: cacheSong.toString(),
+        );
       }
     }
   }

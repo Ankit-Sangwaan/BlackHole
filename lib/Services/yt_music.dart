@@ -516,7 +516,7 @@ class YtMusicService {
     }
   }
 
-  Future<List<Map>> getPlaylistDetails(String playlistId) async {
+  Future<Map> getPlaylistDetails(String playlistId) async {
     if (headers == null) {
       await init();
     }
@@ -527,6 +527,42 @@ class YtMusicService {
       body['browseId'] = browseId;
       final Map response =
           await sendRequest(endpoints['browse']!, body, headers);
+      final String? heading = nav(response, [
+        'header',
+        'musicDetailHeaderRenderer',
+        'title',
+        'runs',
+        0,
+        'text'
+      ]) as String?;
+      final String subtitle = (nav(response, [
+                'header',
+                'musicDetailHeaderRenderer',
+                'subtitle',
+                'runs',
+              ]) as List? ??
+              [])
+          .map((e) => e['text'])
+          .toList()
+          .join();
+      final String? description = nav(response, [
+        'header',
+        'musicDetailHeaderRenderer',
+        'description',
+        'runs',
+        0,
+        'text'
+      ]) as String?;
+      final List images = (nav(response, [
+        'header',
+        'musicDetailHeaderRenderer',
+        'thumbnail',
+        'croppedSquareThumbnailRenderer',
+        'thumbnail',
+        'thumbnails'
+      ]) as List)
+          .map((e) => e['url'])
+          .toList();
       final List finalResults = nav(response, [
             'contents',
             'singleColumnBrowseResultsRenderer',
@@ -541,7 +577,7 @@ class YtMusicService {
             'contents'
           ]) as List? ??
           [];
-      final List<Map> results = [];
+      final List<Map> songResults = [];
       for (final item in finalResults) {
         final String id = nav(item, [
           'musicResponsiveListItemRenderer',
@@ -605,7 +641,7 @@ class YtMusicService {
             }
           }
         }
-        results.add({
+        songResults.add({
           'id': id,
           'type': 'song',
           'title': title,
@@ -624,10 +660,18 @@ class YtMusicService {
           'album_id': '',
         });
       }
-      return results;
+      return {
+        'songs': songResults,
+        'name': heading,
+        'subtitle': subtitle,
+        'description': description,
+        'images': images,
+        'id': playlistId,
+        'type': 'playlist',
+      };
     } catch (e) {
       Logger.root.severe('Error in ytmusic getPlaylistDetails', e);
-      return [];
+      return {};
     }
   }
 

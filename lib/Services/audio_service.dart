@@ -279,7 +279,11 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         if (newData != null) {
           Hive.box('ytlinkcache').put(
             newData['id'],
-            {'url': newData['url'], 'expire_at': newData['expire_at']},
+            {
+              'url': newData['url'],
+              'expire_at': newData['expire_at'],
+              'cached': cacheSong.toString(),
+            },
           );
           final MediaItem newItem = mediaItem.copyWith(
             extras: mediaItem.extras!
@@ -304,11 +308,20 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
             }
           }
           Logger.root.info('inserting new item');
-          final audioSource = AudioSource.uri(
-            Uri.parse(
-              newItem.extras!['url'].toString(),
-            ),
-          );
+          late AudioSource audioSource;
+          if (cacheSong) {
+            audioSource = LockCachingAudioSource(
+              Uri.parse(
+                newItem.extras!['url'].toString(),
+              ),
+            );
+          } else {
+            audioSource = AudioSource.uri(
+              Uri.parse(
+                newItem.extras!['url'].toString(),
+              ),
+            );
+          }
           final index = queue.value.indexWhere((item) => item.id == newItem.id);
           _mediaItemExpando[audioSource] = mediaItem;
           _playlist
@@ -333,6 +346,48 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
           tag: mediaItem.id,
         );
       } else {
+        if (mediaItem.genre == 'YouTube') {
+          final int expiredAt =
+              int.parse((mediaItem.extras!['expire_at'] ?? '0').toString());
+          if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
+              expiredAt) {
+            Logger.root.info(
+              'youtube link expired for ${mediaItem.title}, searching cache',
+            );
+            if (Hive.box('ytlinkcache').containsKey(mediaItem.id)) {
+              final Map cachedData =
+                  Hive.box('ytlinkcache').get(mediaItem.id) as Map;
+              final int cachedExpiredAt =
+                  int.parse(cachedData['expire_at'].toString());
+              final String wasCacheEnabled = cachedData['cached'].toString();
+              if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
+                      cachedExpiredAt &&
+                  wasCacheEnabled != 'true') {
+                Logger.root.info(
+                  'youtube link expired for ${mediaItem.title}, refreshing',
+                );
+                refreshLink(mediaItem);
+              } else {
+                Logger.root.info(
+                  'youtube link found in cache for ${mediaItem.title}',
+                );
+                if (cacheSong) {
+                  audioSource = LockCachingAudioSource(
+                    Uri.parse(cachedData['url'].toString()),
+                  );
+                } else {
+                  audioSource =
+                      AudioSource.uri(Uri.parse(cachedData['url'].toString()));
+                }
+              }
+            } else {
+              Logger.root.info(
+                'youtube link not found in cache for ${mediaItem.title}, refreshing',
+              );
+              refreshLink(mediaItem);
+            }
+          }
+        }
         if (cacheSong) {
           audioSource = LockCachingAudioSource(
             Uri.parse(
@@ -343,40 +398,6 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
             ),
           );
         } else {
-          if (mediaItem.genre == 'YouTube') {
-            final int expiredAt =
-                int.parse((mediaItem.extras!['expire_at'] ?? '0').toString());
-            if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
-                expiredAt) {
-              Logger.root.info(
-                'youtube link expired for ${mediaItem.title}, searching cache',
-              );
-              if (Hive.box('ytlinkcache').containsKey(mediaItem.id)) {
-                final Map cachedData =
-                    Hive.box('ytlinkcache').get(mediaItem.id) as Map;
-                final int cachedExpiredAt =
-                    int.parse(cachedData['expire_at'].toString());
-                if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
-                    cachedExpiredAt) {
-                  Logger.root.info(
-                    'youtube link expired for ${mediaItem.title}, refreshing',
-                  );
-                  refreshLink(mediaItem);
-                } else {
-                  Logger.root.info(
-                    'youtube link found in cache for ${mediaItem.title}',
-                  );
-                  audioSource =
-                      AudioSource.uri(Uri.parse(cachedData['url'].toString()));
-                }
-              } else {
-                Logger.root.info(
-                  'youtube link not found in cache for ${mediaItem.title}, refreshing',
-                );
-                refreshLink(mediaItem);
-              }
-            }
-          }
           audioSource = AudioSource.uri(
             Uri.parse(
               mediaItem.extras!['url'].toString().replaceAll(

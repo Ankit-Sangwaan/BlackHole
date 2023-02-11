@@ -276,16 +276,16 @@ class _YouTubeState extends State<YouTube>
                                                     YouTubePlaylist(
                                                   playlistId: item['playlistId']
                                                       .toString(),
-                                                  playlistImage:
-                                                      item['imageStandard']
-                                                          .toString(),
-                                                  playlistName:
-                                                      item['title'].toString(),
-                                                  playlistSubtitle:
-                                                      '${item['count']} Songs',
-                                                  playlistSecondarySubtitle:
-                                                      item['description']
-                                                          ?.toString(),
+                                                  // playlistImage:
+                                                  //     item['imageStandard']
+                                                  //         .toString(),
+                                                  // playlistName:
+                                                  //     item['title'].toString(),
+                                                  // playlistSubtitle:
+                                                  //     '${item['count']} Songs',
+                                                  // playlistSecondarySubtitle:
+                                                  //     item['description']
+                                                  //         ?.toString(),
                                                 ),
                                               ),
                                             );

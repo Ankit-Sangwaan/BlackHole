@@ -204,10 +204,10 @@ class YtUrlHandler extends StatelessWidget {
           MaterialPageRoute(
             builder: (context) => YouTubePlaylist(
               playlistId: id,
-              playlistImage: '',
-              playlistName: '',
-              playlistSubtitle: '',
-              playlistSecondarySubtitle: '',
+              // playlistImage: '',
+              // playlistName: '',
+              // playlistSubtitle: '',
+              // playlistSecondarySubtitle: '',
             ),
           ),
         );

@@ -30,20 +30,21 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
+import 'package:logging/logging.dart';
 
 class YouTubePlaylist extends StatefulWidget {
   final String playlistId;
-  final String playlistName;
-  final String? playlistSubtitle;
-  final String? playlistSecondarySubtitle;
-  final String playlistImage;
+  // final String playlistName;
+  // final String? playlistSubtitle;
+  // final String? playlistSecondarySubtitle;
+  // final String playlistImage;
   const YouTubePlaylist({
     super.key,
     required this.playlistId,
-    required this.playlistName,
-    required this.playlistSubtitle,
-    required this.playlistSecondarySubtitle,
-    required this.playlistImage,
+    // required this.playlistName,
+    // required this.playlistSubtitle,
+    // required this.playlistSecondarySubtitle,
+    // required this.playlistImage,
   });
 
   @override
@@ -58,6 +59,10 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
   List ytSearch =
       Hive.box('settings').get('ytSearch', defaultValue: []) as List;
   final ScrollController _scrollController = ScrollController();
+  String playlistName = '';
+  String playlistSubtitle = '';
+  String? playlistSecondarySubtitle;
+  String playlistImage = '';
 
   @override
   void initState() {
@@ -65,8 +70,17 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
       status = true;
       YtMusicService().getPlaylistDetails(widget.playlistId).then((value) {
         setState(() {
-          searchedList = value;
-          fetched = true;
+          try {
+            searchedList = value['songs'] as List<Map>? ?? [];
+            playlistName = value['name'] as String? ?? '';
+            playlistSubtitle = value['subtitle'] as String? ?? '';
+            playlistSecondarySubtitle = value['description'] as String?;
+            playlistImage = (value['images'] as List?)?.last as String? ?? '';
+            fetched = true;
+          } catch (e) {
+            Logger.root.severe('Error in fetching playlist details', e);
+            fetched = true;
+          }
         });
       });
       // YouTubeServices().getPlaylistSongs(widget.playlistId).then((value) {
@@ -107,14 +121,14 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                   else
                     BouncyPlaylistHeaderScrollView(
                       scrollController: _scrollController,
-                      title: widget.playlistName,
-                      subtitle: widget.playlistSubtitle,
-                      secondarySubtitle: widget.playlistSecondarySubtitle,
-                      imageUrl: widget.playlistImage,
+                      title: playlistName,
+                      subtitle: playlistSubtitle,
+                      secondarySubtitle: playlistSecondarySubtitle,
+                      imageUrl: playlistImage,
                       actions: [
                         PlaylistPopupMenu(
                           data: searchedList,
-                          title: widget.playlistName,
+                          title: playlistName,
                         ),
                       ],
                       onPlayTap: () async {
