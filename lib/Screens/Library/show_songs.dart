@@ -312,7 +312,7 @@ class _SongsListState extends State<SongsList> {
                                     index: index,
                                     isOffline: offline,
                                     fromDownloads: offline,
-                                    recommend: false,
+                                    recommend: !offline,
                                   );
                                 },
                               );

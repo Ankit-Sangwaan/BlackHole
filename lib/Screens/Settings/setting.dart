@@ -2092,22 +2092,22 @@ class _SettingPageState extends State<SettingPage> {
                           defaultValue: true,
                           isThreeLine: true,
                         ),
-                        // BoxSwitchTile(
-                        //   title: Text(
-                        //     AppLocalizations.of(
-                        //       context,
-                        //     )!
-                        //         .cacheSong,
-                        //   ),
-                        //   subtitle: Text(
-                        //     AppLocalizations.of(
-                        //       context,
-                        //     )!
-                        //         .cacheSongSub,
-                        //   ),
-                        //   keyName: 'cacheSong',
-                        //   defaultValue: false,
-                        // ),
+                        BoxSwitchTile(
+                          title: Text(
+                            AppLocalizations.of(
+                              context,
+                            )!
+                                .cacheSong,
+                          ),
+                          subtitle: Text(
+                            AppLocalizations.of(
+                              context,
+                            )!
+                                .cacheSongSub,
+                          ),
+                          keyName: 'cacheSong',
+                          defaultValue: true,
+                        ),
                       ],
                     ),
                   ),

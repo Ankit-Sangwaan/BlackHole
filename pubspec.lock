@@ -278,10 +278,10 @@ packages:
     dependency: "direct main"
     description:
       name: flip_card
-      sha256: ac079be6474e7005c1ea770a168194d207d5a24c88a463a0eb9fe838846fc517
+      sha256: "5d4aa58f3983cced0782f4ce45826b7eea36e8e464964d9209dcbc7a87b2292f"
       url: "https://pub.dev"
     source: hosted
-    version: "0.6.0"
+    version: "0.7.0"
   flutter:
     dependency: "direct main"
     description: flutter

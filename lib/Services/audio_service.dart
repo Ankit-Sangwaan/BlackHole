@@ -50,7 +50,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   // late String? stationId = '';
   // late List<String> stationNames = [];
   // late String stationType = 'entity';
-  // late bool cacheSong;
+  late bool cacheSong;
   final _equalizer = AndroidEqualizer();
 
   Box downloadsBox = Hive.box('downloads');
@@ -134,8 +134,8 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         .toString();
     resetOnSkip =
         Hive.box('settings').get('resetOnSkip', defaultValue: false) as bool;
-    // cacheSong =
-    //     Hive.box('settings').get('cacheSong', defaultValue: false) as bool;
+    cacheSong =
+        Hive.box('settings').get('cacheSong', defaultValue: true) as bool;
     recommend =
         Hive.box('settings').get('autoplay', defaultValue: true) as bool;
     loadStart =
@@ -333,57 +333,59 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
           tag: mediaItem.id,
         );
       } else {
-        // if (cacheSong) {
-        //   _audioSource = LockCachingAudioSource(
-        //     Uri.parse(
-        //       mediaItem.extras!['url'].toString().replaceAll(
-        //             '_96.',
-        //             "_${preferredQuality.replaceAll(' kbps', '')}.",
-        //           ),
-        //     ),
-        //   );
-        // } else {
-        if (mediaItem.genre == 'YouTube') {
-          final int expiredAt =
-              int.parse((mediaItem.extras!['expire_at'] ?? '0').toString());
-          if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
-              expiredAt) {
-            Logger.root.info(
-              'youtube link expired for ${mediaItem.title}, searching cache',
-            );
-            if (Hive.box('ytlinkcache').containsKey(mediaItem.id)) {
-              final Map cachedData =
-                  Hive.box('ytlinkcache').get(mediaItem.id) as Map;
-              final int cachedExpiredAt =
-                  int.parse(cachedData['expire_at'].toString());
-              if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
-                  cachedExpiredAt) {
+        if (cacheSong) {
+          audioSource = LockCachingAudioSource(
+            Uri.parse(
+              mediaItem.extras!['url'].toString().replaceAll(
+                    '_96.',
+                    "_${preferredQuality.replaceAll(' kbps', '')}.",
+                  ),
+            ),
+          );
+        } else {
+          if (mediaItem.genre == 'YouTube') {
+            final int expiredAt =
+                int.parse((mediaItem.extras!['expire_at'] ?? '0').toString());
+            if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
+                expiredAt) {
+              Logger.root.info(
+                'youtube link expired for ${mediaItem.title}, searching cache',
+              );
+              if (Hive.box('ytlinkcache').containsKey(mediaItem.id)) {
+                final Map cachedData =
+                    Hive.box('ytlinkcache').get(mediaItem.id) as Map;
+                final int cachedExpiredAt =
+                    int.parse(cachedData['expire_at'].toString());
+                if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
+                    cachedExpiredAt) {
+                  Logger.root.info(
+                    'youtube link expired for ${mediaItem.title}, refreshing',
+                  );
+                  refreshLink(mediaItem);
+                } else {
+                  Logger.root.info(
+                    'youtube link found in cache for ${mediaItem.title}',
+                  );
+                  audioSource =
+                      AudioSource.uri(Uri.parse(cachedData['url'].toString()));
+                }
+              } else {
                 Logger.root.info(
-                  'youtube link expired for ${mediaItem.title}, refreshing',
+                  'youtube link not found in cache for ${mediaItem.title}, refreshing',
                 );
                 refreshLink(mediaItem);
-              } else {
-                Logger.root
-                    .info('youtube link found in cache for ${mediaItem.title}');
-                audioSource =
-                    AudioSource.uri(Uri.parse(cachedData['url'].toString()));
               }
-            } else {
-              Logger.root.info(
-                'youtube link not found in cache for ${mediaItem.title}, refreshing',
-              );
-              refreshLink(mediaItem);
             }
           }
+          audioSource = AudioSource.uri(
+            Uri.parse(
+              mediaItem.extras!['url'].toString().replaceAll(
+                    '_96.',
+                    "_${preferredQuality.replaceAll(' kbps', '')}.",
+                  ),
+            ),
+          );
         }
-        audioSource = AudioSource.uri(
-          Uri.parse(
-            mediaItem.extras!['url'].toString().replaceAll(
-                  '_96.',
-                  "_${preferredQuality.replaceAll(' kbps', '')}.",
-                ),
-          ),
-        );
       }
     }
 
@@ -395,8 +397,8 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     preferredQuality = Hive.box('settings')
         .get('streamingQuality', defaultValue: '96 kbps')
         .toString();
-    // cacheSong =
-    //     Hive.box('settings').get('cacheSong', defaultValue: false) as bool;
+    cacheSong =
+        Hive.box('settings').get('cacheSong', defaultValue: true) as bool;
     useDown = Hive.box('settings').get('useDown', defaultValue: true) as bool;
     return mediaItems.map(_itemToSource).toList();
   }

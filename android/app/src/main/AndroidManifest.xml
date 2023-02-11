@@ -14,6 +14,7 @@
     <application
         android:icon="@mipmap/ic_launcher"
         android:label="BlackHole"
+        android:usesCleartextTraffic="true"
         android:requestLegacyExternalStorage="true">
         <receiver
             android:name=".BlackHoleMusicWidget"
@@ -99,7 +100,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="https" />
-                <data android:host="www.jiosaavn.com" />
+                <data android:host="jiosaavn.com" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -108,7 +109,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="https" />
-                <data android:host="www.spotify.com" />
+                <data android:host="*spotify.com" />
             </intent-filter>
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
@@ -117,7 +118,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:scheme="https" />
-                <data android:host="www.youtube.com" />
+                <data android:host="*youtube.com" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.GET_CONTENT" />
