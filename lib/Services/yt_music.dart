@@ -681,9 +681,9 @@ class YtMusicService {
       final String description = joinRunTexts(
         nav(response, [...headerDetail, ...secondSubtitleRuns]) as List? ?? [],
       );
-      // final List images = runUrls(
-      //   nav(response, [...headerDetail, ...thumbnailCropped]) as List? ?? [],
-      // );
+      final List images = runUrls(
+        nav(response, [...headerDetail, ...thumbnailCropped]) as List? ?? [],
+      );
       final List finalResults = nav(response, [
             ...singleColumnTab,
             ...sectionListItem,
@@ -708,12 +708,13 @@ class YtMusicService {
           ...textRunText,
         ]).toString();
         final List subtitleList = nav(item, [
-          mRLIR,
-          'flexColumns',
-          1,
-          mRLIFCR,
-          ...textRuns,
-        ]) as List;
+              mRLIR,
+              'flexColumns',
+              1,
+              mRLIFCR,
+              ...textRuns,
+            ]) as List? ??
+            [];
         int count = 0;
         String year = '';
         String album = '';
@@ -768,7 +769,7 @@ class YtMusicService {
         'name': heading,
         'subtitle': subtitle,
         'description': description,
-        'images': null,
+        'images': images,
         'id': albumId,
         'type': 'playlist',
       };
