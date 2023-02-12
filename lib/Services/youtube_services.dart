@@ -125,39 +125,41 @@ class YouTubeServices {
       }).toList();
 
       final List finalResult = shelfRenderer.map((element) {
-        if (element['title']['runs'][0]['text'].trim() !=
-            'Highlights from Global Citizen Live') {
-          return {
-            'title': element['title']['runs'][0]['text'],
-            'playlists': element['title']['runs'][0]['text'].trim() ==
-                        'Charts' ||
-                    element['title']['runs'][0]['text'].trim() == 'Classements'
-                ? formatChartItems(
+        final playlistItems = element['title']['runs'][0]['text'].trim() ==
+                    'Charts' ||
+                element['title']['runs'][0]['text'].trim() == 'Classements'
+            ? formatChartItems(
+                element['content']['horizontalListRenderer']['items'] as List,
+              )
+            : element['title']['runs'][0]['text']
+                        .toString()
+                        .contains('Music Videos') ||
+                    element['title']['runs'][0]['text']
+                        .toString()
+                        .contains('Nouveaux clips') ||
+                    element['title']['runs'][0]['text']
+                        .toString()
+                        .contains('En Musique Avec Moi') ||
+                    element['title']['runs'][0]['text']
+                        .toString()
+                        .contains('Performances Uniques')
+                ? formatVideoItems(
                     element['content']['horizontalListRenderer']['items']
                         as List,
                   )
-                : element['title']['runs'][0]['text']
-                            .toString()
-                            .contains('Music Videos') ||
-                        element['title']['runs'][0]['text']
-                            .toString()
-                            .contains('Nouveaux clips') ||
-                        element['title']['runs'][0]['text']
-                            .toString()
-                            .contains('En Musique Avec Moi') ||
-                        element['title']['runs'][0]['text']
-                            .toString()
-                            .contains('Performances Uniques')
-                    ? formatVideoItems(
-                        element['content']['horizontalListRenderer']['items']
-                            as List,
-                      )
-                    : formatItems(
-                        element['content']['horizontalListRenderer']['items']
-                            as List,
-                      ),
+                : formatItems(
+                    element['content']['horizontalListRenderer']['items']
+                        as List,
+                  );
+        if (playlistItems.isNotEmpty) {
+          return {
+            'title': element['title']['runs'][0]['text'],
+            'playlists': playlistItems,
           };
         } else {
+          Logger.root.severe(
+            "got null in getMusicHome for '${element['title']['runs'][0]['text']}'",
+          );
           return null;
         }
       }).toList();

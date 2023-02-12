@@ -54,6 +54,8 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   final _equalizer = AndroidEqualizer();
 
   Box downloadsBox = Hive.box('downloads');
+  final List<MediaItem> refreshLinks = [];
+  bool jobRunning = false;
 
   final BehaviorSubject<List<MediaItem>> _recentSubject =
       BehaviorSubject.seeded(<MediaItem>[]);
@@ -270,66 +272,76 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       Logger.root.severe('Error while loading last queue', e);
       await _player!.setAudioSource(_playlist, preload: false);
     }
+    if (!jobRunning) {
+      refreshJob();
+    }
   }
 
-  void refreshLink(MediaItem mediaItem) {
-    YouTubeServices().refreshLink(mediaItem.id).then(
-      (newData) {
-        Logger.root.info('received new link for ${mediaItem.title}');
-        if (newData != null) {
-          Hive.box('ytlinkcache').put(
-            newData['id'],
-            {
-              'url': newData['url'],
-              'expire_at': newData['expire_at'],
-              'cached': cacheSong.toString(),
-            },
+  Future<void> refreshJob() async {
+    jobRunning = true;
+    while (refreshLinks.isNotEmpty) {
+      Logger.root.info('===============================');
+      Logger.root.info('refreshing link');
+      await refreshLink(refreshLinks.removeAt(0));
+    }
+    jobRunning = false;
+  }
+
+  Future<void> refreshLink(MediaItem mediaItem) async {
+    final newData = await YouTubeServices().refreshLink(mediaItem.id);
+    Logger.root.info('received new link for ${mediaItem.title}');
+    if (newData != null) {
+      Hive.box('ytlinkcache').put(
+        newData['id'],
+        {
+          'url': newData['url'],
+          'expire_at': newData['expire_at'],
+          'cached': cacheSong.toString(),
+        },
+      );
+      final MediaItem newItem = mediaItem.copyWith(
+        extras: mediaItem.extras!
+          ..['url'] = newData['url']
+          ..['duration'] = newData['duration']
+          ..['expire_at'] = newData['expire_at'],
+      );
+      final String? boxName = mediaItem.extras!['playlistBox']?.toString();
+      if (boxName != null) {
+        Logger.root.info('linked with playlist $boxName');
+        if (Hive.box(mediaItem.extras!['playlistBox'].toString())
+            .containsKey(mediaItem.id)) {
+          Logger.root.info('updating item in playlist $boxName');
+          Hive.box(mediaItem.extras!['playlistBox'].toString()).put(
+            mediaItem.id,
+            MediaItemConverter.mediaItemToMap(newItem),
           );
-          final MediaItem newItem = mediaItem.copyWith(
-            extras: mediaItem.extras!
-              ..['url'] = newData['url']
-              ..['duration'] = newData['duration']
-              ..['expire_at'] = newData['expire_at'],
-          );
-          final String? boxName = mediaItem.extras!['playlistBox']?.toString();
-          if (boxName != null) {
-            Logger.root.info('linked with playlist $boxName');
-            if (Hive.box(mediaItem.extras!['playlistBox'].toString())
-                .containsKey(mediaItem.id)) {
-              Logger.root.info('updating item in playlist $boxName');
-              Hive.box(mediaItem.extras!['playlistBox'].toString()).put(
-                mediaItem.id,
-                MediaItemConverter.mediaItemToMap(newItem),
-              );
-              // put(
-              //   mediaItem.id,
-              //   MediaItemConverter.mediaItemToMap(newItem),
-              // );
-            }
-          }
-          Logger.root.info('inserting new item');
-          late AudioSource audioSource;
-          if (cacheSong) {
-            audioSource = LockCachingAudioSource(
-              Uri.parse(
-                newItem.extras!['url'].toString(),
-              ),
-            );
-          } else {
-            audioSource = AudioSource.uri(
-              Uri.parse(
-                newItem.extras!['url'].toString(),
-              ),
-            );
-          }
-          final index = queue.value.indexWhere((item) => item.id == newItem.id);
-          _mediaItemExpando[audioSource] = mediaItem;
-          _playlist
-              .removeAt(index)
-              .then((value) => _playlist.insert(index, audioSource));
+          // put(
+          //   mediaItem.id,
+          //   MediaItemConverter.mediaItemToMap(newItem),
+          // );
         }
-      },
-    );
+      }
+      Logger.root.info('inserting new item');
+      late AudioSource audioSource;
+      if (cacheSong) {
+        audioSource = LockCachingAudioSource(
+          Uri.parse(
+            newItem.extras!['url'].toString(),
+          ),
+        );
+      } else {
+        audioSource = AudioSource.uri(
+          Uri.parse(
+            newItem.extras!['url'].toString(),
+          ),
+        );
+      }
+      final index = queue.value.indexWhere((item) => item.id == newItem.id);
+      _mediaItemExpando[audioSource] = mediaItem;
+      _playlist
+          .removeAt(index)
+          .then((value) => _playlist.insert(index, audioSource));
+    }
   }
 
   AudioSource _itemToSource(MediaItem mediaItem) {
@@ -366,7 +378,10 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
                 Logger.root.info(
                   'youtube link expired for ${mediaItem.title}, refreshing',
                 );
-                refreshLink(mediaItem);
+                refreshLinks.add(mediaItem);
+                if (!jobRunning) {
+                  refreshJob();
+                }
               } else {
                 Logger.root.info(
                   'youtube link found in cache for ${mediaItem.title}',
@@ -384,7 +399,10 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
               Logger.root.info(
                 'youtube link not found in cache for ${mediaItem.title}, refreshing',
               );
-              refreshLink(mediaItem);
+              refreshLinks.add(mediaItem);
+              if (!jobRunning) {
+                refreshJob();
+              }
             }
           }
         }

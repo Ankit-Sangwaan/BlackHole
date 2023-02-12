@@ -298,44 +298,97 @@ class _YouTubeState extends State<YouTube>
                                         child: Column(
                                           children: [
                                             Expanded(
-                                              child: Card(
-                                                elevation: 5,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    10.0,
+                                              child: Stack(
+                                                children: [
+                                                  Positioned.fill(
+                                                    child: Card(
+                                                      elevation: 5,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          10.0,
+                                                        ),
+                                                      ),
+                                                      clipBehavior:
+                                                          Clip.antiAlias,
+                                                      child: CachedNetworkImage(
+                                                        fit: BoxFit.cover,
+                                                        errorWidget:
+                                                            (context, _, __) =>
+                                                                Image(
+                                                          fit: BoxFit.cover,
+                                                          image: item['type'] !=
+                                                                  'playlist'
+                                                              ? const AssetImage(
+                                                                  'assets/ytCover.png',
+                                                                )
+                                                              : const AssetImage(
+                                                                  'assets/cover.jpg',
+                                                                ),
+                                                        ),
+                                                        imageUrl: item['image']
+                                                            .toString(),
+                                                        placeholder:
+                                                            (context, url) =>
+                                                                Image(
+                                                          fit: BoxFit.cover,
+                                                          image: item['type'] !=
+                                                                  'playlist'
+                                                              ? const AssetImage(
+                                                                  'assets/ytCover.png',
+                                                                )
+                                                              : const AssetImage(
+                                                                  'assets/cover.jpg',
+                                                                ),
+                                                        ),
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                                clipBehavior: Clip.antiAlias,
-                                                child: CachedNetworkImage(
-                                                  fit: BoxFit.cover,
-                                                  errorWidget:
-                                                      (context, _, __) => Image(
-                                                    fit: BoxFit.cover,
-                                                    image: item['type'] !=
-                                                            'playlist'
-                                                        ? const AssetImage(
-                                                            'assets/ytCover.png',
-                                                          )
-                                                        : const AssetImage(
-                                                            'assets/cover.jpg',
-                                                          ),
-                                                  ),
-                                                  imageUrl:
-                                                      item['image'].toString(),
-                                                  placeholder: (context, url) =>
-                                                      Image(
-                                                    fit: BoxFit.cover,
-                                                    image: item['type'] !=
-                                                            'playlist'
-                                                        ? const AssetImage(
-                                                            'assets/ytCover.png',
-                                                          )
-                                                        : const AssetImage(
-                                                            'assets/cover.jpg',
-                                                          ),
-                                                  ),
-                                                ),
+                                                  if (item['type'] == 'chart')
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.centerRight,
+                                                      child: Container(
+                                                        color: Colors.black
+                                                            .withOpacity(0.75),
+                                                        width: (boxSize - 30) *
+                                                            (16 / 9) /
+                                                            2.5,
+                                                        child: Column(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Text(
+                                                              item['count']
+                                                                  .toString(),
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
+                                                            ),
+                                                            const IconButton(
+                                                              onPressed: null,
+                                                              color:
+                                                                  Colors.white,
+                                                              disabledColor:
+                                                                  Colors.white,
+                                                              icon: Icon(
+                                                                Icons
+                                                                    .playlist_play_rounded,
+                                                                size: 40,
+                                                              ),
+                                                            )
+                                                          ],
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ],
                                               ),
                                             ),
                                             Padding(
