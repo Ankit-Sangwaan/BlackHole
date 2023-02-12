@@ -34,6 +34,7 @@ import 'package:logging/logging.dart';
 
 class YouTubePlaylist extends StatefulWidget {
   final String playlistId;
+  final String type;
   // final String playlistName;
   // final String? playlistSubtitle;
   // final String? playlistSecondarySubtitle;
@@ -41,6 +42,7 @@ class YouTubePlaylist extends StatefulWidget {
   const YouTubePlaylist({
     super.key,
     required this.playlistId,
+    this.type = 'playlist',
     // required this.playlistName,
     // required this.playlistSubtitle,
     // required this.playlistSecondarySubtitle,
@@ -68,21 +70,39 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
   void initState() {
     if (!status) {
       status = true;
-      YtMusicService().getPlaylistDetails(widget.playlistId).then((value) {
-        setState(() {
-          try {
-            searchedList = value['songs'] as List<Map>? ?? [];
-            playlistName = value['name'] as String? ?? '';
-            playlistSubtitle = value['subtitle'] as String? ?? '';
-            playlistSecondarySubtitle = value['description'] as String?;
-            playlistImage = (value['images'] as List?)?.last as String? ?? '';
-            fetched = true;
-          } catch (e) {
-            Logger.root.severe('Error in fetching playlist details', e);
-            fetched = true;
-          }
+      if (widget.type == 'playlist') {
+        YtMusicService().getPlaylistDetails(widget.playlistId).then((value) {
+          setState(() {
+            try {
+              searchedList = value['songs'] as List<Map>? ?? [];
+              playlistName = value['name'] as String? ?? '';
+              playlistSubtitle = value['subtitle'] as String? ?? '';
+              playlistSecondarySubtitle = value['description'] as String?;
+              playlistImage = (value['images'] as List?)?.last as String? ?? '';
+              fetched = true;
+            } catch (e) {
+              Logger.root.severe('Error in fetching playlist details', e);
+              fetched = true;
+            }
+          });
         });
-      });
+      } else if (widget.type == 'album') {
+        YtMusicService().getAlbumDetails(widget.playlistId).then((value) {
+          setState(() {
+            try {
+              searchedList = value['songs'] as List<Map>? ?? [];
+              playlistName = value['name'] as String? ?? '';
+              playlistSubtitle = value['subtitle'] as String? ?? '';
+              playlistSecondarySubtitle = value['description'] as String?;
+              playlistImage = (value['images'] as List?)?.last as String? ?? '';
+              fetched = true;
+            } catch (e) {
+              Logger.root.severe('Error in fetching playlist details', e);
+              fetched = true;
+            }
+          });
+        });
+      }
       // YouTubeServices().getPlaylistSongs(widget.playlistId).then((value) {
       //   if (value.isNotEmpty) {
       //     setState(() {
@@ -204,37 +224,41 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                     left: 5.0,
                                   ),
                                   child: ListTile(
-                                    leading: Card(
-                                      margin: EdgeInsets.zero,
-                                      elevation: 8,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          5.0,
-                                        ),
-                                      ),
-                                      clipBehavior: Clip.antiAlias,
-                                      child: SizedBox.square(
-                                        dimension: 50,
-                                        child: CachedNetworkImage(
-                                          fit: BoxFit.cover,
-                                          errorWidget: (context, _, __) =>
-                                              const Image(
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(
-                                              'assets/cover.jpg',
+                                    leading: widget.type == 'album'
+                                        ? null
+                                        : Card(
+                                            margin: EdgeInsets.zero,
+                                            elevation: 8,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                5.0,
+                                              ),
+                                            ),
+                                            clipBehavior: Clip.antiAlias,
+                                            child: SizedBox.square(
+                                              dimension: 50,
+                                              child: CachedNetworkImage(
+                                                fit: BoxFit.cover,
+                                                errorWidget: (context, _, __) =>
+                                                    const Image(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                    'assets/cover.jpg',
+                                                  ),
+                                                ),
+                                                imageUrl:
+                                                    entry['image'].toString(),
+                                                placeholder: (context, url) =>
+                                                    const Image(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                    'assets/cover.jpg',
+                                                  ),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                          imageUrl: entry['image'].toString(),
-                                          placeholder: (context, url) =>
-                                              const Image(
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(
-                                              'assets/cover.jpg',
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
                                     title: Text(
                                       entry['title'].toString(),
                                       overflow: TextOverflow.ellipsis,

@@ -228,7 +228,7 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                           (Map section) {
                                             final List underDevelopment = [
                                               'Artists',
-                                              'Albums',
+                                              // 'Albums',
                                               'Top result'
                                             ];
                                             if (section['items'] == null ||
@@ -415,7 +415,11 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                           // );
                                                         }
                                                         if (itemType ==
-                                                            'Playlist') {
+                                                                'Playlist' ||
+                                                            itemType ==
+                                                                'Album' ||
+                                                            itemType ==
+                                                                'Single') {
                                                           Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
@@ -426,6 +430,12 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                                         [
                                                                         idx]['id']
                                                                     .toString(),
+                                                                type: itemType ==
+                                                                            'Album' ||
+                                                                        itemType ==
+                                                                            'Single'
+                                                                    ? 'album'
+                                                                    : 'playlist',
                                                                 // playlistName: section['items']
                                                                 //             [
                                                                 //             idx]

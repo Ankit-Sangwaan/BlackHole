@@ -20,6 +20,7 @@
 import 'dart:convert';
 
 import 'package:blackhole/Helpers/extensions.dart';
+import 'package:blackhole/Services/ytmusic/nav.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 
@@ -215,18 +216,6 @@ class YtMusicService {
     }
   }
 
-  dynamic nav(dynamic root, List items) {
-    try {
-      dynamic res = root;
-      for (final item in items) {
-        res = res[item];
-      }
-      return res;
-    } catch (e) {
-      return null;
-    }
-  }
-
   Future<void> init() async {
     headers = initializeHeaders();
     if (!headers!.containsKey('X-Goog-Visitor-Id')) {
@@ -337,7 +326,7 @@ class YtMusicService {
             'text',
             'runs'
           ]) as List;
-          Logger.root.info('Looping child elements of "$title"');
+          // Logger.root.info('Looping child elements of "$title"');
           int count = 0;
           String type = '';
           String album = '';
@@ -671,6 +660,120 @@ class YtMusicService {
       };
     } catch (e) {
       Logger.root.severe('Error in ytmusic getPlaylistDetails', e);
+      return {};
+    }
+  }
+
+  Future<Map> getAlbumDetails(String albumId) async {
+    if (headers == null) {
+      await init();
+    }
+    try {
+      final body = Map.from(context!);
+      body['browseId'] = albumId;
+      final Map response =
+          await sendRequest(endpoints['browse']!, body, headers);
+      final String? heading =
+          nav(response, [...headerDetail, ...titleText]) as String?;
+      final String subtitle = joinRunTexts(
+        nav(response, [...headerDetail, ...subtitleRuns]) as List? ?? [],
+      );
+      final String description = joinRunTexts(
+        nav(response, [...headerDetail, ...secondSubtitleRuns]) as List? ?? [],
+      );
+      // final List images = runUrls(
+      //   nav(response, [...headerDetail, ...thumbnailCropped]) as List? ?? [],
+      // );
+      final List finalResults = nav(response, [
+            ...singleColumnTab,
+            ...sectionListItem,
+            ...musicShelf,
+            'contents',
+          ]) as List? ??
+          [];
+      final List<Map> songResults = [];
+      for (final item in finalResults) {
+        final String id = nav(item, mrlirPlaylistId).toString();
+        final String image = nav(item, [
+          mRLIR,
+          ...thumbnails,
+          0,
+          'url',
+        ]).toString();
+        final String title = nav(item, [
+          mRLIR,
+          'flexColumns',
+          0,
+          mRLIFCR,
+          ...textRunText,
+        ]).toString();
+        final List subtitleList = nav(item, [
+          mRLIR,
+          'flexColumns',
+          1,
+          mRLIFCR,
+          ...textRuns,
+        ]) as List;
+        int count = 0;
+        String year = '';
+        String album = '';
+        String artist = '';
+        String albumArtist = '';
+        String duration = '';
+        String subtitle = '';
+        year = '';
+        for (final element in subtitleList) {
+          // ignore: use_string_buffers
+          subtitle += element['text'].toString();
+          if (element['text'].trim() == '•') {
+            count++;
+          } else {
+            if (count == 0) {
+              if (element['text'].toString().trim() == '&') {
+                artist += ', ';
+              } else {
+                artist += element['text'].toString();
+                if (albumArtist == '') {
+                  albumArtist = element['text'].toString();
+                }
+              }
+            } else if (count == 1) {
+              album += element['text'].toString();
+            } else if (count == 2) {
+              duration += element['text'].toString();
+            }
+          }
+        }
+        songResults.add({
+          'id': id,
+          'type': 'song',
+          'title': title,
+          'artist': artist,
+          'genre': 'YouTube',
+          'language': 'YouTube',
+          'year': year,
+          'album_artist': albumArtist,
+          'album': album,
+          'duration': duration,
+          'subtitle': subtitle,
+          'image': image,
+          'perma_url': 'https://www.youtube.com/watch?v=$id',
+          'url': '',
+          'release_date': '',
+          'album_id': '',
+        });
+      }
+      return {
+        'songs': songResults,
+        'name': heading,
+        'subtitle': subtitle,
+        'description': description,
+        'images': null,
+        'id': albumId,
+        'type': 'playlist',
+      };
+    } catch (e) {
+      Logger.root.severe('Error in ytmusic getAlbumDetails', e);
       return {};
     }
   }

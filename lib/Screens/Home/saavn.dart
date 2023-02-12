@@ -139,7 +139,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
             ? MediaQuery.of(context).size.width / 2
             : MediaQuery.of(context).size.height / 2.5;
     if (boxSize > 250) boxSize = 250;
-    if (recentList.length < playlistNames.length) {
+    if (playlistNames.length >= 3) {
       recentIndex = 0;
       playlistIndex = 1;
     } else {
