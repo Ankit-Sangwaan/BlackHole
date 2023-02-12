@@ -73,6 +73,7 @@ const navigationVideoType = [
   'musicVideoType'
 ];
 const headerDetail = ['header', 'musicDetailHeaderRenderer'];
+const immersiveHeaderDetail = ['header', 'musicImmersiveHeaderRenderer'];
 const descriptionShelf = ['musicDescriptionShelfRenderer'];
 const description = ['description', ...runText];
 const carousel = ['musicCarouselShelfRenderer'];

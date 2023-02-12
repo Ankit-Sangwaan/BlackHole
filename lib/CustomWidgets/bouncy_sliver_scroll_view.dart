@@ -32,6 +32,7 @@ class BouncyImageSliverScrollView extends StatelessWidget {
   final String? imageUrl;
   final bool localImage;
   final String placeholderImage;
+  final bool fromYt;
   BouncyImageSliverScrollView({
     super.key,
     required this.scrollController,
@@ -40,6 +41,7 @@ class BouncyImageSliverScrollView extends StatelessWidget {
     required this.title,
     this.placeholderImage = 'assets/cover.jpg',
     this.localImage = false,
+    this.fromYt = false,
     this.imageUrl,
     this.actions,
   });
@@ -76,7 +78,8 @@ class BouncyImageSliverScrollView extends StatelessWidget {
               );
     // final bool rotated =
     // MediaQuery.of(context).size.height < MediaQuery.of(context).size.width;
-    final double expandedHeight = MediaQuery.of(context).size.height * 0.4;
+    final double expandedHeight =
+        MediaQuery.of(context).size.height * (fromYt ? 0.15 : 0.4);
 
     return CustomScrollView(
       controller: scrollController,

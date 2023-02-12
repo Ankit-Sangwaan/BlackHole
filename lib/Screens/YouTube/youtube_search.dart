@@ -23,6 +23,7 @@ import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/search_bar.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
+import 'package:blackhole/Screens/YouTube/youtube_artist.dart';
 import 'package:blackhole/Screens/YouTube/youtube_playlist.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
@@ -226,15 +227,7 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                       child: Column(
                                         children: searchedList.map(
                                           (Map section) {
-                                            final List underDevelopment = [
-                                              'Artists',
-                                              // 'Albums',
-                                              'Top result'
-                                            ];
-                                            if (section['items'] == null ||
-                                                underDevelopment.contains(
-                                                  section['title'],
-                                                )) {
+                                            if (section['items'] == null) {
                                               return const SizedBox();
                                             }
                                             return Column(
@@ -406,13 +399,19 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                       onTap: () async {
                                                         if (itemType ==
                                                             'Artist') {
-                                                          // under Development
-                                                          // YtMusicService()
-                                                          //     .getArtistDetails(
-                                                          //   section['items']
-                                                          //           [idx]['id']
-                                                          //       .toString(),
-                                                          // );
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  YouTubeArtist(
+                                                                artistId: section[
+                                                                            'items']
+                                                                        [
+                                                                        idx]['id']
+                                                                    .toString(),
+                                                              ),
+                                                            ),
+                                                          );
                                                         }
                                                         if (itemType ==
                                                                 'Playlist' ||
@@ -436,28 +435,6 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                                             'Single'
                                                                     ? 'album'
                                                                     : 'playlist',
-                                                                // playlistName: section['items']
-                                                                //             [
-                                                                //             idx]
-                                                                //         [
-                                                                //         'title']
-                                                                //     .toString(),
-                                                                // playlistSubtitle:
-                                                                //     section['items'][idx]
-                                                                //             [
-                                                                //             'countSongs']
-                                                                //         .toString(),
-                                                                // playlistSecondarySubtitle:
-                                                                //     section['items'][idx]
-                                                                //             [
-                                                                //             'subtitle']
-                                                                //         .toString(),
-                                                                // playlistImage: (section['items'][idx]
-                                                                //             [
-                                                                //             'images']
-                                                                //         as List)
-                                                                //     .last
-                                                                //     .toString(),
                                                               ),
                                                             ),
                                                           );

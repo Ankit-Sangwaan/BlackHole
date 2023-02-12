@@ -17,11 +17,10 @@
  * Copyright (c) 2021-2022, Ankit Sangwan
  */
 
-import 'package:blackhole/CustomWidgets/bouncy_playlist_header_scroll_view.dart';
+import 'package:blackhole/CustomWidgets/bouncy_sliver_scroll_view.dart';
 import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/miniplayer.dart';
-import 'package:blackhole/CustomWidgets/playlist_popupmenu.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
@@ -31,101 +30,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logging/logging.dart';
 
-class YouTubePlaylist extends StatefulWidget {
-  final String playlistId;
-  final String type;
-  // final String playlistName;
-  // final String? playlistSubtitle;
-  // final String? playlistSecondarySubtitle;
-  // final String playlistImage;
-  const YouTubePlaylist({
+class YouTubeArtist extends StatefulWidget {
+  final String artistId;
+
+  const YouTubeArtist({
     super.key,
-    required this.playlistId,
-    this.type = 'playlist',
-    // required this.playlistName,
-    // required this.playlistSubtitle,
-    // required this.playlistSecondarySubtitle,
-    // required this.playlistImage,
+    required this.artistId,
   });
 
   @override
-  _YouTubePlaylistState createState() => _YouTubePlaylistState();
+  _YouTubeArtistState createState() => _YouTubeArtistState();
 }
 
-class _YouTubePlaylistState extends State<YouTubePlaylist> {
+class _YouTubeArtistState extends State<YouTubeArtist> {
   bool status = false;
-  List<Map> searchedList = [];
+  Map<String, dynamic> data = {};
   bool fetched = false;
   bool done = true;
   final ScrollController _scrollController = ScrollController();
-  String playlistName = '';
-  String playlistSubtitle = '';
-  String? playlistSecondarySubtitle;
-  String playlistImage = '';
+  String artistName = '';
+  String artistSubtitle = '';
+  String artistImage = '';
+  List<Map> searchedList = [];
 
   @override
   void initState() {
     if (!status) {
       status = true;
-      if (widget.type == 'playlist') {
-        YtMusicService().getPlaylistDetails(widget.playlistId).then((value) {
-          setState(() {
-            try {
-              searchedList = value['songs'] as List<Map>? ?? [];
-              playlistName = value['name'] as String? ?? '';
-              playlistSubtitle = value['subtitle'] as String? ?? '';
-              playlistSecondarySubtitle = value['description'] as String?;
-              playlistImage = (value['images'] as List?)?.last as String? ?? '';
-              fetched = true;
-            } catch (e) {
-              Logger.root.severe('Error in fetching playlist details', e);
-              fetched = true;
-            }
-          });
+      YtMusicService().getArtistDetails(widget.artistId).then((value) {
+        setState(() {
+          try {
+            data = value;
+            searchedList = data['songs'] as List<Map>;
+            artistName = value['name'] as String? ?? '';
+            artistSubtitle = value['subtitle'] as String? ?? '';
+            artistImage = value['images']?.last as String? ?? '';
+            fetched = true;
+          } catch (e) {
+            Logger.root.severe('Error in fetching artist details', e);
+            fetched = true;
+          }
         });
-      } else if (widget.type == 'album') {
-        YtMusicService().getAlbumDetails(widget.playlistId).then((value) {
-          setState(() {
-            try {
-              searchedList = value['songs'] as List<Map>? ?? [];
-              playlistName = value['name'] as String? ?? '';
-              playlistSubtitle = value['subtitle'] as String? ?? '';
-              playlistSecondarySubtitle = value['description'] as String?;
-              playlistImage = (value['images'] as List?)?.last as String? ?? '';
-              fetched = true;
-            } catch (e) {
-              Logger.root.severe('Error in fetching playlist details', e);
-              fetched = true;
-            }
-          });
-        });
-      } else if (widget.type == 'artist') {
-        YtMusicService().getArtistDetails(widget.playlistId).then((value) {
-          setState(() {
-            try {
-              searchedList = value['songs'] as List<Map>? ?? [];
-              playlistName = value['name'] as String? ?? '';
-              playlistSubtitle = value['subtitle'] as String? ?? '';
-              playlistSecondarySubtitle = value['description'] as String?;
-              playlistImage = (value['images'] as List?)?.last as String? ?? '';
-              fetched = true;
-            } catch (e) {
-              Logger.root.severe('Error in fetching playlist details', e);
-              fetched = true;
-            }
-          });
-        });
-      }
-      // YouTubeServices().getPlaylistSongs(widget.playlistId).then((value) {
-      //   if (value.isNotEmpty) {
-      //     setState(() {
-      //       searchedList = value;
-      //       fetched = true;
-      //     });
-      //   } else {
-      //     status = false;
-      //   }
-      // });
+      });
     }
     super.initState();
   }
@@ -152,64 +98,11 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                       child: CircularProgressIndicator(),
                     )
                   else
-                    BouncyPlaylistHeaderScrollView(
+                    BouncyImageSliverScrollView(
                       scrollController: _scrollController,
-                      title: playlistName,
-                      subtitle: playlistSubtitle,
-                      secondarySubtitle: playlistSecondarySubtitle,
-                      imageUrl: playlistImage,
-                      actions: [
-                        PlaylistPopupMenu(
-                          data: searchedList,
-                          title: playlistName,
-                        ),
-                      ],
-                      onPlayTap: () async {
-                        setState(() {
-                          done = false;
-                        });
-
-                        final Map? response =
-                            await YouTubeServices().formatVideoFromId(
-                          id: searchedList.first['id'].toString(),
-                          data: searchedList.first,
-                        );
-                        final List<Map> playList = List.from(searchedList);
-                        playList[0] = response!;
-                        setState(() {
-                          done = true;
-                        });
-                        PlayerInvoke.init(
-                          songsList: playList,
-                          index: 0,
-                          isOffline: false,
-                          recommend: false,
-                        );
-                        Navigator.pushNamed(context, '/player');
-                      },
-                      onShuffleTap: () async {
-                        setState(() {
-                          done = false;
-                        });
-                        final List<Map> playList = List.from(searchedList);
-                        playList.shuffle();
-                        final Map? response =
-                            await YouTubeServices().formatVideoFromId(
-                          id: playList.first['id'].toString(),
-                          data: playList.first,
-                        );
-                        playList[0] = response!;
-                        setState(() {
-                          done = true;
-                        });
-                        PlayerInvoke.init(
-                          songsList: playList,
-                          index: 0,
-                          isOffline: false,
-                          recommend: false,
-                        );
-                        Navigator.pushNamed(context, '/player');
-                      },
+                      title: artistName,
+                      imageUrl: artistImage,
+                      fromYt: true,
                       sliverList: SliverList(
                         delegate: SliverChildListDelegate(
                           [
@@ -237,41 +130,37 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                                     left: 5.0,
                                   ),
                                   child: ListTile(
-                                    leading: widget.type == 'album'
-                                        ? null
-                                        : Card(
-                                            margin: EdgeInsets.zero,
-                                            elevation: 8,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                5.0,
-                                              ),
-                                            ),
-                                            clipBehavior: Clip.antiAlias,
-                                            child: SizedBox.square(
-                                              dimension: 50,
-                                              child: CachedNetworkImage(
-                                                fit: BoxFit.cover,
-                                                errorWidget: (context, _, __) =>
-                                                    const Image(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                    'assets/cover.jpg',
-                                                  ),
-                                                ),
-                                                imageUrl:
-                                                    entry['image'].toString(),
-                                                placeholder: (context, url) =>
-                                                    const Image(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                    'assets/cover.jpg',
-                                                  ),
-                                                ),
-                                              ),
+                                    leading: Card(
+                                      margin: EdgeInsets.zero,
+                                      elevation: 8,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          5.0,
+                                        ),
+                                      ),
+                                      clipBehavior: Clip.antiAlias,
+                                      child: SizedBox.square(
+                                        dimension: 50,
+                                        child: CachedNetworkImage(
+                                          fit: BoxFit.cover,
+                                          errorWidget: (context, _, __) =>
+                                              const Image(
+                                            fit: BoxFit.cover,
+                                            image: AssetImage(
+                                              'assets/cover.jpg',
                                             ),
                                           ),
+                                          imageUrl: entry['image'].toString(),
+                                          placeholder: (context, url) =>
+                                              const Image(
+                                            fit: BoxFit.cover,
+                                            image: AssetImage(
+                                              'assets/cover.jpg',
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                     title: Text(
                                       entry['title'].toString(),
                                       overflow: TextOverflow.ellipsis,
