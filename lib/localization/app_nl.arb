@@ -680,5 +680,9 @@
   "radio": "Radio",
   "@radio": {},
   "cantFind": "Kun je niet vinden wat je zoekt? ",
-  "@cantFind": {}
+  "@cantFind": {},
+  "showTopCharts": "Toplijsten tonen",
+  "@showTopCharts": {},
+  "showTopChartsSub": "Toon Spotify-toplijsten op het startscherm",
+  "@showTopChartsSub": {}
 }
