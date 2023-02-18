@@ -285,20 +285,6 @@ class YtMusicService {
             nav(sectionItem, ['musicShelfRenderer', 'contents']) as List? ?? [];
 
         for (final childItem in sectionChildItems) {
-          final List idNav =
-              (sectionTitle == 'Songs' || sectionTitle == 'Videos')
-                  ? [
-                      'musicResponsiveListItemRenderer',
-                      'playlistItemData',
-                      'videoId'
-                    ]
-                  : [
-                      'musicResponsiveListItemRenderer',
-                      'navigationEndpoint',
-                      'browseEndpoint',
-                      'browseId'
-                    ];
-          final String id = nav(childItem, idNav).toString();
           final List images = (nav(childItem, [
             'musicResponsiveListItemRenderer',
             'thumbnail',
@@ -374,6 +360,19 @@ class YtMusicService {
               }
             }
           }
+          final List idNav = (type == 'Song' || type == 'Video')
+              ? [
+                  'musicResponsiveListItemRenderer',
+                  'playlistItemData',
+                  'videoId'
+                ]
+              : [
+                  'musicResponsiveListItemRenderer',
+                  'navigationEndpoint',
+                  'browseEndpoint',
+                  'browseId'
+                ];
+          final String id = nav(childItem, idNav).toString();
           sectionSearchResults.add({
             'id': id,
             'type': type,

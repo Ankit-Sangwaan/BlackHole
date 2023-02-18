@@ -190,6 +190,17 @@ class _YouTubeArtistState extends State<YouTubeArtist> {
                                         id: entry['id'].toString(),
                                         data: entry,
                                       );
+
+                                      final Map response2 =
+                                          await YtMusicService().getSongData(
+                                        videoId: entry['id'].toString(),
+                                      );
+                                      if (response != null &&
+                                          response2['image'] != null) {
+                                        response['image'] =
+                                            response2['image'] ??
+                                                response['image'];
+                                      }
                                       setState(() {
                                         done = true;
                                       });
