@@ -62,9 +62,17 @@ class _HomePageState extends State<HomePage> {
       Hive.box('settings').get('checkUpdate', defaultValue: false) as bool;
   bool autoBackup =
       Hive.box('settings').get('autoBackup', defaultValue: false) as bool;
+  List sectionsToShow = Hive.box('settings').get(
+    'sectionsToShow',
+    defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
+  ) as List;
   DateTime? backButtonPressTime;
 
   void callback() {
+    sectionsToShow = Hive.box('settings').get(
+      'sectionsToShow',
+      defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
+    ) as List;
     setState(() {});
   }
 
@@ -855,11 +863,14 @@ class _HomePageState extends State<HomePage> {
                                   ),
                               ],
                             ),
-                            TopCharts(
-                              pageController: _pageController,
-                            ),
+                            if (sectionsToShow.contains('Top Charts'))
+                              TopCharts(
+                                pageController: _pageController,
+                              ),
                             const YouTube(),
                             const LibraryPage(),
+                            if (sectionsToShow.contains('Settings'))
+                              SettingPage(callback: callback),
                           ],
                         ),
                       ),
@@ -893,14 +904,15 @@ class _HomePageState extends State<HomePage> {
                             selectedColor:
                                 Theme.of(context).colorScheme.secondary,
                           ),
-                          SalomonBottomBarItem(
-                            icon: const Icon(Icons.trending_up_rounded),
-                            title: Text(
-                              AppLocalizations.of(context)!.topCharts,
+                          if (sectionsToShow.contains('Top Charts'))
+                            SalomonBottomBarItem(
+                              icon: const Icon(Icons.trending_up_rounded),
+                              title: Text(
+                                AppLocalizations.of(context)!.topCharts,
+                              ),
+                              selectedColor:
+                                  Theme.of(context).colorScheme.secondary,
                             ),
-                            selectedColor:
-                                Theme.of(context).colorScheme.secondary,
-                          ),
                           SalomonBottomBarItem(
                             icon: const Icon(MdiIcons.youtube),
                             title: Text(AppLocalizations.of(context)!.youTube),
@@ -913,6 +925,14 @@ class _HomePageState extends State<HomePage> {
                             selectedColor:
                                 Theme.of(context).colorScheme.secondary,
                           ),
+                          if (sectionsToShow.contains('Settings'))
+                            SalomonBottomBarItem(
+                              icon: const Icon(Icons.settings_rounded),
+                              title:
+                                  Text(AppLocalizations.of(context)!.settings),
+                              selectedColor:
+                                  Theme.of(context).colorScheme.secondary,
+                            ),
                         ],
                       ),
                     );

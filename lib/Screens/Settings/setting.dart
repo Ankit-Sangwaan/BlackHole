@@ -53,7 +53,8 @@ class SettingPage extends StatefulWidget {
   _SettingPageState createState() => _SettingPageState();
 }
 
-class _SettingPageState extends State<SettingPage> {
+class _SettingPageState extends State<SettingPage>
+    with AutomaticKeepAliveClientMixin<SettingPage> {
   String? appVersion;
   final Box settingsBox = Hive.box('settings');
   final MyTheme currentTheme = GetIt.I<MyTheme>();
@@ -125,12 +126,21 @@ class _SettingPageState extends State<SettingPage> {
     'preferredMiniButtons',
     defaultValue: ['Like', 'Play/Pause', 'Next'],
   )?.toList() as List;
+  final ValueNotifier<List> sectionsToShow = ValueNotifier<List>(
+    Hive.box('settings').get(
+      'sectionsToShow',
+      defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
+    ) as List,
+  );
 
   @override
   void initState() {
     main();
     super.initState();
   }
+
+  @override
+  bool get wantKeepAlive => sectionsToShow.value.contains('Settings');
 
   Future<void> main() async {
     final PackageInfo packageInfo = await PackageInfo.fromPlatform();
@@ -161,6 +171,7 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     final List<String> userThemesList = <String>[
       'Default',
       ...userThemes.keys.map((theme) => theme as String),
@@ -1694,6 +1705,55 @@ class _SettingPageState extends State<SettingPage> {
                         //   keyName: 'showHistory',
                         //   defaultValue: true,
                         // ),
+                        ValueListenableBuilder(
+                          valueListenable: sectionsToShow,
+                          builder: (
+                            BuildContext context,
+                            List items,
+                            Widget? child,
+                          ) {
+                            return SwitchListTile(
+                              activeColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              title: Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!
+                                    .showTopCharts,
+                              ),
+                              subtitle: Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!
+                                    .showTopChartsSub,
+                              ),
+                              dense: true,
+                              value: items.contains('Top Charts'),
+                              onChanged: (val) {
+                                if (val) {
+                                  sectionsToShow.value = [
+                                    'Home',
+                                    'Top Charts',
+                                    'YouTube',
+                                    'Library'
+                                  ];
+                                } else {
+                                  sectionsToShow.value = [
+                                    'Home',
+                                    'YouTube',
+                                    'Library',
+                                    'Settings'
+                                  ];
+                                }
+                                settingsBox.put(
+                                  'sectionsToShow',
+                                  sectionsToShow.value,
+                                );
+                                widget.callback!();
+                              },
+                            );
+                          },
+                        ),
                         BoxSwitchTile(
                           title: Text(
                             AppLocalizations.of(
