@@ -676,5 +676,9 @@
   "radio": "रेडियो",
   "@radio": {},
   "cantFind": "आप जो खोज रहे हैं उसे नहीं ढूंढ पा रहे हैं? ",
-  "@cantFind": {}
+  "@cantFind": {},
+  "showTopCharts": "शीर्ष चार्ट दिखाएं",
+  "@showTopCharts": {},
+  "showTopChartsSub": "होम स्क्रीन पर Spotify शीर्ष चार्ट दिखाएं",
+  "@showTopChartsSub": {}
 }
