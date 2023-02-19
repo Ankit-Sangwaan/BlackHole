@@ -668,5 +668,9 @@
   "radio": "ਰੇਡੀਓ",
   "@radio": {},
   "cantFind": "ਤੁਸੀਂ ਜੋ ਲੱਭ ਰਹੇ ਹੋ ਉਸਨੂੰ ਨਹੀਂ ਲੱਭ ਸਕਦੇ? ",
-  "@cantFind": {}
+  "@cantFind": {},
+  "showTopChartsSub": "ਸਪੌਟੀਫਾਈ ਦੇ ਚੋਟੀ ਦੇ ਗੀਤ ਹੋਮ ਸਕਰੀਨ ਤੇ ਵਿਖਾਓ",
+  "@showTopChartsSub": {},
+  "showTopCharts": "ਚੋਟੀ ਦੇ ਗੀਤ ਵਿਖਾਓ",
+  "@showTopCharts": {}
 }
