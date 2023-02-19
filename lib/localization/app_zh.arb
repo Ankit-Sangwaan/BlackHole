@@ -682,5 +682,9 @@
   "shareLogs": "分享日志",
   "@shareLogs": {},
   "cantFind": "无法找到你所寻找的东西？ ",
-  "@cantFind": {}
+  "@cantFind": {},
+  "showTopCharts": "显示排行榜",
+  "@showTopCharts": {},
+  "showTopChartsSub": "在主屏幕上显示 Spotify 排行榜",
+  "@showTopChartsSub": {}
 }
