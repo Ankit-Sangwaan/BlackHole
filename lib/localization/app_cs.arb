@@ -680,5 +680,9 @@
   "radio": "Rádio",
   "@radio": {},
   "cantFind": "Nemůžete najít, co hledáte? ",
-  "@cantFind": {}
+  "@cantFind": {},
+  "showTopCharts": "Zobrazit žebříčky nejlepších",
+  "@showTopCharts": {},
+  "showTopChartsSub": "Zobrazit žebříčky nejlepších Spotify na domovské obrazovce",
+  "@showTopChartsSub": {}
 }
