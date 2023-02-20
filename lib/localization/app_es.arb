@@ -676,5 +676,9 @@
   "radio": "Radio",
   "@radio": {},
   "cantFind": "¿No encuentra lo que busca? ",
-  "@cantFind": {}
+  "@cantFind": {},
+  "showTopChartsSub": "Mostrar las listas principales de Spotify en la pantalla de inicio",
+  "@showTopChartsSub": {},
+  "showTopCharts": "Mostrar gráficos principales",
+  "@showTopCharts": {}
 }
