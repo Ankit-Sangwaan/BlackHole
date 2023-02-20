@@ -668,5 +668,9 @@
   "cantFind": "לא מצאת את מבוקשך? ",
   "@cantFind": {},
   "supportEq": "תמיכה באקוולייזר",
-  "@supportEq": {}
+  "@supportEq": {},
+  "showTopCharts": "הצגת טבלת המובילים",
+  "@showTopCharts": {},
+  "showTopChartsSub": "להציג את טבלאות המובילים של Spotify במסך הבית",
+  "@showTopChartsSub": {}
 }
