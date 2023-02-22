@@ -682,5 +682,9 @@
   "radio": "Radio",
   "@radio": {},
   "cantFind": "Vous ne trouvez pas ce que vous cherchez ? ",
-  "@cantFind": {}
+  "@cantFind": {},
+  "showTopCharts": "Afficher le top des graphiques",
+  "@showTopCharts": {},
+  "showTopChartsSub": "Afficher les Top Graphes de Spotify sur l'écran d'accueil",
+  "@showTopChartsSub": {}
 }
