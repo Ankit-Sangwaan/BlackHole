@@ -659,7 +659,7 @@
   "@upNext": {},
   "shareLogsSub": "हालको सत्र लगहरू साझा गर्नुहोस्",
   "@shareLogsSub": {},
-  "openInSpotify": "सपोटीफाइमा खोल्नुहोस्",
+  "openInSpotify": "स्पोटिफाईमा खोल्नुहोस्",
   "@openInSpotify": {},
   "signInSpotify": "स्पोटीफाइमा साइन इन गर्नुहोस्",
   "@signInSpotify": {},
@@ -668,5 +668,9 @@
   "radio": "रेडियो",
   "@radio": {},
   "cantFind": "खोजेको कुरा भेटाउन सकिएन ",
-  "@cantFind": {}
+  "@cantFind": {},
+  "showTopCharts": "शीर्ष चार्ट देखाउनुहोस्",
+  "@showTopCharts": {},
+  "showTopChartsSub": "गृह स्क्रिनमा स्पोटिफाई शीर्ष चार्टहरू देखाउनुहोस्",
+  "@showTopChartsSub": {}
 }
