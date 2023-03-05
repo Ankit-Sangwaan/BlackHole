@@ -759,7 +759,7 @@ class YtMusicService {
           'subtitle': subtitle,
           'image': image,
           'perma_url': 'https://www.youtube.com/watch?v=$id',
-          'url': '',
+          'url': 'https://www.youtube.com/watch?v=$id',
           'release_date': '',
           'album_id': '',
         });
@@ -880,7 +880,7 @@ class YtMusicService {
           'subtitle': subtitle,
           'image': image,
           'perma_url': 'https://www.youtube.com/watch?v=$id',
-          'url': '',
+          'url': 'https://www.youtube.com/watch?v=$id',
           'release_date': '',
           'album_id': '',
         });
