@@ -524,6 +524,15 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     }
   }
 
+  Future<void> skipToMediaItem(String id) async {
+    final index = queue.value.indexWhere((item) => item.id == id);
+    _player!.seek(
+      Duration.zero,
+      index:
+          _player!.shuffleModeEnabled ? _player!.shuffleIndices![index] : index,
+    );
+  }
+
   @override
   Future<void> addQueueItem(MediaItem mediaItem) async {
     final res = _itemToSource(mediaItem);
@@ -724,6 +733,10 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       if (extras?['newData'] != null) {
         refreshLink(extras!['newData'] as Map);
       }
+    }
+
+    if (name == 'skipToMediaItem') {
+      skipToMediaItem(extras!['id'].toString());
     }
     return super.customAction(name, extras);
   }

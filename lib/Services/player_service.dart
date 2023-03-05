@@ -265,7 +265,7 @@ class PlayerInvoke {
   static Future<void> updateNplay(List<MediaItem> queue, int index) async {
     await audioHandler.setShuffleMode(AudioServiceShuffleMode.none);
     await audioHandler.updateQueue(queue);
-    await audioHandler.skipToQueueItem(index);
+    await audioHandler.customAction('skipToMediaItem', {'id': queue[index].id});
     await audioHandler.play();
     final String repeatMode =
         Hive.box('settings').get('repeatMode', defaultValue: 'None').toString();
