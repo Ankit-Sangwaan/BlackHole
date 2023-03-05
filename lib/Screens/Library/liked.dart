@@ -38,6 +38,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 // import 'package:path_provider/path_provider.dart';
 
+final ValueNotifier<bool> selectMode = ValueNotifier<bool>(false);
+final Set<String> selectedItems = <String>{};
+
 class LikedSongs extends StatefulWidget {
   final String playlistName;
   final String? showName;
@@ -363,126 +366,171 @@ class _LikedSongsState extends State<LikedSongs>
                     ],
                   ),
                   actions: [
-                    if (_songs.isNotEmpty)
-                      MultiDownloadButton(
-                        data: _songs,
-                        playlistName: widget.showName == null
-                            ? widget.playlistName[0].toUpperCase() +
-                                widget.playlistName.substring(1)
-                            : widget.showName![0].toUpperCase() +
-                                widget.showName!.substring(1),
-                      ),
-                    IconButton(
-                      icon: const Icon(CupertinoIcons.search),
-                      tooltip: AppLocalizations.of(context)!.search,
-                      onPressed: () {
-                        showSearch(
-                          context: context,
-                          delegate: DownloadsSearch(data: _songs),
-                        );
-                      },
-                    ),
-                    PopupMenuButton(
-                      icon: const Icon(Icons.sort_rounded),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                      ),
-                      onSelected:
-                          // (currentIndex == 0) ?
-                          (int value) {
-                        if (value < 5) {
-                          sortValue = value;
-                          Hive.box('settings').put('sortValue', value);
-                        } else {
-                          orderValue = value - 5;
-                          Hive.box('settings').put('orderValue', orderValue);
-                        }
-                        sortSongs(sortVal: sortValue, order: orderValue);
-                        setState(() {});
-                      },
-                      // : (int value) {
-                      //     albumSortValue = value;
-                      //     Hive.box('settings').put('albumSortValue', value);
-                      //     sortAlbums();
-                      //     setState(() {});
-                      //   },
-                      itemBuilder:
-                          // (currentIndex == 0)
-                          // ?
-                          (context) {
-                        final List<String> sortTypes = [
-                          AppLocalizations.of(context)!.displayName,
-                          AppLocalizations.of(context)!.dateAdded,
-                          AppLocalizations.of(context)!.album,
-                          AppLocalizations.of(context)!.artist,
-                          AppLocalizations.of(context)!.duration,
-                        ];
-                        final List<String> orderTypes = [
-                          AppLocalizations.of(context)!.inc,
-                          AppLocalizations.of(context)!.dec,
-                        ];
-                        final menuList = <PopupMenuEntry<int>>[];
-                        menuList.addAll(
-                          sortTypes
-                              .map(
-                                (e) => PopupMenuItem(
-                                  value: sortTypes.indexOf(e),
-                                  child: Row(
-                                    children: [
-                                      if (sortValue == sortTypes.indexOf(e))
-                                        Icon(
-                                          Icons.check_rounded,
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? Colors.white
-                                              : Colors.grey[700],
-                                        )
-                                      else
-                                        const SizedBox(),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        e,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        );
-                        menuList.add(
-                          const PopupMenuDivider(
-                            height: 10,
+                    ValueListenableBuilder(
+                      valueListenable: selectMode,
+                      child: Row(
+                        children: <Widget>[
+                          if (_songs.isNotEmpty)
+                            MultiDownloadButton(
+                              data: _songs,
+                              playlistName: widget.showName == null
+                                  ? widget.playlistName[0].toUpperCase() +
+                                      widget.playlistName.substring(1)
+                                  : widget.showName![0].toUpperCase() +
+                                      widget.showName!.substring(1),
+                            ),
+                          IconButton(
+                            icon: const Icon(CupertinoIcons.search),
+                            tooltip: AppLocalizations.of(context)!.search,
+                            onPressed: () {
+                              showSearch(
+                                context: context,
+                                delegate: DownloadsSearch(data: _songs),
+                              );
+                            },
                           ),
-                        );
-                        menuList.addAll(
-                          orderTypes
-                              .map(
-                                (e) => PopupMenuItem(
-                                  value:
-                                      sortTypes.length + orderTypes.indexOf(e),
-                                  child: Row(
-                                    children: [
-                                      if (orderValue == orderTypes.indexOf(e))
-                                        Icon(
-                                          Icons.check_rounded,
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? Colors.white
-                                              : Colors.grey[700],
-                                        )
-                                      else
-                                        const SizedBox(),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        e,
+                          PopupMenuButton(
+                            icon: const Icon(Icons.sort_rounded),
+                            shape: const RoundedRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15.0)),
+                            ),
+                            onSelected:
+                                // (currentIndex == 0) ?
+                                (int value) {
+                              if (value < 5) {
+                                sortValue = value;
+                                Hive.box('settings').put('sortValue', value);
+                              } else {
+                                orderValue = value - 5;
+                                Hive.box('settings')
+                                    .put('orderValue', orderValue);
+                              }
+                              sortSongs(sortVal: sortValue, order: orderValue);
+                              setState(() {});
+                            },
+                            // : (int value) {
+                            //     albumSortValue = value;
+                            //     Hive.box('settings').put('albumSortValue', value);
+                            //     sortAlbums();
+                            //     setState(() {});
+                            //   },
+                            itemBuilder:
+                                // (currentIndex == 0)
+                                // ?
+                                (context) {
+                              final List<String> sortTypes = [
+                                AppLocalizations.of(context)!.displayName,
+                                AppLocalizations.of(context)!.dateAdded,
+                                AppLocalizations.of(context)!.album,
+                                AppLocalizations.of(context)!.artist,
+                                AppLocalizations.of(context)!.duration,
+                              ];
+                              final List<String> orderTypes = [
+                                AppLocalizations.of(context)!.inc,
+                                AppLocalizations.of(context)!.dec,
+                              ];
+                              final menuList = <PopupMenuEntry<int>>[];
+                              menuList.addAll(
+                                sortTypes
+                                    .map(
+                                      (e) => PopupMenuItem(
+                                        value: sortTypes.indexOf(e),
+                                        child: Row(
+                                          children: [
+                                            if (sortValue ==
+                                                sortTypes.indexOf(e))
+                                              Icon(
+                                                Icons.check_rounded,
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.grey[700],
+                                              )
+                                            else
+                                              const SizedBox(),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              e,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ],
-                                  ),
+                                    )
+                                    .toList(),
+                              );
+                              menuList.add(
+                                const PopupMenuDivider(
+                                  height: 10,
                                 ),
+                              );
+                              menuList.addAll(
+                                orderTypes
+                                    .map(
+                                      (e) => PopupMenuItem(
+                                        value: sortTypes.length +
+                                            orderTypes.indexOf(e),
+                                        child: Row(
+                                          children: [
+                                            if (orderValue ==
+                                                orderTypes.indexOf(e))
+                                              Icon(
+                                                Icons.check_rounded,
+                                                color: Theme.of(context)
+                                                            .brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.grey[700],
+                                              )
+                                            else
+                                              const SizedBox(),
+                                            const SizedBox(width: 10),
+                                            Text(
+                                              e,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                    .toList(),
+                              );
+                              return menuList;
+                            },
+                          ),
+                        ],
+                      ),
+                      builder: (
+                        BuildContext context,
+                        bool showValue,
+                        Widget? child,
+                      ) {
+                        return showValue
+                            ? Row(
+                                children: [
+                                  MultiDownloadButton(
+                                    data: _songs
+                                        .where(
+                                          (element) => selectedItems
+                                              .contains(element['id']),
+                                        )
+                                        .toList(),
+                                    playlistName: widget.showName == null
+                                        ? widget.playlistName[0].toUpperCase() +
+                                            widget.playlistName.substring(1)
+                                        : widget.showName![0].toUpperCase() +
+                                            widget.showName!.substring(1),
+                                  ),
+                                  IconButton(
+                                    onPressed: () {
+                                      selectedItems.clear();
+                                      selectMode.value = false;
+                                    },
+                                    icon: const Icon(Icons.clear_rounded),
+                                  )
+                                ],
                               )
-                              .toList(),
-                        );
-                        return menuList;
+                            : child!;
                       },
                     ),
                   ],
@@ -627,6 +675,8 @@ class _SongsTabState extends State<SongsTab>
                   itemCount: widget.songs.length,
                   itemExtent: 70.0,
                   itemBuilder: (context, index) {
+                    final bool selected =
+                        selectedItems.contains(widget.songs[index]['id']);
                     return ListTile(
                       leading: Card(
                         elevation: 5,
@@ -636,35 +686,88 @@ class _SongsTabState extends State<SongsTab>
                         clipBehavior: Clip.antiAlias,
                         child: SizedBox.square(
                           dimension: 50,
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            errorWidget: (context, _, __) => const Image(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                'assets/cover.jpg',
+                          child: Stack(
+                            children: [
+                              CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                errorWidget: (context, _, __) => const Image(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(
+                                    'assets/cover.jpg',
+                                  ),
+                                ),
+                                imageUrl: widget.songs[index]['image']
+                                    .toString()
+                                    .replaceAll('http:', 'https:'),
+                                placeholder: (context, url) => const Image(
+                                  fit: BoxFit.cover,
+                                  image: AssetImage(
+                                    'assets/cover.jpg',
+                                  ),
+                                ),
                               ),
-                            ),
-                            imageUrl: widget.songs[index]['image']
-                                .toString()
-                                .replaceAll('http:', 'https:'),
-                            placeholder: (context, url) => const Image(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                'assets/cover.jpg',
-                              ),
-                            ),
+                              if (selected)
+                                Container(
+                                  decoration: const BoxDecoration(
+                                    color: Colors.black54,
+                                  ),
+                                ),
+                              if (selected)
+                                Center(
+                                  child: Icon(
+                                    Icons.check_rounded,
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  ),
+                                ),
+                            ],
                           ),
                         ),
                       ),
                       onTap: () {
-                        PlayerInvoke.init(
-                          songsList: widget.songs,
-                          index: index,
-                          isOffline: false,
-                          recommend: false,
-                          playlistBox: widget.playlistName,
-                        );
+                        if (selectMode.value) {
+                          selectMode.value = false;
+                          if (selected) {
+                            selectedItems
+                                .remove(widget.songs[index]['id'].toString());
+                            selectMode.value = true;
+                            if (selectedItems.isEmpty) {
+                              selectMode.value = false;
+                            }
+                          } else {
+                            selectedItems
+                                .add(widget.songs[index]['id'].toString());
+                            selectMode.value = true;
+                          }
+                          setState(() {});
+                        } else {
+                          PlayerInvoke.init(
+                            songsList: widget.songs,
+                            index: index,
+                            isOffline: false,
+                            recommend: false,
+                            playlistBox: widget.playlistName,
+                          );
+                        }
                       },
+                      onLongPress: () {
+                        selectMode.value = false;
+                        if (selected) {
+                          selectedItems
+                              .remove(widget.songs[index]['id'].toString());
+                          selectMode.value = true;
+                          if (selectedItems.isEmpty) {
+                            selectMode.value = false;
+                          }
+                        } else {
+                          selectedItems
+                              .add(widget.songs[index]['id'].toString());
+                          selectMode.value = true;
+                        }
+                        setState(() {});
+                      },
+                      selected: selected,
+                      selectedTileColor: Colors.white10,
                       title: Text(
                         '${widget.songs[index]['title']}',
                         overflow: TextOverflow.ellipsis,
