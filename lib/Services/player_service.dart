@@ -75,7 +75,7 @@ class PlayerInvoke {
           finalList,
           globalIndex,
           recommend: recommend,
-          playlistBox: playlistBox,
+          // playlistBox: playlistBox,
         );
       }
     }
@@ -186,112 +186,80 @@ class PlayerInvoke {
     updateNplay(queue, index);
   }
 
-  static void refreshYtLink2({
-    required Map playItem,
-    String? playlistBox,
-    required String cached,
-  }) {
-    YouTubeServices().refreshLink(playItem['id'].toString()).then(
-      (newData) {
-        Logger.root.info('received new link for ${playItem["title"]}');
-        if (newData != null) {
-          playItem['url'] = newData['url'];
-          playItem['duration'] = newData['duration'];
-          playItem['expire_at'] = newData['expire_at'];
-          Hive.box('ytlinkcache').put(
-            newData['id'],
-            {
-              'url': newData['url'],
-              'expire_at': newData['expire_at'],
-              'cached': cached,
-            },
-          );
-          if (playlistBox != null) {
-            Logger.root.info('linked with playlist $playlistBox');
-            if (Hive.box(playlistBox).containsKey(playItem['id'])) {
-              Logger.root.info('updating item in playlist $playlistBox');
-              Hive.box(playlistBox).put(
-                playItem['id'],
-                playItem,
-              );
-            }
-          }
-        }
-      },
-    );
-  }
-
-  static void refreshYtLink(Map playItem, String? playlistBox) {
-    final bool cacheSong =
-        Hive.box('settings').get('cacheSong', defaultValue: true) as bool;
+  static Future<void> refreshYtLink(Map playItem) async {
+    // final bool cacheSong =
+    // Hive.box('settings').get('cacheSong', defaultValue: true) as bool;
     final int expiredAt = int.parse((playItem['expire_at'] ?? '0').toString());
     if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 > expiredAt) {
-      Logger.root.info('youtube link expired for ${playItem["title"]}');
+      Logger.root.info(
+        'before service | youtube link expired for ${playItem["title"]}',
+      );
       if (Hive.box('ytlinkcache').containsKey(playItem['id'])) {
-        final Map cache = Hive.box('ytlinkcache').get(playItem['id']) as Map;
+        final Map cache =
+            await Hive.box('ytlinkcache').get(playItem['id']) as Map;
         final int expiredAt = int.parse((cache['expire_at'] ?? '0').toString());
-        final String wasCacheEnabled = cache['cached'].toString();
-        if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 > expiredAt &&
-            wasCacheEnabled != 'true') {
+        // final String wasCacheEnabled = cache['cached'].toString();
+        if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 > expiredAt) {
           Logger.root
               .info('youtube link expired in cache for ${playItem["title"]}');
-          refreshYtLink2(
-            playItem: playItem,
-            playlistBox: playlistBox,
-            cached: cacheSong.toString(),
+          final newData =
+              await YouTubeServices().refreshLink(playItem['id'].toString());
+          Logger.root.info(
+            'before service | received new link for ${playItem["title"]}',
           );
+          if (newData != null) {
+            playItem['url'] = newData['url'];
+            playItem['duration'] = newData['duration'];
+            playItem['expire_at'] = newData['expire_at'];
+          }
         } else {
           Logger.root
               .info('youtube link found in cache for ${playItem["title"]}');
           playItem['url'] = cache['url'];
           playItem['expire_at'] = cache['expire_at'];
-          if (playlistBox != null) {
-            Logger.root.info('linked with playlist $playlistBox');
-            if (Hive.box(playlistBox).containsKey(playItem['id'])) {
-              Logger.root.info('updating item in playlist $playlistBox');
-              Hive.box(playlistBox).put(
-                playItem['id'],
-                playItem,
-              );
-            }
-          }
         }
       } else {
-        refreshYtLink2(
-          playItem: playItem,
-          playlistBox: playlistBox,
-          cached: cacheSong.toString(),
+        final newData =
+            await YouTubeServices().refreshLink(playItem['id'].toString());
+        Logger.root.info(
+          'before service | received new link for ${playItem["title"]}',
         );
+        if (newData != null) {
+          playItem['url'] = newData['url'];
+          playItem['duration'] = newData['duration'];
+          playItem['expire_at'] = newData['expire_at'];
+        }
       }
     }
   }
 
-  static void setValues(
+  static Future<void> setValues(
     List response,
     int index, {
     bool recommend = true,
-    String? playlistBox,
-  }) {
+    // String? playlistBox,
+  }) async {
     final List<MediaItem> queue = [];
     final Map playItem = response[index] as Map;
     final Map? nextItem =
         index == response.length - 1 ? null : response[index + 1] as Map;
     if (playItem['genre'] == 'YouTube') {
-      refreshYtLink(playItem, playlistBox);
+      await refreshYtLink(playItem);
     }
     if (nextItem != null && nextItem['genre'] == 'YouTube') {
-      refreshYtLink(nextItem, playlistBox);
+      await refreshYtLink(nextItem);
     }
+
     queue.addAll(
       response.map(
         (song) => MediaItemConverter.mapToMediaItem(
           song as Map,
           autoplay: recommend,
-          playlistBox: playlistBox,
+          // playlistBox: playlistBox,
         ),
       ),
     );
-    updateNplay(queue, index);
+    await updateNplay(queue, index);
   }
 
   static Future<void> updateNplay(List<MediaItem> queue, int index) async {

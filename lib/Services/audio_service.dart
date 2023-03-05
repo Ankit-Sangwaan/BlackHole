@@ -27,7 +27,7 @@ import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/Helpers/mediaitem_converter.dart';
 import 'package:blackhole/Helpers/playlist.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
-import 'package:blackhole/Services/youtube_services.dart';
+import 'package:blackhole/Services/isolate_service.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
@@ -126,6 +126,8 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     await session.configure(const AudioSessionConfiguration.music());
 
     await startService();
+
+    await startBackgroundProcessing();
 
     speed.debounceTime(const Duration(milliseconds: 250)).listen((speed) {
       playbackState.add(playbackState.value.copyWith(speed: speed));
@@ -280,72 +282,56 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   Future<void> refreshJob() async {
     jobRunning = true;
     while (refreshLinks.isNotEmpty) {
-      Logger.root.info('===============================');
-      Logger.root.info('refreshing link');
-      await refreshLink(refreshLinks.removeAt(0));
+      addIdToBackgroundProcessingIsolate(refreshLinks.removeAt(0).id);
     }
     jobRunning = false;
   }
 
-  Future<void> refreshLink(MediaItem mediaItem) async {
-    final newData = await YouTubeServices().refreshLink(mediaItem.id);
-    Logger.root.info('received new link for ${mediaItem.title}');
-    if (newData != null) {
-      Hive.box('ytlinkcache').put(
-        newData['id'],
-        {
-          'url': newData['url'],
-          'expire_at': newData['expire_at'],
-          'cached': cacheSong.toString(),
-        },
-      );
-      final MediaItem newItem = mediaItem.copyWith(
-        extras: mediaItem.extras!
-          ..['url'] = newData['url']
-          ..['duration'] = newData['duration']
-          ..['expire_at'] = newData['expire_at'],
-      );
-      final String? boxName = mediaItem.extras!['playlistBox']?.toString();
-      if (boxName != null) {
-        Logger.root.info('linked with playlist $boxName');
-        if (Hive.box(mediaItem.extras!['playlistBox'].toString())
-            .containsKey(mediaItem.id)) {
-          Logger.root.info('updating item in playlist $boxName');
-          Hive.box(mediaItem.extras!['playlistBox'].toString()).put(
-            mediaItem.id,
-            MediaItemConverter.mediaItemToMap(newItem),
-          );
-          // put(
-          //   mediaItem.id,
-          //   MediaItemConverter.mediaItemToMap(newItem),
-          // );
-        }
-      }
-      Logger.root.info('inserting new item');
-      late AudioSource audioSource;
-      if (cacheSong) {
-        audioSource = LockCachingAudioSource(
-          Uri.parse(
-            newItem.extras!['url'].toString(),
-          ),
-        );
-      } else {
-        audioSource = AudioSource.uri(
-          Uri.parse(
-            newItem.extras!['url'].toString(),
-          ),
-        );
-      }
-      final index = queue.value.indexWhere((item) => item.id == newItem.id);
-      _mediaItemExpando[audioSource] = mediaItem;
-      _playlist
-          .removeAt(index)
-          .then((value) => _playlist.insert(index, audioSource));
-    }
+  Future<void> refreshLink(Map newData) async {
+    Logger.root.info('player | received new link for ${newData['title']}');
+    final MediaItem newItem = MediaItemConverter.mapToMediaItem(newData);
+    // final String? boxName = mediaItem.extras!['playlistBox']?.toString();
+    // if (boxName != null) {
+    //   Logger.root.info('linked with playlist $boxName');
+    //   if (Hive.box(mediaItem.extras!['playlistBox'].toString())
+    //       .containsKey(mediaItem.id)) {
+    //     Logger.root.info('updating item in playlist $boxName');
+    //     Hive.box(mediaItem.extras!['playlistBox'].toString()).put(
+    //       mediaItem.id,
+    //       MediaItemConverter.mediaItemToMap(newItem),
+    //     );
+    //     // put(
+    //     //   mediaItem.id,
+    //     //   MediaItemConverter.mediaItemToMap(newItem),
+    //     // );
+    //   }
+    // }
+    // Logger.root.info('player | inserting refreshed item');
+    // late AudioSource audioSource;
+    // if (cacheSong) {
+    //   audioSource = LockCachingAudioSource(
+    //     Uri.parse(
+    //       newItem.extras!['url'].toString(),
+    //     ),
+    //   );
+    // } else {
+    //   audioSource = AudioSource.uri(
+    //     Uri.parse(
+    //       newItem.extras!['url'].toString(),
+    //     ),
+    //   );
+    // }
+    // final index = queue.value.indexWhere((item) => item.id == newItem.id);
+    // _mediaItemExpando[audioSource] = newItem;
+    // _playlist
+    // .removeAt(index)
+    // .then((value) =>
+    // _playlist.insert(index, audioSource));
+    addQueueItem(newItem);
   }
 
-  AudioSource _itemToSource(MediaItem mediaItem) {
-    AudioSource audioSource;
+  AudioSource? _itemToSource(MediaItem mediaItem) {
+    AudioSource? audioSource;
     if (mediaItem.artUri.toString().startsWith('file:')) {
       audioSource =
           AudioSource.uri(Uri.file(mediaItem.extras!['url'].toString()));
@@ -363,18 +349,16 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
               int.parse((mediaItem.extras!['expire_at'] ?? '0').toString());
           if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
               expiredAt) {
-            Logger.root.info(
-              'youtube link expired for ${mediaItem.title}, searching cache',
-            );
+            // Logger.root.info(
+            //   'player | youtube link expired for ${mediaItem.title}, searching cache',
+            // );
             if (Hive.box('ytlinkcache').containsKey(mediaItem.id)) {
               final Map cachedData =
                   Hive.box('ytlinkcache').get(mediaItem.id) as Map;
               final int cachedExpiredAt =
                   int.parse(cachedData['expire_at'].toString());
-              final String wasCacheEnabled = cachedData['cached'].toString();
               if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
-                      cachedExpiredAt &&
-                  wasCacheEnabled != 'true') {
+                  cachedExpiredAt) {
                 Logger.root.info(
                   'youtube link expired for ${mediaItem.title}, refreshing',
                 );
@@ -394,6 +378,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
                   audioSource =
                       AudioSource.uri(Uri.parse(cachedData['url'].toString()));
                 }
+                mediaItem.extras!['url'] = cachedData['url'];
+                _mediaItemExpando[audioSource] = mediaItem;
+                return audioSource;
               }
             } else {
               Logger.root.info(
@@ -404,31 +391,45 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
                 refreshJob();
               }
             }
+          } else {
+            if (cacheSong) {
+              audioSource = LockCachingAudioSource(
+                Uri.parse(mediaItem.extras!['url'].toString()),
+              );
+            } else {
+              audioSource = AudioSource.uri(
+                Uri.parse(mediaItem.extras!['url'].toString()),
+              );
+            }
+            _mediaItemExpando[audioSource] = mediaItem;
+            return audioSource;
           }
-        }
-        if (cacheSong) {
-          audioSource = LockCachingAudioSource(
-            Uri.parse(
-              mediaItem.extras!['url'].toString().replaceAll(
-                    '_96.',
-                    "_${preferredQuality.replaceAll(' kbps', '')}.",
-                  ),
-            ),
-          );
         } else {
-          audioSource = AudioSource.uri(
-            Uri.parse(
-              mediaItem.extras!['url'].toString().replaceAll(
-                    '_96.',
-                    "_${preferredQuality.replaceAll(' kbps', '')}.",
-                  ),
-            ),
-          );
+          if (cacheSong) {
+            audioSource = LockCachingAudioSource(
+              Uri.parse(
+                mediaItem.extras!['url'].toString().replaceAll(
+                      '_96.',
+                      "_${preferredQuality.replaceAll(' kbps', '')}.",
+                    ),
+              ),
+            );
+          } else {
+            audioSource = AudioSource.uri(
+              Uri.parse(
+                mediaItem.extras!['url'].toString().replaceAll(
+                      '_96.',
+                      "_${preferredQuality.replaceAll(' kbps', '')}.",
+                    ),
+              ),
+            );
+          }
         }
       }
     }
-
-    _mediaItemExpando[audioSource] = mediaItem;
+    if (audioSource != null) {
+      _mediaItemExpando[audioSource] = mediaItem;
+    }
     return audioSource;
   }
 
@@ -439,7 +440,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     cacheSong =
         Hive.box('settings').get('cacheSong', defaultValue: true) as bool;
     useDown = Hive.box('settings').get('useDown', defaultValue: true) as bool;
-    return mediaItems.map(_itemToSource).toList();
+    return mediaItems.map(_itemToSource).whereType<AudioSource>().toList();
   }
 
   @override
@@ -525,7 +526,10 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
   @override
   Future<void> addQueueItem(MediaItem mediaItem) async {
-    await _playlist.add(_itemToSource(mediaItem));
+    final res = _itemToSource(mediaItem);
+    if (res != null) {
+      await _playlist.add(res);
+    }
   }
 
   @override
@@ -535,7 +539,10 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
   @override
   Future<void> insertQueueItem(int index, MediaItem mediaItem) async {
-    await _playlist.insert(index, _itemToSource(mediaItem));
+    final res = _itemToSource(mediaItem);
+    if (res != null) {
+      await _playlist.insert(index, res);
+    }
   }
 
   @override
@@ -711,6 +718,12 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
     if (name == 'getEqualizerParams') {
       return getEqParms();
+    }
+
+    if (name == 'refreshLink') {
+      if (extras?['newData'] != null) {
+        refreshLink(extras!['newData'] as Map);
+      }
     }
     return super.customAction(name, extras);
   }

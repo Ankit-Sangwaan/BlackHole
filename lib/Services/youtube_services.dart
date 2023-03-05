@@ -87,8 +87,13 @@ class YouTubeServices {
     if (res == null) {
       return null;
     }
-    final String quality =
-        Hive.box('settings').get('quality', defaultValue: 'Low').toString();
+    String quality;
+    try {
+      quality =
+          Hive.box('settings').get('quality', defaultValue: 'Low').toString();
+    } catch (e) {
+      quality = 'Low';
+    }
     final Map? data = await formatVideo(video: res, quality: quality);
     return data;
   }
@@ -342,11 +347,50 @@ class YouTubeServices {
     String finalUrl = '';
     String expireAt = '0';
     if (getUrl) {
-      urls = await getUri(video);
+      // check cache first
+      if (Hive.box('ytlinkcache').containsKey(video.id.value)) {
+        final Map cachedData =
+            Hive.box('ytlinkcache').get(video.id.value) as Map;
+        final int cachedExpiredAt =
+            int.parse(cachedData['expire_at'].toString());
+        if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
+            cachedExpiredAt) {
+          // cache expired
+          urls = await getUri(video);
+        } else {
+          // giving cache link
+          Logger.root.info('cache found for ${video.id.value}');
+          urls = [cachedData['url'].toString()];
+        }
+      } else {
+        //cache not present
+        urls = await getUri(video);
+      }
+
       finalUrl = quality == 'High' ? urls.last : urls.first;
       expireAt = RegExp('expire=(.*?)&').firstMatch(finalUrl)!.group(1) ??
           (DateTime.now().millisecondsSinceEpoch ~/ 1000 + 3600 * 5.5)
               .toString();
+
+      try {
+        await Hive.box('ytlinkcache').put(
+          video.id.value,
+          {
+            'url': finalUrl,
+            'expire_at': expireAt,
+            'lowUrl': urls.first,
+            'highUrl': urls.last,
+          },
+        ).onError(
+          (error, stackTrace) => Logger.root.severe(
+            'Hive Error in formatVideo, you probably forgot to open box.\nError: $error',
+          ),
+        );
+      } catch (e) {
+        Logger.root.severe(
+          'Hive Error in formatVideo, you probably forgot to open box.\nError: $e',
+        );
+      }
     }
     return {
       'id': video.id.value,
