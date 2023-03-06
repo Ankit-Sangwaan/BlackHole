@@ -315,7 +315,7 @@
   "@yesReplace": {},
   "youTube": "வலையொளி",
   "@youTube": {},
-  "ytLiveAlert": "காணொளி நேரலையில். நேரலைப்பாய்வு முடியும்வரை காத்திருந்து மீண்டும் முயல்க.",
+  "ytLiveAlert": "காணொளி நேரலையில் (அ) சில பிழை நேர்ந்தது. நேரலைப்பாய்வு முடியும்வரை காத்திருப்பீர் (அ) மீண்டும் முயல்க.",
   "@ytLiveAlert": {},
   "displayName": "காட்சிப்பெயர்",
   "@displayName": {},
@@ -674,5 +674,17 @@
   "openInSpotify": "ஸ்பாட்டிஃபையில் திற",
   "@openInSpotify": {},
   "signInSpotify": "ஸ்பாட்டிஃபைக்கு உள்நுழை",
-  "@signInSpotify": {}
+  "@signInSpotify": {},
+  "shareLogs": "பதிவுகளைப் பகிர்",
+  "@shareLogs": {},
+  "shareLogsSub": "தற்போதைய அமர்வின் பதிவுகளைப் பகிர்",
+  "@shareLogsSub": {},
+  "showTopCharts": "உச்ச தரவரிசைகளைக் காட்டு",
+  "@showTopCharts": {},
+  "showTopChartsSub": "ஸ்பாட்டிஃபை உச்ச தரவரிசைகளை முகப்புத்திரையில் காட்டு",
+  "@showTopChartsSub": {},
+  "cantFind": "தேடுவது காணவில்லையா?. ",
+  "@cantFind": {},
+  "radio": "வானொலி",
+  "@radio": {}
 }
