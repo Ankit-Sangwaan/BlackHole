@@ -194,7 +194,7 @@ class _PlayScreenState extends State<PlayScreen> {
   }
 
   String format(String msg) {
-    return '${msg[0].toUpperCase()}${msg.substring(1)}: '.replaceAll('_', ' ');
+    return '${msg[0].toUpperCase()}${msg.substring(1)}'.replaceAll('_', ' ');
   }
 
   @override
@@ -313,32 +313,37 @@ class _PlayScreenState extends State<PlayScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: details.keys.map((e) {
-                                    return SelectableText.rich(
-                                      TextSpan(
-                                        children: <TextSpan>[
-                                          TextSpan(
-                                            text: format(
-                                              e.toString(),
+                                    return Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10),
+                                      child: SelectableText.rich(
+                                        TextSpan(
+                                          children: <TextSpan>[
+                                            TextSpan(
+                                              text: format(
+                                                '$e\n',
+                                              ),
+                                              style: TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                                fontSize: 12,
+                                                color: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall!
+                                                    .color,
+                                              ),
                                             ),
-                                            style: TextStyle(
-                                              fontWeight: FontWeight.w600,
-                                              color: Theme.of(context)
-                                                  .textTheme
-                                                  .bodyLarge!
-                                                  .color,
+                                            TextSpan(
+                                              text: '${details[e]}',
+                                              style: const TextStyle(
+                                                fontWeight: FontWeight.normal,
+                                              ),
                                             ),
-                                          ),
-                                          TextSpan(
-                                            text: details[e].toString(),
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.normal,
-                                            ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
+                                        showCursor: true,
+                                        cursorColor: Colors.black,
+                                        cursorRadius: const Radius.circular(5),
                                       ),
-                                      showCursor: true,
-                                      cursorColor: Colors.black,
-                                      cursorRadius: const Radius.circular(5),
                                     );
                                   }).toList(),
                                 ),
@@ -1740,44 +1745,52 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
                                                 children: details.keys.map((e) {
-                                                  return SelectableText.rich(
-                                                    TextSpan(
-                                                      children: <TextSpan>[
-                                                        TextSpan(
-                                                          text:
-                                                              '${e[0].toUpperCase()}${e.substring(1)}: '
-                                                                  .replaceAll(
-                                                            '_',
-                                                            ' ',
-                                                          ),
-                                                          style: TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            color: Theme.of(
-                                                              context,
-                                                            )
-                                                                .textTheme
-                                                                .bodyLarge!
-                                                                .color,
-                                                          ),
-                                                        ),
-                                                        TextSpan(
-                                                          text: details[e]
-                                                              .toString(),
-                                                          style:
-                                                              const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .normal,
-                                                          ),
-                                                        ),
-                                                      ],
+                                                  return Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      bottom: 10.0,
                                                     ),
-                                                    showCursor: true,
-                                                    cursorColor: Colors.black,
-                                                    cursorRadius:
-                                                        const Radius.circular(
-                                                      5,
+                                                    child: SelectableText.rich(
+                                                      TextSpan(
+                                                        children: <TextSpan>[
+                                                          TextSpan(
+                                                            text:
+                                                                '${e[0].toUpperCase()}${e.substring(1)}\n'
+                                                                    .replaceAll(
+                                                              '_',
+                                                              ' ',
+                                                            ),
+                                                            style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                              fontSize: 12,
+                                                              color: Theme.of(
+                                                                context,
+                                                              )
+                                                                  .textTheme
+                                                                  .bodySmall!
+                                                                  .color,
+                                                            ),
+                                                          ),
+                                                          TextSpan(
+                                                            text: details[e]
+                                                                .toString(),
+                                                            style:
+                                                                const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .normal,
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      showCursor: true,
+                                                      cursorColor: Colors.black,
+                                                      cursorRadius:
+                                                          const Radius.circular(
+                                                        5,
+                                                      ),
                                                     ),
                                                   );
                                                 }).toList(),

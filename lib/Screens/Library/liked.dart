@@ -675,126 +675,134 @@ class _SongsTabState extends State<SongsTab>
                   itemCount: widget.songs.length,
                   itemExtent: 70.0,
                   itemBuilder: (context, index) {
-                    final bool selected =
-                        selectedItems.contains(widget.songs[index]['id']);
-                    return ListTile(
-                      leading: Card(
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7.0),
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        child: SizedBox.square(
-                          dimension: 50,
-                          child: Stack(
-                            children: [
-                              CachedNetworkImage(
-                                fit: BoxFit.cover,
-                                errorWidget: (context, _, __) => const Image(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(
-                                    'assets/cover.jpg',
+                    return ValueListenableBuilder(
+                      valueListenable: selectMode,
+                      builder: (context, value, child) {
+                        final bool selected =
+                            selectedItems.contains(widget.songs[index]['id']);
+                        return ListTile(
+                          leading: Card(
+                            elevation: 5,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(7.0),
+                            ),
+                            clipBehavior: Clip.antiAlias,
+                            child: SizedBox.square(
+                              dimension: 50,
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, _, __) =>
+                                        const Image(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage(
+                                        'assets/cover.jpg',
+                                      ),
+                                    ),
+                                    imageUrl: widget.songs[index]['image']
+                                        .toString()
+                                        .replaceAll('http:', 'https:'),
+                                    placeholder: (context, url) => const Image(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage(
+                                        'assets/cover.jpg',
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                imageUrl: widget.songs[index]['image']
-                                    .toString()
-                                    .replaceAll('http:', 'https:'),
-                                placeholder: (context, url) => const Image(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage(
-                                    'assets/cover.jpg',
-                                  ),
-                                ),
+                                  if (selected)
+                                    Container(
+                                      decoration: const BoxDecoration(
+                                        color: Colors.black54,
+                                      ),
+                                      child: Center(
+                                        child: Icon(
+                                          Icons.check_rounded,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                        ),
+                                      ),
+                                    ),
+                                ],
                               ),
-                              if (selected)
-                                Container(
-                                  decoration: const BoxDecoration(
-                                    color: Colors.black54,
-                                  ),
+                            ),
+                          ),
+                          onTap: () {
+                            if (selectMode.value) {
+                              selectMode.value = false;
+                              if (selected) {
+                                selectedItems.remove(
+                                  widget.songs[index]['id'].toString(),
+                                );
+                                selectMode.value = true;
+                                if (selectedItems.isEmpty) {
+                                  selectMode.value = false;
+                                }
+                              } else {
+                                selectedItems
+                                    .add(widget.songs[index]['id'].toString());
+                                selectMode.value = true;
+                              }
+                              setState(() {});
+                            } else {
+                              PlayerInvoke.init(
+                                songsList: widget.songs,
+                                index: index,
+                                isOffline: false,
+                                recommend: false,
+                                playlistBox: widget.playlistName,
+                              );
+                            }
+                          },
+                          onLongPress: () {
+                            selectMode.value = false;
+                            if (selected) {
+                              selectedItems
+                                  .remove(widget.songs[index]['id'].toString());
+                              selectMode.value = true;
+                              if (selectedItems.isEmpty) {
+                                selectMode.value = false;
+                              }
+                            } else {
+                              selectedItems
+                                  .add(widget.songs[index]['id'].toString());
+                              selectMode.value = true;
+                            }
+                            setState(() {});
+                          },
+                          selected: selected,
+                          selectedTileColor: Colors.white10,
+                          title: Text(
+                            '${widget.songs[index]['title']}',
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          subtitle: Text(
+                            '${widget.songs[index]['artist'] ?? 'Unknown'} - ${widget.songs[index]['album'] ?? 'Unknown'}',
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              if (widget.playlistName != 'Favorite Songs')
+                                LikeButton(
+                                  mediaItem: null,
+                                  data: widget.songs[index] as Map,
                                 ),
-                              if (selected)
-                                Center(
-                                  child: Icon(
-                                    Icons.check_rounded,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                  ),
-                                ),
+                              DownloadButton(
+                                data: widget.songs[index] as Map,
+                                icon: 'download',
+                              ),
+                              SongTileTrailingMenu(
+                                data: widget.songs[index] as Map,
+                                isPlaylist: true,
+                                deleteLiked: widget.onDelete,
+                              ),
                             ],
                           ),
-                        ),
-                      ),
-                      onTap: () {
-                        if (selectMode.value) {
-                          selectMode.value = false;
-                          if (selected) {
-                            selectedItems
-                                .remove(widget.songs[index]['id'].toString());
-                            selectMode.value = true;
-                            if (selectedItems.isEmpty) {
-                              selectMode.value = false;
-                            }
-                          } else {
-                            selectedItems
-                                .add(widget.songs[index]['id'].toString());
-                            selectMode.value = true;
-                          }
-                          setState(() {});
-                        } else {
-                          PlayerInvoke.init(
-                            songsList: widget.songs,
-                            index: index,
-                            isOffline: false,
-                            recommend: false,
-                            playlistBox: widget.playlistName,
-                          );
-                        }
+                        );
                       },
-                      onLongPress: () {
-                        selectMode.value = false;
-                        if (selected) {
-                          selectedItems
-                              .remove(widget.songs[index]['id'].toString());
-                          selectMode.value = true;
-                          if (selectedItems.isEmpty) {
-                            selectMode.value = false;
-                          }
-                        } else {
-                          selectedItems
-                              .add(widget.songs[index]['id'].toString());
-                          selectMode.value = true;
-                        }
-                        setState(() {});
-                      },
-                      selected: selected,
-                      selectedTileColor: Colors.white10,
-                      title: Text(
-                        '${widget.songs[index]['title']}',
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      subtitle: Text(
-                        '${widget.songs[index]['artist'] ?? 'Unknown'} - ${widget.songs[index]['album'] ?? 'Unknown'}',
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          if (widget.playlistName != 'Favorite Songs')
-                            LikeButton(
-                              mediaItem: null,
-                              data: widget.songs[index] as Map,
-                            ),
-                          DownloadButton(
-                            data: widget.songs[index] as Map,
-                            icon: 'download',
-                          ),
-                          SongTileTrailingMenu(
-                            data: widget.songs[index] as Map,
-                            isPlaylist: true,
-                            deleteLiked: widget.onDelete,
-                          ),
-                        ],
-                      ),
                     );
                   },
                 ),
