@@ -639,7 +639,7 @@
   "@useProxySub": {},
   "useVpn": "Не з Індії? Спробуйте використовувати VPN з індійським сервером",
   "@useVpn": {},
-  "ytLiveAlert": "Відео йде у прямому ефірі. Будь ласка, дочекайтеся закінчення прямої трансляції і повторіть спробу.",
+  "ytLiveAlert": "Або відео йде в прямому ефірі, або сталася якась помилка. Будь ласка, зачекайте, поки трансляція завершиться або спробуйте ще раз.",
   "@ytLiveAlert": {},
   "autoBackLocation": "Місце для автоматичних бекапів",
   "@autoBackLocation": {},
@@ -651,7 +651,7 @@
   "@mergePlaylists": {},
   "playRadio": "Грати радіо",
   "@playRadio": {},
-  "topCharts": "Топ-чарти",
+  "topCharts": "Топ Чарти",
   "@topCharts": {},
   "viral": "Вірусні",
   "@viral": {},
@@ -666,5 +666,11 @@
   "shareLogsSub": "Поділіться журналами поточних сеансів",
   "@shareLogsSub": {},
   "signInSpotify": "Увійдіть у Spotify",
-  "@signInSpotify": {}
+  "@signInSpotify": {},
+  "showTopCharts": "Показати Топ Чарти",
+  "@showTopCharts": {},
+  "showTopChartsSub": "Показувати Топ Чарти Spotify на головному екрані",
+  "@showTopChartsSub": {},
+  "cantFind": "Не можете знайти те, що шукаєте? ",
+  "@cantFind": {}
 }
