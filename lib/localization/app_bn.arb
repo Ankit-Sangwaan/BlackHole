@@ -94,5 +94,15 @@
   "cardColor": "কার্ডের রঙ",
   "@cardColor": {},
   "canvasColorSub": "ব্যাকগ্রাউন্ড ক্যানভাসের রঙ",
-  "@canvasColorSub": {}
+  "@canvasColorSub": {},
+  "clear": "পরিষ্কার",
+  "@clear": {},
+  "checkUpdate": "আপডেটের জন্য পরীক্ষা করা হচ্ছে...",
+  "@checkUpdate": {},
+  "cantFind": "যা খুঁজছেন তা কি পাচ্ছেন না? ",
+  "@cantFind": {},
+  "changeDefault": "ডিফল্টে পরিবর্তন করুন",
+  "@changeDefault": {},
+  "checkingUpdate": "আপডেটের জন্য পরীক্ষা করা হচ্ছে…",
+  "@checkingUpdate": {}
 }
