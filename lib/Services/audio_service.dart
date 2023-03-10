@@ -28,6 +28,7 @@ import 'package:blackhole/Helpers/mediaitem_converter.dart';
 import 'package:blackhole/Helpers/playlist.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Services/isolate_service.dart';
+import 'package:blackhole/Services/yt_music.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
@@ -54,7 +55,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   final _equalizer = AndroidEqualizer();
 
   Box downloadsBox = Hive.box('downloads');
-  final List<MediaItem> refreshLinks = [];
+  final List<String> refreshLinks = [];
   bool jobRunning = false;
 
   final BehaviorSubject<List<MediaItem>> _recentSubject =
@@ -154,12 +155,14 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         }
       }
 
-      if (item.artUri.toString().startsWith('http') &&
-          item.genre != 'YouTube') {
-        addRecentlyPlayed(item);
-        _recentSubject.add([item]);
+      if (item.artUri.toString().startsWith('http')) {
+        if (item.genre != 'YouTube') {
+          addRecentlyPlayed(item);
+          _recentSubject.add([item]);
+        }
 
-        if (recommend && item.extras!['autoplay'] as bool) {
+        if (true) {
+          Logger.root.info('message');
           final List<MediaItem> mediaQueue = queue.value;
           final int index = mediaQueue.indexOf(item);
           final int queueLength = mediaQueue.length;
@@ -167,18 +170,28 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
             Logger.root.info('less than 5 songs remaining, adding more songs');
             Future.delayed(const Duration(seconds: 1), () async {
               if (item == mediaItem.value) {
-                final List value = await SaavnAPI().getReco(item.id);
-                value.shuffle();
-                // final List value = await SaavnAPI().getRadioSongs(
-                //     stationId: stationId!, count: queueLength - index - 20);
+                if (item.genre != 'YouTube') {
+                  final List value = await SaavnAPI().getReco(item.id);
+                  value.shuffle();
+                  // final List value = await SaavnAPI().getRadioSongs(
+                  //     stationId: stationId!, count: queueLength - index - 20);
 
-                for (int i = 0; i < value.length; i++) {
-                  final element = MediaItemConverter.mapToMediaItem(
-                    value[i] as Map,
-                    addedByAutoplay: true,
-                  );
-                  if (!mediaQueue.contains(element)) {
-                    addQueueItem(element);
+                  for (int i = 0; i < value.length; i++) {
+                    final element = MediaItemConverter.mapToMediaItem(
+                      value[i] as Map,
+                      addedByAutoplay: true,
+                    );
+                    if (!mediaQueue.contains(element)) {
+                      addQueueItem(element);
+                    }
+                  }
+                } else {
+                  final res = await YtMusicService()
+                      .getWatchPlaylist(videoId: item.id, limit: 5);
+                  Logger.root.info(res);
+                  refreshLinks.addAll(res);
+                  if (!jobRunning) {
+                    refreshJob();
                   }
                 }
               }
@@ -282,7 +295,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   Future<void> refreshJob() async {
     jobRunning = true;
     while (refreshLinks.isNotEmpty) {
-      addIdToBackgroundProcessingIsolate(refreshLinks.removeAt(0).id);
+      addIdToBackgroundProcessingIsolate(refreshLinks.removeAt(0));
     }
     jobRunning = false;
   }
@@ -362,7 +375,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
                 Logger.root.info(
                   'youtube link expired for ${mediaItem.title}, refreshing',
                 );
-                refreshLinks.add(mediaItem);
+                refreshLinks.add(mediaItem.id);
                 if (!jobRunning) {
                   refreshJob();
                 }
@@ -386,7 +399,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
               Logger.root.info(
                 'youtube link not found in cache for ${mediaItem.title}, refreshing',
               );
-              refreshLinks.add(mediaItem);
+              refreshLinks.add(mediaItem.id);
               if (!jobRunning) {
                 refreshJob();
               }
