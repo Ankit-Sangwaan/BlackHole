@@ -208,7 +208,6 @@ class _YouTubeArtistState extends State<YouTubeArtist> {
                                         songsList: [response],
                                         index: 0,
                                         isOffline: false,
-                                        recommend: false,
                                       );
                                       Navigator.pushNamed(context, '/player');
                                       // for (var i = 0;

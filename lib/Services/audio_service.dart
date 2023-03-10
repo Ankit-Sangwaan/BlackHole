@@ -161,7 +161,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
           _recentSubject.add([item]);
         }
 
-        if (true) {
+        if (recommend && item.extras!['autoplay'] as bool) {
           Logger.root.info('message');
           final List<MediaItem> mediaQueue = queue.value;
           final int index = mediaQueue.indexOf(item);

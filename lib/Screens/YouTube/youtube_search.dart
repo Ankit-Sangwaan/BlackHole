@@ -492,7 +492,6 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                               ],
                                                               index: 0,
                                                               isOffline: false,
-                                                              recommend: false,
                                                             );
                                                           }
                                                           response == null
