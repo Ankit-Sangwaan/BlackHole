@@ -404,8 +404,8 @@ class YouTubeServices {
       'genre': 'YouTube',
       'expire_at': expireAt,
       'url': finalUrl,
-      'lowUrl': urls.first,
-      'highUrl': urls.last,
+      'lowUrl': urls.isNotEmpty ? urls.first : '',
+      'highUrl': urls.isNotEmpty ? urls.last : '',
       'year': video.uploadDate?.year.toString(),
       '320kbps': 'false',
       'has_lyrics': 'false',
@@ -460,9 +460,22 @@ class YouTubeServices {
     // }
   }
 
-  Future<List<Video>> fetchSearchResults(String query) async {
+  Future<List<Map>> fetchSearchResults(String query) async {
     final List<Video> searchResults = await yt.search.search(query);
+    final List<Map> videoResult = [];
+    for (final Video vid in searchResults) {
+      final res = await formatVideo(video: vid, quality: 'High', getUrl: false);
+      if (res != null) videoResult.add(res);
+    }
+    return [
+      {
+        'title': 'Videos',
+        'items': videoResult,
+      }
+    ];
+    // return searchResults;
 
+    // For parsing html
     // Uri link = Uri.https(searchAuthority, searchPath, {"search_query": query});
     // final Response response = await get(link);
     // if (response.statusCode != 200) {
@@ -506,7 +519,6 @@ class YouTubeServices {
     //     'subtitle': '',
     //   };
     // }).toList();
-    return searchResults;
     // For invidous
     // try {
     //   final Uri link =
