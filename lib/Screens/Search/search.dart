@@ -211,7 +211,11 @@ class _SearchPageState extends State<SearchPage> {
                                                     .toString()
                                                     .trim();
                                                 controller.text = query;
-                                                controller.selection = TextSelection.fromPosition(TextPosition(offset: query.length));
+                                                controller.selection =
+                                                    TextSelection.fromPosition(
+                                                        TextPosition(
+                                                            offset:
+                                                                query.length));
                                                 status = false;
                                                 fromHome = false;
                                                 searchedData = {};
@@ -291,7 +295,11 @@ class _SearchPageState extends State<SearchPage> {
                                                               .trim();
                                                           controller.text =
                                                               query;
-                                                          controller.selection = TextSelection.fromPosition(TextPosition(offset: query.length));
+                                                          controller.selection =
+                                                              TextSelection.fromPosition(
+                                                                  TextPosition(
+                                                                      offset: query
+                                                                          .length));
                                                           status = false;
                                                           fromHome = false;
                                                           searchedData = {};
