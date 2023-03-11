@@ -684,5 +684,11 @@
   "showTopCharts": "Zobrazit žebříčky nejlepších",
   "@showTopCharts": {},
   "showTopChartsSub": "Zobrazit žebříčky nejlepších Spotify na domovské obrazovce",
-  "@showTopChartsSub": {}
+  "@showTopChartsSub": {},
+  "mostPlayedSong": "Nejhranější skladba",
+  "@mostPlayedSong": {},
+  "songsPlayed": "Přehrané skladby",
+  "@songsPlayed": {},
+  "stats": "Statistiky",
+  "@stats": {}
 }
