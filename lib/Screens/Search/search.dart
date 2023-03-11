@@ -163,6 +163,7 @@ class _SearchPageState extends State<SearchPage> {
                       ? SingleChildScrollView(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 15,
+                            vertical: 10.0,
                           ),
                           physics: const BouncingScrollPhysics(),
                           child: Column(
@@ -210,6 +211,7 @@ class _SearchPageState extends State<SearchPage> {
                                                     .toString()
                                                     .trim();
                                                 controller.text = query;
+                                                controller.selection = TextSelection.fromPosition(TextPosition(offset: query.length));
                                                 status = false;
                                                 fromHome = false;
                                                 searchedData = {};
@@ -289,6 +291,7 @@ class _SearchPageState extends State<SearchPage> {
                                                               .trim();
                                                           controller.text =
                                                               query;
+                                                          controller.selection = TextSelection.fromPosition(TextPosition(offset: query.length));
                                                           status = false;
                                                           fromHome = false;
                                                           searchedData = {};
