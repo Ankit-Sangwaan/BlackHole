@@ -686,5 +686,11 @@
   "showTopCharts": "Afficher le top des graphiques",
   "@showTopCharts": {},
   "showTopChartsSub": "Afficher les Top Graphes de Spotify sur l'écran d'accueil",
-  "@showTopChartsSub": {}
+  "@showTopChartsSub": {},
+  "songsPlayed": "Musiques jouées",
+  "@songsPlayed": {},
+  "stats": "Statistiques",
+  "@stats": {},
+  "mostPlayedSong": "Musique la plus jouée",
+  "@mostPlayedSong": {}
 }
