@@ -133,6 +133,13 @@ class _LibraryPageState extends State<LibraryPage> {
             Navigator.pushNamed(context, '/playlists');
           },
         ),
+        LibraryTile(
+          title: AppLocalizations.of(context)!.stats,
+          icon: Icons.auto_graph_rounded,
+          onTap: () {
+            Navigator.pushNamed(context, '/stats');
+          },
+        ),
       ],
     );
   }

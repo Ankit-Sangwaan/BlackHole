@@ -514,6 +514,27 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     List recentList = await Hive.box('cache')
         .get('recentSongs', defaultValue: [])?.toList() as List;
 
+    final Map songStats =
+        await Hive.box('stats').get(mediaitem.id, defaultValue: {}) as Map;
+
+    final Map mostPlayed =
+        await Hive.box('stats').get('mostPlayed', defaultValue: {}) as Map;
+
+    songStats['lastPlayed'] = DateTime.now().millisecondsSinceEpoch;
+    songStats['playCount'] =
+        songStats['playCount'] == null ? 1 : songStats['playCount'] + 1;
+    songStats['isYoutube'] = mediaitem.genre == 'YouTube';
+    songStats['title'] = mediaitem.title;
+    songStats['artist'] = mediaitem.artist;
+    songStats['album'] = mediaitem.album;
+    songStats['id'] = mediaitem.id;
+    Hive.box('stats').put(mediaitem.id, songStats);
+    if ((songStats['playCount'] as int) >
+        (mostPlayed['playCount'] as int? ?? 0)) {
+      Hive.box('stats').put('mostPlayed', songStats);
+    }
+    Logger.root.info('adding ${mediaitem.id} data to stats');
+
     final Map item = MediaItemConverter.mediaItemToMap(mediaitem);
     recentList.insert(0, item);
 
