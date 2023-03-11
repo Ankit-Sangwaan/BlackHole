@@ -213,9 +213,10 @@ class _SearchPageState extends State<SearchPage> {
                                                 controller.text = query;
                                                 controller.selection =
                                                     TextSelection.fromPosition(
-                                                        TextPosition(
-                                                            offset:
-                                                                query.length));
+                                                  TextPosition(
+                                                    offset: query.length,
+                                                  ),
+                                                );
                                                 status = false;
                                                 fromHome = false;
                                                 searchedData = {};
@@ -296,10 +297,13 @@ class _SearchPageState extends State<SearchPage> {
                                                           controller.text =
                                                               query;
                                                           controller.selection =
-                                                              TextSelection.fromPosition(
-                                                                  TextPosition(
-                                                                      offset: query
-                                                                          .length));
+                                                              TextSelection
+                                                                  .fromPosition(
+                                                            TextPosition(
+                                                              offset:
+                                                                  query.length,
+                                                            ),
+                                                          );
                                                           status = false;
                                                           fromHome = false;
                                                           searchedData = {};
