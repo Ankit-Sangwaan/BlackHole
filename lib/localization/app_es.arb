@@ -680,5 +680,11 @@
   "showTopChartsSub": "Mostrar las listas principales de Spotify en la pantalla de inicio",
   "@showTopChartsSub": {},
   "showTopCharts": "Mostrar gráficos principales",
-  "@showTopCharts": {}
+  "@showTopCharts": {},
+  "mostPlayedSong": "Canción más reproducida",
+  "@mostPlayedSong": {},
+  "songsPlayed": "Canciones reproducidas",
+  "@songsPlayed": {},
+  "stats": "Estadísticas",
+  "@stats": {}
 }
