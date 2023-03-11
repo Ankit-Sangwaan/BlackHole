@@ -672,5 +672,11 @@
   "showTopChartsSub": "ਸਪੌਟੀਫਾਈ ਦੇ ਚੋਟੀ ਦੇ ਗੀਤ ਹੋਮ ਸਕਰੀਨ ਤੇ ਵਿਖਾਓ",
   "@showTopChartsSub": {},
   "showTopCharts": "ਚੋਟੀ ਦੇ ਗੀਤ ਵਿਖਾਓ",
-  "@showTopCharts": {}
+  "@showTopCharts": {},
+  "mostPlayedSong": "ਸਭ ਤੋਂ ਜਿਆਦਾ ਚਲਾਇਆ ਗੀਤ",
+  "@mostPlayedSong": {},
+  "songsPlayed": "ਚਲਾਏ ਹੋਏ ਗੀਤ",
+  "@songsPlayed": {},
+  "stats": "ਅੰਕੜੇ",
+  "@stats": {}
 }
