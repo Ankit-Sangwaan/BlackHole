@@ -760,7 +760,7 @@ class _HomePageState extends State<HomePage> {
                                                                   .width -
                                                               75,
                                                         ),
-                                                  height: 52.0,
+                                                  height: 55.0,
                                                   duration: const Duration(
                                                     milliseconds: 150,
                                                   ),
