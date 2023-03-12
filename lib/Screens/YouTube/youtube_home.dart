@@ -120,7 +120,7 @@ class _YouTubeState extends State<YouTube>
           else
             SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.fromLTRB(10, 75, 10, 0),
+              padding: const EdgeInsets.fromLTRB(10, 70, 10, 0),
               child: Column(
                 children: [
                   if (headList.isNotEmpty)
@@ -314,6 +314,10 @@ class _YouTubeState extends State<YouTube>
                                                       width: (boxSize - 30) *
                                                           (16 / 9) /
                                                           2.5,
+                                                      margin:
+                                                          const EdgeInsets.all(
+                                                        4.0,
+                                                      ),
                                                       child: Column(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
@@ -419,7 +423,7 @@ class _YouTubeState extends State<YouTube>
           GestureDetector(
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: 60.0,
+              height: 55.0,
               padding: const EdgeInsets.all(5.0),
               margin:
                   const EdgeInsets.symmetric(horizontal: 15.0, vertical: 5.0),
