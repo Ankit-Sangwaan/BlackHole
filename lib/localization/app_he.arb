@@ -453,7 +453,7 @@
   "@ytDownQualitySub": {},
   "yourPlaylists": "רשימות הנגינה שלך",
   "@yourPlaylists": {},
-  "youTube": "YouTube",
+  "youTube": "‎YouTube",
   "@youTube": {},
   "yesReplace": "כן, אבל להחליף את הישן",
   "@yesReplace": {},
@@ -672,5 +672,11 @@
   "showTopCharts": "הצגת טבלת המובילים",
   "@showTopCharts": {},
   "showTopChartsSub": "להציג את טבלאות המובילים של Spotify במסך הבית",
-  "@showTopChartsSub": {}
+  "@showTopChartsSub": {},
+  "mostPlayedSong": "השיר שנוגן הכי הרבה",
+  "@mostPlayedSong": {},
+  "songsPlayed": "שירים שנוגנו",
+  "@songsPlayed": {},
+  "stats": "סטטיסטיקה",
+  "@stats": {}
 }
