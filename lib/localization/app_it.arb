@@ -676,5 +676,11 @@
   "showTopCharts": "Mostra le classifiche principali",
   "@showTopCharts": {},
   "showTopChartsSub": "Mostra le classifiche principali nella home screen",
-  "@showTopChartsSub": {}
+  "@showTopChartsSub": {},
+  "mostPlayedSong": "Canzone più ascoltata",
+  "@mostPlayedSong": {},
+  "stats": "Statistiche",
+  "@stats": {},
+  "songsPlayed": "Canzoni riprodotte",
+  "@songsPlayed": {}
 }
