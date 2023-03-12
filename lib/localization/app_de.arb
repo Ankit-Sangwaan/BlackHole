@@ -682,5 +682,15 @@
   "radio": "Radio",
   "@radio": {},
   "cantFind": "Nichts Passendes gefunden? ",
-  "@cantFind": {}
+  "@cantFind": {},
+  "showTopCharts": "Top-Charts anzeigen",
+  "@showTopCharts": {},
+  "showTopChartsSub": "Spotify-Top-Charts auf dem Startbildschirm anzeigen",
+  "@showTopChartsSub": {},
+  "mostPlayedSong": "Meistgespieltes Lied",
+  "@mostPlayedSong": {},
+  "stats": "Statistiken",
+  "@stats": {},
+  "songsPlayed": "Gespielte Lieder",
+  "@songsPlayed": {}
 }
