@@ -184,8 +184,8 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                             songsList: recentList,
                             onTap: (int idx) {
                               PlayerInvoke.init(
-                                songsList: recentList,
-                                index: idx,
+                                songsList: [recentList[idx]],
+                                index: 0,
                                 isOffline: false,
                               );
                               Navigator.pushNamed(context, '/player');

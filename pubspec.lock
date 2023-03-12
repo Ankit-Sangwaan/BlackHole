@@ -570,10 +570,10 @@ packages:
     dependency: "direct main"
     description:
       name: on_audio_query
-      sha256: "151c7d636f48e7cbb5080748114c7a10aea8fdb8c3e1d7f48819146b346e0e38"
+      sha256: bc07b82fc761c9599fe999b07b1a7c839c56604160acaf65777b4d5a00f68666
       url: "https://pub.dev"
     source: hosted
-    version: "2.6.1"
+    version: "2.6.2"
   on_audio_query_platform_interface:
     dependency: transitive
     description:
