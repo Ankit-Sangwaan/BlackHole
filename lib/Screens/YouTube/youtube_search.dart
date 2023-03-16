@@ -133,6 +133,11 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                       fetched = false;
                       query = submittedQuery;
                       _controller.text = submittedQuery;
+                      _controller.selection = TextSelection.fromPosition(
+                        TextPosition(
+                          offset: query.length,
+                        ),
+                      );
                       status = false;
                       searchedList = [];
                     });
