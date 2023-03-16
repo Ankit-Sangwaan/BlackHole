@@ -672,5 +672,11 @@
   "showTopChartsSub": "Показувати Топ Чарти Spotify на головному екрані",
   "@showTopChartsSub": {},
   "cantFind": "Не можете знайти те, що шукаєте? ",
-  "@cantFind": {}
+  "@cantFind": {},
+  "mostPlayedSong": "Найпопулярніша пісня",
+  "@mostPlayedSong": {},
+  "songsPlayed": "Прослухані пісні",
+  "@songsPlayed": {},
+  "stats": "Статистика",
+  "@stats": {}
 }

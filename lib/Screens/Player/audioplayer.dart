@@ -2021,7 +2021,9 @@ class NameNControls extends StatelessWidget {
 
                           /// Subtitle container
                           AnimatedText(
-                            text: (mediaItem.album ?? '').isEmpty
+                            text: ((mediaItem.album ?? '').isEmpty ||
+                                    ((mediaItem.album ?? '') ==
+                                        (mediaItem.artist ?? '')))
                                 ? '${(mediaItem.artist ?? "").isEmpty ? "Unknown" : mediaItem.artist}'
                                 : '${(mediaItem.artist ?? "").isEmpty ? "Unknown" : mediaItem.artist} • ${mediaItem.album}',
                             pauseAfterRound: const Duration(seconds: 3),

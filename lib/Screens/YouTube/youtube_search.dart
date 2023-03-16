@@ -36,7 +36,12 @@ import 'package:logging/logging.dart';
 
 class YouTubeSearchPage extends StatefulWidget {
   final String query;
-  const YouTubeSearchPage({super.key, required this.query});
+  final bool autofocus;
+  const YouTubeSearchPage({
+    super.key,
+    required this.query,
+    this.autofocus = false,
+  });
   @override
   _YouTubeSearchPageState createState() => _YouTubeSearchPageState();
 }
@@ -119,6 +124,7 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                   isYt: true,
                   controller: _controller,
                   liveSearch: true,
+                  autofocus: widget.autofocus,
                   leading: IconButton(
                     icon: const Icon(Icons.arrow_back_rounded),
                     onPressed: () => Navigator.pop(context),
@@ -149,76 +155,86 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                           top: 70,
                           left: 20,
                         ),
-                        child: Row(
-                          children: [
-                            ChoiceChip(
-                              label: const Text('YT Music'),
-                              selectedColor: Theme.of(context)
-                                  .colorScheme
-                                  .secondary
-                                  .withOpacity(0.2),
-                              labelStyle: TextStyle(
-                                color: searchYtMusic
-                                    ? Theme.of(context).colorScheme.secondary
-                                    : Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .color,
-                                fontWeight: searchYtMusic
-                                    ? FontWeight.w600
-                                    : FontWeight.normal,
+                        child: (query.isEmpty && widget.query.isEmpty)
+                            ? null
+                            : Row(
+                                children: [
+                                  ChoiceChip(
+                                    label: const Text('YT Music'),
+                                    selectedColor: Theme.of(context)
+                                        .colorScheme
+                                        .secondary
+                                        .withOpacity(0.2),
+                                    labelStyle: TextStyle(
+                                      color: searchYtMusic
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .secondary
+                                          : Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .color,
+                                      fontWeight: searchYtMusic
+                                          ? FontWeight.w600
+                                          : FontWeight.normal,
+                                    ),
+                                    selected: searchYtMusic,
+                                    onSelected: (bool selected) {
+                                      if (selected) {
+                                        searchYtMusic = true;
+                                        fetched = false;
+                                        status = false;
+                                        Hive.box('settings').put(
+                                          'searchYtMusic',
+                                          searchYtMusic,
+                                        );
+                                        setState(() {});
+                                      }
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    width: 5,
+                                  ),
+                                  ChoiceChip(
+                                    label: Text(
+                                      AppLocalizations.of(
+                                        context,
+                                      )!
+                                          .youTube,
+                                    ),
+                                    selectedColor: Theme.of(context)
+                                        .colorScheme
+                                        .secondary
+                                        .withOpacity(0.2),
+                                    labelStyle: TextStyle(
+                                      color: !searchYtMusic
+                                          ? Theme.of(context)
+                                              .colorScheme
+                                              .secondary
+                                          : Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .color,
+                                      fontWeight: !searchYtMusic
+                                          ? FontWeight.w600
+                                          : FontWeight.normal,
+                                    ),
+                                    selected: !searchYtMusic,
+                                    onSelected: (bool selected) {
+                                      if (selected) {
+                                        searchYtMusic = false;
+                                        fetched = false;
+                                        status = false;
+                                        Hive.box('settings').put(
+                                          'searchYtMusic',
+                                          searchYtMusic,
+                                        );
+                                        setState(() {});
+                                      }
+                                    },
+                                  ),
+                                ],
                               ),
-                              selected: searchYtMusic,
-                              onSelected: (bool selected) {
-                                if (selected) {
-                                  searchYtMusic = true;
-                                  fetched = false;
-                                  status = false;
-                                  Hive.box('settings')
-                                      .put('searchYtMusic', searchYtMusic);
-                                  setState(() {});
-                                }
-                              },
-                            ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            ChoiceChip(
-                              label: Text(
-                                AppLocalizations.of(
-                                  context,
-                                )!
-                                    .youTube,
-                              ),
-                              selectedColor: Theme.of(context)
-                                  .colorScheme
-                                  .secondary
-                                  .withOpacity(0.2),
-                              labelStyle: TextStyle(
-                                color: !searchYtMusic
-                                    ? Theme.of(context).colorScheme.secondary
-                                    : Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .color,
-                                fontWeight: !searchYtMusic
-                                    ? FontWeight.w600
-                                    : FontWeight.normal,
-                              ),
-                              selected: !searchYtMusic,
-                              onSelected: (bool selected) {
-                                if (selected) {
-                                  searchYtMusic = false;
-                                  fetched = false;
-                                  status = false;
-                                  Hive.box('settings')
-                                      .put('searchYtMusic', searchYtMusic);
-                                  setState(() {});
-                                }
-                              },
-                            ),
-                          ],
-                        ),
                       ),
                       Expanded(
                         child: (!fetched)
@@ -233,9 +249,6 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                     physics: const BouncingScrollPhysics(),
                                     child: Column(
                                       children: [
-                                        const SizedBox(
-                                          height: 70,
-                                        ),
                                         Align(
                                           alignment: Alignment.topLeft,
                                           child: Wrap(
@@ -281,7 +294,10 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                                   index]
                                                               .toString()
                                                               .trim();
+                                                          _controller.text =
+                                                              query;
                                                           status = false;
+                                                          fetched = false;
                                                         },
                                                       );
                                                     },

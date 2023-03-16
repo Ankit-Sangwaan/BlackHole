@@ -680,5 +680,11 @@
   "showTopCharts": "शीर्ष चार्ट दिखाएं",
   "@showTopCharts": {},
   "showTopChartsSub": "होम स्क्रीन पर Spotify शीर्ष चार्ट दिखाएं",
-  "@showTopChartsSub": {}
+  "@showTopChartsSub": {},
+  "songsPlayed": "चलाए गीत",
+  "@songsPlayed": {},
+  "mostPlayedSong": "सबसे ज्यादा चलाया गीत",
+  "@mostPlayedSong": {},
+  "stats": "आंकड़े",
+  "@stats": {}
 }

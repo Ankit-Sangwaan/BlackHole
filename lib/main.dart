@@ -33,6 +33,7 @@ import 'package:blackhole/Screens/Library/downloads.dart';
 import 'package:blackhole/Screens/Library/nowplaying.dart';
 import 'package:blackhole/Screens/Library/playlists.dart';
 import 'package:blackhole/Screens/Library/recent.dart';
+import 'package:blackhole/Screens/Library/stats.dart';
 import 'package:blackhole/Screens/Login/auth.dart';
 import 'package:blackhole/Screens/Login/pref.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
@@ -306,6 +307,7 @@ class _MyAppState extends State<MyApp> {
         '/nowplaying': (context) => NowPlaying(),
         '/recent': (context) => RecentlyPlayed(),
         '/downloads': (context) => const Downloads(),
+        '/stats': (context) => const Stats(),
       },
       navigatorKey: navigatorKey,
       onGenerateRoute: (RouteSettings settings) {

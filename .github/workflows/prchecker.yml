@@ -67,13 +67,13 @@ jobs:
           name: app-arm64-v8a-debug.apk
           path: build/app/outputs/apk/release/app-arm64-v8a-debug.apk
 
-      - name: Commit on Telegram
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_USER_ID }}
-          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          format: markdown
-          disable_web_page_preview: true
-          message: |
-            New PR raised to [${{ github.event.repository.name }}](${{ github.event.repository.html_url }}) by [${{ github.event.sender.name }}](${{ github.event.sender.html_url }}).
-          document: build/app/outputs/apk/release/app-arm64-v8a-debug.apk
+      # - name: Commit on Telegram
+      #   uses: appleboy/telegram-action@master
+      #   with:
+      #     to: ${{ secrets.TELEGRAM_USER_ID }}
+      #     token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      #     format: markdown
+      #     disable_web_page_preview: true
+      #     message: |
+      #       New PR raised to [${{ github.event.repository.name }}](${{ github.event.repository.html_url }}) by [${{ github.event.sender.name }}](${{ github.event.sender.html_url }}).
+      #     document: build/app/outputs/apk/release/app-arm64-v8a-debug.apk

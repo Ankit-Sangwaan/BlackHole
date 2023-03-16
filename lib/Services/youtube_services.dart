@@ -394,10 +394,15 @@ class YouTubeServices {
     }
     return {
       'id': video.id.value,
-      'album': (data?['album'] ?? '') != '' ? data!['album'] : video.author,
+      'album': (data?['album'] ?? '') != ''
+          ? data!['album']
+          : video.author.replaceAll('- Topic', '').trim(),
       'duration': video.duration?.inSeconds.toString(),
-      'title': (data?['title'] ?? '') != '' ? data!['title'] : video.title,
-      'artist': (data?['artist'] ?? '') != '' ? data!['artist'] : video.author,
+      'title':
+          (data?['title'] ?? '') != '' ? data!['title'] : video.title.trim(),
+      'artist': (data?['artist'] ?? '') != ''
+          ? data!['artist']
+          : video.author.replaceAll('- Topic', '').trim(),
       'image': video.thumbnails.maxResUrl,
       'secondImage': video.thumbnails.highResUrl,
       'language': 'YouTube',

@@ -184,8 +184,8 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                             songsList: recentList,
                             onTap: (int idx) {
                               PlayerInvoke.init(
-                                songsList: recentList,
-                                index: idx,
+                                songsList: [recentList[idx]],
+                                index: 0,
                                 isOffline: false,
                               );
                               Navigator.pushNamed(context, '/player');
@@ -198,7 +198,9 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                 return (playlistNames.isEmpty ||
                         !(Hive.box('settings')
                             .get('showPlaylist', defaultValue: true) as bool) ||
-                        likedCount() == 0)
+                        (playlistNames.length == 1 &&
+                            playlistNames.first == 'Favorite Songs' &&
+                            likedCount() == 0))
                     ? const SizedBox()
                     : Column(
                         children: [

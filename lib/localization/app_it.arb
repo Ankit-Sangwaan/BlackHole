@@ -237,7 +237,7 @@
   "@title": {},
   "useProxy": "Usa proxy",
   "@useProxy": {},
-  "useProxySub": "Accendi questo se stai avendo problemi con la ricerca, per esempio trovi solo canzoni indiane o non trovi alcun risultato, puoi anche usare una VPN indiana\n",
+  "useProxySub": "Accendi questo se non sei indiano e stai avendo problemi con la ricerca, per esempio se trovi solo canzoni indiane o non trovi alcun risultato, puoi anche usare una VPN indiana\n",
   "@useProxySub": {},
   "upNext": "Prossimo",
   "@upNext": {},
@@ -672,5 +672,15 @@
   "radio": "Radio",
   "@radio": {},
   "cantFind": "Non riesci a trovare quello che stai cercando? ",
-  "@cantFind": {}
+  "@cantFind": {},
+  "showTopCharts": "Mostra le classifiche principali",
+  "@showTopCharts": {},
+  "showTopChartsSub": "Mostra le classifiche principali nella home screen",
+  "@showTopChartsSub": {},
+  "mostPlayedSong": "Canzone più ascoltata",
+  "@mostPlayedSong": {},
+  "stats": "Statistiche",
+  "@stats": {},
+  "songsPlayed": "Canzoni riprodotte",
+  "@songsPlayed": {}
 }

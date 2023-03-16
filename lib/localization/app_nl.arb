@@ -684,5 +684,11 @@
   "showTopCharts": "Toplijsten tonen",
   "@showTopCharts": {},
   "showTopChartsSub": "Toon Spotify-toplijsten op het startscherm",
-  "@showTopChartsSub": {}
+  "@showTopChartsSub": {},
+  "mostPlayedSong": "Meest beluisterde nummer",
+  "@mostPlayedSong": {},
+  "stats": "Statistieken",
+  "@stats": {},
+  "songsPlayed": "Beluisterde nummers",
+  "@songsPlayed": {}
 }

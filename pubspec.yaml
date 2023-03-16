@@ -40,7 +40,7 @@ dependencies:
   logging: ^1.1.1
   marquee: ^2.2.3
   material_design_icons_flutter: 5.0.5955-rc.1
-  on_audio_query: ^2.6.1
+  on_audio_query: ^2.6.2
   package_info_plus: ^3.0.2
   palette_generator: ^0.3.3+2
   path_provider: ^2.0.12
