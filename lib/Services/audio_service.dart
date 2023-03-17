@@ -47,6 +47,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
   late AudioPlayer? _player;
   late String preferredQuality;
+  late List<int> preferredCompactNotificationButtons = [1, 2, 3];
   late bool resetOnSkip;
   // late String? stationId = '';
   // late List<String> stationNames = [];
@@ -123,6 +124,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
   Future<void> _init() async {
     Logger.root.info('starting audio service');
+    preferredCompactNotificationButtons = Hive.box('settings')
+            .get('preferredCompactNotificationButtons', defaultValue: [1, 2, 3])
+        as List<int>;
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
 
@@ -899,7 +903,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
           MediaAction.seekForward,
           MediaAction.seekBackward,
         },
-        androidCompactActionIndices: const [0, 2, 3],
+        androidCompactActionIndices: preferredCompactNotificationButtons,
         processingState: const {
           ProcessingState.idle: AudioProcessingState.idle,
           ProcessingState.loading: AudioProcessingState.loading,
