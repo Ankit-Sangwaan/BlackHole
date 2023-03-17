@@ -686,5 +686,9 @@
   "songsPlayed": "Canciones reproducidas",
   "@songsPlayed": {},
   "stats": "Estadísticas",
-  "@stats": {}
+  "@stats": {},
+  "compactNotificationButtons": "Botones de notificación compactos",
+  "@compactNotificationButtons": {},
+  "compactNotificationButtonsSub": "Botones para mostrar en la vista compacta de notificaciones",
+  "@compactNotificationButtonsSub": {}
 }
