@@ -690,5 +690,9 @@
   "songsPlayed": "Přehrané skladby",
   "@songsPlayed": {},
   "stats": "Statistiky",
-  "@stats": {}
+  "@stats": {},
+  "compactNotificationButtonsSub": "Tlačítka pro zobrazení v kompaktním zobrazení oznámení",
+  "@compactNotificationButtonsSub": {},
+  "compactNotificationButtons": "Kompaktní tlačítka oznámení",
+  "@compactNotificationButtons": {}
 }
