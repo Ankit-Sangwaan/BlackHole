@@ -678,5 +678,9 @@
   "songsPlayed": "שירים שנוגנו",
   "@songsPlayed": {},
   "stats": "סטטיסטיקה",
-  "@stats": {}
+  "@stats": {},
+  "compactNotificationButtons": "כפתורים מצומצמים בהתראה",
+  "@compactNotificationButtons": {},
+  "compactNotificationButtonsSub": "כפתורים שיופיעו בתצוגת התראה מצומצמת",
+  "@compactNotificationButtonsSub": {}
 }
