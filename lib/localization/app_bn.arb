@@ -97,7 +97,7 @@
   "@canvasColorSub": {},
   "clear": "পরিষ্কার",
   "@clear": {},
-  "checkUpdate": "আপডেটের জন্য পরীক্ষা করা হচ্ছে...",
+  "checkUpdate": "আপডেটের জন্য স্বয়ং পরীক্ষা করুন",
   "@checkUpdate": {},
   "cantFind": "যা খুঁজছেন তা কি পাচ্ছেন না? ",
   "@cantFind": {},
