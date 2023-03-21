@@ -11,7 +11,7 @@
   "@addedTo": {},
   "addedToPlaylists": "ಪ್ಲೇಪಟ್ಟಿಗಳಿಗೆ ಸೇರಿಸಲಾಗಿದೆ",
   "@addedToPlaylists": {},
-  "addedToQueue": "ಸರದಿಯಲ್ಲಿ ಸೇರಿಸಲಾಗಿದೆ",
+  "addedToQueue": "ಸಾಲಿಗೆ ಸೇರಿಸಲಾಗಿದೆ",
   "@addedToQueue": {},
   "adjustSpeed": "ವೇಗವನ್ನು ಹೊಂದಿಸಿ",
   "@adjustSpeed": {},
@@ -58,5 +58,17 @@
   "bgGradSub": "ಎಲ್ಲೆಡೆ ಹಿನ್ನೆಲೆಯಾಗಿ ಬಳಸಲಾಗುವ ಗ್ರೇಡಿಯಂಟ್",
   "@bgGradSub": {},
   "blacklistedHomeSectionsSub": "ಈ ಶೀರ್ಷಿಕೆಗಳನ್ನು ಹೊಂದಿರುವ ವಿಭಾಗಗಳನ್ನು ಹೋಮ್ ಸ್ಕ್ರೀನ್ ನಲ್ಲಿ ತೋರಿಸಲಾಗುವುದಿಲ್ಲ",
-  "@blacklistedHomeSectionsSub": {}
+  "@blacklistedHomeSectionsSub": {},
+  "autoBackLocation": "ಸ್ವಯಂ ಬ್ಯಾಕಪ್ ಸ್ಥಳ",
+  "@autoBackLocation": {},
+  "addToQueue": "ಸಾಲಿಗೆ ಸೇರಿಸಿ",
+  "@addToQueue": {},
+  "addToPlaylist": "ಪ್ಲೇಪಟ್ಟಿಗೆ ಸೇರಿಸಿ",
+  "@addToPlaylist": {},
+  "aboutLine1": "ಇದು ತೆರೆದ ಮೂಲ ಯೋಜನೆಯಾಗಿದೆ ಮತ್ತು ಇದನ್ನು ಕಾಣಬಹುದು",
+  "@aboutLine1": {},
+  "aboutLine2": "ನಿಮಗೆ ನನ್ನ ಕೆಲಸ ನಿಚ್ಚೆದಲ್ಲಿ ಕೆಲವು ♥ ಮತ್ತು ಭಂಡಾರವನ್ನು⭐ ಮಾಡಿ",
+  "@aboutLine2": {},
+  "accent": "ಉಚ್ಚಾರಣೆ ಬಣ್ಣ ಮತ್ತು ವರ್ಣ",
+  "@accent": {}
 }
