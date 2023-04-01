@@ -694,5 +694,7 @@
   "compactNotificationButtonsSub": "Te tonen knoppen in de compacte meldingsweergave",
   "@compactNotificationButtonsSub": {},
   "compactNotificationButtons": "Compacte meldingsknoppen",
-  "@compactNotificationButtons": {}
+  "@compactNotificationButtons": {},
+  "compactNotificationButtonsHeader": "Je kunt maximaal 3 knoppen kiezen",
+  "@compactNotificationButtonsHeader": {}
 }
