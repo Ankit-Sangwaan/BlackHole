@@ -682,5 +682,7 @@
   "compactNotificationButtons": "כפתורים מצומצמים בהתראה",
   "@compactNotificationButtons": {},
   "compactNotificationButtonsSub": "כפתורים שיופיעו בתצוגת התראה מצומצמת",
-  "@compactNotificationButtonsSub": {}
+  "@compactNotificationButtonsSub": {},
+  "compactNotificationButtonsHeader": "ניתן לבחור עד 3 כפתורים",
+  "@compactNotificationButtonsHeader": {}
 }
