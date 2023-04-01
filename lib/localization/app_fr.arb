@@ -696,5 +696,7 @@
   "compactNotificationButtonsSub": "Boutons à afficher dans la vue de notification compacte",
   "@compactNotificationButtonsSub": {},
   "compactNotificationButtons": "Boutons de notification compacts",
-  "@compactNotificationButtons": {}
+  "@compactNotificationButtons": {},
+  "compactNotificationButtonsHeader": "Vous pouvez sélectionner au maximum 3 boutons",
+  "@compactNotificationButtonsHeader": {}
 }
