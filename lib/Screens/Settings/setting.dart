@@ -126,6 +126,10 @@ class _SettingPageState extends State<SettingPage>
     'preferredMiniButtons',
     defaultValue: ['Like', 'Play/Pause', 'Next'],
   )?.toList() as List;
+  List<int> preferredCompactNotificationButtons = Hive.box('settings').get(
+    'preferredCompactNotificationButtons',
+    defaultValue: [1, 2, 3],
+  ) as List<int>;
   final ValueNotifier<List> sectionsToShow = ValueNotifier<List>(
     Hive.box('settings').get(
       'sectionsToShow',
@@ -1511,6 +1515,189 @@ class _SettingPageState extends State<SettingPage>
                                                 Hive.box('settings').put(
                                                   'miniButtonsOrder',
                                                   order,
+                                                );
+                                              },
+                                            );
+                                          },
+                                          child: Text(
+                                            AppLocalizations.of(
+                                              context,
+                                            )!
+                                                .ok,
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 5,
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            );
+                          },
+                        ),
+                        ListTile(
+                          title: Text(
+                            AppLocalizations.of(
+                              context,
+                            )!
+                                .compactNotificationButtons,
+                          ),
+                          subtitle: Text(
+                            AppLocalizations.of(
+                              context,
+                            )!
+                                .compactNotificationButtonsSub,
+                          ),
+                          dense: true,
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                final Set<int> checked = {
+                                  ...preferredCompactNotificationButtons
+                                };
+                                final List<Map> buttons = [
+                                  {
+                                    'name': 'Like',
+                                    'index': 0,
+                                  },
+                                  {
+                                    'name': 'Previous',
+                                    'index': 1,
+                                  },
+                                  {
+                                    'name': 'Play/Pause',
+                                    'index': 2,
+                                  },
+                                  {
+                                    'name': 'Next',
+                                    'index': 3,
+                                  },
+                                  {
+                                    'name': 'Stop',
+                                    'index': 4,
+                                  },
+                                ];
+                                return StatefulBuilder(
+                                  builder: (
+                                    BuildContext context,
+                                    StateSetter setStt,
+                                  ) {
+                                    return AlertDialog(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          15.0,
+                                        ),
+                                      ),
+                                      content: SizedBox(
+                                        width: 500,
+                                        child: ListView(
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          shrinkWrap: true,
+                                          padding: const EdgeInsets.fromLTRB(
+                                            0,
+                                            10,
+                                            0,
+                                            10,
+                                          ),
+                                          children: [
+                                            Center(
+                                              child: Text(
+                                                AppLocalizations.of(
+                                                  context,
+                                                )!
+                                                    .compactNotificationButtonsHeader,
+                                              ),
+                                            ),
+                                            ...buttons.map((value) {
+                                              return CheckboxListTile(
+                                                dense: true,
+                                                contentPadding:
+                                                    const EdgeInsets.only(
+                                                  left: 16.0,
+                                                ),
+                                                activeColor: Theme.of(context)
+                                                    .colorScheme
+                                                    .secondary,
+                                                checkColor: Theme.of(
+                                                          context,
+                                                        )
+                                                            .colorScheme
+                                                            .secondary ==
+                                                        Colors.white
+                                                    ? Colors.black
+                                                    : null,
+                                                value: checked.contains(
+                                                  value['index'] as int,
+                                                ),
+                                                title: Text(
+                                                  value['name'] as String,
+                                                ),
+                                                onChanged: (bool? isChecked) {
+                                                  setStt(
+                                                    () {
+                                                      isChecked!
+                                                          ? checked.add(
+                                                              value['index']
+                                                                  as int,
+                                                            )
+                                                          : checked.removeWhere(
+                                                              (int element) =>
+                                                                  element ==
+                                                                  value[
+                                                                      'index'],
+                                                            );
+                                                    },
+                                                  );
+                                                },
+                                              );
+                                            })
+                                          ],
+                                        ),
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            foregroundColor:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.grey[700],
+                                          ),
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text(
+                                            AppLocalizations.of(
+                                              context,
+                                            )!
+                                                .cancel,
+                                          ),
+                                        ),
+                                        TextButton(
+                                          style: TextButton.styleFrom(
+                                            foregroundColor: Theme.of(context)
+                                                        .colorScheme
+                                                        .secondary ==
+                                                    Colors.white
+                                                ? Colors.black
+                                                : null,
+                                            backgroundColor: Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                          ),
+                                          onPressed: () {
+                                            setState(
+                                              () {
+                                                preferredCompactNotificationButtons =
+                                                    checked.toList()..sort();
+                                                Navigator.pop(context);
+                                                Hive.box('settings').put(
+                                                  'preferredCompactNotificationButtons',
+                                                  preferredCompactNotificationButtons,
                                                 );
                                               },
                                             );

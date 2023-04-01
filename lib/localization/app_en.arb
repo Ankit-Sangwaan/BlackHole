@@ -125,6 +125,8 @@
   "@clearCacheSub": {},
   "compactNotificationButtons": "Compact Notification Buttons",
   "@compactNotificationButtons": {},
+  "compactNotificationButtonsHeader": "You can only 3 buttons",
+  "@compactNotificationButtonsHeader": {},
   "compactNotificationButtonsSub": "Buttons to show in Compact Notification View",
   "@compactNotificationButtonsSub": {},
   "confirmViewable": "Make sure the playlist is viewable",
