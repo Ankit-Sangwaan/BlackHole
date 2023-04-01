@@ -127,6 +127,9 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     preferredCompactNotificationButtons = Hive.box('settings')
             .get('preferredCompactNotificationButtons', defaultValue: [1, 2, 3])
         as List<int>;
+    if (preferredCompactNotificationButtons.length > 3) {
+      preferredCompactNotificationButtons = [1, 2, 3];
+    }
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
 
