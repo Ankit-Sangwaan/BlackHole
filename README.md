@@ -14,6 +14,9 @@ An Open-Source Music Player App for all your needs!
 
 ## Download
 
+[<img src="get_website.png"
+     alt="Download from Website"
+     height="90">](https://sangwan5688.github.io/download/)
 [<img src="get_github.png"
      alt="Download from GitHub"
      height="90">](https://github.com/Sangwan5688/BlackHole/releases)
