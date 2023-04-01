@@ -1639,17 +1639,24 @@ class _SettingPageState extends State<SettingPage>
                                                 onChanged: (bool? isChecked) {
                                                   setStt(
                                                     () {
-                                                      isChecked!
-                                                          ? checked.add(
-                                                              value['index']
-                                                                  as int,
-                                                            )
-                                                          : checked.removeWhere(
-                                                              (int element) =>
-                                                                  element ==
-                                                                  value[
-                                                                      'index'],
-                                                            );
+                                                      if (isChecked!) {
+                                                        while (checked.length >=
+                                                            3) {
+                                                          checked.remove(
+                                                            checked.first,
+                                                          );
+                                                        }
+
+                                                        checked.add(
+                                                          value['index'] as int,
+                                                        );
+                                                      } else {
+                                                        checked.removeWhere(
+                                                          (int element) =>
+                                                              element ==
+                                                              value['index'],
+                                                        );
+                                                      }
                                                     },
                                                   );
                                                 },
@@ -1692,6 +1699,11 @@ class _SettingPageState extends State<SettingPage>
                                           onPressed: () {
                                             setState(
                                               () {
+                                                while (checked.length > 3) {
+                                                  checked.remove(
+                                                    checked.first,
+                                                  );
+                                                }
                                                 preferredCompactNotificationButtons =
                                                     checked.toList()..sort();
                                                 Navigator.pop(context);

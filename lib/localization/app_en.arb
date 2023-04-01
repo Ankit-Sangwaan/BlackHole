@@ -125,7 +125,7 @@
   "@clearCacheSub": {},
   "compactNotificationButtons": "Compact Notification Buttons",
   "@compactNotificationButtons": {},
-  "compactNotificationButtonsHeader": "You can only 3 buttons",
+  "compactNotificationButtonsHeader": "You can select max 3 buttons",
   "@compactNotificationButtonsHeader": {},
   "compactNotificationButtonsSub": "Buttons to show in Compact Notification View",
   "@compactNotificationButtonsSub": {},
