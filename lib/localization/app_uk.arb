@@ -678,5 +678,9 @@
   "songsPlayed": "Прослухані пісні",
   "@songsPlayed": {},
   "stats": "Статистика",
-  "@stats": {}
+  "@stats": {},
+  "compactNotificationButtonsSub": "Кнопки для відображення в компактному поданні сповіщень",
+  "@compactNotificationButtonsSub": {},
+  "compactNotificationButtons": "Компактні кнопки сповіщень",
+  "@compactNotificationButtons": {}
 }

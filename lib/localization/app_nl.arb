@@ -690,5 +690,9 @@
   "stats": "Statistieken",
   "@stats": {},
   "songsPlayed": "Beluisterde nummers",
-  "@songsPlayed": {}
+  "@songsPlayed": {},
+  "compactNotificationButtonsSub": "Te tonen knoppen in de compacte meldingsweergave",
+  "@compactNotificationButtonsSub": {},
+  "compactNotificationButtons": "Compacte meldingsknoppen",
+  "@compactNotificationButtons": {}
 }

@@ -692,5 +692,9 @@
   "stats": "Statistiques",
   "@stats": {},
   "mostPlayedSong": "Musique la plus jouée",
-  "@mostPlayedSong": {}
+  "@mostPlayedSong": {},
+  "compactNotificationButtonsSub": "Boutons à afficher dans la vue de notification compacte",
+  "@compactNotificationButtonsSub": {},
+  "compactNotificationButtons": "Boutons de notification compacts",
+  "@compactNotificationButtons": {}
 }
