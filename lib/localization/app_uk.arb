@@ -682,5 +682,7 @@
   "compactNotificationButtonsSub": "Кнопки для відображення в компактному поданні сповіщень",
   "@compactNotificationButtonsSub": {},
   "compactNotificationButtons": "Компактні кнопки сповіщень",
-  "@compactNotificationButtons": {}
+  "@compactNotificationButtons": {},
+  "compactNotificationButtonsHeader": "Ви можете вибрати максимум 3 кнопки",
+  "@compactNotificationButtonsHeader": {}
 }
