@@ -694,5 +694,7 @@
   "compactNotificationButtonsSub": "Tlačítka pro zobrazení v kompaktním zobrazení oznámení",
   "@compactNotificationButtonsSub": {},
   "compactNotificationButtons": "Kompaktní tlačítka oznámení",
-  "@compactNotificationButtons": {}
+  "@compactNotificationButtons": {},
+  "compactNotificationButtonsHeader": "Můžete vybrat maximálně 3 tlačítka",
+  "@compactNotificationButtonsHeader": {}
 }
