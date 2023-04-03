@@ -321,6 +321,7 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
               centerTitle: true,
               // floating: true,
               backgroundColor: isTransparent.value ? Colors.transparent : null,
+              iconTheme: Theme.of(context).iconTheme,
               expandedHeight: expandedHeight,
               actions: actions,
               flexibleSpace: child,

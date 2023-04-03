@@ -185,10 +185,11 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                   Icon(
                                                     Icons.play_arrow_rounded,
                                                     color: Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.dark
-                                                        ? Colors.white
-                                                        : Colors.black,
+                                                                .colorScheme
+                                                                .secondary ==
+                                                            Colors.white
+                                                        ? Colors.black
+                                                        : Colors.white,
                                                     size: 26.0,
                                                   ),
                                                   const SizedBox(width: 5.0),
@@ -202,10 +203,11 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                           FontWeight.bold,
                                                       fontSize: 18.0,
                                                       color: Theme.of(context)
-                                                                  .brightness ==
-                                                              Brightness.dark
-                                                          ? Colors.white
-                                                          : Colors.black,
+                                                                  .colorScheme
+                                                                  .secondary ==
+                                                              Colors.white
+                                                          ? Colors.black
+                                                          : Colors.white,
                                                     ),
                                                     textAlign: TextAlign.center,
                                                   ),
@@ -286,11 +288,10 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                   Icon(
                                                     Icons.podcasts_rounded,
                                                     color: Theme.of(context)
-                                                                .colorScheme
-                                                                .secondary ==
-                                                            Colors.white
-                                                        ? Colors.black
-                                                        : Colors.white,
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? Colors.white
+                                                        : Colors.black,
                                                     size: 26.0,
                                                   ),
                                                   const SizedBox(width: 5.0),
@@ -304,11 +305,10 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                                           FontWeight.bold,
                                                       fontSize: 18.0,
                                                       color: Theme.of(context)
-                                                                  .colorScheme
-                                                                  .secondary ==
-                                                              Colors.white
-                                                          ? Colors.black
-                                                          : Colors.white,
+                                                                  .brightness ==
+                                                              Brightness.dark
+                                                          ? Colors.white
+                                                          : Colors.black,
                                                     ),
                                                     textAlign: TextAlign.center,
                                                   ),

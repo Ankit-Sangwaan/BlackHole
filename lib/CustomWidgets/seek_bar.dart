@@ -79,10 +79,20 @@ class _SeekBarState extends State<SeekBar> {
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                // if (widget.offline)
+                //   Text(
+                //     'Offline',
+                //     style: TextStyle(
+                //       fontWeight: FontWeight.w500,
+                //       color: Theme.of(context).disabledColor,
+                //       fontSize: 14.0,
+                //     ),
+                //   )
+                // else
                 const SizedBox(),
                 StreamBuilder<double>(
                   stream: widget.audioHandler.speed,
@@ -174,21 +184,11 @@ class _SeekBarState extends State<SeekBar> {
                     },
                   ),
                 ),
-                // if (widget.offline)
-                //   Positioned(
-                //     left: 22.0,
-                //     bottom: 45.0,
-                //     child: Icon(
-                //       Icons.wifi_off_rounded,
-                //       color: Theme.of(context).disabledColor,
-                //       size: 15.0,
-                //     ),
-                //   ),
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25.0),
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
