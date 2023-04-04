@@ -696,5 +696,7 @@
   "compactNotificationButtons": "Kompakte Benachrichtigungsschaltflächen",
   "@compactNotificationButtons": {},
   "compactNotificationButtonsSub": "Schaltflächen, die in der kompakten Benachrichtigungsansicht angezeigt werden",
-  "@compactNotificationButtonsSub": {}
+  "@compactNotificationButtonsSub": {},
+  "compactNotificationButtonsHeader": "Sie können maximal 3 Buttons auswählen",
+  "@compactNotificationButtonsHeader": {}
 }
