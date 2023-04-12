@@ -678,5 +678,11 @@
   "songsPlayed": "ਚਲਾਏ ਹੋਏ ਗੀਤ",
   "@songsPlayed": {},
   "stats": "ਅੰਕੜੇ",
-  "@stats": {}
+  "@stats": {},
+  "compactNotificationButtonsSub": "ਸੰਖੇਪ ਸੂਚਨਾ ਦ੍ਰਿਸ਼ ਵਿੱਚ ਦਿਖਾਉਣ ਲਈ ਬਟਨ",
+  "@compactNotificationButtonsSub": {},
+  "compactNotificationButtonsHeader": "ਤੁਸੀਂ ਅਧਿਕਤਮ 3 ਬਟਨ ਚੁਣ ਸਕਦੇ ਹੋ",
+  "@compactNotificationButtonsHeader": {},
+  "compactNotificationButtons": "ਸੰਖੇਪ ਸੂਚਨਾ ਬਟਨ",
+  "@compactNotificationButtons": {}
 }
