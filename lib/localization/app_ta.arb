@@ -690,5 +690,13 @@
   "compactNotificationButtonsHeader": "அதிகபட்சம் 3 பொத்தான்களைத் தேர்ந்தெடுக்கலாம்",
   "@compactNotificationButtonsHeader": {},
   "compactNotificationButtons": "இறுகிய அறிவிப்பு பொத்தான்கள்",
-  "@compactNotificationButtons": {}
+  "@compactNotificationButtons": {},
+  "songsPlayed": "இயக்கிய பாடல்கள்",
+  "@songsPlayed": {},
+  "stats": "புள்ளிவிவரங்கள்",
+  "@stats": {},
+  "mostPlayedSong": "அதிகம் இயக்கிய பாடல்",
+  "@mostPlayedSong": {},
+  "compactNotificationButtonsSub": "இறுகிய அறிவிப்புக் காட்சியில் காட்ட வேண்டிய பொத்தான்கள்",
+  "@compactNotificationButtonsSub": {}
 }
