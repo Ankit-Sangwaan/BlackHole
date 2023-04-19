@@ -686,5 +686,9 @@
   "cantFind": "தேடுவது காணவில்லையா?. ",
   "@cantFind": {},
   "radio": "வானொலி",
-  "@radio": {}
+  "@radio": {},
+  "compactNotificationButtonsHeader": "அதிகபட்சம் 3 பொத்தான்களைத் தேர்ந்தெடுக்கலாம்",
+  "@compactNotificationButtonsHeader": {},
+  "compactNotificationButtons": "இறுகிய அறிவிப்பு பொத்தான்கள்",
+  "@compactNotificationButtons": {}
 }
