@@ -669,7 +669,7 @@
   "@mergePlaylists": {},
   "openInSpotify": "在 Spotify 中打开",
   "@openInSpotify": {},
-  "top": "热门",
+  "top": "最热",
   "@top": {},
   "viral": "飙升",
   "@viral": {},
@@ -686,5 +686,17 @@
   "showTopCharts": "显示排行榜",
   "@showTopCharts": {},
   "showTopChartsSub": "在主屏幕上显示 Spotify 排行榜",
-  "@showTopChartsSub": {}
+  "@showTopChartsSub": {},
+  "compactNotificationButtonsSub": "在紧凑通知视图中显示的按钮",
+  "@compactNotificationButtonsSub": {},
+  "mostPlayedSong": "播放次数最多的歌曲",
+  "@mostPlayedSong": {},
+  "songsPlayed": "已播放的歌曲",
+  "@songsPlayed": {},
+  "stats": "统计数据",
+  "@stats": {},
+  "compactNotificationButtonsHeader": "您最多可以选择 3 个按钮",
+  "@compactNotificationButtonsHeader": {},
+  "compactNotificationButtons": "紧凑的通知按钮",
+  "@compactNotificationButtons": {}
 }
