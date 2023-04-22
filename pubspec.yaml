@@ -21,38 +21,38 @@ dependencies:
   carousel_slider: ^4.2.1
   cupertino_icons: ^1.0.5
   dart_des: ^1.0.2
-  device_info_plus: ^8.0.0
+  device_info_plus: ^8.2.0
   file_picker: ^5.2.5
   flip_card: ^0.7.0
   flutter:
     sdk: flutter
   flutter_archive: ^5.0.0
-  flutter_displaymode: ^0.5.0
+  flutter_displaymode: ^0.6.0
   # flutter_downloader: ^1.7.1
   flutter_localizations:
     sdk: flutter
   get_it: ^7.2.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  just_audio: ^0.9.31
+  just_audio: ^0.9.32
   # Discontinued, Use just_audio_windows instead.
   # just_audio_libwinmedia: ^0.0.4 # For windows and linux.
   logging: ^1.1.1
   marquee: ^2.2.3
   material_design_icons_flutter: 5.0.5955-rc.1
-  on_audio_query: ^2.6.2
-  package_info_plus: ^3.0.2
+  on_audio_query: ^2.8.0
+  package_info_plus: ^3.1.0
   palette_generator: ^0.3.3+2
-  path_provider: ^2.0.12
+  path_provider: ^2.0.14
   permission_handler: ^10.2.0
   receive_sharing_intent: ^1.4.5
-  salomon_bottom_bar: ^3.3.1
-  share_plus: ^6.3.0
+  salomon_bottom_bar: ^3.3.2
+  share_plus: ^6.3.2
   sliding_up_panel: ^2.0.0+1
-  supabase: ^1.1.1
-  url_launcher: ^6.1.8
+  supabase: ^1.6.3
+  url_launcher: ^6.1.10
   uuid: ^3.0.7
-  youtube_explode_dart: ^1.12.3
+  youtube_explode_dart: ^1.12.4
 
 dev_dependencies:
   flutter_test:

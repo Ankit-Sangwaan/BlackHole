@@ -96,7 +96,7 @@ class PlayerInvoke {
 
     final String playAlbum = response.album!;
     final int playDuration = response.duration ?? 180000;
-    final String imagePath = '${tempDir.path}/${response.displayNameWOExt}.jpg';
+    final String imagePath = '${tempDir.path}/${response.displayNameWOExt}.png';
 
     final MediaItem tempDict = MediaItem(
       id: response.id.toString(),

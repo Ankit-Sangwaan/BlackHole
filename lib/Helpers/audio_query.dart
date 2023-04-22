@@ -45,6 +45,7 @@ class OfflineAudioQuery {
     return audioQuery.querySongs(
       sortType: sortType ?? SongSortType.DATE_ADDED,
       orderType: orderType ?? OrderType.DESC_OR_GREATER,
+      uriType: UriType.EXTERNAL,
       path: path,
     );
   }
@@ -135,11 +136,11 @@ class OfflineAudioQuery {
     required ArtworkType type,
     required String tempPath,
     required String fileName,
-    int size = 200,
+    int size = 500,
     int quality = 100,
-    ArtworkFormat format = ArtworkFormat.JPEG,
+    ArtworkFormat format = ArtworkFormat.PNG,
   }) async {
-    final File file = File('$tempPath/$fileName.jpg');
+    final File file = File('$tempPath/$fileName.png');
 
     if (!await file.exists()) {
       await file.create();
@@ -160,9 +161,9 @@ class OfflineAudioQuery {
     required ArtworkType type,
     required String tempPath,
     required String fileName,
-    int size = 200,
+    int size = 500,
     int quality = 100,
-    ArtworkFormat format = ArtworkFormat.JPEG,
+    ArtworkFormat format = ArtworkFormat.PNG,
     ArtworkType artworkType = ArtworkType.AUDIO,
     BorderRadius? borderRadius,
     Clip clipBehavior = Clip.antiAlias,

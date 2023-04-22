@@ -186,6 +186,15 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                                       .toFilePath(),
                                                 ),
                                               ),
+                                              errorBuilder:
+                                                  (context, error, stackTrace) {
+                                                return const Image(
+                                                  fit: BoxFit.cover,
+                                                  image: AssetImage(
+                                                    'assets/cover.jpg',
+                                                  ),
+                                                );
+                                              },
                                             ),
                                           )
                                         : SizedBox.square(
