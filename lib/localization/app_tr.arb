@@ -680,5 +680,21 @@
   "radio": "Radyo",
   "@radio": {},
   "cantFind": "Aradığınızı bulamıyor musunuz? ",
-  "@cantFind": {}
+  "@cantFind": {},
+  "stats": "İstatistikler",
+  "@stats": {},
+  "showTopChartsSub": "Ana Ekranda Spotify En İyi Listelerini Göster",
+  "@showTopChartsSub": {},
+  "showTopCharts": "En İyi Listeleri Göster",
+  "@showTopCharts": {},
+  "compactNotificationButtonsSub": "Kompakt Bildirim Görünümünde gösterilecek düğmeler",
+  "@compactNotificationButtonsSub": {},
+  "mostPlayedSong": "En Çok Çalınan Şarkı",
+  "@mostPlayedSong": {},
+  "songsPlayed": "Çalınan Şarkılar",
+  "@songsPlayed": {},
+  "compactNotificationButtonsHeader": "En fazla 3 düğme seçebilirsiniz",
+  "@compactNotificationButtonsHeader": {},
+  "compactNotificationButtons": "Kompakt Bildirim Düğmeleri",
+  "@compactNotificationButtons": {}
 }
