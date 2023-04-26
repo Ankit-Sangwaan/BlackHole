@@ -683,6 +683,7 @@ class _SongsTabState extends State<SongsTab>
                         return ListTile(
                           leading: Card(
                             elevation: 5,
+                            margin: EdgeInsets.zero,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(7.0),
                             ),

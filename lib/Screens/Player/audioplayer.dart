@@ -1144,6 +1144,7 @@ class NowPlayingStream extends StatelessWidget {
                         ),
                       Card(
                         elevation: 5,
+                        margin: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(7.0),
                         ),

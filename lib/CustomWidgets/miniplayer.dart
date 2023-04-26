@@ -169,6 +169,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                   tag: 'currentArtwork',
                                   child: Card(
                                     elevation: 8,
+                                    margin: EdgeInsets.zero,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(7.0),
                                     ),

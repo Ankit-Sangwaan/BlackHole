@@ -261,6 +261,7 @@ class DownloadsSearch extends SearchDelegate {
       itemBuilder: (context, index) => ListTile(
         leading: Card(
           elevation: 5,
+          margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(7.0),
           ),
@@ -357,6 +358,7 @@ class DownloadsSearch extends SearchDelegate {
       itemBuilder: (context, index) => ListTile(
         leading: Card(
           elevation: 5,
+          margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(7.0),
           ),
