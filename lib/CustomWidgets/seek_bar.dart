@@ -133,7 +133,10 @@ class _SeekBarState extends State<SeekBar> {
             child: Stack(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10.0,
+                    vertical: 6.5,
+                  ),
                   child: SliderTheme(
                     data: _sliderThemeData.copyWith(
                       thumbShape: HiddenThumbComponentShape(),
@@ -162,6 +165,9 @@ class _SeekBarState extends State<SeekBar> {
                     inactiveTrackColor: Colors.transparent,
                     activeTrackColor: Theme.of(context).iconTheme.color,
                     thumbColor: Theme.of(context).iconTheme.color,
+                    thumbShape: const RoundSliderThumbShape(
+                      enabledThumbRadius: 8.5,
+                    ),
                     overlayShape: SliderComponentShape.noThumb,
                   ),
                   child: Slider(

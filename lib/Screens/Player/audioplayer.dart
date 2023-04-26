@@ -1902,8 +1902,9 @@ class NameNControls extends StatelessWidget {
     final double nowplayingBoxHeight = min(70, height * 0.15);
     // height > 500 ? height * 0.4 : height * 0.15;
     // final double minNowplayingBoxHeight = height * 0.15;
-    final bool useFullScreenGradient = Hive.box('settings')
-        .get('useFullScreenGradient', defaultValue: false) as bool;
+    final String gradientType = Hive.box('settings')
+        .get('gradientType', defaultValue: 'halfDark')
+        .toString();
     final List<String> artists = mediaItem.artist.toString().split(', ');
     return SizedBox(
       width: width,
@@ -2210,7 +2211,7 @@ class NameNControls extends StatelessWidget {
             margin: EdgeInsets.zero,
             padding: EdgeInsets.zero,
             boxShadow: const [],
-            color: useFullScreenGradient
+            color: ['fullLight', 'fullMix'].contains(gradientType)
                 ? Theme.of(context).brightness == Brightness.dark
                     ? const Color.fromRGBO(0, 0, 0, 0.05)
                     : const Color.fromRGBO(255, 255, 255, 0.05)
