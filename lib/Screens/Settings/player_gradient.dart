@@ -40,6 +40,14 @@ class _PlayerGradientSelectionState extends State<PlayerGradientSelection> {
     'fullDark',
     'fullMix'
   ];
+  final Map<String, String> typeMapping = {
+    'simple': 'Simple',
+    'halfLight': 'Half Light',
+    'halfDark': 'Half Dark',
+    'fullLight': 'Full Light',
+    'fullDark': 'Full Dark',
+    'fullMix': 'Full Mix',
+  };
   final List<Color?> gradientColor = [Colors.lightGreen, Colors.teal];
   final MyTheme currentTheme = GetIt.I<MyTheme>();
   String gradientType = Hive.box('settings')
@@ -208,6 +216,13 @@ class _PlayerGradientSelectionState extends State<PlayerGradientSelection> {
                         ),
                         if (gradientType == type)
                           const Center(child: Icon(Icons.check_rounded)),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10.0),
+                            child: Text(typeMapping[type]!),
+                          ),
+                        ),
                       ],
                     ),
                   ),
