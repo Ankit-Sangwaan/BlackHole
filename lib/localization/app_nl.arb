@@ -696,5 +696,9 @@
   "compactNotificationButtons": "Compacte meldingsknoppen",
   "@compactNotificationButtons": {},
   "compactNotificationButtonsHeader": "Je kunt maximaal 3 knoppen kiezen",
-  "@compactNotificationButtonsHeader": {}
+  "@compactNotificationButtonsHeader": {},
+  "blacklistHomeSections": "Sectie op zwarte lijst plaatsen",
+  "@blacklistHomeSections": {},
+  "blacklistHomeSectionsConfirm": "Weet je zeker dat je deze sectie op de zwarte lijst wilt plaatsen? Hij wordt daardoor niet meer op de startpagina getoond",
+  "@blacklistHomeSectionsConfirm": {}
 }
