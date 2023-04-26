@@ -135,7 +135,7 @@ class _SeekBarState extends State<SeekBar> {
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 10.0,
-                    vertical: 6.5,
+                    vertical: 6.0,
                   ),
                   child: SliderTheme(
                     data: _sliderThemeData.copyWith(
@@ -166,7 +166,7 @@ class _SeekBarState extends State<SeekBar> {
                     activeTrackColor: Theme.of(context).iconTheme.color,
                     thumbColor: Theme.of(context).iconTheme.color,
                     thumbShape: const RoundSliderThumbShape(
-                      enabledThumbRadius: 8.5,
+                      enabledThumbRadius: 8.0,
                     ),
                     overlayShape: SliderComponentShape.noThumb,
                   ),
