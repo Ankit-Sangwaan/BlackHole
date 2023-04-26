@@ -50,8 +50,9 @@ PODS:
   - FMDB/standard (2.7.5)
   - just_audio (0.0.1):
     - Flutter
-  - on_audio_query (2.5.0):
+  - on_audio_query_ios (0.0.1):
     - Flutter
+    - SwiftyBeaver
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider_foundation (0.0.1):
@@ -69,6 +70,7 @@ PODS:
   - sqflite (0.0.2):
     - Flutter
     - FMDB (>= 2.7.5)
+  - SwiftyBeaver (1.9.5)
   - SwiftyGif (5.4.3)
   - url_launcher_ios (0.0.1):
     - Flutter
@@ -83,7 +85,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_archive (from `.symlinks/plugins/flutter_archive/ios`)
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
-  - on_audio_query (from `.symlinks/plugins/on_audio_query/ios`)
+  - on_audio_query_ios (from `.symlinks/plugins/on_audio_query_ios/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/ios`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
@@ -98,6 +100,7 @@ SPEC REPOS:
     - DKPhotoGallery
     - FMDB
     - SDWebImage
+    - SwiftyBeaver
     - SwiftyGif
     - ZIPFoundation
 
@@ -118,8 +121,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_archive/ios"
   just_audio:
     :path: ".symlinks/plugins/just_audio/ios"
-  on_audio_query:
-    :path: ".symlinks/plugins/on_audio_query/ios"
+  on_audio_query_ios:
+    :path: ".symlinks/plugins/on_audio_query_ios/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -147,7 +150,7 @@ SPEC CHECKSUMS:
   flutter_archive: 1805fdd3a695fd284b43edb53dc35ca843fb761c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
-  on_audio_query: 4c960ff6817f1e177938f0ccdcf6e7366f060100
+  on_audio_query_ios: e5afb0d4b42cfa3e8762d8ec1953540cb4f02100
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider_foundation: 37748e03f12783f9de2cb2c4eadfaa25fe6d4852
   permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
@@ -155,6 +158,7 @@ SPEC CHECKSUMS:
   SDWebImage: 0327043dbb9533e75f2eff8445b3df0f2ceca6ac
   share_plus: 056a1e8ac890df3e33cb503afffaf1e9b4fbae68
   sqflite: 6d358c025f5b867b29ed92fc697fd34924e11904
+  SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
   url_launcher_ios: ae1517e5e344f5544fb090b079e11f399dfbe4d2
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37

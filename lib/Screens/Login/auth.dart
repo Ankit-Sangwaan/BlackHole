@@ -20,7 +20,6 @@
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/Helpers/backup_restore.dart';
 import 'package:blackhole/Helpers/config.dart';
-import 'package:blackhole/Helpers/supabase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
@@ -44,23 +43,8 @@ class _AuthScreenState extends State<AuthScreen> {
 
   Future _addUserData(String name) async {
     await Hive.box('settings').put('name', name.trim());
-    final DateTime now = DateTime.now();
-    final List createDate = now
-        .toUtc()
-        .add(const Duration(hours: 5, minutes: 30))
-        .toString()
-        .split('.')
-      ..removeLast()
-      ..join('.');
 
     final String userId = uuid.v1();
-    await SupaBase().createUser({
-      'id': userId,
-      'name': name,
-      'accountCreatedOn': '${createDate[0]} IST',
-      'timeZone':
-          "Zone: ${now.timeZoneName} Offset: ${now.timeZoneOffset.toString().replaceAll('.000000', '')}",
-    });
     await Hive.box('settings').put('userId', userId);
   }
 

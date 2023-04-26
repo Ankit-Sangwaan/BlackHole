@@ -27,8 +27,8 @@ import 'package:blackhole/CustomWidgets/textinput_dialog.dart';
 import 'package:blackhole/Helpers/backup_restore.dart';
 import 'package:blackhole/Helpers/config.dart';
 import 'package:blackhole/Helpers/countrycodes.dart';
+import 'package:blackhole/Helpers/github.dart';
 import 'package:blackhole/Helpers/picker.dart';
-import 'package:blackhole/Helpers/supabase.dart';
 import 'package:blackhole/Screens/Home/saavn.dart' as home_screen;
 import 'package:blackhole/Screens/Settings/player_gradient.dart';
 import 'package:blackhole/Screens/Top Charts/top.dart' as top_screen;
@@ -3798,10 +3798,10 @@ class _SettingPageState extends State<SettingPage>
                               noAction: true,
                             );
 
-                            SupaBase().getUpdate().then(
-                              (Map value) async {
+                            GitHub.getLatestVersion().then(
+                              (String latestVersion) async {
                                 if (compareVersion(
-                                  value['LatestVersion'].toString(),
+                                  latestVersion,
                                   appVersion!,
                                 )) {
                                   List? abis = await Hive.box('settings')
@@ -3829,33 +3829,12 @@ class _SettingPageState extends State<SettingPage>
                                           AppLocalizations.of(context)!.update,
                                       onPressed: () {
                                         Navigator.pop(context);
-                                        if (abis!.contains('arm64-v8a')) {
-                                          launchUrl(
-                                            Uri.parse(
-                                              value['arm64-v8a'] as String,
-                                            ),
-                                            mode:
-                                                LaunchMode.externalApplication,
-                                          );
-                                        } else {
-                                          if (abis.contains('armeabi-v7a')) {
-                                            launchUrl(
-                                              Uri.parse(
-                                                value['armeabi-v7a'] as String,
-                                              ),
-                                              mode: LaunchMode
-                                                  .externalApplication,
-                                            );
-                                          } else {
-                                            launchUrl(
-                                              Uri.parse(
-                                                value['universal'] as String,
-                                              ),
-                                              mode: LaunchMode
-                                                  .externalApplication,
-                                            );
-                                          }
-                                        }
+                                        launchUrl(
+                                          Uri.parse(
+                                            'https://sangwan5688.github.io/download/',
+                                          ),
+                                          mode: LaunchMode.externalApplication,
+                                        );
                                       },
                                     ),
                                   );
