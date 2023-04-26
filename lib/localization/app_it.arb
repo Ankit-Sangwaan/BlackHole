@@ -686,5 +686,11 @@
   "compactNotificationButtonsSub": "Pulsanti da mostrare nella visualizzazione compatta delle notifiche",
   "@compactNotificationButtonsSub": {},
   "compactNotificationButtons": "Pulsanti di notifica compatti",
-  "@compactNotificationButtons": {}
+  "@compactNotificationButtons": {},
+  "blacklistHomeSectionsConfirm": "Sei sicuro di voler inserire nella blacklist questa sezione? Una volta inserito nella blacklist, non verrà mostrato nella schermata iniziale",
+  "@blacklistHomeSectionsConfirm": {},
+  "blacklistHomeSections": "Inserisci nella blacklist questa sezione",
+  "@blacklistHomeSections": {},
+  "compactNotificationButtonsHeader": "Puoi selezionare al massimo 3 elementi",
+  "@compactNotificationButtonsHeader": {}
 }
