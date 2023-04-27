@@ -163,22 +163,28 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                     ? const SizedBox()
                     : Column(
                         children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(15, 10, 0, 5),
-                                child: Text(
-                                  AppLocalizations.of(context)!.lastSession,
-                                  style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                          GestureDetector(
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(15, 10, 0, 5),
+                                  child: Text(
+                                    AppLocalizations.of(context)!.lastSession,
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
+                            onTap: () {
+                              Navigator.pushNamed(context, '/recent');
+                            },
                           ),
                           HorizontalAlbumsListSeparated(
                             songsList: recentList,
@@ -188,7 +194,6 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                 index: 0,
                                 isOffline: false,
                               );
-                              Navigator.pushNamed(context, '/player');
                             },
                           ),
                         ],
@@ -204,22 +209,28 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                     ? const SizedBox()
                     : Column(
                         children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(15, 10, 0, 5),
-                                child: Text(
-                                  AppLocalizations.of(context)!.yourPlaylists,
-                                  style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                          GestureDetector(
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(15, 10, 0, 5),
+                                  child: Text(
+                                    AppLocalizations.of(context)!.yourPlaylists,
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
+                            onTap: () {
+                              Navigator.pushNamed(context, '/playlists');
+                            },
                           ),
                           SizedBox(
                             height: boxSize + 15,

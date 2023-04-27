@@ -124,20 +124,23 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
                                       borderRadius: BorderRadius.circular(7.0),
                                     ),
                                     clipBehavior: Clip.antiAlias,
-                                    child: CachedNetworkImage(
-                                      fit: BoxFit.cover,
-                                      errorWidget: (context, _, __) =>
-                                          const Image(
+                                    child: SizedBox.square(
+                                      dimension: 55.0,
+                                      child: CachedNetworkImage(
                                         fit: BoxFit.cover,
-                                        image: AssetImage('assets/cover.jpg'),
-                                      ),
-                                      imageUrl: _songs[index]['image']
-                                          .toString()
-                                          .replaceAll('http:', 'https:'),
-                                      placeholder: (context, url) =>
-                                          const Image(
-                                        fit: BoxFit.cover,
-                                        image: AssetImage('assets/cover.jpg'),
+                                        errorWidget: (context, _, __) =>
+                                            const Image(
+                                          fit: BoxFit.cover,
+                                          image: AssetImage('assets/cover.jpg'),
+                                        ),
+                                        imageUrl: _songs[index]['image']
+                                            .toString()
+                                            .replaceAll('http:', 'https:'),
+                                        placeholder: (context, url) =>
+                                            const Image(
+                                          fit: BoxFit.cover,
+                                          image: AssetImage('assets/cover.jpg'),
+                                        ),
                                       ),
                                     ),
                                   ),
