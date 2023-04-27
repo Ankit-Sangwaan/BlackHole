@@ -696,5 +696,9 @@
   "compactNotificationButtons": "Kompaktní tlačítka oznámení",
   "@compactNotificationButtons": {},
   "compactNotificationButtonsHeader": "Můžete vybrat maximálně 3 tlačítka",
-  "@compactNotificationButtonsHeader": {}
+  "@compactNotificationButtonsHeader": {},
+  "blacklistHomeSections": "Zakázat tuto sekci",
+  "@blacklistHomeSections": {},
+  "blacklistHomeSectionsConfirm": "Opravdu chcete tuto sekci zařadit na černou listinu? Po zařazení na černou listinu se nebude zobrazovat na domovské obrazovce",
+  "@blacklistHomeSectionsConfirm": {}
 }
