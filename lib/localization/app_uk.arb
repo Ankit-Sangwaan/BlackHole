@@ -684,5 +684,9 @@
   "compactNotificationButtons": "Компактні кнопки сповіщень",
   "@compactNotificationButtons": {},
   "compactNotificationButtonsHeader": "Ви можете вибрати максимум 3 кнопки",
-  "@compactNotificationButtonsHeader": {}
+  "@compactNotificationButtonsHeader": {},
+  "blacklistHomeSections": "Додати цей розділ до чорного списку",
+  "@blacklistHomeSections": {},
+  "blacklistHomeSectionsConfirm": "Ви впевнені, що хочете додати цей розділ до чорного списку? Після додавання до чорного списку він не буде відображатися на головному екрані",
+  "@blacklistHomeSectionsConfirm": {}
 }
