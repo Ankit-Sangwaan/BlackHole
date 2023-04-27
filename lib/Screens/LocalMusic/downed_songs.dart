@@ -17,6 +17,8 @@
  * Copyright (c) 2021-2022, Ankit Sangwan
  */
 
+import 'dart:io';
+
 import 'package:blackhole/CustomWidgets/add_playlist.dart';
 import 'package:blackhole/CustomWidgets/custom_physics.dart';
 import 'package:blackhole/CustomWidgets/data_search.dart';
@@ -123,8 +125,10 @@ class _DownloadedSongsState extends State<DownloadedSongs>
       Logger.root.info('Requesting permission to access local songs');
       await offlineAudioQuery.requestPermission();
       tempPath ??= (await getTemporaryDirectory()).path;
-      Logger.root.info('Getting local playlists');
-      playlistDetails = await offlineAudioQuery.getPlaylists();
+      if (Platform.isAndroid) {
+        Logger.root.info('Getting local playlists');
+        playlistDetails = await offlineAudioQuery.getPlaylists();
+      }
       if (widget.cachedSongs == null) {
         Logger.root.info('Cache empty, calling audioQuery');
         final receivedSongs = await offlineAudioQuery.getSongs(

@@ -22,6 +22,7 @@ import 'dart:convert';
 import 'package:audiotagger/audiotagger.dart';
 import 'package:audiotagger/models/tag.dart';
 import 'package:http/http.dart';
+import 'package:logging/logging.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class Lyrics {
@@ -33,10 +34,13 @@ class Lyrics {
   }) async {
     String lyrics = '';
     if (saavnHas) {
+      Logger.root.info('Getting Lyrics from Saavn');
       lyrics = await getSaavnLyrics(id);
     } else {
+      Logger.root.info('Lyrics not available on Saavn, finding on Musixmatch');
       lyrics = await getMusixMatchLyrics(title: title, artist: artist);
       if (lyrics == '') {
+        Logger.root.info('Lyrics not found on Musixmatch, searching on Google');
         lyrics = await getGoogleLyrics(title: title, artist: artist);
       }
     }
@@ -135,6 +139,7 @@ class Lyrics {
   }
 
   static Future<String> scrapLink(String unencodedPath) async {
+    Logger.root.info('Trying to scrap lyrics from $unencodedPath');
     const String authority = 'www.musixmatch.com';
     final Response res = await get(Uri.https(authority, unencodedPath));
     if (res.statusCode != 200) return '';
@@ -151,6 +156,7 @@ class Lyrics {
     required String artist,
   }) async {
     final String link = await getLyricsLink(title, artist);
+    Logger.root.info('Found Musixmatch Lyrics Link: $link');
     final String lyrics = await scrapLink(link);
     return lyrics;
   }
