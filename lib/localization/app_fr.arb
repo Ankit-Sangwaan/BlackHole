@@ -698,5 +698,9 @@
   "compactNotificationButtons": "Boutons de notification compacts",
   "@compactNotificationButtons": {},
   "compactNotificationButtonsHeader": "Vous pouvez sélectionner au maximum 3 boutons",
-  "@compactNotificationButtonsHeader": {}
+  "@compactNotificationButtonsHeader": {},
+  "blacklistHomeSections": "Mettre cette section sur liste noire",
+  "@blacklistHomeSections": {},
+  "blacklistHomeSectionsConfirm": "Êtes-vous sûr de vouloir mettre cette section sur liste noire ? Une fois mise sur liste noire, elle ne sera plus affichée sur l'écran d'accueil",
+  "@blacklistHomeSectionsConfirm": {}
 }
