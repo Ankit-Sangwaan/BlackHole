@@ -48,5 +48,19 @@
   "addToPlaylist": "Shto në Playlist",
   "@addToPlaylist": {},
   "artist": "Artisti",
-  "@artist": {}
+  "@artist": {},
+  "buyCoffee": "Më blej një kafe",
+  "@buyCoffee": {},
+  "changeOrder": "Mbaje shtypur për të ndryshuar renditjen\n",
+  "@changeOrder": {},
+  "checkingUpdate": "Duke kontrolluar për përditesime…",
+  "@checkingUpdate": {},
+  "checkUpdate": "Kontrollo automatikisht për përditesime",
+  "@checkUpdate": {},
+  "clear": "Fshi",
+  "@clear": {},
+  "clearAll": "Fshi të gjitha",
+  "@clearAll": {},
+  "autoBack": "Backup automatik",
+  "@autoBack": {}
 }
