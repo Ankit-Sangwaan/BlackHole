@@ -273,6 +273,8 @@
   "@fetchingStream": {},
   "finish": "Finish",
   "@finish": {},
+  "folders": "Folders",
+  "@folders": {},
   "from": "from",
   "@from": {},
   "getLyricsOnline": "Search lyrics of local songs",

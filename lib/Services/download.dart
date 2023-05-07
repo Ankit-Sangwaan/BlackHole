@@ -338,9 +338,22 @@ class Download with ChangeNotifier {
     } catch (e) {
       Logger.root
           .info('Error creating files, requesting additional permission');
-      await [
-        Permission.manageExternalStorage,
-      ].request();
+      PermissionStatus status = await Permission.manageExternalStorage.status;
+      if (status.isDenied) {
+        Logger.root.info(
+          'ManageExternalStorage permission is denied, requesting permission',
+        );
+        await [
+          Permission.manageExternalStorage,
+        ].request();
+      }
+      status = await Permission.manageExternalStorage.status;
+      if (status.isPermanentlyDenied) {
+        Logger.root.info(
+          'ManageExternalStorage Request is permanently denied, opening settings',
+        );
+        await openAppSettings();
+      }
 
       Logger.root.info('Retrying to create audio file');
       await File('$dlPath/$fileName')
