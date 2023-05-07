@@ -696,5 +696,7 @@
   "blacklistHomeSectionsConfirm": "¿Estás seguro de que quieres poner esta sección en la lista negra? Una vez en la lista negra, no se mostrará en la pantalla de inicio",
   "@blacklistHomeSectionsConfirm": {},
   "blacklistHomeSections": "Poner en la lista negra esta sección",
-  "@blacklistHomeSections": {}
+  "@blacklistHomeSections": {},
+  "folders": "Carpetas",
+  "@folders": {}
 }
