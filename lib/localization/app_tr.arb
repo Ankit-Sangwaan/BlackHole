@@ -700,5 +700,7 @@
   "blacklistHomeSections": "Bu bölümü karalisteye al",
   "@blacklistHomeSections": {},
   "blacklistHomeSectionsConfirm": "Bu bölümü karalisteye almak istediğinizden emin misiniz? Karalisteye alındıktan sonra, bu bölüm artık ana ekranda gösterilmeyecek",
-  "@blacklistHomeSectionsConfirm": {}
+  "@blacklistHomeSectionsConfirm": {},
+  "folders": "Klasörler",
+  "@folders": {}
 }
