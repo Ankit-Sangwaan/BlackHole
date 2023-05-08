@@ -698,5 +698,7 @@
   "compactNotificationButtonsHeader": "Anda dapat memilih maksimal 3 tombol",
   "@compactNotificationButtonsHeader": {},
   "mostPlayedSong": "Lagu yang sering diputar",
-  "@mostPlayedSong": {}
+  "@mostPlayedSong": {},
+  "folders": "Folder",
+  "@folders": {}
 }
