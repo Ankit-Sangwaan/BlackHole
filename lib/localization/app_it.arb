@@ -41,7 +41,7 @@
   "@year": {},
   "yes": "Sì",
   "@yes": {},
-  "yesReplace": "Sì, ma sostituisci il vecchio",
+  "yesReplace": "Sì, ma sostituisce il vecchio",
   "@yesReplace": {},
   "willPlayNext": "viene poi giocato",
   "@willPlayNext": {},
@@ -691,6 +691,8 @@
   "@blacklistHomeSectionsConfirm": {},
   "blacklistHomeSections": "Inserisci nella blacklist questa sezione",
   "@blacklistHomeSections": {},
-  "compactNotificationButtonsHeader": "Puoi selezionare al massimo 3 elementi",
-  "@compactNotificationButtonsHeader": {}
+  "compactNotificationButtonsHeader": "È possibile selezionare fino a 3 pulsanti",
+  "@compactNotificationButtonsHeader": {},
+  "folders": "Cartelle",
+  "@folders": {}
 }
