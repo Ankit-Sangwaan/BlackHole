@@ -698,5 +698,11 @@
   "mostPlayedSong": "அதிகம் இயக்கிய பாடல்",
   "@mostPlayedSong": {},
   "compactNotificationButtonsSub": "இறுகிய அறிவிப்புக் காட்சியில் காட்ட வேண்டிய பொத்தான்கள்",
-  "@compactNotificationButtonsSub": {}
+  "@compactNotificationButtonsSub": {},
+  "blacklistHomeSections": "இப்பிரிவை கரும்பட்டியலிடு",
+  "@blacklistHomeSections": {},
+  "blacklistHomeSectionsConfirm": "இப்பிரிவை கரும்பட்டியலிட உறுதியா? ஆன பின், இது முகப்புத்திரையில் காட்டப்படாது",
+  "@blacklistHomeSectionsConfirm": {},
+  "folders": "அடைவுகள்",
+  "@folders": {}
 }
