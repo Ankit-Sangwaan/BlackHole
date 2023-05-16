@@ -214,7 +214,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                               children: [
                                 Padding(
                                   padding:
-                                      const EdgeInsets.fromLTRB(15, 10, 0, 5),
+                                      const EdgeInsets.fromLTRB(15, 10, 15, 5),
                                   child: Text(
                                     AppLocalizations.of(context)!.yourPlaylists,
                                     style: TextStyle(
@@ -259,7 +259,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                     : '${playlistDetails[name]['count']} ${AppLocalizations.of(context)!.songs}';
                                 return GestureDetector(
                                   child: SizedBox(
-                                    width: boxSize - 30,
+                                    width: boxSize - 20,
                                     child: HoverBox(
                                       child: (playlistDetails[name] == null ||
                                               playlistDetails[name]

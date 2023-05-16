@@ -315,7 +315,7 @@ class Download with ChangeNotifier {
     late String filepath2;
     String? appPath;
     final List<int> bytes = [];
-    String lyrics;
+    String lyrics = '';
     final artname = fileName.replaceAll('.m4a', '.jpg');
     if (!Platform.isWindows) {
       Logger.root.info('Getting App Path for storing image');
@@ -421,14 +421,15 @@ class Download with ChangeNotifier {
         await file2.writeAsBytes(bytes2);
         try {
           Logger.root.info('Checking if lyrics required');
-          lyrics = downloadLyrics
-              ? await Lyrics.getLyrics(
-                  id: data['id'].toString(),
-                  title: data['title'].toString(),
-                  artist: data['artist'].toString(),
-                  saavnHas: data['has_lyrics'] == 'true',
-                )
-              : '';
+          if (downloadLyrics) {
+            final Map res = await Lyrics.getLyrics(
+              id: data['id'].toString(),
+              title: data['title'].toString(),
+              artist: data['artist'].toString(),
+              saavnHas: data['has_lyrics'] == 'true',
+            );
+            lyrics = res['lyrics'].toString();
+          }
         } catch (e) {
           Logger.root.severe('Error fetching lyrics: $e');
           lyrics = '';

@@ -31,6 +31,7 @@ dependencies:
   # flutter_downloader: ^1.7.1
   flutter_localizations:
     sdk: flutter
+  # flutter_lyric: ^2.0.4+6
   get_it: ^7.2.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0

@@ -701,10 +701,12 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
   @override
   Future<void> stop() async {
+    Logger.root.info('stopping player');
     await _player!.stop();
     await playbackState.firstWhere(
       (state) => state.processingState == AudioProcessingState.idle,
     );
+    Logger.root.info('caching last index and position');
     await Hive.box('cache').put('lastIndex', _player!.currentIndex);
     await Hive.box('cache').put('lastPos', _player!.position.inSeconds);
   }
