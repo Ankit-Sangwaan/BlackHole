@@ -688,5 +688,7 @@
   "blacklistHomeSections": "הוספת הסעיף הזה לרשימת חסימה",
   "@blacklistHomeSections": {},
   "blacklistHomeSectionsConfirm": "להוסיף את הסעיף הזה לרשימת חסימה? לאחר ההוספה, הוא לא יופיע עוד במסך הבית",
-  "@blacklistHomeSectionsConfirm": {}
+  "@blacklistHomeSectionsConfirm": {},
+  "folders": "תיקיות",
+  "@folders": {}
 }

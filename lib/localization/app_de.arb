@@ -697,10 +697,12 @@
   "@compactNotificationButtons": {},
   "compactNotificationButtonsSub": "Schaltflächen, die in der kompakten Benachrichtigungsansicht angezeigt werden",
   "@compactNotificationButtonsSub": {},
-  "compactNotificationButtonsHeader": "Sie können maximal 3 Buttons auswählen",
+  "compactNotificationButtonsHeader": "Sie können maximal 3 Tasten auswählen",
   "@compactNotificationButtonsHeader": {},
   "blacklistHomeSections": "Diesen Abschnitt auf die schwarze Liste setzen",
   "@blacklistHomeSections": {},
   "blacklistHomeSectionsConfirm": "Möchten Sie diesen Abschnitt wirklich auf die schwarze Liste setzen? Sobald es auf die schwarze Liste gesetzt wurde, wird es nicht auf dem Startbildschirm angezeigt",
-  "@blacklistHomeSectionsConfirm": {}
+  "@blacklistHomeSectionsConfirm": {},
+  "folders": "Ordner",
+  "@folders": {}
 }
