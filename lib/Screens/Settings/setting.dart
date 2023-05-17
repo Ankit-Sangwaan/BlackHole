@@ -264,7 +264,7 @@ class _SettingPageState extends State<SettingPage>
                           ),
                           keyName: 'darkMode',
                           defaultValue: true,
-                          onChanged: (bool val, Box box) {
+                          onChanged: ({required bool val, required Box box}) {
                             box.put(
                               'useSystemTheme',
                               false,
@@ -285,7 +285,7 @@ class _SettingPageState extends State<SettingPage>
                           ),
                           keyName: 'useSystemTheme',
                           defaultValue: true,
-                          onChanged: (bool val, Box box) {
+                          onChanged: ({required bool val, required Box box}) {
                             currentTheme.switchTheme(useSystemTheme: val);
                             switchToCustomTheme();
                           },
@@ -1864,7 +1864,7 @@ class _SettingPageState extends State<SettingPage>
                           ),
                           keyName: 'showPlaylist',
                           defaultValue: true,
-                          onChanged: (val, box) {
+                          onChanged: ({required bool val, required Box box}) {
                             widget.callback!();
                           },
                         ),
@@ -1884,7 +1884,7 @@ class _SettingPageState extends State<SettingPage>
                           ),
                           keyName: 'showRecent',
                           defaultValue: true,
-                          onChanged: (val, box) {
+                          onChanged: ({required bool val, required Box box}) {
                             widget.callback!();
                           },
                         ),
@@ -3177,7 +3177,7 @@ class _SettingPageState extends State<SettingPage>
                           keyName: 'useProxy',
                           defaultValue: false,
                           isThreeLine: true,
-                          onChanged: (bool val, Box box) {
+                          onChanged: ({required bool val, required Box box}) {
                             useProxy = val;
                             setState(
                               () {},
@@ -4253,7 +4253,7 @@ class BoxSwitchTile extends StatelessWidget {
   final String keyName;
   final bool defaultValue;
   final bool? isThreeLine;
-  final Function(bool, Box box)? onChanged;
+  final Function({required bool val, required Box box})? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -4270,7 +4270,7 @@ class BoxSwitchTile extends StatelessWidget {
               defaultValue,
           onChanged: (val) {
             box.put(keyName, val);
-            onChanged?.call(val, box);
+            onChanged?.call(val: val, box: box);
           },
         );
       },

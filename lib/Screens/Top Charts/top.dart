@@ -330,9 +330,9 @@ class _TopPageState extends State<TopPage>
                         'Service Unavailable',
                         20,
                       )
-                    : Column(
+                    : const Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
+                        children: [
                           CircularProgressIndicator(),
                         ],
                       ),

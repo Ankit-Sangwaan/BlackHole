@@ -21,7 +21,11 @@ import 'package:flutter/material.dart';
 
 class HoverBox extends StatefulWidget {
   final Widget? child;
-  final Widget Function(BuildContext, bool, Widget?) builder;
+  final Widget Function({
+    required BuildContext context,
+    required bool isHover,
+    Widget? child,
+  }) builder;
   const HoverBox({
     super.key,
     required this.child,
@@ -56,7 +60,11 @@ class _HoverBox extends State<HoverBox> {
           bool isHover,
           Widget? child,
         ) {
-          return widget.builder(context, isHover, child);
+          return widget.builder(
+            context: context,
+            isHover: isHover,
+            child: child,
+          );
         },
       ),
     );

@@ -222,7 +222,7 @@ class SpotifyApi {
       final List<Map> songsData = [];
       if (response.statusCode == 200) {
         final result = jsonDecode(response.body);
-        await for (final element in result['playlists']['items']) {
+        await for (final element in result['playlists']['items'] as Stream) {
           songsData.add({
             'name': element['name'],
             'id': element['id'],

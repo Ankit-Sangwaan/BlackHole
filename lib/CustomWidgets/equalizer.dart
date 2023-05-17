@@ -99,7 +99,7 @@ class _EqualizerControlsState extends State<EqualizerControls> {
         if (data == null) return const SizedBox();
         return Row(
           children: [
-            for (final band in data['bands'])
+            for (final band in data['bands'] as List<Map>)
               Expanded(
                 child: Column(
                   children: [

@@ -261,7 +261,7 @@ class FormatResponse {
             : response['description'].toString().unescape(),
         'title': response['title'].toString().unescape(),
         'artist': response['music'] == null
-            ? (response['more_info']?['music']) == null
+            ? (response['more_info']?['music'] == null)
                 ? (response['more_info']?['artistMap']?['primary_artists'] ==
                             null ||
                         (response['more_info']?['artistMap']?['primary_artists']

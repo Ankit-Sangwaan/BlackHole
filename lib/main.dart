@@ -137,6 +137,7 @@ class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 
+  // ignore: unreachable_from_main
   static _MyAppState of(BuildContext context) =>
       context.findAncestorStateOfType<_MyAppState>()!;
 }

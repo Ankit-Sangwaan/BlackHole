@@ -175,7 +175,11 @@ class HorizontalAlbumsList extends StatelessWidget {
                     ),
                   ),
                 ),
-                builder: (BuildContext context, bool isHover, Widget? child) {
+                builder: ({
+                  required BuildContext context,
+                  required bool isHover,
+                  Widget? child,
+                }) {
                   return Card(
                     color: isHover ? null : Colors.transparent,
                     elevation: 0,

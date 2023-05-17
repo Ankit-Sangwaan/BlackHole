@@ -387,11 +387,11 @@ class _YouTubeState extends State<YouTube>
                                           ),
                                         ],
                                       ),
-                                      builder: (
-                                        BuildContext context,
-                                        bool isHover,
+                                      builder: ({
+                                        required BuildContext context,
+                                        required bool isHover,
                                         Widget? child,
-                                      ) {
+                                      }) {
                                         return Card(
                                           color: isHover
                                               ? null

@@ -498,7 +498,7 @@ class YtMusicService {
         'duration': videoDetails['lengthSeconds'],
         'url': result,
         'views': videoDetails['viewCount'],
-        'image': (videoDetails['thumbnail']['thumbnails'].last)['url'],
+        'image': videoDetails['thumbnail']['thumbnails'].last['url'],
         'images': videoDetails['thumbnail']['thumbnails'].map((e) => e['url']),
       };
     } catch (e) {
