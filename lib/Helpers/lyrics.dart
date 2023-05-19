@@ -51,7 +51,7 @@ class Lyrics {
         Logger.root.info('Getting Lyrics from Saavn');
         result['lyrics'] = await getSaavnLyrics(id);
         result['type'] = 'text';
-        result['source'] = 'jiosaavn';
+        result['source'] = 'Jiosaavn';
         if (result['lyrics'] == '') {
           final res = await getLyrics(
             id: id,
@@ -112,7 +112,7 @@ class Lyrics {
     final Map<String, String> result = {
       'lyrics': '',
       'type': 'text',
-      'source': 'spotify',
+      'source': 'Spotify',
     };
     await callSpotifyFunction((String accessToken) async {
       final value = await SpotifyApi().searchTrack(
@@ -140,7 +140,7 @@ class Lyrics {
     final Map<String, String> result = {
       'lyrics': '',
       'type': 'text',
-      'source': 'spotify',
+      'source': 'Spotify',
     };
     try {
       final Uri lyricsUrl = Uri.https('spotify-lyric-api.herokuapp.com', '/', {

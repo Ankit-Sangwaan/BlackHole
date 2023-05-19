@@ -52,6 +52,7 @@ import 'package:flutter_lyric/lyrics_reader_model.dart';
 import 'package:flutter_lyric/lyrics_reader_widget.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
+import 'package:logging/logging.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:share_plus/share_plus.dart';
@@ -1251,6 +1252,7 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
   final ValueNotifier<bool> tapped = ValueNotifier<bool>(false);
   final ValueNotifier<int> doubletapped = ValueNotifier<int>(0);
   final ValueNotifier<bool> done = ValueNotifier<bool>(false);
+  final ValueNotifier<String> lyricsSource = ValueNotifier<String>('');
   Map lyrics = {
     'id': '',
     'lyrics': '',
@@ -1260,9 +1262,64 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
   };
   final lyricUI = UINetease();
   LyricsReaderModel? lyricsReaderModel;
+  bool flipped = false;
+
+  void fetchLyrics() {
+    Logger.root.info('Fetching lyrics');
+    done.value = false;
+    if (widget.offline) {
+      Lyrics.getOffLyrics(
+        widget.mediaItem.extras!['url'].toString(),
+      ).then((value) {
+        if (value == '' && widget.getLyricsOnline) {
+          Lyrics.getLyrics(
+            id: widget.mediaItem.id,
+            saavnHas: widget.mediaItem.extras?['has_lyrics'] == 'true',
+            title: widget.mediaItem.title,
+            artist: widget.mediaItem.artist.toString(),
+          ).then((Map value) {
+            lyrics['lyrics'] = value['lyrics'];
+            lyrics['type'] = value['type'];
+            lyrics['source'] = value['source'];
+            lyrics['id'] = widget.mediaItem.id;
+            done.value = true;
+            lyricsSource.value = lyrics['source'].toString();
+          });
+        } else {
+          lyrics['lyrics'] = value;
+          lyrics['lyricsText'] = value;
+          lyrics['type'] = 'text';
+          lyrics['source'] = 'Local';
+          lyrics['id'] = widget.mediaItem.id;
+          done.value = true;
+          lyricsSource.value = lyrics['source'].toString();
+        }
+      });
+    } else {
+      Lyrics.getLyrics(
+        id: widget.mediaItem.id,
+        saavnHas: widget.mediaItem.extras?['has_lyrics'] == 'true',
+        title: widget.mediaItem.title,
+        artist: widget.mediaItem.artist.toString(),
+      ).then((Map value) {
+        lyrics['lyrics'] = value['lyrics'];
+        lyrics['type'] = value['type'];
+        lyrics['source'] = value['source'];
+        lyrics['id'] = widget.mediaItem.id;
+        done.value = true;
+        lyricsSource.value = lyrics['source'].toString();
+        lyricsReaderModel = LyricsModelBuilder.create()
+            .bindLyricToMain(lyrics['lyrics'].toString())
+            .getModel();
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    if (flipped && lyrics['id'] != widget.mediaItem.id) {
+      fetchLyrics();
+    }
     return SizedBox(
       height: widget.width * 0.85,
       width: widget.width * 0.85,
@@ -1272,53 +1329,9 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
           key: widget.cardKey,
           flipOnTouch: false,
           onFlipDone: (value) {
-            if (lyrics['id'] != widget.mediaItem.id ||
-                (!value && lyrics['lyrics'] == '' && !done.value)) {
-              done.value = false;
-              if (widget.offline) {
-                Lyrics.getOffLyrics(
-                  widget.mediaItem.extras!['url'].toString(),
-                ).then((value) {
-                  if (value == '' && widget.getLyricsOnline) {
-                    Lyrics.getLyrics(
-                      id: widget.mediaItem.id,
-                      saavnHas:
-                          widget.mediaItem.extras?['has_lyrics'] == 'true',
-                      title: widget.mediaItem.title,
-                      artist: widget.mediaItem.artist.toString(),
-                    ).then((Map value) {
-                      lyrics['lyrics'] = value['lyrics'];
-                      lyrics['type'] = value['type'];
-                      lyrics['source'] = value['source'];
-                      lyrics['id'] = widget.mediaItem.id;
-                      done.value = true;
-                    });
-                  } else {
-                    lyrics['lyrics'] = value;
-                    lyrics['lyricsText'] = value;
-                    lyrics['type'] = 'text';
-                    lyrics['source'] = 'Local';
-                    lyrics['id'] = widget.mediaItem.id;
-                    done.value = true;
-                  }
-                });
-              } else {
-                Lyrics.getLyrics(
-                  id: widget.mediaItem.id,
-                  saavnHas: widget.mediaItem.extras?['has_lyrics'] == 'true',
-                  title: widget.mediaItem.title,
-                  artist: widget.mediaItem.artist.toString(),
-                ).then((Map value) {
-                  lyrics['lyrics'] = value['lyrics'];
-                  lyrics['type'] = value['type'];
-                  lyrics['source'] = value['source'];
-                  lyrics['id'] = widget.mediaItem.id;
-                  done.value = true;
-                  lyricsReaderModel = LyricsModelBuilder.create()
-                      .bindLyricToMain(lyrics['lyrics'].toString())
-                      .getModel();
-                });
-              }
+            flipped = value;
+            if (flipped && lyrics['id'] != widget.mediaItem.id) {
+              fetchLyrics();
             }
           },
           back: GestureDetector(
@@ -1411,10 +1424,31 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                     ),
                   ),
                 ),
+                ValueListenableBuilder(
+                  valueListenable: lyricsSource,
+                  child: const CircularProgressIndicator(),
+                  builder: (
+                    BuildContext context,
+                    String value,
+                    Widget? child,
+                  ) {
+                    return Align(
+                      alignment: Alignment.bottomRight,
+                      child: Text(
+                        'Powered by $value',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall!
+                            .copyWith(fontSize: 10.0, color: Colors.white70),
+                      ),
+                    );
+                  },
+                ),
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Card(
                     elevation: 10.0,
+                    margin: const EdgeInsets.symmetric(vertical: 20.0),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
