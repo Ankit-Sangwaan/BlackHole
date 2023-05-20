@@ -26,10 +26,8 @@ bool matchSongs({
   required String artist2,
 }) {
   Logger.root.info('Matching $title by $artist with $title2 by $artist2');
-  final title1 = title.toLowerCase();
-  final title3 = title2.toLowerCase();
-  final names1 = artist.toLowerCase().split(',');
-  final names2 = artist2.toLowerCase().split(',');
+  final names1 = artist.split(',');
+  final names2 = artist2.split(',');
   bool artistMatched = false;
   bool titleMatched = false;
 
@@ -39,7 +37,7 @@ bool matchSongs({
       if (flexibleMatch(
         string1: name1,
         string2: name2,
-        flexibility: 0,
+        flexibility: 0.15,
       )) {
         artistMatched = true;
         break;
@@ -51,13 +49,13 @@ bool matchSongs({
   }
 
   titleMatched = flexibleMatch(
-    string1: title1,
-    string2: title3,
+    string1: title,
+    string2: title2,
     wordMatch: true,
   );
 
-  Logger.root.info('TitleMatched: $titleMatched');
-  Logger.root.info('ArtistMatched: $artistMatched');
+  Logger.root
+      .info('TitleMatched: $titleMatched, ArtistMatched: $artistMatched');
 
   return artistMatched && titleMatched;
 }
@@ -105,7 +103,7 @@ bool flexibilityCheck({
   int count = 0;
   final list1 = wordMatch ? text1.split(' ') : text1.split('');
   final list2 = wordMatch ? text2.split(' ') : text2.split('');
-  final minLength = list1.length > list2.length ? list1.length : list2.length;
+  final minLength = list1.length > list2.length ? list2.length : list1.length;
 
   for (int i = 0; i < minLength; i++) {
     if (list1[i] == list2[i]) {
