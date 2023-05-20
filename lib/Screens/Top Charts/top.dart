@@ -107,7 +107,7 @@ class _TopChartsState extends State<TopCharts>
           backgroundColor: Colors.transparent,
           elevation: 0,
           automaticallyImplyLeading: false,
-          leading: (rotated && screenWidth < 1050)
+          leading: rotated
               ? null
               : Builder(
                   builder: (BuildContext context) {

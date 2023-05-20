@@ -31,6 +31,7 @@ import 'package:blackhole/Helpers/github.dart';
 import 'package:blackhole/Screens/Home/saavn.dart';
 import 'package:blackhole/Screens/Library/library.dart';
 import 'package:blackhole/Screens/LocalMusic/downed_songs.dart';
+import 'package:blackhole/Screens/LocalMusic/downed_songs_desktop.dart';
 import 'package:blackhole/Screens/Search/search.dart';
 import 'package:blackhole/Screens/Settings/setting.dart';
 import 'package:blackhole/Screens/Top Charts/top.dart';
@@ -347,27 +348,30 @@ class _HomePageState extends State<HomePage> {
                           Navigator.pop(context);
                         },
                       ),
-                      if (Platform.isAndroid)
-                        ListTile(
-                          title: Text(AppLocalizations.of(context)!.myMusic),
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 20.0),
-                          leading: Icon(
-                            MdiIcons.folderMusic,
-                            color: Theme.of(context).iconTheme.color,
-                          ),
-                          onTap: () {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const DownloadedSongs(
-                                  showPlaylists: true,
-                                ),
-                              ),
-                            );
-                          },
+                      ListTile(
+                        title: Text(AppLocalizations.of(context)!.myMusic),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 20.0),
+                        leading: Icon(
+                          MdiIcons.folderMusic,
+                          color: Theme.of(context).iconTheme.color,
                         ),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => (Platform.isWindows ||
+                                      Platform.isLinux ||
+                                      Platform.isMacOS)
+                                  ? const DownloadedSongsDesktop()
+                                  : const DownloadedSongs(
+                                      showPlaylists: true,
+                                    ),
+                            ),
+                          );
+                        },
+                      ),
                       ListTile(
                         title: Text(AppLocalizations.of(context)!.downs),
                         contentPadding:
@@ -491,24 +495,22 @@ class _HomePageState extends State<HomePage> {
                             .colorScheme
                             .secondary
                             .withOpacity(0.2),
-                        leading: screenWidth > 1050
-                            ? null
-                            : Builder(
-                                builder: (context) => Transform.rotate(
-                                  angle: 22 / 7 * 2,
-                                  child: IconButton(
-                                    icon: const Icon(
-                                      Icons.horizontal_split_rounded,
-                                    ),
-                                    // color: Theme.of(context).iconTheme.color,
-                                    onPressed: () {
-                                      Scaffold.of(context).openDrawer();
-                                    },
-                                    tooltip: MaterialLocalizations.of(context)
-                                        .openAppDrawerTooltip,
-                                  ),
-                                ),
+                        leading: Builder(
+                          builder: (context) => Transform.rotate(
+                            angle: 22 / 7 * 2,
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.horizontal_split_rounded,
                               ),
+                              // color: Theme.of(context).iconTheme.color,
+                              onPressed: () {
+                                Scaffold.of(context).openDrawer();
+                              },
+                              tooltip: MaterialLocalizations.of(context)
+                                  .openAppDrawerTooltip,
+                            ),
+                          ),
+                        ),
                         destinations: [
                           NavigationRailDestination(
                             icon: const Icon(Icons.home_rounded),
@@ -715,7 +717,9 @@ class _HomePageState extends State<HomePage> {
                                                           MediaQuery.of(context)
                                                                   .size
                                                                   .width -
-                                                              75,
+                                                              (rotated
+                                                                  ? 0
+                                                                  : 75),
                                                         ),
                                                   height: 55.0,
                                                   duration: const Duration(
@@ -794,7 +798,7 @@ class _HomePageState extends State<HomePage> {
                                   },
                                   body: SaavnHomePage(),
                                 ),
-                                if (!rotated || screenWidth > 1050)
+                                if (!rotated)
                                   Builder(
                                     builder: (context) => Padding(
                                       padding: const EdgeInsets.only(

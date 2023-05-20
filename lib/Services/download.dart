@@ -77,7 +77,7 @@ class Download with ChangeNotifier {
   }) async {
     Logger.root.info('Preparing download for ${data['title']}');
     download = true;
-    if (!Platform.isWindows) {
+    if (Platform.isAndroid || Platform.isIOS) {
       Logger.root.info('Requesting storage permission');
       PermissionStatus status = await Permission.storage.status;
       if (status.isDenied) {
@@ -338,21 +338,23 @@ class Download with ChangeNotifier {
     } catch (e) {
       Logger.root
           .info('Error creating files, requesting additional permission');
-      PermissionStatus status = await Permission.manageExternalStorage.status;
-      if (status.isDenied) {
-        Logger.root.info(
-          'ManageExternalStorage permission is denied, requesting permission',
-        );
-        await [
-          Permission.manageExternalStorage,
-        ].request();
-      }
-      status = await Permission.manageExternalStorage.status;
-      if (status.isPermanentlyDenied) {
-        Logger.root.info(
-          'ManageExternalStorage Request is permanently denied, opening settings',
-        );
-        await openAppSettings();
+      if (Platform.isAndroid) {
+        PermissionStatus status = await Permission.manageExternalStorage.status;
+        if (status.isDenied) {
+          Logger.root.info(
+            'ManageExternalStorage permission is denied, requesting permission',
+          );
+          await [
+            Permission.manageExternalStorage,
+          ].request();
+        }
+        status = await Permission.manageExternalStorage.status;
+        if (status.isPermanentlyDenied) {
+          Logger.root.info(
+            'ManageExternalStorage Request is permanently denied, opening settings',
+          );
+          await openAppSettings();
+        }
       }
 
       Logger.root.info('Retrying to create audio file');

@@ -15,16 +15,24 @@ Future<void> initializeLogging() async {
   Logger.root.onRecord.listen((record) async {
     if (record.level.name != 'INFO') {
       log('${record.level.name}: ${record.time}: record.message: ${record.message}\nrecord.error: ${record.error}\nrecord.stackTrace: ${record.stackTrace}\n\n');
-      await logFile.writeAsString(
-        '${record.level.name}: ${record.time}: record.message: ${record.message}\nrecord.error: ${record.error}\nrecord.stackTrace: ${record.stackTrace}\n\n',
-        mode: FileMode.append,
-      );
+      try {
+        await logFile.writeAsString(
+          '${record.level.name}: ${record.time}: record.message: ${record.message}\nrecord.error: ${record.error}\nrecord.stackTrace: ${record.stackTrace}\n\n',
+          mode: FileMode.append,
+        );
+      } catch (e) {
+        log('Error writing to log file: $e');
+      }
     } else {
       log('${record.level.name}: ${record.time}: record.message: ${record.message}\n\n');
-      await logFile.writeAsString(
-        '${record.level.name}: ${record.time}: record.message: ${record.message}\n\n',
-        mode: FileMode.append,
-      );
+      try {
+        await logFile.writeAsString(
+          '${record.level.name}: ${record.time}: record.message: ${record.message}\n\n',
+          mode: FileMode.append,
+        );
+      } catch (e) {
+        log('Error writing to log file: $e');
+      }
     }
   });
 }

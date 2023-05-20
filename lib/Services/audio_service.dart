@@ -554,7 +554,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   }
 
   Future<void> addLastQueue(List<MediaItem> queue) async {
-    if (queue.first.genre != 'YouTube') {
+    if (queue.isNotEmpty && queue.first.genre != 'YouTube') {
       Logger.root.info('saving last queue');
       final lastQueue =
           queue.map((item) => MediaItemConverter.mediaItemToMap(item)).toList();
