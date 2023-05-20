@@ -55,12 +55,15 @@ Future<String?> retriveAccessToken() async {
   }
 }
 
-Future<void> callSpotifyFunction(Function(String accessToken)? function) async {
+Future<void> callSpotifyFunction({
+  required Function(String accessToken)? function,
+  bool forceSign = true,
+}) async {
   final String? accessToken = await retriveAccessToken();
   if (accessToken != null && function != null) {
     return await function.call(accessToken);
   }
-  if (accessToken == null) {
+  if (accessToken == null && forceSign) {
     launchUrl(
       Uri.parse(
         SpotifyApi().requestAuthorization(),

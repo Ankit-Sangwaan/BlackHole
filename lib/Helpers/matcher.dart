@@ -24,10 +24,13 @@ bool matchSongs({
   required String artist,
   required String title2,
   required String artist2,
+  double artistFlexibility = 0.15,
+  double titleFlexibility = 0.7,
+  bool allowTitleToArtistMatch = true,
 }) {
   Logger.root.info('Matching $title by $artist with $title2 by $artist2');
-  final names1 = artist.replaceAll('&', ',').split(',');
-  final names2 = artist2.replaceAll('&', ',').split(',');
+  final names1 = artist.replaceAll('&', ',').replaceAll('-', ',').split(',');
+  final names2 = artist2.replaceAll('&', ',').replaceAll('-', ',').split(',');
   bool artistMatched = false;
   bool titleMatched = false;
 
@@ -37,10 +40,15 @@ bool matchSongs({
       if (flexibleMatch(
         string1: name1,
         string2: name2,
-        flexibility: 0.15,
+        flexibility: artistFlexibility,
       )) {
         artistMatched = true;
         break;
+      } else if (allowTitleToArtistMatch) {
+        if (title2.contains(name1) || title.contains(name2)) {
+          artistMatched = true;
+          break;
+        }
       }
     }
     if (artistMatched) {
@@ -52,6 +60,7 @@ bool matchSongs({
     string1: title,
     string2: title2,
     wordMatch: true,
+    flexibility: titleFlexibility,
   );
 
   Logger.root

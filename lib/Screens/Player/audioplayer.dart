@@ -1256,7 +1256,6 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
   Map lyrics = {
     'id': '',
     'lyrics': '',
-    'lyricsText': '',
     'source': '',
     'type': '',
   };
@@ -1285,15 +1284,21 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
             lyrics['id'] = widget.mediaItem.id;
             done.value = true;
             lyricsSource.value = lyrics['source'].toString();
+            lyricsReaderModel = LyricsModelBuilder.create()
+                .bindLyricToMain(lyrics['lyrics'].toString())
+                .getModel();
           });
         } else {
+          Logger.root.info('Lyrics found offline');
           lyrics['lyrics'] = value;
-          lyrics['lyricsText'] = value;
-          lyrics['type'] = 'text';
+          lyrics['type'] = value.startsWith('[00') ? 'lrc' : 'text';
           lyrics['source'] = 'Local';
           lyrics['id'] = widget.mediaItem.id;
           done.value = true;
           lyricsSource.value = lyrics['source'].toString();
+          lyricsReaderModel = LyricsModelBuilder.create()
+              .bindLyricToMain(lyrics['lyrics'].toString())
+              .getModel();
         }
       });
     } else {

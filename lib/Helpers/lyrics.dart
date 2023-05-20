@@ -118,48 +118,52 @@ class Lyrics {
       'type': 'text',
       'source': 'Spotify',
     };
-    await callSpotifyFunction((String accessToken) async {
-      final value = await SpotifyApi().searchTrack(
-        accessToken: accessToken,
-        query: '$title - $artist',
-        limit: 1,
-      );
-      try {
-        // Logger.root.info(jsonEncode(value['tracks']['items'][0]));
-        if (value['tracks']['items'].length == 0) {
-          Logger.root.info('No song found');
-          return result;
-        }
-        String title2 = '';
-        String artist2 = '';
+    await callSpotifyFunction(
+      function: (String accessToken) async {
+        final value = await SpotifyApi().searchTrack(
+          accessToken: accessToken,
+          query: '$title - $artist',
+          limit: 1,
+        );
         try {
-          title2 = value['tracks']['items'][0]['name'].toString();
-          artist2 =
-              value['tracks']['items'][0]['artists'][0]['name'].toString();
+          // Logger.root.info(jsonEncode(value['tracks']['items'][0]));
+          if (value['tracks']['items'].length == 0) {
+            Logger.root.info('No song found');
+            return result;
+          }
+          String title2 = '';
+          String artist2 = '';
+          try {
+            title2 = value['tracks']['items'][0]['name'].toString();
+            artist2 =
+                value['tracks']['items'][0]['artists'][0]['name'].toString();
+          } catch (e) {
+            Logger.root.severe(
+              'Error in extracting artist/title in getSpotifyLyrics for $title - $artist',
+              e,
+            );
+          }
+          final trackId = value['tracks']['items'][0]['id'].toString();
+          if (matchSongs(
+            title: title,
+            artist: artist,
+            title2: title2,
+            artist2: artist2,
+          )) {
+            final Map<String, String> res =
+                await getSpotifyLyricsFromId(trackId);
+            result['lyrics'] = res['lyrics']!;
+            result['type'] = res['type']!;
+            result['source'] = res['source']!;
+          } else {
+            Logger.root.info('Song not matched');
+          }
         } catch (e) {
-          Logger.root.severe(
-            'Error in extracting artist/title in getSpotifyLyrics for $title - $artist',
-            e,
-          );
+          Logger.root.severe('Error in getSpotifyLyrics', e);
         }
-        final trackId = value['tracks']['items'][0]['id'].toString();
-        if (matchSongs(
-          title: title,
-          artist: artist,
-          title2: title2,
-          artist2: artist2,
-        )) {
-          final Map<String, String> res = await getSpotifyLyricsFromId(trackId);
-          result['lyrics'] = res['lyrics']!;
-          result['type'] = res['type']!;
-          result['source'] = res['source']!;
-        } else {
-          Logger.root.info('Song not matched');
-        }
-      } catch (e) {
-        Logger.root.severe('Error in getSpotifyLyrics', e);
-      }
-    });
+      },
+      forceSign: false,
+    );
     return result;
   }
 

@@ -151,22 +151,24 @@ class SpotifyUrlHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (type == 'track') {
-      callSpotifyFunction((String accessToken) {
-        SpotifyApi().getTrackDetails(accessToken, id).then((value) {
-          Navigator.pushReplacement(
-            context,
-            PageRouteBuilder(
-              opaque: false,
-              pageBuilder: (_, __, ___) => SearchPage(
-                query: (value['artists'] != null &&
-                        (value['artists'] as List).isNotEmpty)
-                    ? '${value["name"]} by ${value["artists"][0]["name"]}'
-                    : value['name'].toString(),
+      callSpotifyFunction(
+        function: (String accessToken) {
+          SpotifyApi().getTrackDetails(accessToken, id).then((value) {
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                opaque: false,
+                pageBuilder: (_, __, ___) => SearchPage(
+                  query: (value['artists'] != null &&
+                          (value['artists'] as List).isNotEmpty)
+                      ? '${value["name"]} by ${value["artists"][0]["name"]}'
+                      : value['name'].toString(),
+                ),
               ),
-            ),
-          );
-        });
-      });
+            );
+          });
+        },
+      );
     }
     return Container();
   }

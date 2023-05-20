@@ -422,6 +422,7 @@ class Download with ChangeNotifier {
         try {
           Logger.root.info('Checking if lyrics required');
           if (downloadLyrics) {
+            Logger.root.info('downloading lyrics');
             final Map res = await Lyrics.getLyrics(
               id: data['id'].toString(),
               title: data['title'].toString(),
