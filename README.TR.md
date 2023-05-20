@@ -2,17 +2,17 @@
 
 # BlackHole
 
-An Open-Source Music Player App for all your needs!
+Tüm ihtiyaçlarınız için bir Açık Kaynaklı Müzik Çalar Uygulaması!
 
 [![made-with-flutter](https://img.shields.io/badge/Made%20with-Flutter-1f425f.svg)](https://flutter.dev/) ![Release](https://img.shields.io/github/v/release/Sangwan5688/BlackHole) ![Downloads](https://img.shields.io/github/downloads/Sangwan5688/BlackHole/total)
 [![Build](https://github.com/Sangwan5688/BlackHole/actions/workflows/flutter.yml/badge.svg)](https://github.com/Sangwan5688/BlackHole/actions/workflows/flutter.yml)
 [![Translation-Status](https://hosted.weblate.org/widgets/blackhole/-/translations/svg-badge.svg)](https://hosted.weblate.org/engage/blackhole/)
 
-### Don't forget to :star: the repo
+### Depoyu :star:'lamayı unutmayın!
 
 [![GitHub stars](https://img.shields.io/github/stars/Sangwan5688/BlackHole.svg?style=social&label=Star)](https://github.com//Sangwan5688/BlackHole) ![GitHub forks](https://img.shields.io/github/forks/Sangwan5688/BlackHole.svg?style=social&label=Forks) ![GitHub followers](https://img.shields.io/github/followers/Sangwan5688.svg?style=social&label=Follow)
 
-## Download
+## İndir
 
 [<img src="get_website.png"
      alt="Download from Website"
@@ -30,62 +30,62 @@ An Open-Source Music Player App for all your needs!
      alt="Get it on IzzyDroid"
      height="90">](https://android.izzysoft.de/repo/apk/com.shadow.blackhole)
 
-## Translations
-- [Turkish :tr:](/README.TR.md)
-- [Spanish :es:](/README.ES.md)
-- [Russian :ru:](/README.RU.md)
-- [French :fr:](/README.FR.md)
-- [Portuguese :brazil:](/README.PT.md)
-- [Japanese :jp:](/README.JA.md)
-- [Belarusian :belarus:](/README.BE.md)
-- [Indonesian :indonesia:](/README.ID.md)
+## Çeviriler
 
-[Translate App on Weblate](https://hosted.weblate.org/projects/blackhole/translations/)
+- [Türkçe :tr:](/README.TR.md)
+- [İspanyolca :es:](/README.ES.md)
+- [Rusça :ru:](/README.RU.md)
+- [Fransızca :fr:](/README.FR.md)
+- [Portekizce :brazil:](/README.PT.md)
+- [Japonca :jp:](/README.JA.md)
+- [Belarusça :belarus:](/README.BE.md)
+- [Endonezya dili :indonesia:](/README.ID.md)
 
-## Features
+[Uygulamayı Weblate üzerinden çevirin!](https://hosted.weblate.org/projects/blackhole/translations/)
 
-- Best Streaming Quality (320kbps aac)
-- Song, Album, Artist and Playlist Search
-- Language Specific Promoted Playlists
-- Trending Songs
-- Artist and Genre Radios
-- Support 15+ music languages
-- Local and Global Top Spotify songs
-- Add Songs to Favorite
-- Playlists support
-- Import Playlists from Spotify & YouTube
-- Import/Export Playlists as JSON File
-- Share Playlists
-- Sleep timer
-- Lyrics Support
-- Queue Management
-- Listening history record
-- Dark mode / accent color
-- Custom Gradients and other Theme options
-- Supports Portrait as well as Landscape mode
-- Download for offline play (320kbps with ID3 tags)
-- Play Online as well as Offline Songs
-- Tag Editing Support
-- Trending Search Results
-- YouTube Search Support
-- Promoted Youtube Playlists
-- Play videos as audio
-- Auto Song Recommendations
-- Inbuilt Equalizer
-- Backup & Restore
-- Auto Update Check
-- Cache support
-- No Subscription
-- No Ads
+## Özellikler
 
-and much more...
-Check it yourself :)
+- En İyi Akış Kalitesi (320kbps aac)
+- Şarkı, Albüm, Sanatçı ve Çalma Listesi Arama
+- Dile Özgü Tanıtılan Oynatma Listeleri
+- Trend Olan Şarkılar
+- Sanatçı ve Tür Radyoları
+- 15+ müzik dilini destekleyin
+- Yerel ve Küresel En İyi Spotify şarkıları
+- Favorilere Şarkı Ekle
+- Çalma listeleri desteği
+- Spotify ve YouTube'dan Çalma Listelerini İçe Aktarın
+- Oynatma Listelerini JSON Dosyası Olarak İçe/Dışa Aktar
+- Oynatma Listelerini Paylaşın
+- Uyku zamanlayıcısı
+- Şarkı Sözü Desteği
+- Kuyruk Yönetimi
+- Dinleme geçmişi kaydı
+- Karanlık mod / vurgu rengi
+- Özel Degradeler ve diğer Tema seçenekleri
+- Portre ve Manzara modunu destekler
+- Çevrimdışı oynamak için indirin (ID3 etiketleriyle 320kbps)
+- Çevrimiçi ve Çevrimdışı Şarkıları Çal
+- Etiket Düzenleme Desteği
+- Trend Olan Arama Sonuçları
+- YouTube Arama Desteği
+- Tanıtılan Youtube Oynatma Listeleri
+- Videoları ses olarak oynatın
+- Otomatik Şarkı Önerileri
+- Dahili Ekolayzır
+- Yedekleme ve Geri Yükleme
+- Otomatik Güncelleme Kontrolü
+- Önbellek desteği
+- Abonelik Yok
+- Reklamsız
 
-## Screenshots
+ve çok daha fazlasını keşfedin! :O)
+
+## Ekran Görüntüleri
 
 <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/3.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/4.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/5.png?raw=true" width="32%"> <img src="https://github.com/Sangwan5688/BlackHole/blob/main/fastlane/metadata/android/en-US/images/phoneScreenshots/6.png?raw=true" width="32%">
 
-## License
+## Lisans
 
 ```
 Copyright © 2021 Ankit Sangwan
@@ -112,46 +112,46 @@ how to obtain the original software, should clearly STATE ALL CHANGES made and s
 Use of this software under any "non-free" license is NOT permitted.
 ```
 
-See the [GNU General Public License](https://github.com/Sangwan5688/BlackHole/blob/main/LICENSE) for more details.
+[GNU General Public License](https://github.com/Sangwan5688/BlackHole/blob/main/LICENSE) ile daha fazlasına göz atın!
 
-## Building from Source
+## Kaynaktan Derleme
 
-1. If you don't have Flutter SDK installed, please visit official [Flutter](https://flutter.dev/) site.
-2. Fetch latest source code from master branch.
+1. Flutter SDK kurulu değilse, lütfen resmi [Flutter](https://flutter.dev/) sitesini ziyaret edin.
+2. Ana bölümden en son kaynak kodunu alın.
 
 ```
 git clone https://github.com/Sangwan5688/BlackHole.git
 ```
 
-3. Run the app with Android Studio or VS Code. Or the command line:
+3. Uygulamayı Android Studio veya VS Code ile çalıştırın. Veya komut satırı:
 
 ```
 flutter pub get
 flutter run
 ```
 
-## Contribute
+## Katkıda Bulunun
 
-Contributions are welcome. Please read our [contributing guidelines](https://github.com/Sangwan5688/BlackHole/blob/main/CONTRIBUTING.md) before contributing.
+Katkılar kabul edilir. Lütfen katkıda bulunmadan önce [katkıda bulunma yönergelerimizi](https://github.com/Sangwan5688/BlackHole/blob/main/CONTRIBUTING.md) okuyun.
 
-## Facing any Issue?
+## Herhangi bir sorunla mı karşılaşıyorsunuz?
 
-Have a look at some [common Issues](https://github.com/Sangwan5688/BlackHole/wiki/Common-Issues) that you might face. If your problem is not there, feel free to open an Issue :)
+Karşılaşabileceğiniz bazı [yaygın sorunlara](https://github.com/Sangwan5688/BlackHole/wiki/Common-Issues) bir göz atın. Sorununuz orada değilse, bir Konu açmaktan çekinmeyin :)
 
-## Want to test Beta Versions? Need help??
+## Beta Sürümlerini test etmek ister misiniz? Yardıma mı ihtiyacınız var?
 
-You can join our [Telegram Channel](https://t.me/blackhole_official) or [Telegram Group](https://t.me/joinchat/fHDC1AWnOhw0ZmI9), if you have any query, or need help with something as well as to get beta updates of the project.
+Herhangi bir sorunuz varsa veya bir konuda yardıma ihtiyacınız varsa [Telegram Kanalımıza](https://t.me/blackhole_official) veya [Telegram Grubumuza](https://t.me/joinchat/fHDC1AWnOhw0ZmI9) katılabilirsiniz. yanı sıra projenin beta güncellemelerini almak için.
 
-## Liked my work?
+## Çalışmamı beğendin mi?
 
 <a href="https://www.buymeacoffee.com/ankitsangwan" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png" alt="Buy Me A Coffee" style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" ></a>
 
-## What's New
+## Yenilikler Neler?
 
-To read full changelog visit the [wiki page](https://github.com/Sangwan5688/BlackHole/wiki/Changelog)
+Tüm değişiklik günlüğünü okumak için [wiki page](https://github.com/Sangwan5688/BlackHole/wiki/Changelog) sayfasını ziyaret edin!
 
 
-## Disclaimer
+## Feragatname
 ```
 BlackHole does not own or have any affiliation with the songs and other content available through the app.
 All songs and other content are the property of their respective owners and are protected by copyright law.
@@ -161,4 +161,8 @@ is not responsible for any harm or damage to the respective owners or any other 
 of the songs and other content through the third-party plugins.
 By using the app, you agree to use the songs and other content only for personal, non-commercial purposes
 and in compliance with all applicable laws and regulations.
+```
+```
+Translated by: Eren İnce erenince@proton.me
+Eren İnce tarafından çevrilmiştir. erenince@proton.me
 ```
