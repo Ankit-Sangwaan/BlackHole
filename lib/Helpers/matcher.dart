@@ -26,8 +26,8 @@ bool matchSongs({
   required String artist2,
 }) {
   Logger.root.info('Matching $title by $artist with $title2 by $artist2');
-  final names1 = artist.split(',');
-  final names2 = artist2.split(',');
+  final names1 = artist.replaceAll('&', ',').split(',');
+  final names2 = artist2.replaceAll('&', ',').split(',');
   bool artistMatched = false;
   bool titleMatched = false;
 

@@ -21,6 +21,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:html_unescape/html_unescape_small.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -190,7 +191,10 @@ class YouTubeServices {
         return [];
       }
       final Map res = jsonDecode(response.body) as Map;
-      return res['suggestions'] as List;
+      final unescape = HtmlUnescape();
+      return (res['suggestions'] as List)
+          .map((e) => unescape.convert(e.toString()))
+          .toList();
     } catch (e) {
       Logger.root.severe('Error in getSearchSuggestions: $e');
       return [];
