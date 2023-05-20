@@ -1267,6 +1267,7 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
   void fetchLyrics() {
     Logger.root.info('Fetching lyrics');
     done.value = false;
+    lyricsSource.value = '';
     if (widget.offline) {
       Lyrics.getOffLyrics(
         widget.mediaItem.extras!['url'].toString(),
@@ -1432,6 +1433,9 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                     String value,
                     Widget? child,
                   ) {
+                    if (value == '') {
+                      return const SizedBox();
+                    }
                     return Align(
                       alignment: Alignment.bottomRight,
                       child: Text(
