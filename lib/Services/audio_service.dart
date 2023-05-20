@@ -596,7 +596,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   Future<void> updateQueue(List<MediaItem> newQueue) async {
     await _playlist.clear();
     await _playlist.addAll(_itemsToSources(newQueue));
-    addLastQueue(newQueue);
+    // addLastQueue(newQueue);
     // stationId = '';
     // stationNames = newQueue.map((e) => e.id).toList();
     // SaavnAPI()
@@ -694,6 +694,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     _player!.pause();
     await Hive.box('cache').put('lastIndex', _player!.currentIndex);
     await Hive.box('cache').put('lastPos', _player!.position.inSeconds);
+    await addLastQueue(queue.value);
   }
 
   @override
@@ -709,6 +710,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     Logger.root.info('caching last index and position');
     await Hive.box('cache').put('lastIndex', _player!.currentIndex);
     await Hive.box('cache').put('lastPos', _player!.position.inSeconds);
+    await addLastQueue(queue.value);
   }
 
   @override
