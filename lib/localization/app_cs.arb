@@ -201,7 +201,7 @@
   "@deleteThemeSubtitle": {},
   "downloadSomething": "Něco stáhněte",
   "@downloadSomething": {},
-  "disclaimerText": "Respektujeme vaše soukromí více než vše ostatní. Bude zaznamenáno pouze vaše jméno, které sem zadáte.",
+  "disclaimerText": "Respektujeme vaše soukromí více než vše ostatní. Všechna vaše data jsou uložena lokálně, pouze na vašem zařízení.",
   "@disclaimerText": {},
   "downLyricsSub": "Stahování textu spolu se skladbou, pokud je k dispozici",
   "@downLyricsSub": {},
@@ -395,7 +395,7 @@
   "@savePlaylist": {},
   "searchVideo": "Hledat video",
   "@searchVideo": {},
-  "selectBackFile": "Vyberte soubor zálohy",
+  "selectBackFile": "Vyberte soubor zálohy (.zip)",
   "@selectBackFile": {},
   "settings": "Nastavení",
   "@settings": {},
@@ -702,5 +702,7 @@
   "blacklistHomeSectionsConfirm": "Opravdu chcete tuto sekci zařadit na černou listinu? Po zařazení na černou listinu se nebude zobrazovat na domovské obrazovce",
   "@blacklistHomeSectionsConfirm": {},
   "folders": "Složky",
-  "@folders": {}
+  "@folders": {},
+  "noFileSelected": "Není vybrán žádný soubor",
+  "@noFileSelected": {}
 }
