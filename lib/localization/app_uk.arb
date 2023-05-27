@@ -115,7 +115,7 @@
   "@deleted": {},
   "deleteThemeSubtitle": "Ви впевнені, що хочете видалити?",
   "@deleteThemeSubtitle": {},
-  "disclaimer": "Відмова від відповідальності :",
+  "disclaimer": "Відмова від відповідальності:",
   "@disclaimer": {},
   "displayName": "Відображене імʼя",
   "@displayName": {},
@@ -327,7 +327,7 @@
   "@searchVideo": {},
   "searchYt": "Пошук в YouTube",
   "@searchYt": {},
-  "selectBackFile": "Виберіть файл з бекапом",
+  "selectBackFile": "Виберіть файл резервної копії (.zip)",
   "@selectBackFile": {},
   "selectBackLocation": "Виберіть місце з бекапом",
   "@selectBackLocation": {},
@@ -505,7 +505,7 @@
   "@enterName": {},
   "createYtFold": "Створити окрему теку завантажень для Youtube",
   "@createYtFold": {},
-  "disclaimerText": "Ми поважаємо вашу конфіденційність більше, чим будь-що інше. Буде записано тільки ваше імʼя, яке ви введете тут.",
+  "disclaimerText": "Ми поважаємо вашу конфіденційність понад усе. Всі ваші дані зберігаються тільки локально на вашому пристрої.",
   "@disclaimerText": {},
   "downLocation": "Місце для завантажень",
   "@downLocation": {},
@@ -690,5 +690,7 @@
   "blacklistHomeSectionsConfirm": "Ви впевнені, що хочете додати цей розділ до чорного списку? Після додавання до чорного списку він не буде відображатися на головному екрані",
   "@blacklistHomeSectionsConfirm": {},
   "folders": "Папки",
-  "@folders": {}
+  "@folders": {},
+  "noFileSelected": "Файл не вибрано",
+  "@noFileSelected": {}
 }
