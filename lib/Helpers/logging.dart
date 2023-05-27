@@ -10,6 +10,7 @@ Future<void> initializeLogging() async {
   if (!await logFile.exists()) {
     await logFile.create(recursive: true);
   }
+  // clear old session data
   await logFile.writeAsString('');
   Logger.root.level = Level.ALL;
   Logger.root.onRecord.listen((record) async {

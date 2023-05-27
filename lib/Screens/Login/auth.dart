@@ -85,6 +85,9 @@ class _AuthScreenState extends State<AuthScreen> {
                         },
                         child: Text(
                           AppLocalizations.of(context)!.restore,
+                          style: TextStyle(
+                            color: Colors.grey.withOpacity(0.7),
+                          ),
                         ),
                       ),
                       TextButton(
@@ -96,8 +99,8 @@ class _AuthScreenState extends State<AuthScreen> {
                         },
                         child: Text(
                           AppLocalizations.of(context)!.skip,
-                          style: const TextStyle(
-                            decoration: TextDecoration.underline,
+                          style: TextStyle(
+                            color: Colors.grey.withOpacity(0.7),
                           ),
                         ),
                       ),
@@ -257,26 +260,13 @@ class _AuthScreenState extends State<AuthScreen> {
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                    vertical: 20.0,
+                                    vertical: 10.0,
                                   ),
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            AppLocalizations.of(context)!
-                                                .disclaimer,
-                                          ),
-                                        ],
-                                      ),
-                                      Text(
-                                        AppLocalizations.of(context)!
-                                            .disclaimerText,
-                                        style: TextStyle(
-                                          color: Colors.grey.withOpacity(0.7),
-                                        ),
-                                      ),
-                                    ],
+                                  child: Text(
+                                    '${AppLocalizations.of(context)!.disclaimer} ${AppLocalizations.of(context)!.disclaimerText}',
+                                    style: TextStyle(
+                                      color: Colors.grey.withOpacity(0.7),
+                                    ),
                                   ),
                                 ),
                               ],

@@ -120,43 +120,56 @@ Future<void> createBackup(
 Future<void> restore(
   BuildContext context,
 ) async {
+  Logger.root.info('Prompting for restore file selection');
   final String savePath = await Picker.selectFile(
     context: context,
     // ext: ['zip'],
     message: AppLocalizations.of(context)!.selectBackFile,
   );
-  final File zipFile = File(savePath);
-  final Directory tempDir = await getTemporaryDirectory();
-  final Directory destinationDir = Directory('${tempDir.path}/restore');
+  Logger.root.info('Selected restore file path: $savePath');
+  if (savePath != '') {
+    final File zipFile = File(savePath);
+    final Directory tempDir = await getTemporaryDirectory();
+    final Directory destinationDir = Directory('${tempDir.path}/restore');
 
-  try {
-    await ZipFile.extractToDirectory(
-      zipFile: zipFile,
-      destinationDir: destinationDir,
-    );
-    final List<FileSystemEntity> files = await destinationDir.list().toList();
+    try {
+      Logger.root.info('Extracting backup file');
+      await ZipFile.extractToDirectory(
+        zipFile: zipFile,
+        destinationDir: destinationDir,
+      );
+      final List<FileSystemEntity> files = await destinationDir.list().toList();
+      Logger.root.info('Found ${files.length} backup files');
 
-    for (int i = 0; i < files.length; i++) {
-      final String backupPath = files[i].path;
-      final String boxName = backupPath.split('/').last.replaceAll('.hive', '');
-      final Box box = await Hive.openBox(boxName);
-      final String boxPath = box.path!;
-      await box.close();
+      for (int i = 0; i < files.length; i++) {
+        final String backupPath = files[i].path;
+        final String boxName =
+            backupPath.split('/').last.replaceAll('.hive', '');
+        final Box box = await Hive.openBox(boxName);
+        final String boxPath = box.path!;
+        await box.close();
 
-      try {
-        await File(backupPath).copy(boxPath);
-      } finally {
-        await Hive.openBox(boxName);
+        try {
+          await File(backupPath).copy(boxPath);
+        } finally {
+          await Hive.openBox(boxName);
+        }
       }
+      await destinationDir.delete(recursive: true);
+      ShowSnackBar()
+          .showSnackBar(context, AppLocalizations.of(context)!.importSuccess);
+    } catch (e) {
+      Logger.root.severe('Error in restoring backup', e);
+      ShowSnackBar().showSnackBar(
+        context,
+        '${AppLocalizations.of(context)!.failedImport}\nError: $e',
+      );
     }
-    destinationDir.delete(recursive: true);
-    ShowSnackBar()
-        .showSnackBar(context, AppLocalizations.of(context)!.importSuccess);
-  } catch (e) {
-    Logger.root.severe('Error in restoring backup', e);
+  } else {
+    Logger.root.severe('Error in restoring backup', 'No file selected');
     ShowSnackBar().showSnackBar(
       context,
-      '${AppLocalizations.of(context)!.failedImport}\nError: $e',
+      AppLocalizations.of(context)!.noFileSelected,
     );
   }
 }
