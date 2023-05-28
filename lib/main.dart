@@ -262,69 +262,76 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: AppTheme.themeMode == ThemeMode.dark
-            ? Colors.black38
-            : Colors.white,
-        statusBarIconBrightness: AppTheme.themeMode == ThemeMode.dark
-            ? Brightness.light
-            : Brightness.dark,
-        systemNavigationBarIconBrightness: AppTheme.themeMode == ThemeMode.dark
-            ? Brightness.light
-            : Brightness.dark,
-      ),
-    );
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
-
-    return MaterialApp(
-      title: 'BlackHole',
-      restorationScopeId: 'blackhole',
-      debugShowCheckedModeBanner: false,
-      themeMode: AppTheme.themeMode,
-      theme: AppTheme.lightTheme(
-        context: context,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent,
+        statusBarIconBrightness: AppTheme.themeMode == ThemeMode.system
+            ? MediaQuery.platformBrightnessOf(context) == Brightness.dark
+                ? Brightness.light
+                : Brightness.dark
+            : AppTheme.themeMode == ThemeMode.dark
+                ? Brightness.light
+                : Brightness.dark,
+        systemNavigationBarIconBrightness:
+            AppTheme.themeMode == ThemeMode.system
+                ? MediaQuery.platformBrightnessOf(context) == Brightness.dark
+                    ? Brightness.light
+                    : Brightness.dark
+                : AppTheme.themeMode == ThemeMode.dark
+                    ? Brightness.light
+                    : Brightness.dark,
       ),
-      darkTheme: AppTheme.darkTheme(
-        context: context,
+      child: MaterialApp(
+        title: 'BlackHole',
+        restorationScopeId: 'blackhole',
+        debugShowCheckedModeBanner: false,
+        themeMode: AppTheme.themeMode,
+        theme: AppTheme.lightTheme(
+          context: context,
+        ),
+        darkTheme: AppTheme.darkTheme(
+          context: context,
+        ),
+        locale: _locale,
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: ConstantCodes.languageCodes.entries
+            .map((languageCode) => Locale(languageCode.value, ''))
+            .toList(),
+        routes: {
+          '/': (context) => initialFuntion(),
+          '/pref': (context) => const PrefScreen(),
+          '/setting': (context) => const SettingPage(),
+          '/about': (context) => AboutScreen(),
+          '/playlists': (context) => PlaylistScreen(),
+          '/nowplaying': (context) => NowPlaying(),
+          '/recent': (context) => RecentlyPlayed(),
+          '/downloads': (context) => const Downloads(),
+          '/stats': (context) => const Stats(),
+        },
+        navigatorKey: navigatorKey,
+        onGenerateRoute: (RouteSettings settings) {
+          if (settings.name == '/player') {
+            return PageRouteBuilder(
+              opaque: false,
+              pageBuilder: (_, __, ___) => const PlayScreen(),
+            );
+          }
+          return HandleRoute.handleRoute(settings.name);
+        },
       ),
-      locale: _locale,
-      localizationsDelegates: const [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: ConstantCodes.languageCodes.entries
-          .map((languageCode) => Locale(languageCode.value, ''))
-          .toList(),
-      routes: {
-        '/': (context) => initialFuntion(),
-        '/pref': (context) => const PrefScreen(),
-        '/setting': (context) => const SettingPage(),
-        '/about': (context) => AboutScreen(),
-        '/playlists': (context) => PlaylistScreen(),
-        '/nowplaying': (context) => NowPlaying(),
-        '/recent': (context) => RecentlyPlayed(),
-        '/downloads': (context) => const Downloads(),
-        '/stats': (context) => const Stats(),
-      },
-      navigatorKey: navigatorKey,
-      onGenerateRoute: (RouteSettings settings) {
-        if (settings.name == '/player') {
-          return PageRouteBuilder(
-            opaque: false,
-            pageBuilder: (_, __, ___) => const PlayScreen(),
-          );
-        }
-        return HandleRoute.handleRoute(settings.name);
-      },
     );
   }
 }

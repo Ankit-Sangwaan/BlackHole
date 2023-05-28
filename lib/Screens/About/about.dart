@@ -220,13 +220,15 @@ class _AboutScreenState extends State<AboutScreen> {
                     ),
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(5, 30, 5, 20),
-                  child: Center(
-                    child: Text(
-                      AppLocalizations.of(context)!.madeBy,
-                      style: const TextStyle(fontSize: 12),
-                      textAlign: TextAlign.center,
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(5, 30, 5, 20),
+                    child: Center(
+                      child: Text(
+                        AppLocalizations.of(context)!.madeBy,
+                        style: const TextStyle(fontSize: 12),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ),

@@ -419,13 +419,15 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     children: <Widget>[
                       const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.fromLTRB(5, 30, 5, 20),
-                        child: Center(
-                          child: Text(
-                            AppLocalizations.of(context)!.madeBy,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(fontSize: 12),
+                      SafeArea(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(5, 30, 5, 20),
+                          child: Center(
+                            child: Text(
+                              AppLocalizations.of(context)!.madeBy,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(fontSize: 12),
+                            ),
                           ),
                         ),
                       ),
