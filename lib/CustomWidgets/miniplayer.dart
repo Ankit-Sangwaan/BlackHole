@@ -93,21 +93,25 @@ class _MiniPlayerState extends State<MiniPlayer> {
                             ? const SizedBox()
                             : (position.inSeconds.toDouble() < 0.0 ||
                                     (position.inSeconds.toDouble() >
-                                        mediaItem.duration!.inSeconds.toDouble()))
+                                        mediaItem.duration!.inSeconds
+                                            .toDouble()))
                                 ? const SizedBox()
                                 : SliderTheme(
                                     data: SliderTheme.of(context).copyWith(
-                                      activeTrackColor:
-                                          Theme.of(context).colorScheme.secondary,
+                                      activeTrackColor: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                       inactiveTrackColor: Colors.transparent,
                                       trackHeight: 0.5,
-                                      thumbColor:
-                                          Theme.of(context).colorScheme.secondary,
+                                      thumbColor: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
                                       thumbShape: const RoundSliderThumbShape(
                                         enabledThumbRadius: 1.0,
                                       ),
                                       overlayColor: Colors.transparent,
-                                      overlayShape: const RoundSliderOverlayShape(
+                                      overlayShape:
+                                          const RoundSliderOverlayShape(
                                         overlayRadius: 2.0,
                                       ),
                                     ),
@@ -136,7 +140,8 @@ class _MiniPlayerState extends State<MiniPlayer> {
                             defaultValue: false,
                           ) as bool ||
                           rotated;
-                      final List preferredMiniButtons = Hive.box('settings').get(
+                      final List preferredMiniButtons =
+                          Hive.box('settings').get(
                         'preferredMiniButtons',
                         defaultValue: ['Like', 'Play/Pause', 'Next'],
                       )?.toList() as List;
@@ -174,7 +179,8 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                       elevation: 8,
                                       margin: EdgeInsets.zero,
                                       shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(7.0),
+                                        borderRadius:
+                                            BorderRadius.circular(7.0),
                                       ),
                                       clipBehavior: Clip.antiAlias,
                                       child: (mediaItem.artUri
@@ -190,8 +196,11 @@ class _MiniPlayerState extends State<MiniPlayer> {
                                                         .toFilePath(),
                                                   ),
                                                 ),
-                                                errorBuilder:
-                                                    (context, error, stackTrace) {
+                                                errorBuilder: (
+                                                  context,
+                                                  error,
+                                                  stackTrace,
+                                                ) {
                                                   return const Image(
                                                     fit: BoxFit.cover,
                                                     image: AssetImage(
