@@ -131,7 +131,7 @@
   "@deleted": {},
   "deleteThemeSubtitle": "¿Segur@ que deseas eliminar?",
   "@deleteThemeSubtitle": {},
-  "disclaimerText": "Respetamos su privacidad más que nada. Solo su nombre, el cual introducirá aquí, será guardado.",
+  "disclaimerText": "Respetamos tu privacidad más que cualquier otra cosa. Todos tus datos se almacenan localmente en tu dispositivo.",
   "@disclaimerText": {},
   "displayName": "Nombre",
   "@displayName": {},
@@ -293,7 +293,7 @@
   "@version": {},
   "viewAlbum": "Ver álbum",
   "@viewAlbum": {},
-  "disclaimer": "Cláusula de no responsabilidad:",
+  "disclaimer": "Descargo de responsabilidad:",
   "@disclaimer": {},
   "enableGestureSub": "Habilitar gestos como presionar, pulsación prolongada, deslizar, etc en la portada del álbum en la vista del reproductor",
   "@enableGestureSub": {},
@@ -469,7 +469,7 @@
   "@searchVideo": {},
   "searchYt": "Buscar en YouTube",
   "@searchYt": {},
-  "selectBackFile": "Selecciona archivo de Backup",
+  "selectBackFile": "Selecciona el archivo de la copia de seguridad (.zip)",
   "@selectBackFile": {},
   "selectBackLocation": "Selecciona ubicación de Backup",
   "@selectBackLocation": {},
@@ -698,5 +698,7 @@
   "blacklistHomeSections": "Poner en la lista negra esta sección",
   "@blacklistHomeSections": {},
   "folders": "Carpetas",
-  "@folders": {}
+  "@folders": {},
+  "noFileSelected": "Ningún archivo seleccionado",
+  "@noFileSelected": {}
 }
