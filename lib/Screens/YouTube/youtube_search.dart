@@ -290,10 +290,20 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                       setState(
                                                         () {
                                                           fetched = false;
-                                                          query = searchHistory[
-                                                                  index]
+                                                          query = searchHistory
+                                                              .removeAt(index)
                                                               .toString()
                                                               .trim();
+                                                          searchHistory.insert(
+                                                            0,
+                                                            query,
+                                                          );
+                                                          Hive.box('settings')
+                                                              .put(
+                                                            'search',
+                                                            searchHistory,
+                                                          );
+
                                                           _controller.text =
                                                               query;
                                                           status = false;

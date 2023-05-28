@@ -207,9 +207,18 @@ class _SearchPageState extends State<SearchPage> {
                                             setState(
                                               () {
                                                 fetched = false;
-                                                query = search[index]
+                                                query = search
+                                                    .removeAt(index)
                                                     .toString()
                                                     .trim();
+                                                search.insert(
+                                                  0,
+                                                  query,
+                                                );
+                                                Hive.box('settings').put(
+                                                  'search',
+                                                  search,
+                                                );
                                                 controller.text = query;
                                                 controller.selection =
                                                     TextSelection.fromPosition(

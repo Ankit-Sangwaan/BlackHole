@@ -31,6 +31,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
 import 'package:logging/logging.dart';
+import 'package:metadata_god/metadata_god.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -474,20 +475,21 @@ class Download with ChangeNotifier {
         //   // filepath = filepath!.replaceAll('.m4a', '.$downloadFormat');
         // }
         Logger.root.info('Getting audio tags');
-        final Tag tag = Tag(
-          title: data['title'].toString(),
-          artist: data['artist'].toString(),
-          albumArtist: data['album_artist']?.toString() ??
-              data['artist']?.toString().split(', ')[0],
-          artwork: filepath2,
-          album: data['album'].toString(),
-          genre: data['language'].toString(),
-          year: data['year'].toString(),
-          lyrics: lyrics,
-          comment: 'BlackHole',
-        );
         if (Platform.isAndroid) {
           try {
+            final Tag tag = Tag(
+              title: data['title'].toString(),
+              artist: data['artist'].toString(),
+              albumArtist: data['album_artist']?.toString() ??
+                  data['artist']?.toString().split(', ')[0] ??
+                  '',
+              artwork: filepath2,
+              album: data['album'].toString(),
+              genre: data['language'].toString(),
+              year: data['year'].toString(),
+              lyrics: lyrics,
+              comment: 'BlackHole',
+            );
             Logger.root.info('Started tag editing');
             final tagger = Audiotagger();
             await tagger.writeTags(
@@ -502,6 +504,33 @@ class Download with ChangeNotifier {
           } catch (e) {
             Logger.root.severe('Error editing tags: $e');
           }
+        } else {
+          // Set metadata to file
+          await MetadataGod.writeMetadata(
+            file: filepath!,
+            metadata: Metadata(
+              title: data['title'].toString(),
+              artist: data['artist'].toString(),
+              albumArtist: data['album_artist']?.toString() ??
+                  data['artist']?.toString().split(', ')[0] ??
+                  '',
+              album: data['album'].toString(),
+              genre: data['language'].toString(),
+              year: int.parse(data['year'].toString()),
+              // lyrics: lyrics,
+              // comment: 'BlackHole',
+              // trackNumber: 1,
+              // trackTotal: 12,
+              // discNumber: 1,
+              // discTotal: 5,
+              durationMs: int.parse(data['duration'].toString()) * 1000,
+              fileSize: file.lengthSync(),
+              picture: Picture(
+                data: File(filepath2).readAsBytesSync(),
+                mimeType: 'image/jpeg',
+              ),
+            ),
+          );
         }
         Logger.root.info('Closing connection & notifying listeners');
         client.close();
