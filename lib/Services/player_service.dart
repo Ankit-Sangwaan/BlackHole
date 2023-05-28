@@ -60,7 +60,7 @@ class PlayerInvoke {
     }
 
     if (!fromMiniplayer) {
-      if (!Platform.isAndroid) {
+      if (Platform.isIOS) {
         // Don't know why but it fixes the playback issue with iOS Side
         audioHandler.stop();
       }

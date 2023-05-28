@@ -550,7 +550,7 @@ class YouTubeServices {
         await yt.videos.streamsClient.getManifest(video.id);
     final List<AudioOnlyStreamInfo> sortedStreamInfo =
         manifest.audioOnly.sortByBitrate();
-    if (Platform.isIOS) {
+    if (Platform.isIOS || Platform.isMacOS) {
       final List<AudioOnlyStreamInfo> m4aStreams = sortedStreamInfo
           .where((element) => element.audioCodec.contains('mp4'))
           .toList();
