@@ -119,7 +119,7 @@
   "@deleteThemeSubtitle": {},
   "disclaimer": "כתב ויתור:",
   "@disclaimer": {},
-  "disclaimerText": "אנו מכבדים את הפרטיות שלך יותר מכל דבר אחר. רק השם, שימולא כאן, יתועד.",
+  "disclaimerText": "אנו מכבדים את הפרטיות שלך יותר מכל דבר אחר. כל הנתונים שלך מאוחסנים מקומית במכשיר שלך בלבד.",
   "@disclaimerText": {},
   "displayName": "שם התצוגה",
   "@displayName": {},
@@ -501,7 +501,7 @@
   "@searchVideo": {},
   "searchYt": "חיפוש ב־YouTube",
   "@searchYt": {},
-  "selectBackFile": "בחירת קובץ גיבוי",
+  "selectBackFile": "בחירת קובץ גיבוי (‎.zip)",
   "@selectBackFile": {},
   "resetOnSkip": "לנגן שוב בדילוג על הקודם",
   "@resetOnSkip": {},
@@ -690,5 +690,7 @@
   "blacklistHomeSectionsConfirm": "להוסיף את הסעיף הזה לרשימת חסימה? לאחר ההוספה, הוא לא יופיע עוד במסך הבית",
   "@blacklistHomeSectionsConfirm": {},
   "folders": "תיקיות",
-  "@folders": {}
+  "@folders": {},
+  "noFileSelected": "לא נבחר קובץ",
+  "@noFileSelected": {}
 }
