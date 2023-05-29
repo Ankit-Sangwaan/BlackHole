@@ -169,7 +169,7 @@
   "@deleteThemeSubtitle": {},
   "disclaimer": "Clause de non-responsabilité :",
   "@disclaimer": {},
-  "disclaimerText": "Nous respectons votre vie privée plus que toute autre chose. Seul votre nom, que vous allez entrez ici, sera enregistré.",
+  "disclaimerText": "Nous respectons votre vie privée plus que tout. Toutes vos données sont stockées uniquement localement sur votre appareil.",
   "@disclaimerText": {},
   "displayName": "Nom d'affichage",
   "@displayName": {},
@@ -425,7 +425,7 @@
   "@searchVideo": {},
   "searchYt": "Rechercher sur YouTube",
   "@searchYt": {},
-  "selectBackFile": "Sélectionner un fichier de sauvegarde",
+  "selectBackFile": "Sélectionner le fichier de sauvegarde (.zip)",
   "@selectBackFile": {},
   "selectBackLocation": "Sélectionner l'emplacement de sauvegarde",
   "@selectBackLocation": {},
@@ -704,5 +704,7 @@
   "blacklistHomeSectionsConfirm": "Êtes-vous sûr de vouloir mettre cette section sur liste noire ? Une fois mise sur liste noire, elle ne sera plus affichée sur l'écran d'accueil",
   "@blacklistHomeSectionsConfirm": {},
   "folders": "Dossiers",
-  "@folders": {}
+  "@folders": {},
+  "noFileSelected": "Aucun fichier sélectionné",
+  "@noFileSelected": {}
 }
