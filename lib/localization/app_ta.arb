@@ -223,7 +223,7 @@
   "@searchVideo": {},
   "searchYt": "வலையொளியில் தேடு",
   "@searchYt": {},
-  "selectBackFile": "காப்புநகற்கோப்பைத் தேர்ந்தெடு",
+  "selectBackFile": "காப்புநகற்கோப்பைத் தேர்ந்தெடு (.zip)",
   "@selectBackFile": {},
   "selectBackLocation": "காப்புநகலிடத்தைத் தேர்ந்தெடு",
   "@selectBackLocation": {},
@@ -455,7 +455,7 @@
   "@createAlbumFoldSub": {},
   "dec": "இறங்குமுகம்",
   "@dec": {},
-  "disclaimerText": "வேறெதையும்விட உம் தனியுரிமையை மதிக்கிறோம். இங்குள்ளிடு உம் பெயர் மட்டுமே பதிவாகும்.",
+  "disclaimerText": "வேறெதையும்விட உம் தனியுரிமையை மதிக்கிறோம். உம் அனைத்து தரவும் உம் சாதனத்தில் மட்டுமே சேமிக்கப்படும்.",
   "@disclaimerText": {},
   "donateGpaySub": "ஒவ்வொரு சிறிய தொகை கூட எனக்குச் சிரிப்பூட்டும் :)\nகொடையளிக்க தட்டு அ UPI IDஐ நகலெடுக்க நீண்டழுத்து",
   "@donateGpaySub": {},
@@ -704,5 +704,7 @@
   "blacklistHomeSectionsConfirm": "இப்பிரிவை கரும்பட்டியலிட உறுதியா? ஆன பின், இது முகப்புத்திரையில் காட்டப்படாது",
   "@blacklistHomeSectionsConfirm": {},
   "folders": "அடைவுகள்",
-  "@folders": {}
+  "@folders": {},
+  "noFileSelected": "எந்தக் கோப்பும் தேர்ந்தெடுக்கப்படவில்லை",
+  "@noFileSelected": {}
 }
