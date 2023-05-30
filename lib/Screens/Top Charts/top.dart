@@ -204,9 +204,10 @@ Future<void> scrapData(String type, {bool signIn = false}) async {
       ),
       mode: LaunchMode.externalApplication,
     );
-    AppLinks(
-      onAppLink: (Uri uri, String link) async {
-        closeInAppWebView();
+    final appLinks = AppLinks();
+    appLinks.allUriLinkStream.listen(
+      (uri) async {
+        final link = uri.toString();
         if (link.contains('code=')) {
           final code = link.split('code=')[1];
           Hive.box('settings').put('spotifyAppCode', code);

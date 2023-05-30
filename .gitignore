@@ -8,6 +8,9 @@
 .buildlog/
 .history
 .svn/
+installers/node_modules/
+installers/package-lock.json
+installers/dmg_creator/*.dmg
 
 # IntelliJ related
 *.iml

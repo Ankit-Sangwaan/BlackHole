@@ -164,9 +164,10 @@ Future<void> connectToSpotify(
       ),
       mode: LaunchMode.externalApplication,
     );
-    AppLinks(
-      onAppLink: (Uri uri, String link) async {
-        closeInAppWebView();
+    final appLinks = AppLinks();
+    appLinks.allUriLinkStream.listen(
+      (uri) async {
+        final link = uri.toString();
         if (link.contains('code=')) {
           final code = link.split('code=')[1];
           settingsBox.put('spotifyAppCode', code);
