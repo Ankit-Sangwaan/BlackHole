@@ -508,6 +508,21 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         ],
       );
       _player = AudioPlayer(audioPipeline: pipeline);
+
+      // Enable equalizer if used earlier
+      final eqValue = Hive.box('settings').get('setEqualizer') as bool;
+      _equalizer.setEnabled(eqValue);
+
+      // set equalizer params & bands
+      _equalizerParams ??= await _equalizer.parameters;
+      final List<AndroidEqualizerBand> bands = _equalizerParams!.bands;
+      bands.map(
+        (e) {
+          final gain =
+              Hive.box('settings').get('equalizerBand${e.index}') as double;
+          _equalizerParams!.bands[e.index].setGain(gain);
+        },
+      );
     } else {
       Logger.root.info('starting without eq pipeline');
       _player = AudioPlayer();
