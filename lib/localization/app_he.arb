@@ -692,5 +692,9 @@
   "folders": "תיקיות",
   "@folders": {},
   "noFileSelected": "לא נבחר קובץ",
-  "@noFileSelected": {}
+  "@noFileSelected": {},
+  "streamWifiQuality": "איכות שידור (רשת אלחוטית)",
+  "@streamWifiQuality": {},
+  "streamWifiQualitySub": "ייעשה בזה שימוש בעת חיבור לרשת אלחוטית",
+  "@streamWifiQualitySub": {}
 }
