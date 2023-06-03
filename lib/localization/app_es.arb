@@ -700,5 +700,9 @@
   "folders": "Carpetas",
   "@folders": {},
   "noFileSelected": "Ningún archivo seleccionado",
-  "@noFileSelected": {}
+  "@noFileSelected": {},
+  "streamWifiQualitySub": "Esto se usará siempre que la Wifi esté conectada",
+  "@streamWifiQualitySub": {},
+  "streamWifiQuality": "Calidad de la transmisión (Wifi)",
+  "@streamWifiQuality": {}
 }
