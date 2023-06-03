@@ -19,6 +19,8 @@
 
 import 'package:audio_service/audio_service.dart';
 import 'package:blackhole/Helpers/image_resolution_modifier.dart';
+import 'package:blackhole/Helpers/song_item.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 // ignore: avoid_classes_with_only_static_members
 class MediaItemConverter {
@@ -119,5 +121,61 @@ class MediaItemConverter {
         'quality': song['quality'],
       },
     );
+  }
+
+  static MediaItem songItemToMediaItem({
+    required SongItem songItem,
+    bool addedByAutoplay = false,
+    bool autoplay = true,
+    String? playlistBox,
+  }) {
+    return MediaItem(
+      id: songItem.id,
+      album: songItem.album,
+      artist: songItem.artists.join(', '),
+      duration: songItem.duration,
+      title: songItem.title,
+      artUri: Uri.parse(
+        getImageUrl(songItem.image),
+      ),
+      genre: songItem.genre,
+      extras: {
+        'url': songItem.url,
+        'allUrl': songItem.allUrls,
+        'year': songItem.year,
+        'language': songItem.language,
+        '320kbps': songItem.kbps320,
+        'quality': songItem.quality,
+        'has_lyrics': songItem.hasLyrics,
+        'release_date': songItem.releaseDate,
+        'album_id': songItem.albumId,
+        'subtitle': songItem.subtitle,
+        'perma_url': songItem.permaUrl,
+        'expire_at': songItem.expireAt,
+        'addedByAutoplay': addedByAutoplay,
+        'autoplay': autoplay,
+        'playlistBox': playlistBox,
+      },
+    );
+  }
+
+  static Map<String, dynamic> videoToMap(Video video) {
+    return {
+      'id': video.id.value,
+      'album': video.author.replaceAll('- Topic', '').trim(),
+      'duration': video.duration?.inSeconds ?? 180,
+      'title': video.title.trim(),
+      'artist': video.author.replaceAll('- Topic', '').trim(),
+      'image': video.thumbnails.highResUrl,
+      'language': 'YouTube',
+      'genre': 'YouTube',
+      'year': video.uploadDate?.year,
+      '320kbps': false,
+      'has_lyrics': false,
+      'release_date': video.publishDate.toString(),
+      'album_id': video.channelId.value,
+      'subtitle': video.author,
+      'perma_url': video.url,
+    };
   }
 }

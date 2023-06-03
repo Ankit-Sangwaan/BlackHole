@@ -187,9 +187,13 @@ class SaavnAPI {
   Future<List> getReco(String pid) async {
     final String params = "${endpoints['getReco']}&pid=$pid";
     final res = await getResponse(params);
-    if (res.statusCode == 200) {
+    if (res.statusCode == 200 && res.body.isNotEmpty) {
       final List getMain = json.decode(res.body) as List;
       return FormatResponse.formatSongsResponse(getMain, 'song');
+    } else {
+      Logger.root.severe(
+        'Error in getReco returned status: ${res.statusCode}, response: ${res.body}',
+      );
     }
     return List.empty();
   }

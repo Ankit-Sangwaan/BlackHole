@@ -75,7 +75,7 @@ class _SettingPageState extends State<SettingPage>
   String streamingMobileQuality = Hive.box('settings')
       .get('streamingQuality', defaultValue: '96 kbps') as String;
   String streamingWifiQuality = Hive.box('settings')
-      .get('streamingWifiQuality', defaultValue: '96 kbps') as String;
+      .get('streamingWifiQuality', defaultValue: '320 kbps') as String;
   String ytQuality =
       Hive.box('settings').get('ytQuality', defaultValue: 'Low') as String;
   String downloadQuality = Hive.box('settings')
