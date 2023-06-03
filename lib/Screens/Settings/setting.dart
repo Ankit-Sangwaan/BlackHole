@@ -72,8 +72,10 @@ class _SettingPageState extends State<SettingPage>
       .get('includedExcludedPaths', defaultValue: []) as List;
   List blacklistedHomeSections = Hive.box('settings')
       .get('blacklistedHomeSections', defaultValue: []) as List;
-  String streamingQuality = Hive.box('settings')
+  String streamingMobileQuality = Hive.box('settings')
       .get('streamingQuality', defaultValue: '96 kbps') as String;
+  String streamingWifiQuality = Hive.box('settings')
+      .get('streamingWifiQuality', defaultValue: '96 kbps') as String;
   String ytQuality =
       Hive.box('settings').get('ytQuality', defaultValue: 'Low') as String;
   String downloadQuality = Hive.box('settings')
@@ -2197,7 +2199,7 @@ class _SettingPageState extends State<SettingPage>
                           ),
                           onTap: () {},
                           trailing: DropdownButton(
-                            value: streamingQuality,
+                            value: streamingMobileQuality,
                             style: TextStyle(
                               fontSize: 12,
                               color:
@@ -2208,9 +2210,52 @@ class _SettingPageState extends State<SettingPage>
                               if (newValue != null) {
                                 setState(
                                   () {
-                                    streamingQuality = newValue;
+                                    streamingMobileQuality = newValue;
                                     Hive.box('settings')
                                         .put('streamingQuality', newValue);
+                                  },
+                                );
+                              }
+                            },
+                            items: <String>['96 kbps', '160 kbps', '320 kbps']
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
+                          dense: true,
+                        ),
+                        ListTile(
+                          title: Text(
+                            AppLocalizations.of(
+                              context,
+                            )!
+                                .streamWifiQuality,
+                          ),
+                          subtitle: Text(
+                            AppLocalizations.of(
+                              context,
+                            )!
+                                .streamWifiQualitySub,
+                          ),
+                          onTap: () {},
+                          trailing: DropdownButton(
+                            value: streamingWifiQuality,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color:
+                                  Theme.of(context).textTheme.bodyLarge!.color,
+                            ),
+                            underline: const SizedBox(),
+                            onChanged: (String? newValue) {
+                              if (newValue != null) {
+                                setState(
+                                  () {
+                                    streamingWifiQuality = newValue;
+                                    Hive.box('settings')
+                                        .put('streamingWifiQuality', newValue);
                                   },
                                 );
                               }

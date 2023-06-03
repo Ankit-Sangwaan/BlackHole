@@ -29,6 +29,7 @@ import 'package:blackhole/Helpers/playlist.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Services/isolate_service.dart';
 import 'package:blackhole/Services/yt_music.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
@@ -46,7 +47,10 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   AndroidEqualizerParameters? _equalizerParams;
 
   late AudioPlayer? _player;
+  late String connectionType = 'mobile';
   late String preferredQuality;
+  late String preferredWifiQuality;
+  late String preferredMobileQuality;
   late List<int> preferredCompactNotificationButtons = [1, 2, 3];
   late bool resetOnSkip;
   // late String? stationId = '';
@@ -141,9 +145,35 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       playbackState.add(playbackState.value.copyWith(speed: speed));
     });
 
-    preferredQuality = Hive.box('settings')
+    Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if (result == ConnectivityResult.mobile) {
+        connectionType = 'mobile';
+        Logger.root.info(
+          'player | switched to mobile data, changing quality to $preferredMobileQuality',
+        );
+        preferredQuality = preferredMobileQuality;
+      } else if (result == ConnectivityResult.wifi) {
+        connectionType = 'wifi';
+        Logger.root.info(
+          'player | wifi connected, changing quality to $preferredWifiQuality',
+        );
+        preferredQuality = preferredWifiQuality;
+      } else if (result == ConnectivityResult.none) {
+        Logger.root.severe(
+          'player | internet connection not available',
+        );
+      }
+    });
+
+    preferredMobileQuality = Hive.box('settings')
         .get('streamingQuality', defaultValue: '96 kbps')
         .toString();
+    preferredWifiQuality = Hive.box('settings')
+        .get('streamingWifiQuality', defaultValue: '320 kbps')
+        .toString();
+    preferredQuality = connectionType == 'wifi'
+        ? preferredWifiQuality
+        : preferredMobileQuality;
     resetOnSkip =
         Hive.box('settings').get('resetOnSkip', defaultValue: false) as bool;
     cacheSong =
@@ -451,9 +481,15 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   }
 
   List<AudioSource> _itemsToSources(List<MediaItem> mediaItems) {
-    preferredQuality = Hive.box('settings')
+    preferredMobileQuality = Hive.box('settings')
         .get('streamingQuality', defaultValue: '96 kbps')
         .toString();
+    preferredWifiQuality = Hive.box('settings')
+        .get('streamingWifiQuality', defaultValue: '320 kbps')
+        .toString();
+    preferredQuality = connectionType == 'wifi'
+        ? preferredWifiQuality
+        : preferredMobileQuality;
     cacheSong =
         Hive.box('settings').get('cacheSong', defaultValue: true) as bool;
     useDown = Hive.box('settings').get('useDown', defaultValue: true) as bool;

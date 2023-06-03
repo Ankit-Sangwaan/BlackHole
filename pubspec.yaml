@@ -20,6 +20,7 @@ dependencies:
   # bitsdojo_window: ^0.1.1+1 #For Desktops
   cached_network_image: ^3.2.3
   carousel_slider: ^4.2.1
+  connectivity_plus: ^4.0.1
   cupertino_icons: ^1.0.5
   dart_des: ^1.0.2
   device_info_plus: ^9.0.0
