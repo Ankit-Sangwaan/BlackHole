@@ -706,5 +706,9 @@
   "folders": "Dossiers",
   "@folders": {},
   "noFileSelected": "Aucun fichier sélectionné",
-  "@noFileSelected": {}
+  "@noFileSelected": {},
+  "streamWifiQuality": "Qualité du flux (Wifi)",
+  "@streamWifiQuality": {},
+  "streamWifiQualitySub": "Il sera utilisé chaque fois que le Wifi est connecté",
+  "@streamWifiQualitySub": {}
 }
