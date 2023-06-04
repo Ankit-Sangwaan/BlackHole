@@ -145,6 +145,8 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       playbackState.add(playbackState.value.copyWith(speed: speed));
     });
 
+    Logger.root.info('checking connectivity & setting quality');
+
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       if (result == ConnectivityResult.mobile) {
         connectionType = 'mobile';
@@ -161,6 +163,10 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       } else if (result == ConnectivityResult.none) {
         Logger.root.severe(
           'player | internet connection not available',
+        );
+      } else {
+        Logger.root.info(
+          'player | unidentified network connection',
         );
       }
     });
@@ -546,19 +552,25 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       _player = AudioPlayer(audioPipeline: pipeline);
 
       // Enable equalizer if used earlier
-      final eqValue = Hive.box('settings').get('setEqualizer') as bool;
+      Logger.root.info('setting eq enabled');
+      final eqValue =
+          Hive.box('settings').get('setEqualizer', defaultValue: false) as bool;
       _equalizer.setEnabled(eqValue);
 
       // set equalizer params & bands
-      _equalizerParams ??= await _equalizer.parameters;
-      final List<AndroidEqualizerBand> bands = _equalizerParams!.bands;
-      bands.map(
-        (e) {
-          final gain =
-              Hive.box('settings').get('equalizerBand${e.index}') as double;
-          _equalizerParams!.bands[e.index].setGain(gain);
-        },
-      );
+      _equalizer.parameters.then((value) {
+        Logger.root.info('setting eq params');
+        _equalizerParams ??= value;
+
+        final List<AndroidEqualizerBand> bands = _equalizerParams!.bands;
+        bands.map(
+          (e) {
+            final gain = Hive.box('settings')
+                .get('equalizerBand${e.index}', defaultValue: 0.5) as double;
+            _equalizerParams!.bands[e.index].setGain(gain);
+          },
+        );
+      });
     } else {
       Logger.root.info('starting without eq pipeline');
       _player = AudioPlayer();
