@@ -704,5 +704,9 @@
   "folders": "Mappen",
   "@folders": {},
   "noFileSelected": "Geen bestand gekozen",
-  "@noFileSelected": {}
+  "@noFileSelected": {},
+  "streamWifiQuality": "Streamkwaliteit (wifi)",
+  "@streamWifiQuality": {},
+  "streamWifiQualitySub": "Deze instelling wordt gebruikt indien verbonden met wifi",
+  "@streamWifiQualitySub": {}
 }
