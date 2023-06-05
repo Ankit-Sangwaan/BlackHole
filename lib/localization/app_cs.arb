@@ -403,7 +403,7 @@
   "@showLastSub": {},
   "songPath": "Cesta ke skladbě",
   "@songPath": {},
-  "streamQuality": "Kvalita hudby",
+  "streamQuality": "Kvalita zvuku",
   "@streamQuality": {},
   "streamQualitySub": "Vyšší kvalita využívá více dat",
   "@streamQualitySub": {},
@@ -704,5 +704,9 @@
   "folders": "Složky",
   "@folders": {},
   "noFileSelected": "Není vybrán žádný soubor",
-  "@noFileSelected": {}
+  "@noFileSelected": {},
+  "streamWifiQuality": "Kvalita zvuku (Wi-Fi)",
+  "@streamWifiQuality": {},
+  "streamWifiQualitySub": "Toto nastavení bude použito při přehrávání na Wi-Fi",
+  "@streamWifiQualitySub": {}
 }
