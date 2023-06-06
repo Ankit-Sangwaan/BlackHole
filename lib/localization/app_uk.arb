@@ -692,5 +692,9 @@
   "folders": "Папки",
   "@folders": {},
   "noFileSelected": "Файл не вибрано",
-  "@noFileSelected": {}
+  "@noFileSelected": {},
+  "streamWifiQuality": "Якість стримінгу (Wifi)",
+  "@streamWifiQuality": {},
+  "streamWifiQualitySub": "Він буде використовуватися щоразу, коли підключено Wifi",
+  "@streamWifiQualitySub": {}
 }
