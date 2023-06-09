@@ -646,5 +646,7 @@
   "willPlayNext": "Odtworzy Następny",
   "@willPlayNext": {},
   "cantFind": "Nie możesz znaleźć tego czego szukasz? ",
-  "@cantFind": {}
+  "@cantFind": {},
+  "blacklistHomeSections": "Dodaj tę sekcję do czarnej listy",
+  "@blacklistHomeSections": {}
 }
