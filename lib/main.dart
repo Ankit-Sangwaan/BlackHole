@@ -37,7 +37,7 @@ import 'package:blackhole/Screens/Library/stats.dart';
 import 'package:blackhole/Screens/Login/auth.dart';
 import 'package:blackhole/Screens/Login/pref.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
-import 'package:blackhole/Screens/Settings/setting.dart';
+import 'package:blackhole/Screens/Settings/new_settings_page.dart';
 import 'package:blackhole/Services/audio_service.dart';
 import 'package:blackhole/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -315,7 +315,7 @@ class _MyAppState extends State<MyApp> {
         routes: {
           '/': (context) => initialFuntion(),
           '/pref': (context) => const PrefScreen(),
-          '/setting': (context) => const SettingPage(),
+          '/setting': (context) => const NewSettingsPage(),
           '/about': (context) => AboutScreen(),
           '/playlists': (context) => PlaylistScreen(),
           '/nowplaying': (context) => NowPlaying(),

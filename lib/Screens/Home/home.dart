@@ -34,7 +34,7 @@ import 'package:blackhole/Screens/Library/library.dart';
 import 'package:blackhole/Screens/LocalMusic/downed_songs.dart';
 import 'package:blackhole/Screens/LocalMusic/downed_songs_desktop.dart';
 import 'package:blackhole/Screens/Search/search.dart';
-import 'package:blackhole/Screens/Settings/setting.dart';
+import 'package:blackhole/Screens/Settings/new_settings_page.dart';
 import 'package:blackhole/Screens/Top Charts/top.dart';
 import 'package:blackhole/Screens/YouTube/youtube_home.dart';
 import 'package:blackhole/Services/ext_storage_provider.dart';
@@ -393,7 +393,8 @@ class _HomePageState extends State<HomePage> {
                             context,
                             MaterialPageRoute(
                               builder: (context) =>
-                                  SettingPage(callback: callback),
+                                  //SettingsPage(callback: callback),
+                                  NewSettingsPage(callback: callback),
                             ),
                           );
                         },
@@ -813,7 +814,7 @@ class _HomePageState extends State<HomePage> {
                             const YouTube(),
                             const LibraryPage(),
                             if (sectionsToShow.contains('Settings'))
-                              SettingPage(callback: callback),
+                              NewSettingsPage(callback: callback),
                           ],
                         ),
                       ),
