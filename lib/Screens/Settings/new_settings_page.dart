@@ -59,7 +59,10 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           ),
         ),
         body: Column(
-          children: [/*_searchBar(context),*/ _settingsItem(context)],
+          children: [
+            /*_searchBar(context),*/
+            _settingsItem(context)
+          ],
         ),
       ),
     );
@@ -146,10 +149,11 @@ class _NewSettingsPageState extends State<NewSettingsPage>
         'onTap': ThemePage(
           callback: widget.callback,
         ),
+        'isThreeLine': true,
         'items': [
           AppLocalizations.of(context)!.darkMode,
-          AppLocalizations.of(context)!.useSystemTheme,
           AppLocalizations.of(context)!.accent,
+          AppLocalizations.of(context)!.useSystemTheme,
           AppLocalizations.of(context)!.bgGrad,
           AppLocalizations.of(context)!.cardGrad,
           AppLocalizations.of(context)!.bottomGrad,
@@ -165,17 +169,18 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           context,
         )!
             .ui,
-        'icon': Icons.add,
+        'icon': Icons.design_services_rounded,
         'onTap': AppUIPage(
           callback: widget.callback,
         ),
+        'isThreeLine': true,
         'items': [
           AppLocalizations.of(context)!.playerScreenBackground,
-          AppLocalizations.of(context)!.useDenseMini,
           AppLocalizations.of(context)!.miniButtons,
+          AppLocalizations.of(context)!.useDenseMini,
+          AppLocalizations.of(context)!.blacklistedHomeSections,
           AppLocalizations.of(context)!.changeOrder,
           AppLocalizations.of(context)!.compactNotificationButtons,
-          AppLocalizations.of(context)!.blacklistedHomeSections,
           AppLocalizations.of(context)!.showPlaylists,
           AppLocalizations.of(context)!.showLast,
           AppLocalizations.of(context)!.showTopCharts,
@@ -187,14 +192,15 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           context,
         )!
             .musicPlayback,
-        'icon': Icons.music_note,
+        'icon': Icons.music_note_rounded,
         'onTap': MusicPlaybackPage(
           callback: widget.callback,
         ),
+        'isThreeLine': true,
         'items': [
           AppLocalizations.of(context)!.musicLang,
-          AppLocalizations.of(context)!.chartLocation,
           AppLocalizations.of(context)!.streamQuality,
+          AppLocalizations.of(context)!.chartLocation,
           AppLocalizations.of(context)!.streamWifiQuality,
           AppLocalizations.of(context)!.ytStreamQuality,
           AppLocalizations.of(context)!.loadLast,
@@ -211,11 +217,12 @@ class _NewSettingsPageState extends State<NewSettingsPage>
             .down,
         'icon': Icons.download_done_rounded,
         'onTap': const DownloadPage(),
+        'isThreeLine': true,
         'items': [
           AppLocalizations.of(context)!.downQuality,
-          AppLocalizations.of(context)!.ytDownQuality,
           AppLocalizations.of(context)!.downLocation,
           AppLocalizations.of(context)!.downFilename,
+          AppLocalizations.of(context)!.ytDownQuality,
           AppLocalizations.of(context)!.createAlbumFold,
           AppLocalizations.of(context)!.createYtFold,
           AppLocalizations.of(context)!.downLyrics,
@@ -226,8 +233,9 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           context,
         )!
             .others,
-        'icon': Icons.miscellaneous_services,
+        'icon': Icons.miscellaneous_services_rounded,
         'onTap': const OthersPage(),
+        'isThreeLine': true,
         'items': [
           AppLocalizations.of(context)!.lang,
           AppLocalizations.of(context)!.includeExcludeFolder,
@@ -249,8 +257,9 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           context,
         )!
             .backNRest,
-        'icon': Icons.settings_backup_restore,
+        'icon': Icons.settings_backup_restore_rounded,
         'onTap': const BackupAndRestorePage(),
+        'isThreeLine': false,
         'items': [
           AppLocalizations.of(context)!.createBack,
           AppLocalizations.of(context)!.restore,
@@ -263,14 +272,15 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           context,
         )!
             .about,
-        'icon': Icons.info_outline,
+        'icon': Icons.info_outline_rounded,
         'onTap': const AboutPage(),
+        'isThreeLine': false,
         'items': [
           AppLocalizations.of(context)!.version,
           AppLocalizations.of(context)!.shareApp,
+          AppLocalizations.of(context)!.contactUs,
           AppLocalizations.of(context)!.likedWork,
           AppLocalizations.of(context)!.donateGpay,
-          AppLocalizations.of(context)!.contactUs,
           AppLocalizations.of(context)!.joinTg,
           AppLocalizations.of(context)!.moreInfo,
         ]
@@ -283,7 +293,10 @@ class _NewSettingsPageState extends State<NewSettingsPage>
 
     return Expanded(
       child: ListView.builder(
-        padding: const EdgeInsets.only(left: 5),
+        padding: const EdgeInsets.symmetric(
+          horizontal: 10.0,
+          vertical: 15.0,
+        ),
         physics: const BouncingScrollPhysics(),
         itemCount: settingsList.length,
         itemBuilder: (context, index) {
@@ -291,10 +304,11 @@ class _NewSettingsPageState extends State<NewSettingsPage>
             leading: Icon(settingsList[index]['icon'] as IconData),
             title: Text(settingsList[index]['title'].toString()),
             subtitle: Text(
-              (settingsList[index]['items'] as List).join(', '),
-              maxLines: 1,
+              (settingsList[index]['items'] as List).take(3).join(', '),
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
             ),
+            isThreeLine: settingsList[index]['isThreeLine'] as bool? ?? false,
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(

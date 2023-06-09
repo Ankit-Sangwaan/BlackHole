@@ -432,18 +432,20 @@ class SaavnAPI {
       final res = await getResponse(params);
       if (res.statusCode == 200) {
         final getMain = json.decode(res.body);
-        final List responseList = getMain['list'] as List;
-        return {
-          'songs':
-              await FormatResponse.formatSongsResponse(responseList, 'album'),
-          'error': '',
-        };
-      } else {
-        return {
-          'songs': List.empty(),
-          'error': res.body,
-        };
+        if (getMain['list'] != '') {
+          final List responseList = getMain['list'] as List;
+          return {
+            'songs':
+                await FormatResponse.formatSongsResponse(responseList, 'album'),
+            'error': '',
+          };
+        }
       }
+      Logger.root.severe('Songs not found in fetchAlbumSongs: ${res.body}');
+      return {
+        'songs': List.empty(),
+        'error': '',
+      };
     } catch (e) {
       Logger.root.severe('Error in fetchAlbumSongs: $e');
       return {

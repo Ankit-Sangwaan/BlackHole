@@ -53,6 +53,7 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           elevation: 0,
+          backgroundColor: Colors.transparent,
           centerTitle: true,
           title: Text(
             AppLocalizations.of(

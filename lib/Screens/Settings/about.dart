@@ -43,6 +43,7 @@ class _AboutPageState extends State<AboutPage> {
         backgroundColor: Colors.transparent,
         appBar: AppBar(
           elevation: 0,
+          backgroundColor: Colors.transparent,
           centerTitle: true,
           title: Text(
             AppLocalizations.of(

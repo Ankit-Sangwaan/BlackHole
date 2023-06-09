@@ -45,6 +45,7 @@ class _ThemePageState extends State<ThemePage> {
         appBar: AppBar(
           elevation: 0,
           centerTitle: true,
+          backgroundColor: Colors.transparent,
           title: Text(
             AppLocalizations.of(
               context,
