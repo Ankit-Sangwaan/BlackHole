@@ -22,6 +22,7 @@ class NewSettingsPage extends StatefulWidget {
 class _NewSettingsPageState extends State<NewSettingsPage>
     with AutomaticKeepAliveClientMixin<NewSettingsPage> {
   final TextEditingController controller = TextEditingController();
+  final ValueNotifier<String> searchQuery = ValueNotifier<String>('');
   final ValueNotifier<List> sectionsToShow = ValueNotifier<List>(
     Hive.box('settings').get(
       'sectionsToShow',
@@ -32,6 +33,8 @@ class _NewSettingsPageState extends State<NewSettingsPage>
   @override
   void dispose() {
     controller.dispose();
+    searchQuery.dispose();
+    sectionsToShow.dispose();
     super.dispose();
   }
 
@@ -51,16 +54,6 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           centerTitle: true,
           automaticallyImplyLeading: false,
           title: _searchBar(context),
-          // Text(
-          //   AppLocalizations.of(
-          //     context,
-          //   )!
-          //       .settings,
-          //   textAlign: TextAlign.center,
-          //   style: TextStyle(
-          //     color: Theme.of(context).iconTheme.color,
-          //   ),
-          // ),
           iconTheme: IconThemeData(
             color: Theme.of(context).iconTheme.color,
           ),
@@ -87,39 +80,44 @@ class _NewSettingsPageState extends State<NewSettingsPage>
       child: SizedBox(
         height: 52.0,
         child: Center(
-          child: TextField(
-            controller: controller,
-            textAlignVertical: TextAlignVertical.center,
-            decoration: InputDecoration(
-              focusedBorder: const UnderlineInputBorder(
-                borderSide: BorderSide(
-                  width: 1.5,
-                  color: Colors.transparent,
+          child: ValueListenableBuilder(
+            valueListenable: searchQuery,
+            builder: (BuildContext context, String query, Widget? child) {
+              return TextField(
+                controller: controller,
+                textAlignVertical: TextAlignVertical.center,
+                decoration: InputDecoration(
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      width: 1.5,
+                      color: Colors.transparent,
+                    ),
+                  ),
+                  fillColor: Theme.of(context).colorScheme.secondary,
+                  prefixIcon: Navigator.canPop(context)
+                      ? IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(Icons.arrow_back_rounded),
+                        )
+                      : const Icon(Icons.search),
+                  suffixIcon: query.trim() != ''
+                      ? IconButton(
+                          onPressed: () {
+                            controller.clear();
+                            searchQuery.value = '';
+                          },
+                          icon: const Icon(Icons.close_rounded),
+                        )
+                      : null,
+                  border: InputBorder.none,
+                  hintText: 'Search settings',
                 ),
-              ),
-              fillColor: Theme.of(context).colorScheme.secondary,
-              prefixIcon: Navigator.canPop(context)
-                  ? IconButton(
-                      onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.arrow_back_rounded),
-                    )
-                  : const Icon(Icons.search),
-              suffixIcon: controller.text.trim() != ''
-                  ? IconButton(
-                      onPressed: () {
-                        controller.clear();
-                        setState(() {});
-                      },
-                      icon: const Icon(Icons.close_rounded),
-                    )
-                  : null,
-              border: InputBorder.none,
-              hintText: 'Search settings',
-            ),
-            keyboardType: TextInputType.text,
-            textInputAction: TextInputAction.search,
-            onChanged: (_) {
-              setState(() {});
+                keyboardType: TextInputType.text,
+                textInputAction: TextInputAction.search,
+                onChanged: (_) {
+                  searchQuery.value = controller.text.trim();
+                },
+              );
             },
           ),
         ),
@@ -309,23 +307,38 @@ class _NewSettingsPageState extends State<NewSettingsPage>
             );
           },
         ),
-        if (controller.text.trim() != '')
-          _searchSuggestions(context, searchOptions),
+        ValueListenableBuilder(
+          valueListenable: searchQuery,
+          builder: (BuildContext context, String query, Widget? child) {
+            if (query != '') {
+              final List results = _getSearchResults(searchOptions, query);
+              return _searchSuggestions(context, results);
+            }
+            return const SizedBox();
+          },
+        ),
       ],
     );
   }
 
-  Widget _searchSuggestions(BuildContext context, List searchOptions) {
-    final List options = controller.text.trim() != ''
+  List<dynamic> _getSearchResults(
+    List searchOptions,
+    String query,
+  ) {
+    final List options = query != ''
         ? searchOptions
             .where(
-              (element) => element
-                  .toString()
-                  .toLowerCase()
-                  .contains(controller.text.toLowerCase()),
+              (element) => element.toString().toLowerCase().contains(query),
             )
             .toList()
         : [];
+    return options;
+  }
+
+  Widget _searchSuggestions(
+    BuildContext context,
+    List options,
+  ) {
     return Card(
       margin: const EdgeInsets.symmetric(
         horizontal: 18.0,

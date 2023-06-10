@@ -129,6 +129,7 @@ class _SearchBarState extends State<SearchBar> {
                                     icon: const Icon(Icons.close_rounded),
                                     onPressed: () {
                                       widget.controller.text = '';
+                                      hide.value = true;
                                       suggestionsList.value = [];
                                       if (widget.onQueryCleared != null) {
                                         widget.onQueryCleared!.call();
@@ -146,8 +147,15 @@ class _SearchBarState extends State<SearchBar> {
                     keyboardType: TextInputType.text,
                     textInputAction: TextInputAction.search,
                     onChanged: (val) {
-                      if (widget.liveSearch) {
-                        tempQuery = val;
+                      tempQuery = val;
+                      if (val.trim() == '') {
+                        hide.value = true;
+                        suggestionsList.value = [];
+                        if (widget.onQueryCleared != null) {
+                          widget.onQueryCleared!.call();
+                        }
+                      }
+                      if (widget.liveSearch && val.trim() != '') {
                         hide.value = false;
                         if (widget.isYt) {
                           Future.delayed(
@@ -187,10 +195,10 @@ class _SearchBarState extends State<SearchBar> {
                       }
                     },
                     onSubmitted: (submittedQuery) {
+                      if (!hide.value) hide.value = true;
                       if (submittedQuery.trim() != '') {
-                        query = submittedQuery;
+                        query = submittedQuery.trim();
                         widget.onSubmitted(submittedQuery);
-                        if (!hide.value) hide.value = true;
                         List searchQueries = Hive.box('settings')
                             .get('search', defaultValue: []) as List;
                         if (searchQueries.contains(query)) {
@@ -302,15 +310,21 @@ class _SearchBarState extends State<SearchBar> {
                                           defaultValue: [],
                                         ) as List;
                                         if (searchQueries.contains(
-                                          suggestedList[index].toString(),
+                                          suggestedList[index]
+                                              .toString()
+                                              .trim(),
                                         )) {
                                           searchQueries.remove(
-                                            suggestedList[index].toString(),
+                                            suggestedList[index]
+                                                .toString()
+                                                .trim(),
                                           );
                                         }
                                         searchQueries.insert(
                                           0,
-                                          suggestedList[index].toString(),
+                                          suggestedList[index]
+                                              .toString()
+                                              .trim(),
                                         );
                                         if (searchQueries.length > 10) {
                                           searchQueries =

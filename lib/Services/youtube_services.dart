@@ -182,19 +182,19 @@ class YouTubeServices {
 
   Future<List> getSearchSuggestions({required String query}) async {
     const baseUrl =
-        // 'https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=';
-        'https://invidious.snopyta.org/api/v1/search/suggestions?q=';
+        'https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=';
+    // 'https://invidious.snopyta.org/api/v1/search/suggestions?q=';
     final Uri link = Uri.parse(baseUrl + query);
     try {
       final Response response = await get(link, headers: headers);
       if (response.statusCode != 200) {
         return [];
       }
-      final Map res = jsonDecode(response.body) as Map;
       final unescape = HtmlUnescape();
-      return (res['suggestions'] as List)
-          .map((e) => unescape.convert(e.toString()))
-          .toList();
+      // final Map res = jsonDecode(response.body) as Map;
+      final List res = (jsonDecode(response.body) as List)[1] as List;
+      // return (res['suggestions'] as List).map((e) => unescape.convert(e.toString())).toList();
+      return res.map((e) => unescape.convert(e.toString())).toList();
     } catch (e) {
       Logger.root.severe('Error in getSearchSuggestions: $e');
       return [];

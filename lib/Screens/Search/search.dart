@@ -157,7 +157,15 @@ class _SearchPageState extends State<SearchPage> {
                   hintText: AppLocalizations.of(context)!.searchText,
                   leading: IconButton(
                     icon: const Icon(Icons.arrow_back_rounded),
-                    onPressed: () => Navigator.pop(context),
+                    onPressed: () {
+                      if (fromHome ?? false) {
+                        Navigator.pop(context);
+                      } else {
+                        setState(() {
+                          fromHome = true;
+                        });
+                      }
+                    },
                   ),
                   body: (fromHome!)
                       ? SingleChildScrollView(
@@ -316,9 +324,15 @@ class _SearchPageState extends State<SearchPage> {
                                                           status = false;
                                                           fromHome = false;
                                                           searchedData = {};
+                                                          if (search.contains(
+                                                            query,
+                                                          )) {
+                                                            search
+                                                                .remove(query);
+                                                          }
                                                           search.insert(
                                                             0,
-                                                            value[index],
+                                                            query,
                                                           );
                                                           if (search.length >
                                                               10) {
