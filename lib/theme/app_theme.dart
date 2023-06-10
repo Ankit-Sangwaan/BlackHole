@@ -19,6 +19,7 @@
 
 import 'package:blackhole/Helpers/config.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -49,6 +50,15 @@ class AppTheme {
       visualDensity: VisualDensity.adaptivePlatformDensity,
       appBarTheme: AppBarTheme(
         backgroundColor: currentTheme.currentColor(),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarIconBrightness: AppTheme.themeMode == ThemeMode.system
+              ? MediaQuery.platformBrightnessOf(context) == Brightness.dark
+                  ? Brightness.light
+                  : Brightness.dark
+              : AppTheme.themeMode == ThemeMode.dark
+                  ? Brightness.light
+                  : Brightness.dark,
+        ),
       ),
       cardTheme: CardTheme(
         clipBehavior: Clip.antiAlias,

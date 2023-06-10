@@ -30,6 +30,12 @@ class _NewSettingsPageState extends State<NewSettingsPage>
   );
 
   @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   bool get wantKeepAlive => sectionsToShow.value.contains('Settings');
 
   @override
@@ -38,6 +44,7 @@ class _NewSettingsPageState extends State<NewSettingsPage>
     return GradientContainer(
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
@@ -58,12 +65,7 @@ class _NewSettingsPageState extends State<NewSettingsPage>
             color: Theme.of(context).iconTheme.color,
           ),
         ),
-        body: Column(
-          children: [
-            /*_searchBar(context),*/
-            _settingsItem(context)
-          ],
-        ),
+        body: _settingsItem(context),
       ),
     );
   }
@@ -99,39 +101,26 @@ class _NewSettingsPageState extends State<NewSettingsPage>
               prefixIcon: Navigator.canPop(context)
                   ? IconButton(
                       onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.arrow_back),
+                      icon: const Icon(Icons.arrow_back_rounded),
                     )
                   : const Icon(Icons.search),
-              // suffixIcon: widget.showClose
-              //     ? ValueListenableBuilder(
-              //   valueListenable: hide,
-              //   builder: (
-              //       BuildContext context,
-              //       bool hidden,
-              //       Widget? child,
-              //       ) {
-              //     return Visibility(
-              //       visible: !hidden,
-              //       child: IconButton(
-              //         icon: const Icon(Icons.close_rounded),
-              //         onPressed: () {
-              //           widget.controller.text = '';
-              //           suggestionsList.value = [];
-              //           if (widget.onQueryCleared != null) {
-              //             widget.onQueryCleared!.call();
-              //           }
-              //         },
-              //       ),
-              //     );
-              //   },
-              // )
-              //     : null,
+              suffixIcon: controller.text.trim() != ''
+                  ? IconButton(
+                      onPressed: () {
+                        controller.clear();
+                        setState(() {});
+                      },
+                      icon: const Icon(Icons.close_rounded),
+                    )
+                  : null,
               border: InputBorder.none,
               hintText: 'Search settings',
             ),
             keyboardType: TextInputType.text,
             textInputAction: TextInputAction.search,
-            onSubmitted: (submittedQuery) {},
+            onChanged: (_) {
+              setState(() {});
+            },
           ),
         ),
       ),
@@ -287,47 +276,85 @@ class _NewSettingsPageState extends State<NewSettingsPage>
       },
     ];
 
-    // todo: implement search
-    // final List searchOptions = [];
-    // searchedList.map((e) => searchOptions.addAll(e['items'] as List));
+    final List searchOptions = [];
+    for (final Map e in settingsList) {
+      searchOptions.addAll(e['items'] as List);
+    }
 
-    return Expanded(
-      child: ListView.builder(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 10.0,
-          vertical: 15.0,
-        ),
-        physics: const BouncingScrollPhysics(),
-        itemCount: settingsList.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            leading: Icon(settingsList[index]['icon'] as IconData),
-            title: Text(settingsList[index]['title'].toString()),
-            subtitle: Text(
-              (settingsList[index]['items'] as List).take(3).join(', '),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            isThreeLine: settingsList[index]['isThreeLine'] as bool? ?? false,
-            onTap: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => settingsList[index]['onTap'] as Widget,
+    return Stack(
+      children: [
+        ListView.builder(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10.0,
+            vertical: 15.0,
+          ),
+          physics: const BouncingScrollPhysics(),
+          itemCount: settingsList.length,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: Icon(settingsList[index]['icon'] as IconData),
+              title: Text(settingsList[index]['title'].toString()),
+              subtitle: Text(
+                (settingsList[index]['items'] as List).take(3).join(', '),
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
-            ),
-          );
-        },
-      ),
+              isThreeLine: settingsList[index]['isThreeLine'] as bool? ?? false,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => settingsList[index]['onTap'] as Widget,
+                ),
+              ),
+            );
+          },
+        ),
+        if (controller.text.trim() != '')
+          _searchSuggestions(context, searchOptions),
+      ],
     );
   }
 
-  // todo: implement search.
-  // Widget _searchSuggestions(BuildContext context, List searchOptions) {
-  //   return ListView.builder(
-  //     itemCount: searchOptions.length,
-  //     itemBuilder: (context, index) => Card(
-  //       child: Text(searchOptions[index].toString()),
-  //     ),
-  //   );
-  // }
+  Widget _searchSuggestions(BuildContext context, List searchOptions) {
+    final List options = controller.text.trim() != ''
+        ? searchOptions
+            .where(
+              (element) => element
+                  .toString()
+                  .toLowerCase()
+                  .contains(controller.text.toLowerCase()),
+            )
+            .toList()
+        : [];
+    return Card(
+      margin: const EdgeInsets.symmetric(
+        horizontal: 18.0,
+        vertical: 10,
+      ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(
+          10.0,
+        ),
+      ),
+      elevation: 8.0,
+      child: SizedBox(
+        height: options.length * 70,
+        child: ListView.builder(
+          padding: const EdgeInsets.only(left: 10, top: 10),
+          physics: const BouncingScrollPhysics(),
+          itemCount: options.length,
+          itemExtent: 70,
+          itemBuilder: (context, index) {
+            return ListTile(
+              leading: Text(options[index].toString()),
+              onTap: () {
+                // todo
+                // Navigator.push(context, MaterialPageRoute(builder: (context) => ));
+              },
+            );
+          },
+        ),
+      ),
+    );
+  }
 }
