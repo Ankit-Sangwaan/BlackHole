@@ -58,8 +58,6 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
       Hive.box('settings').get('search', defaultValue: []) as List;
   bool searchYtMusic =
       Hive.box('settings').get('searchYtMusic', defaultValue: true) as bool;
-  // List ytSearch =
-  // Hive.box('settings').get('ytSearch', defaultValue: []) as List;
   // bool showHistory =
   // Hive.box('settings').get('showHistory', defaultValue: true) as bool;
   final TextEditingController _controller = TextEditingController();

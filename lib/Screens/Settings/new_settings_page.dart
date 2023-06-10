@@ -6,6 +6,7 @@ import 'package:blackhole/Screens/Settings/download.dart';
 import 'package:blackhole/Screens/Settings/music_playback.dart';
 import 'package:blackhole/Screens/Settings/others.dart';
 import 'package:blackhole/Screens/Settings/theme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/adapters.dart';
@@ -52,33 +53,38 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           elevation: 0,
           backgroundColor: Colors.transparent,
           centerTitle: true,
-          automaticallyImplyLeading: false,
-          title: _searchBar(context),
+          title: Text(
+            AppLocalizations.of(context)!.settings,
+            style: TextStyle(
+              color: Theme.of(context).iconTheme.color,
+            ),
+          ),
           iconTheme: IconThemeData(
             color: Theme.of(context).iconTheme.color,
           ),
         ),
-        body: _settingsItem(context),
+        body: Column(
+          children: [
+            _searchBar(context),
+            Expanded(child: _settingsItem(context)),
+          ],
+        ),
       ),
     );
   }
 
   Widget _searchBar(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.fromLTRB(
-        0.0,
-        10.0,
-        0.0,
-        15.0,
-      ),
+      margin: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 0.0),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(
           10.0,
         ),
       ),
-      elevation: 8.0,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      elevation: 2.0,
       child: SizedBox(
-        height: 52.0,
+        height: 55.0,
         child: Center(
           child: ValueListenableBuilder(
             valueListenable: searchQuery,
@@ -94,12 +100,7 @@ class _NewSettingsPageState extends State<NewSettingsPage>
                     ),
                   ),
                   fillColor: Theme.of(context).colorScheme.secondary,
-                  prefixIcon: Navigator.canPop(context)
-                      ? IconButton(
-                          onPressed: () => Navigator.pop(context),
-                          icon: const Icon(Icons.arrow_back_rounded),
-                        )
-                      : const Icon(Icons.search),
+                  prefixIcon: const Icon(CupertinoIcons.search),
                   suffixIcon: query.trim() != ''
                       ? IconButton(
                           onPressed: () {
@@ -110,7 +111,7 @@ class _NewSettingsPageState extends State<NewSettingsPage>
                         )
                       : null,
                   border: InputBorder.none,
-                  hintText: 'Search settings',
+                  hintText: AppLocalizations.of(context)!.search,
                 ),
                 keyboardType: TextInputType.text,
                 textInputAction: TextInputAction.search,
@@ -274,9 +275,11 @@ class _NewSettingsPageState extends State<NewSettingsPage>
       },
     ];
 
-    final List searchOptions = [];
+    final List<Map> searchOptions = [];
     for (final Map e in settingsList) {
-      searchOptions.addAll(e['items'] as List);
+      for (final item in e['items'] as List) {
+        searchOptions.add({'title': item, 'route': e['onTap']});
+      }
     }
 
     return Stack(
@@ -311,7 +314,7 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           valueListenable: searchQuery,
           builder: (BuildContext context, String query, Widget? child) {
             if (query != '') {
-              final List results = _getSearchResults(searchOptions, query);
+              final List<Map> results = _getSearchResults(searchOptions, query);
               return _searchSuggestions(context, results);
             }
             return const SizedBox();
@@ -321,23 +324,24 @@ class _NewSettingsPageState extends State<NewSettingsPage>
     );
   }
 
-  List<dynamic> _getSearchResults(
-    List searchOptions,
+  List<Map> _getSearchResults(
+    List<Map> searchOptions,
     String query,
   ) {
-    final List options = query != ''
+    final List<Map> options = query != ''
         ? searchOptions
             .where(
-              (element) => element.toString().toLowerCase().contains(query),
+              (element) =>
+                  element['title'].toString().toLowerCase().contains(query),
             )
             .toList()
-        : [];
+        : List.empty();
     return options;
   }
 
   Widget _searchSuggestions(
     BuildContext context,
-    List options,
+    List<Map> options,
   ) {
     return Card(
       margin: const EdgeInsets.symmetric(
@@ -359,10 +363,21 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           itemExtent: 70,
           itemBuilder: (context, index) {
             return ListTile(
-              leading: Text(options[index].toString()),
+              leading: Text(options[index]['title'].toString()),
               onTap: () {
-                // todo
-                // Navigator.push(context, MaterialPageRoute(builder: (context) => ));
+                // TODO: Use named routes instead
+                // instead of getting widget
+                // from options[index]['route']
+                // get the route name
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => options[index]['route'] as Widget,
+                    settings: RouteSettings(
+                      arguments: options[index]['title'],
+                    ),
+                  ),
+                );
               },
             );
           },

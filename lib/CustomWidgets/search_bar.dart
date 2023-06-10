@@ -64,6 +64,13 @@ class _SearchBarState extends State<SearchBar> {
   final ValueNotifier<List> suggestionsList = ValueNotifier<List>([]);
 
   @override
+  void dispose() {
+    super.dispose();
+    hide.dispose();
+    suggestionsList.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
