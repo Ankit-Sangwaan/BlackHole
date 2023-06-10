@@ -1264,7 +1264,7 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
   bool flipped = false;
 
   void fetchLyrics() {
-    Logger.root.info('Fetching lyrics');
+    Logger.root.info('Fetching lyrics for ${widget.mediaItem.title}');
     done.value = false;
     lyricsSource.value = '';
     if (widget.offline) {
@@ -1308,6 +1308,10 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
         title: widget.mediaItem.title,
         artist: widget.mediaItem.artist.toString(),
       ).then((Map value) {
+        if (widget.mediaItem.id != value['id']) {
+          done.value = true;
+          return;
+        }
         lyrics['lyrics'] = value['lyrics'];
         lyrics['type'] = value['type'];
         lyrics['source'] = value['source'];
@@ -2093,8 +2097,8 @@ class NameNControls extends StatelessWidget {
                           /// Title container
                           AnimatedText(
                             text: mediaItem.title
-                                .split(' (')[0]
-                                .split('|')[0]
+                                // .split(' (')[0]
+                                // .split('|')[0]
                                 .trim(),
                             pauseAfterRound: const Duration(seconds: 3),
                             showFadingOnlyWhenScrolling: false,

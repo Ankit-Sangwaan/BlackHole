@@ -282,6 +282,9 @@ class _NewSettingsPageState extends State<NewSettingsPage>
       }
     }
 
+    final bool isRotated =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
     return Stack(
       children: [
         ListView.builder(
@@ -300,13 +303,19 @@ class _NewSettingsPageState extends State<NewSettingsPage>
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
-              isThreeLine: settingsList[index]['isThreeLine'] as bool? ?? false,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => settingsList[index]['onTap'] as Widget,
-                ),
-              ),
+              isThreeLine: !isRotated &&
+                  (settingsList[index]['isThreeLine'] as bool? ?? false),
+              onTap: () {
+                searchQuery.value = '';
+                controller.text = '';
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        settingsList[index]['onTap'] as Widget,
+                  ),
+                );
+              },
             );
           },
         ),
@@ -365,10 +374,8 @@ class _NewSettingsPageState extends State<NewSettingsPage>
             return ListTile(
               leading: Text(options[index]['title'].toString()),
               onTap: () {
-                // TODO: Use named routes instead
-                // instead of getting widget
-                // from options[index]['route']
-                // get the route name
+                searchQuery.value = '';
+                controller.text = '';
                 Navigator.push(
                   context,
                   MaterialPageRoute(

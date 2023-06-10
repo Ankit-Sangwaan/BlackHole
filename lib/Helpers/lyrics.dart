@@ -39,6 +39,7 @@ class Lyrics {
       'lyrics': '',
       'type': 'text',
       'source': '',
+      'id': id,
     };
 
     Logger.root.info('Getting Synced Lyrics');
