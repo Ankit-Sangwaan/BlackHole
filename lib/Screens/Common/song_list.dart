@@ -17,6 +17,8 @@
  * Copyright (c) 2021-2022, Ankit Sangwan
  */
 
+import 'dart:async';
+
 import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/CustomWidgets/bouncy_playlist_header_scroll_view.dart';
 import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
@@ -53,6 +55,8 @@ class _SongsListPageState extends State<SongsListPage> {
   bool loading = false;
   List songList = [];
   bool fetched = false;
+  bool isSharePopupShown = false;
+
   final ScrollController _scrollController = ScrollController();
 
   @override
@@ -229,9 +233,17 @@ class _SongsListPageState extends State<SongsListPage> {
                           icon: const Icon(Icons.share_rounded),
                           tooltip: AppLocalizations.of(context)!.share,
                           onPressed: () {
-                            Share.share(
-                              widget.listItem['perma_url'].toString(),
-                            );
+                            if (!isSharePopupShown) {
+                              isSharePopupShown = true;
+
+                              Share.share(
+                                widget.listItem['perma_url'].toString(),
+                              ).whenComplete(() {
+                                Timer(const Duration(milliseconds: 500), () {
+                                  isSharePopupShown = false;
+                                });
+                              });
+                            }
                           },
                         ),
                         PlaylistPopupMenu(

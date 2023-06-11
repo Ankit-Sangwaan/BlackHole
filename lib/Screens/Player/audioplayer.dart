@@ -80,6 +80,8 @@ class _PlayScreenState extends State<PlayScreen> {
   GlobalKey<FlipCardState> cardKey = GlobalKey<FlipCardState>();
   late Duration _time;
 
+  bool isSharePopupShown = false;
+
   void sleepTimer(int time) {
     audioHandler.customAction('sleepTimer', {'time': time});
   }
@@ -269,10 +271,18 @@ class _PlayScreenState extends State<PlayScreen> {
                       IconButton(
                         icon: const Icon(Icons.share_rounded),
                         tooltip: AppLocalizations.of(context)!.share,
-                        onPressed: () {
-                          Share.share(
-                            mediaItem.extras!['perma_url'].toString(),
-                          );
+                        onPressed: () async {
+                          if (!isSharePopupShown) {
+                            isSharePopupShown = true;
+
+                            await Share.share(
+                              mediaItem.extras!['perma_url'].toString(),
+                            ).whenComplete(() {
+                              Timer(const Duration(milliseconds: 600), () {
+                                isSharePopupShown = false;
+                              });
+                            });
+                          }
                         },
                       ),
                     PopupMenuButton(
