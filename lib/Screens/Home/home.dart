@@ -311,21 +311,35 @@ class _HomePageState extends State<HomePage> {
                   delegate: SliverChildListDelegate(
                     [
                       ListTile(
-                        title: Text(
-                          AppLocalizations.of(context)!.home,
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.secondary,
+                        title: ValueListenableBuilder(
+                          valueListenable: _selectedIndex,
+                          builder: (context, value, Widget? child) => Text(
+                            AppLocalizations.of(context)!.home,
+                            style: _selectedIndex.value == 0
+                                ? TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  )
+                                : null,
                           ),
                         ),
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 20.0),
-                        leading: Icon(
-                          Icons.home_rounded,
-                          color: Theme.of(context).colorScheme.secondary,
+                        leading: ValueListenableBuilder(
+                          valueListenable: _selectedIndex,
+                          builder: (context, value, Widget? child) => Icon(
+                            Icons.home_rounded,
+                            color: _selectedIndex.value == 0
+                                ? Theme.of(context).colorScheme.secondary
+                                : null,
+                          ),
                         ),
-                        selected: true,
+                        selected: _selectedIndex.value == 0,
                         onTap: () {
                           Navigator.pop(context);
+                          if (_selectedIndex.value != 0) {
+                            _onItemTapped(0);
+                          }
                         },
                       ),
                       ListTile(
@@ -379,24 +393,48 @@ class _HomePageState extends State<HomePage> {
                         },
                       ),
                       ListTile(
-                        title: Text(AppLocalizations.of(context)!.settings),
+                        title: ValueListenableBuilder(
+                          valueListenable: _selectedIndex,
+                          builder: (context, value, Widget? child) => Text(
+                            AppLocalizations.of(context)!.settings,
+                            style: sectionsToShow.contains('Settings') &&
+                                    _selectedIndex.value == 3
+                                ? TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.secondary,
+                                  )
+                                : null,
+                          ),
+                        ),
                         contentPadding:
                             const EdgeInsets.symmetric(horizontal: 20.0),
-                        leading: Icon(
-                          Icons
-                              .settings_rounded, // miscellaneous_services_rounded,
-                          color: Theme.of(context).iconTheme.color,
+                        leading: ValueListenableBuilder(
+                          valueListenable: _selectedIndex,
+                          builder: (context, value, Widget? child) => Icon(
+                            Icons
+                                .settings_rounded, // miscellaneous_services_rounded,
+                            color: sectionsToShow.contains('Settings') &&
+                                    _selectedIndex.value == 3
+                                ? Theme.of(context).colorScheme.secondary
+                                : null,
+                          ),
                         ),
+                        selected: _selectedIndex.value == 3,
                         onTap: () {
                           Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  //SettingsPage(callback: callback),
-                                  NewSettingsPage(callback: callback),
-                            ),
-                          );
+                          if (sectionsToShow.contains('Settings')) {
+                            if (_selectedIndex.value != 3) {
+                              _onItemTapped(3);
+                            }
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    NewSettingsPage(callback: callback),
+                              ),
+                            );
+                          }
                         },
                       ),
                       ListTile(
@@ -499,12 +537,13 @@ class _HomePageState extends State<HomePage> {
                             icon: const Icon(Icons.home_rounded),
                             label: Text(AppLocalizations.of(context)!.home),
                           ),
-                          NavigationRailDestination(
-                            icon: const Icon(Icons.trending_up_rounded),
-                            label: Text(
-                              AppLocalizations.of(context)!.topCharts,
+                          if (sectionsToShow.contains('Top Charts'))
+                            NavigationRailDestination(
+                              icon: const Icon(Icons.trending_up_rounded),
+                              label: Text(
+                                AppLocalizations.of(context)!.topCharts,
+                              ),
                             ),
-                          ),
                           NavigationRailDestination(
                             icon: const Icon(MdiIcons.youtube),
                             label: Text(AppLocalizations.of(context)!.youTube),
@@ -513,6 +552,13 @@ class _HomePageState extends State<HomePage> {
                             icon: const Icon(Icons.my_library_music_rounded),
                             label: Text(AppLocalizations.of(context)!.library),
                           ),
+                          if (sectionsToShow.contains('Settings'))
+                            NavigationRailDestination(
+                              icon: const Icon(Icons.settings_rounded),
+                              label: Text(
+                                AppLocalizations.of(context)!.settings,
+                              ),
+                            ),
                         ],
                       );
                     },
