@@ -62,7 +62,7 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - permission_handler_apple (9.0.4):
+  - permission_handler_apple (9.1.0):
     - Flutter
   - ReachabilitySwift (5.0.0)
   - receive_sharing_intent (0.0.1):
@@ -167,7 +167,7 @@ SPEC CHECKSUMS:
   on_audio_query_ios: e5afb0d4b42cfa3e8762d8ec1953540cb4f02100
   package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
   path_provider_foundation: eaf5b3e458fc0e5fbb9940fb09980e853fe058b8
-  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
+  permission_handler_apple: 8f116445eff3c0e7c65ad60f5fef5490aa94b4e4
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   receive_sharing_intent: c0d87310754e74c0f9542947e7cbdf3a0335a3b1
   SDWebImage: 0327043dbb9533e75f2eff8445b3df0f2ceca6ac

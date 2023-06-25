@@ -18,12 +18,10 @@
  */
 
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:blackhole/Helpers/format.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart';
-import 'package:http/io_client.dart';
 import 'package:logging/logging.dart';
 
 class SaavnAPI {
@@ -74,16 +72,27 @@ class SaavnAPI {
     headers = {'cookie': languageHeader, 'Accept': '*/*'};
 
     if (useProxy && settingsBox.get('useProxy', defaultValue: false) as bool) {
-      final proxyIP = settingsBox.get('proxyIp');
-      final proxyPort = settingsBox.get('proxyPort');
-      final HttpClient httpClient = HttpClient();
-      httpClient.findProxy = (uri) {
-        return 'PROXY $proxyIP:$proxyPort;';
-      };
-      httpClient.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => Platform.isAndroid;
-      final IOClient myClient = IOClient(httpClient);
-      return myClient.get(url, headers: headers);
+      final String proxyIP = settingsBox.get('proxyIp').toString();
+      // final proxyPort = settingsBox.get('proxyPort');
+      // final HttpClient httpClient = HttpClient();
+      // httpClient.findProxy = (uri) {
+      //   return 'PROXY $proxyIP:$proxyPort;';
+      // };
+      // httpClient.badCertificateCallback =
+      //     (X509Certificate cert, String host, int port) => Platform.isAndroid;
+      // final IOClient myClient = IOClient(httpClient);
+      // return myClient.get(url, headers: headers);
+      final proxyHeaders = headers;
+      proxyHeaders['X-FORWARDED-FOR'] = proxyIP;
+      return get(url, headers: proxyHeaders).onError((error, stackTrace) {
+        return Response(
+          {
+            'status': 'failure',
+            'error': error.toString(),
+          }.toString(),
+          404,
+        );
+      });
     }
     return get(url, headers: headers).onError((error, stackTrace) {
       return Response(
