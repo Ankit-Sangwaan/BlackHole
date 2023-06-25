@@ -12,7 +12,7 @@ environment:
 
 dependencies:
   app_links: ^3.4.3
-  audio_service: ^0.18.9
+  audio_service: ^0.18.10
   audiotagger:
     git:
       url: https://github.com/Sangwan5688/Audiotagger
@@ -23,8 +23,8 @@ dependencies:
   connectivity_plus: ^4.0.1
   cupertino_icons: ^1.0.5
   dart_des: ^1.0.2
-  device_info_plus: ^9.0.0
-  file_picker: ^5.3.0
+  device_info_plus: ^9.0.2
+  file_picker: ^5.3.2
   flip_card: ^0.7.0
   flutter:
     sdk: flutter
@@ -34,27 +34,27 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_lyric: ^2.0.4+6
-  get_it: ^7.2.0
+  get_it: ^7.6.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
   html_unescape: ^2.0.0
-  just_audio: ^0.9.33
+  just_audio: ^0.9.34
   # Discontinued, Use just_audio_windows instead.
   # just_audio_libwinmedia: ^0.0.4 # For windows and linux.
-  logging: ^1.1.1
+  logging: ^1.2.0
   marquee: ^2.2.3
   material_design_icons_flutter: 5.0.5955-rc.1
   metadata_god: ^0.4.1
   on_audio_query: ^2.9.0
-  package_info_plus: ^4.0.0
+  package_info_plus: ^4.0.2
   palette_generator: ^0.3.3+2
-  path_provider: ^2.0.14
-  permission_handler: ^10.2.0
+  path_provider: ^2.0.15
+  permission_handler: ^10.3.0
   receive_sharing_intent: ^1.4.5
   salomon_bottom_bar: ^3.3.2
-  share_plus: ^7.0.0
+  share_plus: ^7.0.2
   sliding_up_panel: ^2.0.0+1
-  url_launcher: ^6.1.10
+  url_launcher: ^6.1.11
   uuid: ^3.0.7
   youtube_explode_dart: ^1.12.4
 
@@ -62,7 +62,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   lint: ^2.1.2
-  msix: ^3.7.0
+  msix: ^3.14.2
 
 flutter:
   uses-material-design: true

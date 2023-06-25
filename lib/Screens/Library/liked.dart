@@ -415,7 +415,9 @@ class _LikedSongsState extends State<LikedSongs>
                                       .put('orderValue', orderValue);
                                 }
                                 sortSongs(
-                                    sortVal: sortValue, order: orderValue);
+                                  sortVal: sortValue,
+                                  order: orderValue,
+                                );
                                 setState(() {});
                               },
                               // : (int value) {

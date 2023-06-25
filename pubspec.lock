@@ -37,10 +37,10 @@ packages:
     dependency: "direct main"
     description:
       name: audio_service
-      sha256: "7e86d7ce23caad605199f7b25e548fe7b618fb0c150fa0585f47a910fe7e7a67"
+      sha256: "8b719ac7982fdea1a54a528f19e345907295489c53709ba4cdee65a2955c0f4d"
       url: "https://pub.dev"
     source: hosted
-    version: "0.18.9"
+    version: "0.18.10"
   audio_service_platform_interface:
     dependency: transitive
     description:
@@ -246,10 +246,10 @@ packages:
     dependency: "direct main"
     description:
       name: device_info_plus
-      sha256: "9b1a0c32b2a503f8fe9f8764fac7b5fcd4f6bd35d8f49de5350bccf9e2a33b8a"
+      sha256: "2c35b6d1682b028e42d07b3aee4b98fa62996c10bc12cb651ec856a80d6a761b"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.0"
+    version: "9.0.2"
   device_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -294,10 +294,10 @@ packages:
     dependency: "direct main"
     description:
       name: file_picker
-      sha256: c7a8e25ca60e7f331b153b0cb3d405828f18d3e72a6fa1d9440c86556fffc877
+      sha256: b1729fc96627dd44012d0a901558177418818d6bd428df59dcfeb594e5f66432
       url: "https://pub.dev"
     source: hosted
-    version: "5.3.0"
+    version: "5.3.2"
   flip_card:
     dependency: "direct main"
     description:
@@ -490,10 +490,10 @@ packages:
     dependency: "direct main"
     description:
       name: just_audio
-      sha256: d7ff71169927a2237c902aef6baf2f69d063d4c427590dee479d279d4d57c984
+      sha256: "890cd0fc41a1a4530c171e375a2a3fb6a09d84e9d508c5195f40bcff54330327"
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.33"
+    version: "0.9.34"
   just_audio_platform_interface:
     dependency: transitive
     description:
@@ -522,10 +522,10 @@ packages:
     dependency: "direct main"
     description:
       name: logging
-      sha256: "04094f2eb032cbb06c6f6e8d3607edcfcb0455e2bb6cbc010cb01171dcb64e6d"
+      sha256: "623a88c9594aa774443aa3eb2d41807a48486b5613e67599fb4c41c0ad47c340"
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.1"
+    version: "1.2.0"
   marquee:
     dependency: "direct main"
     description:
@@ -586,10 +586,10 @@ packages:
     dependency: "direct dev"
     description:
       name: msix
-      sha256: "88ee83949d87dc635ffd51d7c17ef222390e5067693cc248046661b12a353d13"
+      sha256: bf151b9a1648985e7604672ade54c8df693566099d0731e318548c47d54676e6
       url: "https://pub.dev"
     source: hosted
-    version: "3.12.2"
+    version: "3.14.2"
   nm:
     dependency: transitive
     description:
@@ -658,10 +658,10 @@ packages:
     dependency: "direct main"
     description:
       name: package_info_plus
-      sha256: d39e8fbff4c5aef4592737e25ad6ac500df006ce7a7a8e1f838ce1256e167542
+      sha256: ceb027f6bc6a60674a233b4a90a7658af1aebdea833da0b5b53c1e9821a78c7b
       url: "https://pub.dev"
     source: hosted
-    version: "4.0.0"
+    version: "4.0.2"
   package_info_plus_platform_interface:
     dependency: transitive
     description:
@@ -730,10 +730,10 @@ packages:
     dependency: transitive
     description:
       name: path_provider_windows
-      sha256: d3f80b32e83ec208ac95253e0cd4d298e104fbc63cb29c5c69edaed43b0c69d6
+      sha256: "1cb68ba4cd3a795033de62ba1b7b4564dace301f952de6bfb3cd91b202b6ee96"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.6"
+    version: "2.1.7"
   pedantic:
     dependency: transitive
     description:
@@ -746,10 +746,10 @@ packages:
     dependency: "direct main"
     description:
       name: permission_handler
-      sha256: "33c6a1253d1f95fd06fa74b65b7ba907ae9811f9d5c1d3150e51417d04b8d6a8"
+      sha256: "1b6b3e73f0bcbc856548bbdfb1c33084a401c4f143e220629a9055233d76c331"
       url: "https://pub.dev"
     source: hosted
-    version: "10.2.0"
+    version: "10.3.0"
   permission_handler_android:
     dependency: transitive
     description:
@@ -762,18 +762,18 @@ packages:
     dependency: transitive
     description:
       name: permission_handler_apple
-      sha256: ee96ac32f5a8e6f80756e25b25b9f8e535816c8e6665a96b6d70681f8c4f7e85
+      sha256: "08dcb6ce628ac0b257e429944b4c652c2a4e6af725bdf12b498daa2c6b2b1edb"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.8"
+    version: "9.1.0"
   permission_handler_platform_interface:
     dependency: transitive
     description:
       name: permission_handler_platform_interface
-      sha256: "68abbc472002b5e6dfce47fe9898c6b7d8328d58b5d2524f75e277c07a97eb84"
+      sha256: de20a5c3269229c1ae2e5a6b822f6cb59578b23e8255c93fbeebfc82116e6b11
       url: "https://pub.dev"
     source: hosted
-    version: "3.9.0"
+    version: "3.10.0"
   permission_handler_windows:
     dependency: transitive
     description:
@@ -874,10 +874,10 @@ packages:
     dependency: "direct main"
     description:
       name: share_plus
-      sha256: "322a1ec9d9fe07e2e2252c098ce93d12dbd06133cc4c00ffe6a4ef505c295c17"
+      sha256: ed3fcea4f789ed95913328e629c0c53e69e80e08b6c24542f1b3576046c614e8
       url: "https://pub.dev"
     source: hosted
-    version: "7.0.0"
+    version: "7.0.2"
   share_plus_platform_interface:
     dependency: transitive
     description:
@@ -1103,18 +1103,18 @@ packages:
     dependency: transitive
     description:
       name: win32
-      sha256: "5a751eddf9db89b3e5f9d50c20ab8612296e4e8db69009788d6c8b060a84191c"
+      sha256: "7dacfda1edcca378031db9905ad7d7bd56b29fd1a90b0908b71a52a12c41e36b"
       url: "https://pub.dev"
     source: hosted
-    version: "4.1.4"
+    version: "5.0.3"
   win32_registry:
     dependency: transitive
     description:
       name: win32_registry
-      sha256: "1c52f994bdccb77103a6231ad4ea331a244dbcef5d1f37d8462f713143b0bfae"
+      sha256: e4506d60b7244251bc59df15656a3093501c37fb5af02105a944d73eb95be4c9
       url: "https://pub.dev"
     source: hosted
-    version: "1.1.0"
+    version: "1.1.1"
   xdg_directories:
     dependency: transitive
     description:
