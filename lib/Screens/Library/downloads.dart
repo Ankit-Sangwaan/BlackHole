@@ -59,6 +59,7 @@ class _DownloadsState extends State<Downloads>
   List _sortedArtistKeysList = [];
   List _sortedGenreKeysList = [];
   TabController? _tcontroller;
+  int _currentTabIndex = 0;
   // int currentIndex = 0;
   // String? tempPath = Hive.box('settings').get('tempDirPath')?.toString();
   int sortValue = Hive.box('settings').get('sortValue', defaultValue: 1) as int;
@@ -72,6 +73,12 @@ class _DownloadsState extends State<Downloads>
   @override
   void initState() {
     _tcontroller = TabController(length: 4, vsync: this);
+    _tcontroller!.addListener(() {
+      if ((_tcontroller!.previousIndex != 0 && _tcontroller!.index == 0) ||
+          (_tcontroller!.previousIndex == 0)) {
+        setState(() => _currentTabIndex = _tcontroller!.index);
+      }
+    });
     _scrollController.addListener(() {
       if (_scrollController.position.userScrollDirection ==
           ScrollDirection.reverse) {
@@ -366,7 +373,7 @@ class _DownloadsState extends State<Downloads>
                         );
                       },
                     ),
-                    if (_songs.isNotEmpty)
+                    if (_songs.isNotEmpty && _currentTabIndex == 0)
                       PopupMenuButton(
                         icon: const Icon(Icons.sort_rounded),
                         shape: const RoundedRectangleBorder(

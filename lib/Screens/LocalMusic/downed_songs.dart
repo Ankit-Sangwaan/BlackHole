@@ -84,6 +84,7 @@ class _DownloadedSongsState extends State<DownloadedSongs>
   List includedExcludedPaths = Hive.box('settings')
       .get('includedExcludedPaths', defaultValue: []) as List;
   TabController? _tcontroller;
+  int _currentTabIndex = 0;
   OfflineAudioQuery offlineAudioQuery = OfflineAudioQuery();
   List<PlaylistModel> playlistDetails = [];
 
@@ -105,6 +106,12 @@ class _DownloadedSongsState extends State<DownloadedSongs>
   void initState() {
     _tcontroller =
         TabController(length: widget.showPlaylists ? 6 : 5, vsync: this);
+    _tcontroller!.addListener(() {
+      if ((_tcontroller!.previousIndex != 0 && _tcontroller!.index == 0) ||
+          (_tcontroller!.previousIndex == 0)) {
+        setState(() => _currentTabIndex = _tcontroller!.index);
+      }
+    });
     getData();
     super.initState();
   }
@@ -303,99 +310,102 @@ class _DownloadedSongsState extends State<DownloadedSongs>
                         );
                       },
                     ),
-                    PopupMenuButton(
-                      icon: const Icon(Icons.sort_rounded),
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                    if (_currentTabIndex == 0)
+                      PopupMenuButton(
+                        icon: const Icon(Icons.sort_rounded),
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15.0)),
+                        ),
+                        onSelected: (int value) async {
+                          if (value < 6) {
+                            sortValue = value;
+                            Hive.box('settings').put('sortValue', value);
+                          } else {
+                            orderValue = value - 6;
+                            Hive.box('settings').put('orderValue', orderValue);
+                          }
+                          await sortSongs(sortValue, orderValue);
+                          setState(() {});
+                        },
+                        itemBuilder: (context) {
+                          final List<String> sortTypes = [
+                            AppLocalizations.of(context)!.displayName,
+                            AppLocalizations.of(context)!.dateAdded,
+                            AppLocalizations.of(context)!.album,
+                            AppLocalizations.of(context)!.artist,
+                            AppLocalizations.of(context)!.duration,
+                            AppLocalizations.of(context)!.size,
+                          ];
+                          final List<String> orderTypes = [
+                            AppLocalizations.of(context)!.inc,
+                            AppLocalizations.of(context)!.dec,
+                          ];
+                          final menuList = <PopupMenuEntry<int>>[];
+                          menuList.addAll(
+                            sortTypes
+                                .map(
+                                  (e) => PopupMenuItem(
+                                    value: sortTypes.indexOf(e),
+                                    child: Row(
+                                      children: [
+                                        if (sortValue == sortTypes.indexOf(e))
+                                          Icon(
+                                            Icons.check_rounded,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.grey[700],
+                                          )
+                                        else
+                                          const SizedBox(),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          e,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          );
+                          menuList.add(
+                            const PopupMenuDivider(
+                              height: 10,
+                            ),
+                          );
+                          menuList.addAll(
+                            orderTypes
+                                .map(
+                                  (e) => PopupMenuItem(
+                                    value: sortTypes.length +
+                                        orderTypes.indexOf(e),
+                                    child: Row(
+                                      children: [
+                                        if (orderValue == orderTypes.indexOf(e))
+                                          Icon(
+                                            Icons.check_rounded,
+                                            color:
+                                                Theme.of(context).brightness ==
+                                                        Brightness.dark
+                                                    ? Colors.white
+                                                    : Colors.grey[700],
+                                          )
+                                        else
+                                          const SizedBox(),
+                                        const SizedBox(width: 10),
+                                        Text(
+                                          e,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                .toList(),
+                          );
+                          return menuList;
+                        },
                       ),
-                      onSelected: (int value) async {
-                        if (value < 6) {
-                          sortValue = value;
-                          Hive.box('settings').put('sortValue', value);
-                        } else {
-                          orderValue = value - 6;
-                          Hive.box('settings').put('orderValue', orderValue);
-                        }
-                        await sortSongs(sortValue, orderValue);
-                        setState(() {});
-                      },
-                      itemBuilder: (context) {
-                        final List<String> sortTypes = [
-                          AppLocalizations.of(context)!.displayName,
-                          AppLocalizations.of(context)!.dateAdded,
-                          AppLocalizations.of(context)!.album,
-                          AppLocalizations.of(context)!.artist,
-                          AppLocalizations.of(context)!.duration,
-                          AppLocalizations.of(context)!.size,
-                        ];
-                        final List<String> orderTypes = [
-                          AppLocalizations.of(context)!.inc,
-                          AppLocalizations.of(context)!.dec,
-                        ];
-                        final menuList = <PopupMenuEntry<int>>[];
-                        menuList.addAll(
-                          sortTypes
-                              .map(
-                                (e) => PopupMenuItem(
-                                  value: sortTypes.indexOf(e),
-                                  child: Row(
-                                    children: [
-                                      if (sortValue == sortTypes.indexOf(e))
-                                        Icon(
-                                          Icons.check_rounded,
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? Colors.white
-                                              : Colors.grey[700],
-                                        )
-                                      else
-                                        const SizedBox(),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        e,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        );
-                        menuList.add(
-                          const PopupMenuDivider(
-                            height: 10,
-                          ),
-                        );
-                        menuList.addAll(
-                          orderTypes
-                              .map(
-                                (e) => PopupMenuItem(
-                                  value:
-                                      sortTypes.length + orderTypes.indexOf(e),
-                                  child: Row(
-                                    children: [
-                                      if (orderValue == orderTypes.indexOf(e))
-                                        Icon(
-                                          Icons.check_rounded,
-                                          color: Theme.of(context).brightness ==
-                                                  Brightness.dark
-                                              ? Colors.white
-                                              : Colors.grey[700],
-                                        )
-                                      else
-                                        const SizedBox(),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        e,
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                              .toList(),
-                        );
-                        return menuList;
-                      },
-                    ),
                   ],
                   centerTitle: true,
                   backgroundColor:

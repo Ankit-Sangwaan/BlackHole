@@ -78,6 +78,7 @@ class _LikedSongsState extends State<LikedSongs>
       Hive.box('settings').get('albumSortValue', defaultValue: 2) as int;
   final ScrollController _scrollController = ScrollController();
   final ValueNotifier<bool> _showShuffle = ValueNotifier<bool>(true);
+  int _currentTabIndex = 0;
 
   Future<void> main() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -86,6 +87,12 @@ class _LikedSongsState extends State<LikedSongs>
   @override
   void initState() {
     _tcontroller = TabController(length: 4, vsync: this);
+    _tcontroller!.addListener(() {
+      if ((_tcontroller!.previousIndex != 0 && _tcontroller!.index == 0) ||
+          (_tcontroller!.previousIndex == 0)) {
+        setState(() => _currentTabIndex = _tcontroller!.index);
+      }
+    });
     _scrollController.addListener(() {
       if (_scrollController.position.userScrollDirection ==
           ScrollDirection.reverse) {
@@ -389,115 +396,117 @@ class _LikedSongsState extends State<LikedSongs>
                               );
                             },
                           ),
-                          PopupMenuButton(
-                            icon: const Icon(Icons.sort_rounded),
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15.0)),
+                          if (_currentTabIndex == 0)
+                            PopupMenuButton(
+                              icon: const Icon(Icons.sort_rounded),
+                              shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15.0)),
+                              ),
+                              onSelected:
+                                  // (currentIndex == 0) ?
+                                  (int value) {
+                                if (value < 5) {
+                                  sortValue = value;
+                                  Hive.box('settings').put('sortValue', value);
+                                } else {
+                                  orderValue = value - 5;
+                                  Hive.box('settings')
+                                      .put('orderValue', orderValue);
+                                }
+                                sortSongs(
+                                    sortVal: sortValue, order: orderValue);
+                                setState(() {});
+                              },
+                              // : (int value) {
+                              //     albumSortValue = value;
+                              //     Hive.box('settings').put('albumSortValue', value);
+                              //     sortAlbums();
+                              //     setState(() {});
+                              //   },
+                              itemBuilder:
+                                  // (currentIndex == 0)
+                                  // ?
+                                  (context) {
+                                final List<String> sortTypes = [
+                                  AppLocalizations.of(context)!.displayName,
+                                  AppLocalizations.of(context)!.dateAdded,
+                                  AppLocalizations.of(context)!.album,
+                                  AppLocalizations.of(context)!.artist,
+                                  AppLocalizations.of(context)!.duration,
+                                ];
+                                final List<String> orderTypes = [
+                                  AppLocalizations.of(context)!.inc,
+                                  AppLocalizations.of(context)!.dec,
+                                ];
+                                final menuList = <PopupMenuEntry<int>>[];
+                                menuList.addAll(
+                                  sortTypes
+                                      .map(
+                                        (e) => PopupMenuItem(
+                                          value: sortTypes.indexOf(e),
+                                          child: Row(
+                                            children: [
+                                              if (sortValue ==
+                                                  sortTypes.indexOf(e))
+                                                Icon(
+                                                  Icons.check_rounded,
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.white
+                                                      : Colors.grey[700],
+                                                )
+                                              else
+                                                const SizedBox(),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                e,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                );
+                                menuList.add(
+                                  const PopupMenuDivider(
+                                    height: 10,
+                                  ),
+                                );
+                                menuList.addAll(
+                                  orderTypes
+                                      .map(
+                                        (e) => PopupMenuItem(
+                                          value: sortTypes.length +
+                                              orderTypes.indexOf(e),
+                                          child: Row(
+                                            children: [
+                                              if (orderValue ==
+                                                  orderTypes.indexOf(e))
+                                                Icon(
+                                                  Icons.check_rounded,
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? Colors.white
+                                                      : Colors.grey[700],
+                                                )
+                                              else
+                                                const SizedBox(),
+                                              const SizedBox(width: 10),
+                                              Text(
+                                                e,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                                );
+                                return menuList;
+                              },
                             ),
-                            onSelected:
-                                // (currentIndex == 0) ?
-                                (int value) {
-                              if (value < 5) {
-                                sortValue = value;
-                                Hive.box('settings').put('sortValue', value);
-                              } else {
-                                orderValue = value - 5;
-                                Hive.box('settings')
-                                    .put('orderValue', orderValue);
-                              }
-                              sortSongs(sortVal: sortValue, order: orderValue);
-                              setState(() {});
-                            },
-                            // : (int value) {
-                            //     albumSortValue = value;
-                            //     Hive.box('settings').put('albumSortValue', value);
-                            //     sortAlbums();
-                            //     setState(() {});
-                            //   },
-                            itemBuilder:
-                                // (currentIndex == 0)
-                                // ?
-                                (context) {
-                              final List<String> sortTypes = [
-                                AppLocalizations.of(context)!.displayName,
-                                AppLocalizations.of(context)!.dateAdded,
-                                AppLocalizations.of(context)!.album,
-                                AppLocalizations.of(context)!.artist,
-                                AppLocalizations.of(context)!.duration,
-                              ];
-                              final List<String> orderTypes = [
-                                AppLocalizations.of(context)!.inc,
-                                AppLocalizations.of(context)!.dec,
-                              ];
-                              final menuList = <PopupMenuEntry<int>>[];
-                              menuList.addAll(
-                                sortTypes
-                                    .map(
-                                      (e) => PopupMenuItem(
-                                        value: sortTypes.indexOf(e),
-                                        child: Row(
-                                          children: [
-                                            if (sortValue ==
-                                                sortTypes.indexOf(e))
-                                              Icon(
-                                                Icons.check_rounded,
-                                                color: Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.dark
-                                                    ? Colors.white
-                                                    : Colors.grey[700],
-                                              )
-                                            else
-                                              const SizedBox(),
-                                            const SizedBox(width: 10),
-                                            Text(
-                                              e,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              );
-                              menuList.add(
-                                const PopupMenuDivider(
-                                  height: 10,
-                                ),
-                              );
-                              menuList.addAll(
-                                orderTypes
-                                    .map(
-                                      (e) => PopupMenuItem(
-                                        value: sortTypes.length +
-                                            orderTypes.indexOf(e),
-                                        child: Row(
-                                          children: [
-                                            if (orderValue ==
-                                                orderTypes.indexOf(e))
-                                              Icon(
-                                                Icons.check_rounded,
-                                                color: Theme.of(context)
-                                                            .brightness ==
-                                                        Brightness.dark
-                                                    ? Colors.white
-                                                    : Colors.grey[700],
-                                              )
-                                            else
-                                              const SizedBox(),
-                                            const SizedBox(width: 10),
-                                            Text(
-                                              e,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                    )
-                                    .toList(),
-                              );
-                              return menuList;
-                            },
-                          ),
                         ],
                       ),
                       builder: (
