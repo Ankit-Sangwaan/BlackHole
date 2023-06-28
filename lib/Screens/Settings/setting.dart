@@ -26,7 +26,6 @@ import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/textinput_dialog.dart';
 import 'package:blackhole/Helpers/backup_restore.dart';
 import 'package:blackhole/Helpers/config.dart';
-import 'package:blackhole/Helpers/countrycodes.dart';
 import 'package:blackhole/Helpers/github.dart';
 import 'package:blackhole/Helpers/picker.dart';
 import 'package:blackhole/Helpers/update.dart';
@@ -34,6 +33,8 @@ import 'package:blackhole/Screens/Home/saavn.dart' as home_screen;
 import 'package:blackhole/Screens/Settings/player_gradient.dart';
 import 'package:blackhole/Screens/Top Charts/top.dart' as top_screen;
 import 'package:blackhole/Services/ext_storage_provider.dart';
+import 'package:blackhole/constants/countrycodes.dart';
+import 'package:blackhole/constants/languagecodes.dart';
 import 'package:blackhole/main.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
@@ -2785,7 +2786,7 @@ class _SettingPageState extends State<SettingPage>
                                     lang = newValue;
                                     MyApp.of(context).setLocale(
                                       Locale.fromSubtags(
-                                        languageCode: ConstantCodes
+                                        languageCode: LanguageCodes
                                                 .languageCodes[newValue] ??
                                             'en',
                                       ),
@@ -2795,7 +2796,7 @@ class _SettingPageState extends State<SettingPage>
                                 );
                               }
                             },
-                            items: ConstantCodes.languageCodes.keys
+                            items: LanguageCodes.languageCodes.keys
                                 .map<DropdownMenuItem<String>>((language) {
                               return DropdownMenuItem<String>(
                                 value: language,
@@ -4309,7 +4310,7 @@ class SpotifyCountry {
   Future<String> changeCountry({required BuildContext context}) async {
     String region =
         Hive.box('settings').get('region', defaultValue: 'India') as String;
-    if (!ConstantCodes.localChartCodes.containsKey(region)) {
+    if (!CountryCodes.localChartCodes.containsKey(region)) {
       region = 'India';
     }
 
@@ -4318,7 +4319,7 @@ class SpotifyCountry {
       backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {
-        const Map<String, String> codes = ConstantCodes.localChartCodes;
+        const Map<String, String> codes = CountryCodes.localChartCodes;
         final List<String> countries = codes.keys.toList();
         return BottomGradientContainer(
           borderRadius: BorderRadius.circular(

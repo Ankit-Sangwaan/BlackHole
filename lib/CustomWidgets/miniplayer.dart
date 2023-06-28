@@ -41,7 +41,7 @@ class MiniPlayer extends StatefulWidget {
 }
 
 class _MiniPlayerState extends State<MiniPlayer> {
-  AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
+  final AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
 
   @override
   Widget build(BuildContext context) {

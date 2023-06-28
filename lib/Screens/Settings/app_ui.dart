@@ -31,12 +31,14 @@ class _AppUIPageState extends State<AppUIPage> {
     'preferredCompactNotificationButtons',
     defaultValue: [1, 2, 3],
   ) as List<int>;
-  final ValueNotifier<List> sectionsToShow = ValueNotifier<List>(
-    Hive.box('settings').get(
-      'sectionsToShow',
-      defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
-    ) as List,
-  );
+  final List<String> sectionsToShow = Hive.box('settings').get(
+    'sectionsToShow',
+    defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
+  ) as List<String>;
+  final List<String> sectionsAvailableToShow = Hive.box('settings').get(
+    'sectionsAvailableToShow',
+    defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library', 'Settings'],
+  ) as List<String>;
 
   @override
   Widget build(BuildContext context) {
@@ -650,50 +652,175 @@ class _AppUIPageState extends State<AppUIPage> {
             //   keyName: 'showHistory',
             //   defaultValue: true,
             // ),
-            ValueListenableBuilder(
-              valueListenable: sectionsToShow,
-              builder: (
-                BuildContext context,
-                List items,
-                Widget? child,
-              ) {
-                return SwitchListTile(
-                  activeColor: Theme.of(context).colorScheme.secondary,
-                  title: Text(
-                    AppLocalizations.of(
-                      context,
-                    )!
-                        .showTopCharts,
-                  ),
-                  subtitle: Text(
-                    AppLocalizations.of(
-                      context,
-                    )!
-                        .showTopChartsSub,
-                  ),
-                  dense: true,
-                  value: items.contains('Top Charts'),
-                  onChanged: (val) {
-                    if (val) {
-                      sectionsToShow.value = [
-                        'Home',
-                        'Top Charts',
-                        'YouTube',
-                        'Library'
-                      ];
-                    } else {
-                      sectionsToShow.value = [
-                        'Home',
-                        'YouTube',
-                        'Library',
-                        'Settings'
-                      ];
-                    }
-                    settingsBox.put(
-                      'sectionsToShow',
-                      sectionsToShow.value,
+            ListTile(
+              title: Text(
+                AppLocalizations.of(
+                  context,
+                )!
+                    .miniButtons,
+              ),
+              subtitle: Text(
+                AppLocalizations.of(
+                  context,
+                )!
+                    .miniButtonsSub,
+              ),
+              dense: true,
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    final List checked = List.from(sectionsToShow);
+                    return StatefulBuilder(
+                      builder: (
+                        BuildContext context,
+                        StateSetter setStt,
+                      ) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                              15.0,
+                            ),
+                          ),
+                          content: SizedBox(
+                            width: 500,
+                            child: ReorderableListView(
+                              physics: const BouncingScrollPhysics(),
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.fromLTRB(
+                                0,
+                                10,
+                                0,
+                                10,
+                              ),
+                              onReorder: (int oldIndex, int newIndex) {
+                                if (oldIndex < newIndex) {
+                                  newIndex--;
+                                }
+                                final temp = sectionsToShow.removeAt(
+                                  oldIndex,
+                                );
+                                sectionsToShow.insert(newIndex, temp);
+                                setStt(
+                                  () {},
+                                );
+                              },
+                              header: Center(
+                                child: Text(
+                                  AppLocalizations.of(
+                                    context,
+                                  )!
+                                      .changeOrder,
+                                ),
+                              ),
+                              children: sectionsAvailableToShow.map((e) {
+                                return Row(
+                                  key: Key(e),
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    ReorderableDragStartListener(
+                                      index: sectionsAvailableToShow.indexOf(e),
+                                      child: const Icon(
+                                        Icons.drag_handle_rounded,
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: SizedBox(
+                                        child: CheckboxListTile(
+                                          dense: true,
+                                          contentPadding: const EdgeInsets.only(
+                                            left: 16.0,
+                                          ),
+                                          activeColor: Theme.of(context)
+                                              .colorScheme
+                                              .secondary,
+                                          checkColor: Theme.of(
+                                                    context,
+                                                  ).colorScheme.secondary ==
+                                                  Colors.white
+                                              ? Colors.black
+                                              : null,
+                                          value: checked.contains(e),
+                                          title: Text(e),
+                                          onChanged: (bool? value) {
+                                            setStt(
+                                              () {
+                                                value!
+                                                    ? checked.add(e)
+                                                    : checked.remove(e);
+                                              },
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }).toList(),
+                            ),
+                          ),
+                          actions: [
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                foregroundColor: Theme.of(context).brightness ==
+                                        Brightness.dark
+                                    ? Colors.white
+                                    : Colors.grey[700],
+                              ),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!
+                                    .cancel,
+                              ),
+                            ),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                foregroundColor:
+                                    Theme.of(context).colorScheme.secondary ==
+                                            Colors.white
+                                        ? Colors.black
+                                        : null,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.secondary,
+                              ),
+                              onPressed: () {
+                                setState(
+                                  () {
+                                    final List temp = [];
+                                    for (int i = 0;
+                                        i < sectionsToShow.length;
+                                        i++) {
+                                      if (checked.contains(sectionsToShow[i])) {
+                                        temp.add(sectionsToShow[i]);
+                                      }
+                                    }
+                                    // sectionsToShow = sectionsToShow;
+                                    Navigator.pop(context);
+                                    // Hive.box('settings').put(
+                                    //   'preferredMiniButtons',
+                                    //   preferredMiniButtons,
+                                    // );
+                                  },
+                                );
+                              },
+                              child: Text(
+                                AppLocalizations.of(
+                                  context,
+                                )!
+                                    .ok,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                          ],
+                        );
+                      },
                     );
-                    widget.callback!();
                   },
                 );
               },

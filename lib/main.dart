@@ -22,7 +22,6 @@ import 'dart:io';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:blackhole/Helpers/config.dart';
-import 'package:blackhole/Helpers/countrycodes.dart';
 import 'package:blackhole/Helpers/handle_native.dart';
 import 'package:blackhole/Helpers/import_export_playlist.dart';
 import 'package:blackhole/Helpers/logging.dart';
@@ -39,6 +38,8 @@ import 'package:blackhole/Screens/Login/pref.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Screens/Settings/new_settings_page.dart';
 import 'package:blackhole/Services/audio_service.dart';
+import 'package:blackhole/constants/constants.dart';
+import 'package:blackhole/constants/languagecodes.dart';
 import 'package:blackhole/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -47,6 +48,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:home_widget/home_widget.dart';
 import 'package:logging/logging.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:path_provider/path_provider.dart';
@@ -61,12 +63,12 @@ Future<void> main() async {
   } else {
     await Hive.initFlutter();
   }
-  await openHiveBox('settings');
-  await openHiveBox('downloads');
-  await openHiveBox('stats');
-  await openHiveBox('Favorite Songs');
-  await openHiveBox('cache', limit: true);
-  await openHiveBox('ytlinkcache', limit: true);
+  for (final box in hiveBoxes) {
+    await openHiveBox(
+      box['name'].toString(),
+      limit: box['limit'] as bool? ?? false,
+    );
+  }
   if (Platform.isAndroid) {
     setOptimalDisplayMode();
   }
@@ -135,6 +137,32 @@ Future<void> openHiveBox(String boxName, {bool limit = false}) async {
   }
 }
 
+/// Called when Doing Background Work initiated from Widget
+@pragma('vm:entry-point')
+Future<void> backgroundCallback(Uri? data) async {
+  if (data?.host == 'controls') {
+    if (data?.path == '/play') {
+      // audioHandler?.play();
+    } else if (data?.path == '/pause') {
+      // audioHandler?.pause();
+    } else if (data?.path == '/skipNext') {
+      // audioHandler?.skipToNext();
+    } else if (data?.path == '/skipPrevious') {
+      // audioHandler?.skipToPrevious();
+    }
+
+    // await HomeWidget.saveWidgetData<String>(
+    //   'title',
+    //   audioHandler?.mediaItem.value?.title,
+    // );
+    // await HomeWidget.saveWidgetData<String>(
+    //   'subtitle',
+    //   audioHandler?.mediaItem.value?.displaySubtitle,
+    // );
+    // await HomeWidget.updateWidget(name: 'BlackHoleMusicWidget');
+  }
+}
+
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
@@ -160,13 +188,15 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    HomeWidget.setAppGroupId('com.shadow.blackhole');
+    HomeWidget.registerBackgroundCallback(backgroundCallback);
     final String systemLangCode = Platform.localeName.substring(0, 2);
-    if (ConstantCodes.languageCodes.values.contains(systemLangCode)) {
+    if (LanguageCodes.languageCodes.values.contains(systemLangCode)) {
       _locale = Locale(systemLangCode);
     } else {
       final String lang =
           Hive.box('settings').get('lang', defaultValue: 'English') as String;
-      _locale = Locale(ConstantCodes.languageCodes[lang] ?? 'en');
+      _locale = Locale(LanguageCodes.languageCodes[lang] ?? 'en');
     }
 
     AppTheme.currentTheme.addListener(() {
@@ -309,7 +339,7 @@ class _MyAppState extends State<MyApp> {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: ConstantCodes.languageCodes.entries
+        supportedLocales: LanguageCodes.languageCodes.entries
             .map((languageCode) => Locale(languageCode.value, ''))
             .toList(),
         routes: {

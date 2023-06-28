@@ -4,8 +4,8 @@ import 'package:blackhole/CustomWidgets/box_switch_tile.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/textinput_dialog.dart';
-import 'package:blackhole/Helpers/countrycodes.dart';
 import 'package:blackhole/Helpers/picker.dart';
+import 'package:blackhole/constants/languagecodes.dart';
 import 'package:blackhole/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +89,7 @@ class _OthersPageState extends State<OthersPage> {
                         MyApp.of(context).setLocale(
                           Locale.fromSubtags(
                             languageCode:
-                                ConstantCodes.languageCodes[newValue] ?? 'en',
+                                LanguageCodes.languageCodes[newValue] ?? 'en',
                           ),
                         );
                         Hive.box('settings').put('lang', newValue);
@@ -97,7 +97,7 @@ class _OthersPageState extends State<OthersPage> {
                     );
                   }
                 },
-                items: ConstantCodes.languageCodes.keys
+                items: LanguageCodes.languageCodes.keys
                     .map<DropdownMenuItem<String>>((language) {
                   return DropdownMenuItem<String>(
                     value: language,

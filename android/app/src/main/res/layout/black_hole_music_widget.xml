@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.Android.AppWidget.Container"
     android:layout_width="match_parent"
@@ -11,25 +12,65 @@
     android:weightSum="2"
     tools:ignore="ContentDescription,HardcodedText"
     tools:layout_height="130dp"
-    android:theme="@style/Theme.Android.AppWidgetContainer">
+    android:theme="@style/Theme.Android.AppWidgetContainer"
+    android:id="@+id/widget_container">
 
     <ViewFlipper
-        android:id="@+id/viewFlipper"
+        android:id="@+id/widget_view_flipper"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:inAnimation="@anim/in_animation"
         android:outAnimation="@anim/out_animation">
+
+        <LinearLayout
+            android:id="@+id/widget_display_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <ImageView
+                android:id="@+id/widget_album_art"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@mipmap/ic_launcher_foreground" />
+
+            <LinearLayout
+                android:id="@+id/widget_text_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:weightSum="2">
+
+                <TextView
+                    android:id="@+id/widget_title_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView" />
+
+                <TextView
+                    android:id="@+id/widget_subtitle_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="TextView" />
+            </LinearLayout>
+        </LinearLayout>
     </ViewFlipper>
 
     <LinearLayout
+        android:id="@+id/widget_button_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:weightSum="3">
 
         <ImageButton
-            android:id="@+id/button_prev"
+            android:id="@+id/widget_button_prev"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -37,7 +78,7 @@
             android:background="@android:color/transparent" />
 
         <ImageButton
-            android:id="@+id/button_play_pause"
+            android:id="@+id/widget_button_play_pause"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -45,7 +86,7 @@
             android:background="@android:color/transparent" />
 
         <ImageButton
-            android:id="@+id/button_next"
+            android:id="@+id/widget_button_next"
             android:layout_width="0dip"
             android:layout_height="match_parent"
             android:layout_weight="1"

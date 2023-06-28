@@ -21,7 +21,7 @@ import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/Helpers/backup_restore.dart';
 import 'package:blackhole/Helpers/config.dart';
-import 'package:blackhole/Helpers/countrycodes.dart';
+import 'package:blackhole/constants/countrycodes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
@@ -422,7 +422,7 @@ class _PrefScreenState extends State<PrefScreen> {
                                         context: context,
                                         builder: (BuildContext context) {
                                           const Map<String, String> codes =
-                                              ConstantCodes.localChartCodes;
+                                              CountryCodes.localChartCodes;
                                           final List<String> countries =
                                               codes.keys.toList();
                                           return BottomGradientContainer(

@@ -37,6 +37,7 @@ dependencies:
   get_it: ^7.6.0
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  home_widget: ^0.2.1
   html_unescape: ^2.0.0
   just_audio: ^0.9.34
   # Discontinued, Use just_audio_windows instead.
@@ -56,6 +57,7 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   url_launcher: ^6.1.11
   uuid: ^3.0.7
+  workmanager: ^0.5.1
   youtube_explode_dart: ^1.12.4
 
 dev_dependencies:

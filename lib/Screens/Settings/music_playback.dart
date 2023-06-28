@@ -1,9 +1,9 @@
 import 'package:blackhole/CustomWidgets/box_switch_tile.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
-import 'package:blackhole/Helpers/countrycodes.dart';
 import 'package:blackhole/Screens/Home/saavn.dart' as home_screen;
 import 'package:blackhole/Screens/Top Charts/top.dart' as top_screen;
+import 'package:blackhole/constants/countrycodes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
@@ -473,7 +473,7 @@ class SpotifyCountry {
   Future<String> changeCountry({required BuildContext context}) async {
     String region =
         Hive.box('settings').get('region', defaultValue: 'India') as String;
-    if (!ConstantCodes.localChartCodes.containsKey(region)) {
+    if (!CountryCodes.localChartCodes.containsKey(region)) {
       region = 'India';
     }
 
@@ -482,7 +482,7 @@ class SpotifyCountry {
       backgroundColor: Colors.transparent,
       context: context,
       builder: (BuildContext context) {
-        const Map<String, String> codes = ConstantCodes.localChartCodes;
+        const Map<String, String> codes = CountryCodes.localChartCodes;
         final List<String> countries = codes.keys.toList();
         return BottomGradientContainer(
           borderRadius: BorderRadius.circular(

@@ -17,7 +17,7 @@
  * Copyright (c) 2021-2022, Ankit Sangwan
  */
 
-class ConstantCodes {
+class CountryCodes {
   static const Map<String, String> countryCodes = {
     'Argentina': 'ar',
     'Austria': 'at',
@@ -164,33 +164,5 @@ class ConstantCodes {
     'Uruguay': '37i9dQZEVXbMJJi3wgRbAy',
     'Venezuela': '37i9dQZEVXbJ6IpvItkve3',
     'Vietnam': '37i9dQZEVXbLdGSmz6xilI'
-  };
-
-  // supported languages and their code
-  static const Map<String, String> languageCodes = {
-    'English': 'en',
-    'Belarusian': 'be',
-    'Chinese': 'zh',
-    'Czech': 'cs',
-    'Dutch': 'nl',
-    'French': 'fr',
-    'German': 'de',
-    'Hebrew': 'he',
-    'Hindi': 'hi',
-    'Hungarian': 'hu',
-    'Indonesian': 'id',
-    'Italian': 'it',
-    'Korean': 'ko',
-    'Malayalam': 'ml',
-    'Nepali': 'ne',
-    'Polish': 'pl',
-    'Portuguese': 'pt',
-    'Punjabi': 'pa',
-    'Russian': 'ru',
-    'Spanish': 'es',
-    'Tamil': 'ta',
-    'Turkish': 'tr',
-    'Ukrainian': 'uk',
-    'Urdu': 'ur',
   };
 }

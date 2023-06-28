@@ -21,11 +21,11 @@ import 'package:app_links/app_links.dart';
 import 'package:blackhole/APIs/spotify_api.dart';
 import 'package:blackhole/CustomWidgets/custom_physics.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
-import 'package:blackhole/Helpers/countrycodes.dart';
 import 'package:blackhole/Helpers/spotify_helper.dart';
 // import 'package:blackhole/Helpers/countrycodes.dart';
 import 'package:blackhole/Screens/Search/search.dart';
 import 'package:blackhole/Screens/Settings/setting.dart';
+import 'package:blackhole/constants/countrycodes.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -163,10 +163,10 @@ class _TopChartsState extends State<TopCharts>
 }
 
 Future<List> getChartDetails(String accessToken, String type) async {
-  final String globalPlaylistId = ConstantCodes.localChartCodes['Global']!;
-  final String localPlaylistId = ConstantCodes.localChartCodes.containsKey(type)
-      ? ConstantCodes.localChartCodes[type]!
-      : ConstantCodes.localChartCodes['India']!;
+  final String globalPlaylistId = CountryCodes.localChartCodes['Global']!;
+  final String localPlaylistId = CountryCodes.localChartCodes.containsKey(type)
+      ? CountryCodes.localChartCodes[type]!
+      : CountryCodes.localChartCodes['India']!;
   final String playlistId =
       type == 'Global' ? globalPlaylistId : localPlaylistId;
   final List data = [];

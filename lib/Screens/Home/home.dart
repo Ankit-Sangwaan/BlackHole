@@ -903,12 +903,14 @@ class _HomePageState extends State<HomePage> {
                               selectedColor:
                                   Theme.of(context).colorScheme.secondary,
                             ),
-                          SalomonBottomBarItem(
-                            icon: const Icon(MdiIcons.youtube),
-                            title: Text(AppLocalizations.of(context)!.youTube),
-                            selectedColor:
-                                Theme.of(context).colorScheme.secondary,
-                          ),
+                          if (sectionsToShow.contains('YouTube'))
+                            SalomonBottomBarItem(
+                              icon: const Icon(MdiIcons.youtube),
+                              title:
+                                  Text(AppLocalizations.of(context)!.youTube),
+                              selectedColor:
+                                  Theme.of(context).colorScheme.secondary,
+                            ),
                           SalomonBottomBarItem(
                             icon: const Icon(Icons.my_library_music_rounded),
                             title: Text(AppLocalizations.of(context)!.library),

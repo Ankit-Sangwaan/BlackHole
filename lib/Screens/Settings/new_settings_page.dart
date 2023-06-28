@@ -296,7 +296,10 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           itemCount: settingsList.length,
           itemBuilder: (context, index) {
             return ListTile(
-              leading: Icon(settingsList[index]['icon'] as IconData),
+              leading: SizedBox.square(
+                dimension: 40,
+                child: Icon(settingsList[index]['icon'] as IconData),
+              ),
               title: Text(settingsList[index]['title'].toString()),
               subtitle: Text(
                 (settingsList[index]['items'] as List).take(3).join(', '),
