@@ -706,5 +706,9 @@
   "blacklistHomeSectionsConfirm": "您确定要将此部分列入黑名单吗？一旦列入黑名单，它将不会显示在主屏幕上",
   "@blacklistHomeSectionsConfirm": {},
   "blacklistHomeSections": "将此部分列入黑名单",
-  "@blacklistHomeSections": {}
+  "@blacklistHomeSections": {},
+  "folders": "文件夹",
+  "@folders": {},
+  "noFileSelected": "未选择文件",
+  "@noFileSelected": {}
 }
