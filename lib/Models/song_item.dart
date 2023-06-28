@@ -17,6 +17,8 @@
  * Copyright (c) 2021-2022, Ankit Sangwan
  */
 
+import 'dart:convert';
+
 class SongItem {
   final String id;
   final String album;
@@ -78,36 +80,74 @@ class SongItem {
     this.kbps320 = false,
   });
 
-  factory SongItem.fromJson(Map<String, dynamic> json) {
+  factory SongItem.fromMap(Map<String, dynamic> map) {
     return SongItem(
-      id: json['id'].toString(),
-      album: json['album'].toString(),
-      artists: json['artists'] as List<String>,
-      duration: Duration(seconds: int.parse(json['duration'].toString())),
-      genre: json['genre'].toString(),
-      image: json['image'].toString(),
-      allImages: json['images'] as List,
-      language: json['language'].toString(),
-      releaseDate: json['releaseDate'].toString(),
-      subtitle: json['subtitle'].toString(),
-      title: json['title'].toString(),
-      url: json['url'].toString(),
-      allUrls: json['allUrls'] as List<String>,
-      year: int.parse(json['year'].toString()),
-      quality: int.parse(json['quality'].toString()),
-      permaUrl: json['permaUrl'].toString(),
-      expireAt: int.parse(json['expireAt']?.toString() ?? '0'),
-      lyrics: json['lyrics']?.toString() ?? '',
-      trackNumber: int.parse(json['track']?.toString() ?? '0'),
-      discNumber: int.parse(json['discNumber']?.toString() ?? '0'),
-      isOffline: json['isOffline'] as bool,
-      addedByAutoplay: json['addedByAutoplay'] as bool,
-      albumId: json['albumId'].toString(),
-      artistIds: json['artistIds'] as List<Map<String, String>>?,
-      isYt: json['isYt'] as bool,
-      kbps320: json['320kbps'] as bool,
-      albumArtist: json['albumArtist']?.toString(),
-      hasLyrics: json['hasLyrics'] as bool? ?? false,
+      id: map['id'].toString(),
+      album: map['album'].toString(),
+      artists: map['artists'] as List<String>,
+      duration: Duration(seconds: int.parse(map['duration'].toString())),
+      genre: map['genre'].toString(),
+      image: map['image'].toString(),
+      allImages: map['allImages'] as List,
+      language: map['language'].toString(),
+      releaseDate: map['releaseDate'].toString(),
+      subtitle: map['subtitle'].toString(),
+      title: map['title'].toString(),
+      url: map['url'].toString(),
+      allUrls: map['allUrls'] as List<String>,
+      year: int.parse(map['year'].toString()),
+      quality: int.parse(map['quality'].toString()),
+      permaUrl: map['permaUrl'].toString(),
+      expireAt: int.parse(map['expireAt']?.toString() ?? '0'),
+      lyrics: map['lyrics']?.toString() ?? '',
+      trackNumber: int.parse(map['trackNumber']?.toString() ?? '0'),
+      discNumber: int.parse(map['discNumber']?.toString() ?? '0'),
+      isOffline: map['isOffline'] as bool,
+      addedByAutoplay: map['addedByAutoplay'] as bool,
+      albumId: map['albumId'].toString(),
+      artistIds: map['artistIds'] as List<Map<String, String>>?,
+      isYt: map['isYt'] as bool,
+      kbps320: map['320kbps'] as bool,
+      albumArtist: map['albumArtist']?.toString(),
+      hasLyrics: map['hasLyrics'] as bool? ?? false,
     );
   }
+
+  factory SongItem.fromJson(String source) =>
+      SongItem.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'album': album,
+      'artists': artists,
+      'duration': duration.inSeconds,
+      'genre': genre,
+      'image': image,
+      'allImages': allImages,
+      'language': language,
+      'releaseDate': releaseDate,
+      'subtitle': subtitle,
+      'title': title,
+      'url': url,
+      'allUrls': allUrls,
+      'year': year,
+      'quality': quality,
+      'permaUrl': permaUrl,
+      'expireAt': expireAt,
+      'lyrics': lyrics,
+      'trackNumber': trackNumber,
+      'discNumber': discNumber,
+      'isOffline': isOffline,
+      'addedByAutoplay': addedByAutoplay,
+      'albumId': albumId,
+      'artistIds': artistIds,
+      'isYt': isYt,
+      '320kbps': kbps320,
+      'albumArtist': albumArtist,
+      'hasLyrics': hasLyrics,
+    };
+  }
+
+  String toJson() => json.encode(toMap());
 }
