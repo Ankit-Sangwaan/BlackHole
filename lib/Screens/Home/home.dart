@@ -14,36 +14,36 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (c) 2021-2022, Ankit Sangwan
+ * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
 import 'dart:io';
-import 'dart:math';
 
-import 'package:blackhole/CustomWidgets/custom_physics.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
-import 'package:blackhole/CustomWidgets/textinput_dialog.dart';
 import 'package:blackhole/Helpers/backup_restore.dart';
 import 'package:blackhole/Helpers/downloads_checker.dart';
 import 'package:blackhole/Helpers/github.dart';
+import 'package:blackhole/Helpers/route_handler.dart';
 import 'package:blackhole/Helpers/update.dart';
-import 'package:blackhole/Screens/Home/saavn.dart';
+import 'package:blackhole/Screens/Common/routes.dart';
+import 'package:blackhole/Screens/Home/home_screen.dart';
 import 'package:blackhole/Screens/Library/library.dart';
 import 'package:blackhole/Screens/LocalMusic/downed_songs.dart';
 import 'package:blackhole/Screens/LocalMusic/downed_songs_desktop.dart';
-import 'package:blackhole/Screens/Search/search.dart';
+import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Screens/Settings/new_settings_page.dart';
 import 'package:blackhole/Screens/Top Charts/top.dart';
 import 'package:blackhole/Screens/YouTube/youtube_home.dart';
 import 'package:blackhole/Services/ext_storage_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:logging/logging.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -54,7 +54,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ValueNotifier<int> _selectedIndex = ValueNotifier<int>(0);
-  bool checked = false;
   String? appVersion;
   String name =
       Hive.box('settings').get('name', defaultValue: 'Guest') as String;
@@ -78,7 +77,7 @@ class _HomePageState extends State<HomePage> {
 
   void _onItemTapped(int index) {
     _selectedIndex.value = index;
-    _pageController.jumpToPage(
+    _controller.jumpToTab(
       index,
     );
   }
@@ -102,141 +101,140 @@ class _HomePageState extends State<HomePage> {
     return true;
   }
 
-  Widget checkVersion() {
-    if (!checked) {
-      checked = true;
-      PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
-        appVersion = packageInfo.version;
+  void checkVersion() {
+    PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
+      appVersion = packageInfo.version;
 
-        if (checkUpdate) {
-          GitHub.getLatestVersion().then((String version) async {
-            if (compareVersion(
-              version,
-              appVersion!,
-            )) {
-              // List? abis =
-              //     await Hive.box('settings').get('supportedAbis') as List?;
+      if (checkUpdate) {
+        Logger.root.info('Checking for update');
+        GitHub.getLatestVersion().then((String version) async {
+          if (compareVersion(
+            version,
+            appVersion!,
+          )) {
+            // List? abis =
+            //     await Hive.box('settings').get('supportedAbis') as List?;
 
-              // if (abis == null) {
-              //   final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-              //   final AndroidDeviceInfo androidDeviceInfo =
-              //       await deviceInfo.androidInfo;
-              //   abis = androidDeviceInfo.supportedAbis;
-              //   await Hive.box('settings').put('supportedAbis', abis);
-              // }
+            // if (abis == null) {
+            //   final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+            //   final AndroidDeviceInfo androidDeviceInfo =
+            //       await deviceInfo.androidInfo;
+            //   abis = androidDeviceInfo.supportedAbis;
+            //   await Hive.box('settings').put('supportedAbis', abis);
+            // }
 
-              ShowSnackBar().showSnackBar(
-                context,
-                AppLocalizations.of(context)!.updateAvailable,
-                duration: const Duration(seconds: 15),
-                action: SnackBarAction(
-                  textColor: Theme.of(context).colorScheme.secondary,
-                  label: AppLocalizations.of(context)!.update,
-                  onPressed: () {
-                    Navigator.pop(context);
-                    launchUrl(
-                      Uri.parse('https://sangwan5688.github.io/download/'),
-                      mode: LaunchMode.externalApplication,
-                    );
-                  },
-                ),
-              );
-            }
-          });
-        }
-        if (autoBackup) {
-          final List<String> checked = [
-            AppLocalizations.of(
+            Logger.root.info('Update available');
+            ShowSnackBar().showSnackBar(
               context,
-            )!
-                .settings,
-            AppLocalizations.of(
-              context,
-            )!
-                .downs,
-            AppLocalizations.of(
-              context,
-            )!
-                .playlists,
-          ];
-          final List playlistNames = Hive.box('settings').get(
-            'playlistNames',
-            defaultValue: ['Favorite Songs'],
-          ) as List;
-          final Map<String, List> boxNames = {
-            AppLocalizations.of(
-              context,
-            )!
-                .settings: ['settings'],
-            AppLocalizations.of(
-              context,
-            )!
-                .cache: ['cache'],
-            AppLocalizations.of(
-              context,
-            )!
-                .downs: ['downloads'],
-            AppLocalizations.of(
-              context,
-            )!
-                .playlists: playlistNames,
-          };
-          final String autoBackPath = Hive.box('settings').get(
-            'autoBackPath',
-            defaultValue: '',
-          ) as String;
-          if (autoBackPath == '') {
-            ExtStorageProvider.getExtStorage(
-              dirName: 'BlackHole/Backups',
-              writeAccess: true,
-            ).then((value) {
-              Hive.box('settings').put('autoBackPath', value);
-              createBackup(
-                context,
-                checked,
-                boxNames,
-                path: value,
-                fileName: 'BlackHole_AutoBackup',
-                showDialog: false,
-              );
-            });
+              AppLocalizations.of(context)!.updateAvailable,
+              duration: const Duration(seconds: 15),
+              action: SnackBarAction(
+                textColor: Theme.of(context).colorScheme.secondary,
+                label: AppLocalizations.of(context)!.update,
+                onPressed: () {
+                  Navigator.pop(context);
+                  launchUrl(
+                    Uri.parse('https://sangwan5688.github.io/download/'),
+                    mode: LaunchMode.externalApplication,
+                  );
+                },
+              ),
+            );
           } else {
+            Logger.root.info('No update available');
+          }
+        });
+      }
+      if (autoBackup) {
+        final List<String> checked = [
+          AppLocalizations.of(
+            context,
+          )!
+              .settings,
+          AppLocalizations.of(
+            context,
+          )!
+              .downs,
+          AppLocalizations.of(
+            context,
+          )!
+              .playlists,
+        ];
+        final List playlistNames = Hive.box('settings').get(
+          'playlistNames',
+          defaultValue: ['Favorite Songs'],
+        ) as List;
+        final Map<String, List> boxNames = {
+          AppLocalizations.of(
+            context,
+          )!
+              .settings: ['settings'],
+          AppLocalizations.of(
+            context,
+          )!
+              .cache: ['cache'],
+          AppLocalizations.of(
+            context,
+          )!
+              .downs: ['downloads'],
+          AppLocalizations.of(
+            context,
+          )!
+              .playlists: playlistNames,
+        };
+        final String autoBackPath = Hive.box('settings').get(
+          'autoBackPath',
+          defaultValue: '',
+        ) as String;
+        if (autoBackPath == '') {
+          ExtStorageProvider.getExtStorage(
+            dirName: 'BlackHole/Backups',
+            writeAccess: true,
+          ).then((value) {
+            Hive.box('settings').put('autoBackPath', value);
             createBackup(
               context,
               checked,
               boxNames,
-              path: autoBackPath,
+              path: value,
               fileName: 'BlackHole_AutoBackup',
               showDialog: false,
             );
-          }
+          });
+        } else {
+          createBackup(
+            context,
+            checked,
+            boxNames,
+            path: autoBackPath,
+            fileName: 'BlackHole_AutoBackup',
+            showDialog: false,
+          );
         }
-      });
-      if (Hive.box('settings').get('proxyIp') == null) {
-        Hive.box('settings').put('proxyIp', '103.47.67.134');
       }
-      if (Hive.box('settings').get('proxyPort') == null) {
-        Hive.box('settings').put('proxyPort', 8080);
-      }
-      downloadChecker();
-      return const SizedBox();
-    } else {
-      return const SizedBox();
+    });
+    if (Hive.box('settings').get('proxyIp') == null) {
+      Hive.box('settings').put('proxyIp', '103.47.67.134');
     }
+    if (Hive.box('settings').get('proxyPort') == null) {
+      Hive.box('settings').put('proxyPort', 8080);
+    }
+    downloadChecker();
   }
 
-  final ScrollController _scrollController = ScrollController();
   final PageController _pageController = PageController();
+  final PersistentTabController _controller = PersistentTabController();
 
   @override
   void initState() {
     super.initState();
+    checkVersion();
   }
 
   @override
   void dispose() {
+    _controller.dispose();
     _pageController.dispose();
-    _scrollController.dispose();
     super.dispose();
   }
 
@@ -564,307 +562,65 @@ class _HomePageState extends State<HomePage> {
                     },
                   ),
                 Expanded(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: PageView(
-                          physics: const CustomPhysics(),
-                          onPageChanged: (indx) {
-                            _selectedIndex.value = indx;
-                          },
-                          controller: _pageController,
-                          children: [
-                            Stack(
-                              children: [
-                                checkVersion(),
-                                NestedScrollView(
-                                  physics: const BouncingScrollPhysics(),
-                                  controller: _scrollController,
-                                  headerSliverBuilder: (
-                                    BuildContext context,
-                                    bool innerBoxScrolled,
-                                  ) {
-                                    return <Widget>[
-                                      SliverAppBar(
-                                        expandedHeight: 135,
-                                        backgroundColor: Colors.transparent,
-                                        elevation: 0,
-                                        // pinned: true,
-                                        toolbarHeight: 65,
-                                        // floating: true,
-                                        automaticallyImplyLeading: false,
-                                        flexibleSpace: LayoutBuilder(
-                                          builder: (
-                                            BuildContext context,
-                                            BoxConstraints constraints,
-                                          ) {
-                                            return FlexibleSpaceBar(
-                                              // collapseMode: CollapseMode.parallax,
-                                              background: GestureDetector(
-                                                onTap: () async {
-                                                  await showTextInputDialog(
-                                                    context: context,
-                                                    title: 'Name',
-                                                    initialText: name,
-                                                    keyboardType:
-                                                        TextInputType.name,
-                                                    onSubmitted: (value) {
-                                                      Hive.box('settings').put(
-                                                        'name',
-                                                        value.trim(),
-                                                      );
-                                                      name = value.trim();
-                                                      Navigator.pop(context);
-                                                    },
-                                                  );
-                                                  setState(() {});
-                                                },
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: <Widget>[
-                                                    const SizedBox(
-                                                      height: 60,
-                                                    ),
-                                                    Row(
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .only(
-                                                            left: 15.0,
-                                                          ),
-                                                          child: Text(
-                                                            AppLocalizations.of(
-                                                              context,
-                                                            )!
-                                                                .homeGreet,
-                                                            style: TextStyle(
-                                                              letterSpacing: 2,
-                                                              color: Theme.of(
-                                                                context,
-                                                              )
-                                                                  .colorScheme
-                                                                  .secondary,
-                                                              fontSize: 30,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          const EdgeInsets.only(
-                                                        left: 15.0,
-                                                      ),
-                                                      child: Row(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .end,
-                                                        children: [
-                                                          ValueListenableBuilder(
-                                                            valueListenable:
-                                                                Hive.box(
-                                                              'settings',
-                                                            ).listenable(),
-                                                            builder: (
-                                                              BuildContext
-                                                                  context,
-                                                              Box box,
-                                                              Widget? child,
-                                                            ) {
-                                                              return Text(
-                                                                (box.get('name') ==
-                                                                            null ||
-                                                                        box.get('name') ==
-                                                                            '')
-                                                                    ? 'Guest'
-                                                                    : box
-                                                                        .get(
-                                                                          'name',
-                                                                        )
-                                                                        .split(
-                                                                          ' ',
-                                                                        )[0]
-                                                                        .toString(),
-                                                                style:
-                                                                    const TextStyle(
-                                                                  letterSpacing:
-                                                                      2,
-                                                                  fontSize: 20,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                ),
-                                                              );
-                                                            },
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                      SliverAppBar(
-                                        automaticallyImplyLeading: false,
-                                        pinned: true,
-                                        backgroundColor: Colors.transparent,
-                                        elevation: 0,
-                                        stretch: true,
-                                        toolbarHeight: 65,
-                                        title: Align(
-                                          alignment: Alignment.centerRight,
-                                          child: AnimatedBuilder(
-                                            animation: _scrollController,
-                                            builder: (context, child) {
-                                              return GestureDetector(
-                                                child: AnimatedContainer(
-                                                  width: (!_scrollController
-                                                              .hasClients ||
-                                                          _scrollController
-                                                                  // ignore: invalid_use_of_protected_member
-                                                                  .positions
-                                                                  .length >
-                                                              1)
-                                                      ? MediaQuery.of(context)
-                                                          .size
-                                                          .width
-                                                      : max(
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width -
-                                                              _scrollController
-                                                                  .offset
-                                                                  .roundToDouble(),
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width -
-                                                              (rotated
-                                                                  ? 0
-                                                                  : 75),
-                                                        ),
-                                                  height: 55.0,
-                                                  duration: const Duration(
-                                                    milliseconds: 150,
-                                                  ),
-                                                  padding:
-                                                      const EdgeInsets.all(2.0),
-                                                  // margin: EdgeInsets.zero,
-                                                  decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                      10.0,
-                                                    ),
-                                                    color: Theme.of(context)
-                                                        .cardColor,
-                                                    boxShadow: const [
-                                                      BoxShadow(
-                                                        color: Colors.black26,
-                                                        blurRadius: 5.0,
-                                                        offset:
-                                                            Offset(1.5, 1.5),
-                                                        // shadow direction: bottom right
-                                                      )
-                                                    ],
-                                                  ),
-                                                  child: Row(
-                                                    children: [
-                                                      const SizedBox(
-                                                        width: 10.0,
-                                                      ),
-                                                      Icon(
-                                                        CupertinoIcons.search,
-                                                        color: Theme.of(context)
-                                                            .colorScheme
-                                                            .secondary,
-                                                      ),
-                                                      const SizedBox(
-                                                        width: 10.0,
-                                                      ),
-                                                      Text(
-                                                        AppLocalizations.of(
-                                                          context,
-                                                        )!
-                                                            .searchText,
-                                                        style: TextStyle(
-                                                          fontSize: 16.0,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .bodySmall!
-                                                                  .color,
-                                                          fontWeight:
-                                                              FontWeight.normal,
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                onTap: () => Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const SearchPage(
-                                                      query: '',
-                                                      fromHome: true,
-                                                      autofocus: true,
-                                                    ),
-                                                  ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      ),
-                                    ];
-                                  },
-                                  body: SaavnHomePage(),
-                                ),
-                                if (!rotated)
-                                  Builder(
-                                    builder: (context) => Padding(
-                                      padding: const EdgeInsets.only(
-                                        top: 8.0,
-                                        left: 4.0,
-                                      ),
-                                      child: Transform.rotate(
-                                        angle: 22 / 7 * 2,
-                                        child: IconButton(
-                                          icon: const Icon(
-                                            Icons.horizontal_split_rounded,
-                                          ),
-                                          // color: Theme.of(context).iconTheme.color,
-                                          onPressed: () {
-                                            Scaffold.of(context).openDrawer();
-                                          },
-                                          tooltip:
-                                              MaterialLocalizations.of(context)
-                                                  .openAppDrawerTooltip,
-                                        ),
-                                      ),
-                                    ),
+                  child: PersistentTabView.custom(
+                    context,
+                    controller: _controller,
+                    itemCount: 4,
+                    navBarHeight: rotated ? 75 : 140.0,
+                    confineInSafeArea: false,
+                    routeAndNavigatorSettings:
+                        CustomWidgetRouteAndNavigatorSettings(
+                      routes: namedRoutes,
+                      onGenerateRoute: (RouteSettings settings) {
+                        if (settings.name == '/player') {
+                          return PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (_, __, ___) => const PlayScreen(),
+                          );
+                        }
+                        return HandleRoute.handleRoute(settings.name);
+                      },
+                    ),
+                    customWidget: SafeArea(
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: MiniPlayer(),
+                          ),
+                          if (!rotated)
+                            ValueListenableBuilder(
+                              valueListenable: _selectedIndex,
+                              builder: (
+                                BuildContext context,
+                                int indexValue,
+                                Widget? child,
+                              ) {
+                                return AnimatedContainer(
+                                  duration: const Duration(milliseconds: 100),
+                                  height: 60,
+                                  child: SalomonBottomBar(
+                                    currentIndex: indexValue,
+                                    onTap: (index) {
+                                      _onItemTapped(index);
+                                    },
+                                    items: _navBarItems(context),
                                   ),
-                              ],
+                                );
+                              },
                             ),
-                            if (sectionsToShow.contains('Top Charts'))
-                              TopCharts(
-                                pageController: _pageController,
-                              ),
-                            const YouTube(),
-                            const LibraryPage(),
-                            if (sectionsToShow.contains('Settings'))
-                              NewSettingsPage(callback: callback),
-                          ],
-                        ),
+                        ],
                       ),
-                      MiniPlayer()
+                    ),
+                    screens: [
+                      const HomeScreen(),
+                      if (sectionsToShow.contains('Top Charts'))
+                        TopCharts(
+                          pageController: _pageController,
+                        ),
+                      const YouTube(),
+                      const LibraryPage(),
+                      if (sectionsToShow.contains('Settings'))
+                        NewSettingsPage(callback: callback),
                     ],
                   ),
                 ),
@@ -872,66 +628,40 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        bottomNavigationBar: rotated
-            ? null
-            : SafeArea(
-                child: ValueListenableBuilder(
-                  valueListenable: _selectedIndex,
-                  builder:
-                      (BuildContext context, int indexValue, Widget? child) {
-                    return AnimatedContainer(
-                      duration: const Duration(milliseconds: 100),
-                      height: 60,
-                      child: SalomonBottomBar(
-                        currentIndex: indexValue,
-                        onTap: (index) {
-                          _onItemTapped(index);
-                        },
-                        items: [
-                          SalomonBottomBarItem(
-                            icon: const Icon(Icons.home_rounded),
-                            title: Text(AppLocalizations.of(context)!.home),
-                            selectedColor:
-                                Theme.of(context).colorScheme.secondary,
-                          ),
-                          if (sectionsToShow.contains('Top Charts'))
-                            SalomonBottomBarItem(
-                              icon: const Icon(Icons.trending_up_rounded),
-                              title: Text(
-                                AppLocalizations.of(context)!.topCharts,
-                              ),
-                              selectedColor:
-                                  Theme.of(context).colorScheme.secondary,
-                            ),
-                          if (sectionsToShow.contains('YouTube'))
-                            SalomonBottomBarItem(
-                              icon: const Icon(MdiIcons.youtube),
-                              title:
-                                  Text(AppLocalizations.of(context)!.youTube),
-                              selectedColor:
-                                  Theme.of(context).colorScheme.secondary,
-                            ),
-                          SalomonBottomBarItem(
-                            icon: const Icon(Icons.my_library_music_rounded),
-                            title: Text(AppLocalizations.of(context)!.library),
-                            selectedColor:
-                                Theme.of(context).colorScheme.secondary,
-                          ),
-                          if (sectionsToShow.contains('Settings'))
-                            SalomonBottomBarItem(
-                              icon: const Icon(Icons.settings_rounded),
-                              title:
-                                  Text(AppLocalizations.of(context)!.settings),
-                              selectedColor:
-                                  Theme.of(context).colorScheme.secondary,
-                            ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
       ),
     );
+  }
+
+  List<SalomonBottomBarItem> _navBarItems(BuildContext context) {
+    return [
+      SalomonBottomBarItem(
+        icon: const Icon(Icons.home_rounded),
+        title: Text(AppLocalizations.of(context)!.home),
+        selectedColor: Theme.of(context).colorScheme.secondary,
+      ),
+      if (sectionsToShow.contains('Top Charts'))
+        SalomonBottomBarItem(
+          icon: const Icon(Icons.trending_up_rounded),
+          title: Text(AppLocalizations.of(context)!.topCharts),
+          selectedColor: Theme.of(context).colorScheme.secondary,
+        ),
+      if (sectionsToShow.contains('YouTube'))
+        SalomonBottomBarItem(
+          icon: const Icon(MdiIcons.youtube),
+          title: Text(AppLocalizations.of(context)!.youTube),
+          selectedColor: Theme.of(context).colorScheme.secondary,
+        ),
+      SalomonBottomBarItem(
+        icon: const Icon(Icons.my_library_music_rounded),
+        title: Text(AppLocalizations.of(context)!.library),
+        selectedColor: Theme.of(context).colorScheme.secondary,
+      ),
+      if (sectionsToShow.contains('Settings'))
+        SalomonBottomBarItem(
+          icon: const Icon(Icons.settings_rounded),
+          title: Text(AppLocalizations.of(context)!.settings),
+          selectedColor: Theme.of(context).colorScheme.secondary,
+        ),
+    ];
   }
 }

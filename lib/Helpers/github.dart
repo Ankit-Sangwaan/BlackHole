@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (c) 2021-2022, Ankit Sangwan
+ * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
 import 'dart:convert';
@@ -71,7 +71,7 @@ class GitHub {
   }
 
   static Future<String> getLatestVersion() async {
-    Logger.root.info('Checking for update');
+    Logger.root.info('Getting Latest Version');
     final Map latestRelease = await fetchReleases();
     Logger.root.info(
       'Latest release: ${(latestRelease["tag_name"] as String?) ?? "v0.0.0"}',

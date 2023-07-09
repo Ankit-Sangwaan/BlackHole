@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (c) 2021-2022, Ankit Sangwan
+ * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
 import 'package:blackhole/APIs/api.dart';
@@ -23,7 +23,6 @@ import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/download_button.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
-import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Search/artists.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -129,126 +128,115 @@ class _AlbumSearchPageState extends State<AlbumSearchPage> {
   @override
   Widget build(BuildContext context) {
     return GradientContainer(
-      child: Column(
-        children: [
-          Expanded(
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              body: _searchedList == null
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : _searchedList!.isEmpty
-                      ? emptyScreen(
-                          context,
-                          0,
-                          ':( ',
-                          100,
-                          AppLocalizations.of(context)!.sorry,
-                          60,
-                          AppLocalizations.of(context)!.resultsNotFound,
-                          20,
-                        )
-                      : BouncyImageSliverScrollView(
-                          scrollController: _scrollController,
-                          title: widget.type,
-                          placeholderImage: widget.type == 'Artists'
-                              ? 'assets/artist.png'
-                              : 'assets/album.png',
-                          sliverList: SliverList(
-                            delegate: SliverChildListDelegate(
-                              _searchedList!.map(
-                                (Map entry) {
-                                  return Padding(
-                                    padding: const EdgeInsets.only(right: 7),
-                                    child: ListTile(
-                                      title: Text(
-                                        '${entry["title"]}',
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: _searchedList == null
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : _searchedList!.isEmpty
+                ? emptyScreen(
+                    context,
+                    0,
+                    ':( ',
+                    100,
+                    AppLocalizations.of(context)!.sorry,
+                    60,
+                    AppLocalizations.of(context)!.resultsNotFound,
+                    20,
+                  )
+                : BouncyImageSliverScrollView(
+                    scrollController: _scrollController,
+                    title: widget.type,
+                    placeholderImage: widget.type == 'Artists'
+                        ? 'assets/artist.png'
+                        : 'assets/album.png',
+                    sliverList: SliverList(
+                      delegate: SliverChildListDelegate(
+                        _searchedList!.map(
+                          (Map entry) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 7),
+                              child: ListTile(
+                                title: Text(
+                                  '${entry["title"]}',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                                onLongPress: () {
+                                  copyToClipboard(
+                                    context: context,
+                                    text: '${entry["title"]}',
+                                  );
+                                },
+                                subtitle: entry['subtitle'] == ''
+                                    ? null
+                                    : Text(
+                                        '${entry["subtitle"]}',
                                         overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.w500,
-                                        ),
                                       ),
-                                      onLongPress: () {
-                                        copyToClipboard(
-                                          context: context,
-                                          text: '${entry["title"]}',
-                                        );
-                                      },
-                                      subtitle: entry['subtitle'] == ''
-                                          ? null
-                                          : Text(
-                                              '${entry["subtitle"]}',
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                      leading: Card(
-                                        margin: EdgeInsets.zero,
-                                        elevation: 8,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            widget.type == 'Artists'
-                                                ? 50.0
-                                                : 7.0,
-                                          ),
-                                        ),
-                                        clipBehavior: Clip.antiAlias,
-                                        child: CachedNetworkImage(
-                                          fit: BoxFit.cover,
-                                          errorWidget: (context, _, __) =>
-                                              Image(
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(
-                                              widget.type == 'Artists'
-                                                  ? 'assets/artist.png'
-                                                  : 'assets/album.png',
-                                            ),
-                                          ),
-                                          imageUrl:
-                                              '${entry["image"].replaceAll('http:', 'https:')}',
-                                          placeholder: (context, url) => Image(
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(
-                                              widget.type == 'Artists'
-                                                  ? 'assets/artist.png'
-                                                  : 'assets/album.png',
-                                            ),
-                                          ),
-                                        ),
+                                leading: Card(
+                                  margin: EdgeInsets.zero,
+                                  elevation: 8,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      widget.type == 'Artists' ? 50.0 : 7.0,
+                                    ),
+                                  ),
+                                  clipBehavior: Clip.antiAlias,
+                                  child: CachedNetworkImage(
+                                    fit: BoxFit.cover,
+                                    errorWidget: (context, _, __) => Image(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage(
+                                        widget.type == 'Artists'
+                                            ? 'assets/artist.png'
+                                            : 'assets/album.png',
                                       ),
-                                      trailing: widget.type != 'Albums'
-                                          ? null
-                                          : AlbumDownloadButton(
-                                              albumName:
-                                                  entry['title'].toString(),
-                                              albumId: entry['id'].toString(),
-                                            ),
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          PageRouteBuilder(
-                                            opaque: false,
-                                            pageBuilder: (_, __, ___) =>
-                                                widget.type == 'Artists'
-                                                    ? ArtistSearchPage(
-                                                        data: entry,
-                                                      )
-                                                    : SongsListPage(
-                                                        listItem: entry,
-                                                      ),
-                                          ),
-                                        );
-                                      },
+                                    ),
+                                    imageUrl:
+                                        '${entry["image"].replaceAll('http:', 'https:')}',
+                                    placeholder: (context, url) => Image(
+                                      fit: BoxFit.cover,
+                                      image: AssetImage(
+                                        widget.type == 'Artists'
+                                            ? 'assets/artist.png'
+                                            : 'assets/album.png',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                trailing: widget.type != 'Albums'
+                                    ? null
+                                    : AlbumDownloadButton(
+                                        albumName: entry['title'].toString(),
+                                        albumId: entry['id'].toString(),
+                                      ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      opaque: false,
+                                      pageBuilder: (_, __, ___) =>
+                                          widget.type == 'Artists'
+                                              ? ArtistSearchPage(
+                                                  data: entry,
+                                                )
+                                              : SongsListPage(
+                                                  listItem: entry,
+                                                ),
                                     ),
                                   );
                                 },
-                              ).toList(),
-                            ),
-                          ),
-                        ),
-            ),
-          ),
-          MiniPlayer(),
-        ],
+                              ),
+                            );
+                          },
+                        ).toList(),
+                      ),
+                    ),
+                  ),
       ),
     );
   }

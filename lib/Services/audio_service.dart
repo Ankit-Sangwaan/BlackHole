@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (c) 2021-2022, Ankit Sangwan
+ * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
 import 'dart:async';
@@ -59,7 +59,8 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   late bool cacheSong;
   final _equalizer = AndroidEqualizer();
 
-  Box downloadsBox = Hive.box('downloads');
+  Box? downloadsBox =
+      Hive.isBoxOpen('downloads') ? Hive.box('downloads') : null;
   final List<String> refreshLinks = [];
   bool jobRunning = false;
 
@@ -128,11 +129,14 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
   Future<void> _init() async {
     Logger.root.info('starting audio service');
-    preferredCompactNotificationButtons = Hive.box('settings')
-            .get('preferredCompactNotificationButtons', defaultValue: [1, 2, 3])
-        as List<int>;
-    if (preferredCompactNotificationButtons.length > 3) {
-      preferredCompactNotificationButtons = [1, 2, 3];
+    if (Hive.isBoxOpen('settings')) {
+      preferredCompactNotificationButtons = Hive.box('settings').get(
+        'preferredCompactNotificationButtons',
+        defaultValue: [1, 2, 3],
+      ) as List<int>;
+      if (preferredCompactNotificationButtons.length > 3) {
+        preferredCompactNotificationButtons = [1, 2, 3];
+      }
     }
     final session = await AudioSession.instance;
     await session.configure(const AudioSessionConfiguration.music());
@@ -389,10 +393,12 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       audioSource =
           AudioSource.uri(Uri.file(mediaItem.extras!['url'].toString()));
     } else {
-      if (downloadsBox.containsKey(mediaItem.id) && useDown) {
+      if (downloadsBox != null &&
+          downloadsBox!.containsKey(mediaItem.id) &&
+          useDown) {
         audioSource = AudioSource.uri(
           Uri.file(
-            (downloadsBox.get(mediaItem.id) as Map)['path'].toString(),
+            (downloadsBox!.get(mediaItem.id) as Map)['path'].toString(),
           ),
           tag: mediaItem.id,
         );
@@ -540,8 +546,11 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   }
 
   Future<void> startService() async {
-    final bool withPipeline =
-        Hive.box('settings').get('supportEq', defaultValue: false) as bool;
+    bool withPipeline = false;
+    if (Hive.isBoxOpen('settings')) {
+      withPipeline =
+          Hive.box('settings').get('supportEq', defaultValue: false) as bool;
+    }
     if (withPipeline && Platform.isAndroid) {
       Logger.root.info('starting with eq pipeline');
       final AudioPipeline pipeline = AudioPipeline(

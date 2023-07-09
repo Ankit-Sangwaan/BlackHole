@@ -14,32 +14,22 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (c) 2021-2022, Ankit Sangwan
+ * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
 import 'dart:async';
 import 'dart:io';
 
-import 'package:audio_service/audio_service.dart';
 import 'package:blackhole/Helpers/config.dart';
 import 'package:blackhole/Helpers/handle_native.dart';
 import 'package:blackhole/Helpers/import_export_playlist.dart';
 import 'package:blackhole/Helpers/logging.dart';
 import 'package:blackhole/Helpers/route_handler.dart';
-import 'package:blackhole/Screens/About/about.dart';
-import 'package:blackhole/Screens/Home/home.dart';
-import 'package:blackhole/Screens/Library/downloads.dart';
-import 'package:blackhole/Screens/Library/nowplaying.dart';
-import 'package:blackhole/Screens/Library/playlists.dart';
-import 'package:blackhole/Screens/Library/recent.dart';
-import 'package:blackhole/Screens/Library/stats.dart';
-import 'package:blackhole/Screens/Login/auth.dart';
-import 'package:blackhole/Screens/Login/pref.dart';
+import 'package:blackhole/Screens/Common/routes.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
-import 'package:blackhole/Screens/Settings/new_settings_page.dart';
-import 'package:blackhole/Services/audio_service.dart';
 import 'package:blackhole/constants/constants.dart';
 import 'package:blackhole/constants/languagecodes.dart';
+import 'package:blackhole/providers/audio_service_provider.dart';
 import 'package:blackhole/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -99,18 +89,9 @@ Future<void> setOptimalDisplayMode() async {
 Future<void> startService() async {
   await initializeLogging();
   MetadataGod.initialize();
-  final AudioPlayerHandler audioHandler = await AudioService.init(
-    builder: () => AudioPlayerHandlerImpl(),
-    config: AudioServiceConfig(
-      androidNotificationChannelId: 'com.shadow.blackhole.channel.audio',
-      androidNotificationChannelName: 'BlackHole',
-      androidNotificationIcon: 'drawable/ic_stat_music_note',
-      androidShowNotificationBadge: true,
-      androidStopForegroundOnPause: false,
-      // Hive.box('settings').get('stopServiceOnPause', defaultValue: true) as bool,
-      notificationColor: Colors.grey[900],
-    ),
-  );
+  final audioHandlerHelper = AudioHandlerHelper();
+  final AudioPlayerHandler audioHandler =
+      await audioHandlerHelper.getAudioHandler();
   GetIt.I.registerSingleton<AudioPlayerHandler>(audioHandler);
   GetIt.I.registerSingleton<MyTheme>(MyTheme());
 }
@@ -141,14 +122,15 @@ Future<void> openHiveBox(String boxName, {bool limit = false}) async {
 @pragma('vm:entry-point')
 Future<void> backgroundCallback(Uri? data) async {
   if (data?.host == 'controls') {
+    final audioHandler = await AudioHandlerHelper().getAudioHandler();
     if (data?.path == '/play') {
-      // audioHandler?.play();
+      audioHandler.play();
     } else if (data?.path == '/pause') {
-      // audioHandler?.pause();
+      audioHandler.pause();
     } else if (data?.path == '/skipNext') {
-      // audioHandler?.skipToNext();
+      audioHandler.skipToNext();
     } else if (data?.path == '/skipPrevious') {
-      // audioHandler?.skipToPrevious();
+      audioHandler.skipToPrevious();
     }
 
     // await HomeWidget.saveWidgetData<String>(
@@ -286,12 +268,6 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Widget initialFuntion() {
-    return Hive.box('settings').get('userId') != null
-        ? HomePage()
-        : AuthScreen();
-  }
-
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
@@ -342,17 +318,7 @@ class _MyAppState extends State<MyApp> {
         supportedLocales: LanguageCodes.languageCodes.entries
             .map((languageCode) => Locale(languageCode.value, ''))
             .toList(),
-        routes: {
-          '/': (context) => initialFuntion(),
-          '/pref': (context) => const PrefScreen(),
-          '/setting': (context) => const NewSettingsPage(),
-          '/about': (context) => AboutScreen(),
-          '/playlists': (context) => PlaylistScreen(),
-          '/nowplaying': (context) => NowPlaying(),
-          '/recent': (context) => RecentlyPlayed(),
-          '/downloads': (context) => const Downloads(),
-          '/stats': (context) => const Stats(),
-        },
+        routes: namedRoutes,
         navigatorKey: navigatorKey,
         onGenerateRoute: (RouteSettings settings) {
           if (settings.name == '/player') {

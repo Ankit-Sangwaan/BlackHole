@@ -790,6 +790,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.2"
+  persistent_bottom_nav_bar:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "2e38e9a9b602426a8e2a381996351e469305d5b5"
+      url: "https://github.com/Sangwan5688/PersistentBottomNavBar"
+    source: git
+    version: "5.0.2"
   petitparser:
     dependency: transitive
     description:

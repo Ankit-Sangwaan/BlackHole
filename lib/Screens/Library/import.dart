@@ -14,13 +14,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (c) 2021-2022, Ankit Sangwan
+ * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
 import 'package:app_links/app_links.dart';
 import 'package:blackhole/APIs/spotify_api.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
-import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/textinput_dialog.dart';
 import 'package:blackhole/Helpers/import_export_playlist.dart';
@@ -46,97 +45,90 @@ class ImportPlaylist extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GradientContainer(
-      child: Column(
-        children: [
-          Expanded(
-            child: Scaffold(
-              backgroundColor: Colors.transparent,
-              appBar: AppBar(
-                title: Text(
-                  AppLocalizations.of(context)!.importPlaylist,
-                ),
-                centerTitle: true,
-                backgroundColor: Theme.of(context).brightness == Brightness.dark
-                    ? Colors.transparent
-                    : Theme.of(context).colorScheme.secondary,
-                elevation: 0,
-              ),
-              body: ListView.builder(
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                itemCount: 5,
-                itemBuilder: (cntxt, index) {
-                  return ListTile(
-                    title: Text(
-                      index == 0
-                          ? AppLocalizations.of(context)!.importFile
-                          : index == 1
-                              ? AppLocalizations.of(context)!.importSpotify
-                              : index == 2
-                                  ? AppLocalizations.of(context)!.importYt
-                                  : index == 3
-                                      ? AppLocalizations.of(
-                                          context,
-                                        )!
-                                          .importJioSaavn
-                                      : AppLocalizations.of(
-                                          context,
-                                        )!
-                                          .importResso,
-                    ),
-                    leading: SizedBox.square(
-                      dimension: 50,
-                      child: Center(
-                        child: Icon(
-                          index == 0
-                              ? MdiIcons.import
-                              : index == 1
-                                  ? MdiIcons.spotify
-                                  : index == 2
-                                      ? MdiIcons.youtube
-                                      : Icons.music_note_rounded,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                      ),
-                    ),
-                    onTap: () {
-                      index == 0
-                          ? importFile(
-                              cntxt,
-                              playlistNames,
-                              settingsBox,
-                            )
-                          : index == 1
-                              ? connectToSpotify(
-                                  cntxt,
-                                  playlistNames,
-                                  settingsBox,
-                                )
-                              : index == 2
-                                  ? importYt(
-                                      cntxt,
-                                      playlistNames,
-                                      settingsBox,
-                                    )
-                                  : index == 3
-                                      ? importJioSaavn(
-                                          cntxt,
-                                          playlistNames,
-                                          settingsBox,
-                                        )
-                                      : importResso(
-                                          cntxt,
-                                          playlistNames,
-                                          settingsBox,
-                                        );
-                    },
-                  );
-                },
-              ),
-            ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        appBar: AppBar(
+          title: Text(
+            AppLocalizations.of(context)!.importPlaylist,
           ),
-          MiniPlayer(),
-        ],
+          centerTitle: true,
+          backgroundColor: Theme.of(context).brightness == Brightness.dark
+              ? Colors.transparent
+              : Theme.of(context).colorScheme.secondary,
+          elevation: 0,
+        ),
+        body: ListView.builder(
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
+          itemCount: 5,
+          itemBuilder: (cntxt, index) {
+            return ListTile(
+              title: Text(
+                index == 0
+                    ? AppLocalizations.of(context)!.importFile
+                    : index == 1
+                        ? AppLocalizations.of(context)!.importSpotify
+                        : index == 2
+                            ? AppLocalizations.of(context)!.importYt
+                            : index == 3
+                                ? AppLocalizations.of(
+                                    context,
+                                  )!
+                                    .importJioSaavn
+                                : AppLocalizations.of(
+                                    context,
+                                  )!
+                                    .importResso,
+              ),
+              leading: SizedBox.square(
+                dimension: 50,
+                child: Center(
+                  child: Icon(
+                    index == 0
+                        ? MdiIcons.import
+                        : index == 1
+                            ? MdiIcons.spotify
+                            : index == 2
+                                ? MdiIcons.youtube
+                                : Icons.music_note_rounded,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
+                ),
+              ),
+              onTap: () {
+                index == 0
+                    ? importFile(
+                        cntxt,
+                        playlistNames,
+                        settingsBox,
+                      )
+                    : index == 1
+                        ? connectToSpotify(
+                            cntxt,
+                            playlistNames,
+                            settingsBox,
+                          )
+                        : index == 2
+                            ? importYt(
+                                cntxt,
+                                playlistNames,
+                                settingsBox,
+                              )
+                            : index == 3
+                                ? importJioSaavn(
+                                    cntxt,
+                                    playlistNames,
+                                    settingsBox,
+                                  )
+                                : importResso(
+                                    cntxt,
+                                    playlistNames,
+                                    settingsBox,
+                                  );
+              },
+            );
+          },
+        ),
       ),
     );
   }

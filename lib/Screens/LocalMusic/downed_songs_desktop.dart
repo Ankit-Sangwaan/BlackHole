@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (c) 2021-2022, Ankit Sangwan
+ * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
 import 'dart:io';
@@ -24,7 +24,6 @@ import 'package:blackhole/CustomWidgets/custom_physics.dart';
 // import 'package:blackhole/CustomWidgets/data_search.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
-import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/playlist_head.dart';
 // import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/Helpers/audio_query.dart';
@@ -214,200 +213,192 @@ class _DownloadedSongsDesktopState extends State<DownloadedSongsDesktop>
   @override
   Widget build(BuildContext context) {
     return GradientContainer(
-      child: Column(
-        children: [
-          Expanded(
-            child: DefaultTabController(
-              length: 4,
-              child: Scaffold(
-                backgroundColor: Colors.transparent,
-                appBar: AppBar(
-                  title: Text(
-                    widget.title ?? AppLocalizations.of(context)!.myMusic,
-                  ),
-                  bottom: TabBar(
-                    // isScrollable: true,
-                    controller: _tcontroller,
-                    indicatorSize: TabBarIndicatorSize.label,
-                    tabs: [
-                      Tab(
-                        text: AppLocalizations.of(context)!.songs,
-                      ),
-                      Tab(
-                        text: AppLocalizations.of(context)!.albums,
-                      ),
-                      Tab(
-                        text: AppLocalizations.of(context)!.artists,
-                      ),
-                      Tab(
-                        text: AppLocalizations.of(context)!.genres,
-                      ),
-                      // if (widget.showPlaylists)
-                      //   Tab(
-                      //     text: AppLocalizations.of(context)!.playlists,
-                      //   ),
-                      //     Tab(
-                      //       text: AppLocalizations.of(context)!.videos,
-                      //     )
-                    ],
-                  ),
-                  // actions: [
-                  // IconButton(
-                  //   icon: const Icon(CupertinoIcons.search),
-                  //   tooltip: AppLocalizations.of(context)!.search,
-                  //   onPressed: () {
-                  //     showSearch(
-                  //       context: context,
-                  //       delegate: DataSearch(
-                  //         data: _songs,
-                  //         tempPath: tempPath!,
-                  //       ),
-                  //     );
-                  //   },
-                  // ),
-                  //   PopupMenuButton(
-                  //     icon: const Icon(Icons.sort_rounded),
-                  //     shape: const RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.all(Radius.circular(15.0)),
-                  //     ),
-                  //     onSelected: (int value) async {
-                  //       if (value < 6) {
-                  //         sortValue = value;
-                  //         Hive.box('settings').put('sortValue', value);
-                  //       } else {
-                  //         orderValue = value - 6;
-                  //         Hive.box('settings').put('orderValue', orderValue);
-                  //       }
-                  //       // await sortSongs(sortValue, orderValue);
-                  //       setState(() {});
-                  //     },
-                  //     itemBuilder: (context) {
-                  //       final List<String> sortTypes = [
-                  //         AppLocalizations.of(context)!.displayName,
-                  //         AppLocalizations.of(context)!.dateAdded,
-                  //         AppLocalizations.of(context)!.album,
-                  //         AppLocalizations.of(context)!.artist,
-                  //         AppLocalizations.of(context)!.duration,
-                  //         AppLocalizations.of(context)!.size,
-                  //       ];
-                  //       final List<String> orderTypes = [
-                  //         AppLocalizations.of(context)!.inc,
-                  //         AppLocalizations.of(context)!.dec,
-                  //       ];
-                  //       final menuList = <PopupMenuEntry<int>>[];
-                  //       menuList.addAll(
-                  //         sortTypes
-                  //             .map(
-                  //               (e) => PopupMenuItem(
-                  //                 value: sortTypes.indexOf(e),
-                  //                 child: Row(
-                  //                   children: [
-                  //                     if (sortValue == sortTypes.indexOf(e))
-                  //                       Icon(
-                  //                         Icons.check_rounded,
-                  //                         color: Theme.of(context).brightness ==
-                  //                                 Brightness.dark
-                  //                             ? Colors.white
-                  //                             : Colors.grey[700],
-                  //                       )
-                  //                     else
-                  //                       const SizedBox(),
-                  //                     const SizedBox(width: 10),
-                  //                     Text(
-                  //                       e,
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //             )
-                  //             .toList(),
-                  //       );
-                  //       menuList.add(
-                  //         const PopupMenuDivider(
-                  //           height: 10,
-                  //         ),
-                  //       );
-                  //       menuList.addAll(
-                  //         orderTypes
-                  //             .map(
-                  //               (e) => PopupMenuItem(
-                  //                 value:
-                  //                     sortTypes.length + orderTypes.indexOf(e),
-                  //                 child: Row(
-                  //                   children: [
-                  //                     if (orderValue == orderTypes.indexOf(e))
-                  //                       Icon(
-                  //                         Icons.check_rounded,
-                  //                         color: Theme.of(context).brightness ==
-                  //                                 Brightness.dark
-                  //                             ? Colors.white
-                  //                             : Colors.grey[700],
-                  //                       )
-                  //                     else
-                  //                       const SizedBox(),
-                  //                     const SizedBox(width: 10),
-                  //                     Text(
-                  //                       e,
-                  //                     ),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //             )
-                  //             .toList(),
-                  //       );
-                  //       return menuList;
-                  //     },
-                  //   ),
-                  // ],
-                  centerTitle: true,
-                  backgroundColor:
-                      Theme.of(context).brightness == Brightness.dark
-                          ? Colors.transparent
-                          : Theme.of(context).colorScheme.secondary,
-                  elevation: 0,
-                ),
-                body: !added
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : TabBarView(
-                        physics: const CustomPhysics(),
-                        controller: _tcontroller,
-                        children: [
-                          SongsTab(
-                            songs: _songs,
-                            playlistId: widget.playlistId,
-                            playlistName: widget.title,
-                            tempPath: tempPath!,
-                          ),
-                          AlbumsTabDesktop(
-                            albums: _albums,
-                            albumsList: _sortedAlbumKeysList,
-                            tempPath: tempPath!,
-                          ),
-                          AlbumsTabDesktop(
-                            albums: _artists,
-                            albumsList: _sortedArtistKeysList,
-                            tempPath: tempPath!,
-                          ),
-                          AlbumsTabDesktop(
-                            albums: _genres,
-                            albumsList: _sortedGenreKeysList,
-                            tempPath: tempPath!,
-                          ),
-                          // if (widget.showPlaylists)
-                          //   LocalPlaylists(
-                          //     playlistDetails: playlistDetails,
-                          //     offlineAudioQuery: offlineAudioQuery,
-                          //   ),
-                          // videosTab(),
-                        ],
-                      ),
-              ),
+      child: DefaultTabController(
+        length: 4,
+        child: Scaffold(
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            title: Text(
+              widget.title ?? AppLocalizations.of(context)!.myMusic,
             ),
+            bottom: TabBar(
+              // isScrollable: true,
+              controller: _tcontroller,
+              indicatorSize: TabBarIndicatorSize.label,
+              tabs: [
+                Tab(
+                  text: AppLocalizations.of(context)!.songs,
+                ),
+                Tab(
+                  text: AppLocalizations.of(context)!.albums,
+                ),
+                Tab(
+                  text: AppLocalizations.of(context)!.artists,
+                ),
+                Tab(
+                  text: AppLocalizations.of(context)!.genres,
+                ),
+                // if (widget.showPlaylists)
+                //   Tab(
+                //     text: AppLocalizations.of(context)!.playlists,
+                //   ),
+                //     Tab(
+                //       text: AppLocalizations.of(context)!.videos,
+                //     )
+              ],
+            ),
+            // actions: [
+            // IconButton(
+            //   icon: const Icon(CupertinoIcons.search),
+            //   tooltip: AppLocalizations.of(context)!.search,
+            //   onPressed: () {
+            //     showSearch(
+            //       context: context,
+            //       delegate: DataSearch(
+            //         data: _songs,
+            //         tempPath: tempPath!,
+            //       ),
+            //     );
+            //   },
+            // ),
+            //   PopupMenuButton(
+            //     icon: const Icon(Icons.sort_rounded),
+            //     shape: const RoundedRectangleBorder(
+            //       borderRadius: BorderRadius.all(Radius.circular(15.0)),
+            //     ),
+            //     onSelected: (int value) async {
+            //       if (value < 6) {
+            //         sortValue = value;
+            //         Hive.box('settings').put('sortValue', value);
+            //       } else {
+            //         orderValue = value - 6;
+            //         Hive.box('settings').put('orderValue', orderValue);
+            //       }
+            //       // await sortSongs(sortValue, orderValue);
+            //       setState(() {});
+            //     },
+            //     itemBuilder: (context) {
+            //       final List<String> sortTypes = [
+            //         AppLocalizations.of(context)!.displayName,
+            //         AppLocalizations.of(context)!.dateAdded,
+            //         AppLocalizations.of(context)!.album,
+            //         AppLocalizations.of(context)!.artist,
+            //         AppLocalizations.of(context)!.duration,
+            //         AppLocalizations.of(context)!.size,
+            //       ];
+            //       final List<String> orderTypes = [
+            //         AppLocalizations.of(context)!.inc,
+            //         AppLocalizations.of(context)!.dec,
+            //       ];
+            //       final menuList = <PopupMenuEntry<int>>[];
+            //       menuList.addAll(
+            //         sortTypes
+            //             .map(
+            //               (e) => PopupMenuItem(
+            //                 value: sortTypes.indexOf(e),
+            //                 child: Row(
+            //                   children: [
+            //                     if (sortValue == sortTypes.indexOf(e))
+            //                       Icon(
+            //                         Icons.check_rounded,
+            //                         color: Theme.of(context).brightness ==
+            //                                 Brightness.dark
+            //                             ? Colors.white
+            //                             : Colors.grey[700],
+            //                       )
+            //                     else
+            //                       const SizedBox(),
+            //                     const SizedBox(width: 10),
+            //                     Text(
+            //                       e,
+            //                     ),
+            //                   ],
+            //                 ),
+            //               ),
+            //             )
+            //             .toList(),
+            //       );
+            //       menuList.add(
+            //         const PopupMenuDivider(
+            //           height: 10,
+            //         ),
+            //       );
+            //       menuList.addAll(
+            //         orderTypes
+            //             .map(
+            //               (e) => PopupMenuItem(
+            //                 value:
+            //                     sortTypes.length + orderTypes.indexOf(e),
+            //                 child: Row(
+            //                   children: [
+            //                     if (orderValue == orderTypes.indexOf(e))
+            //                       Icon(
+            //                         Icons.check_rounded,
+            //                         color: Theme.of(context).brightness ==
+            //                                 Brightness.dark
+            //                             ? Colors.white
+            //                             : Colors.grey[700],
+            //                       )
+            //                     else
+            //                       const SizedBox(),
+            //                     const SizedBox(width: 10),
+            //                     Text(
+            //                       e,
+            //                     ),
+            //                   ],
+            //                 ),
+            //               ),
+            //             )
+            //             .toList(),
+            //       );
+            //       return menuList;
+            //     },
+            //   ),
+            // ],
+            centerTitle: true,
+            backgroundColor: Theme.of(context).brightness == Brightness.dark
+                ? Colors.transparent
+                : Theme.of(context).colorScheme.secondary,
+            elevation: 0,
           ),
-          MiniPlayer(),
-        ],
+          body: !added
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : TabBarView(
+                  physics: const CustomPhysics(),
+                  controller: _tcontroller,
+                  children: [
+                    SongsTab(
+                      songs: _songs,
+                      playlistId: widget.playlistId,
+                      playlistName: widget.title,
+                      tempPath: tempPath!,
+                    ),
+                    AlbumsTabDesktop(
+                      albums: _albums,
+                      albumsList: _sortedAlbumKeysList,
+                      tempPath: tempPath!,
+                    ),
+                    AlbumsTabDesktop(
+                      albums: _artists,
+                      albumsList: _sortedArtistKeysList,
+                      tempPath: tempPath!,
+                    ),
+                    AlbumsTabDesktop(
+                      albums: _genres,
+                      albumsList: _sortedGenreKeysList,
+                      tempPath: tempPath!,
+                    ),
+                    // if (widget.showPlaylists)
+                    //   LocalPlaylists(
+                    //     playlistDetails: playlistDetails,
+                    //     offlineAudioQuery: offlineAudioQuery,
+                    //   ),
+                    // videosTab(),
+                  ],
+                ),
+        ),
       ),
     );
   }

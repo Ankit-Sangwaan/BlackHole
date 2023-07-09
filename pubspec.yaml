@@ -51,6 +51,9 @@ dependencies:
   palette_generator: ^0.3.3+2
   path_provider: ^2.0.15
   permission_handler: ^10.3.0
+  persistent_bottom_nav_bar:
+    git:
+      url: https://github.com/Sangwan5688/PersistentBottomNavBar
   receive_sharing_intent: ^1.4.5
   salomon_bottom_bar: ^3.3.2
   share_plus: ^7.0.2

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
  * 
- * Copyright (c) 2021-2022, Ankit Sangwan
+ * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
 import 'dart:io';
@@ -697,10 +697,6 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                             isOffline: false,
                                             shuffle: true,
                                           );
-                                          Navigator.pushNamed(
-                                            context,
-                                            '/player',
-                                          );
                                         });
                                       }
                                     });
@@ -713,22 +709,18 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                         ),
                                         isOffline: false,
                                       );
+                                    } else {
+                                      Navigator.push(
+                                        context,
+                                        PageRouteBuilder(
+                                          opaque: false,
+                                          pageBuilder: (_, __, ___) =>
+                                              SongsListPage(
+                                            listItem: item,
+                                          ),
+                                        ),
+                                      );
                                     }
-                                    item['type'] == 'song'
-                                        ? Navigator.pushNamed(
-                                            context,
-                                            '/player',
-                                          )
-                                        : Navigator.push(
-                                            context,
-                                            PageRouteBuilder(
-                                              opaque: false,
-                                              pageBuilder: (_, __, ___) =>
-                                                  SongsListPage(
-                                                listItem: item,
-                                              ),
-                                            ),
-                                          );
                                   }
                                 },
                                 child: SizedBox(
