@@ -794,8 +794,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "109de3a"
-      resolved-ref: "109de3ae6efeeb82fbe253f58bf5c9396f024935"
+      ref: ecdadb0
+      resolved-ref: ecdadb01e4b4255cd35d6e9ac813703150784772
       url: "https://github.com/Sangwan5688/PersistentBottomNavBar"
     source: git
     version: "5.0.2"

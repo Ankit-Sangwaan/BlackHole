@@ -54,7 +54,7 @@ dependencies:
   persistent_bottom_nav_bar:
     git:
       url: https://github.com/Sangwan5688/PersistentBottomNavBar
-      ref: 109de3a
+      ref: ecdadb0
   receive_sharing_intent: ^1.4.5
   salomon_bottom_bar: ^3.3.2
   share_plus: ^7.0.2

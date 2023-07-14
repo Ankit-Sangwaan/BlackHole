@@ -75,31 +75,32 @@ class _HomePageState extends State<HomePage> {
     setState(() {});
   }
 
-  void _onItemTapped(int index) {
+  void onItemTapped(int index) {
     _selectedIndex.value = index;
     _controller.jumpToTab(
       index,
     );
   }
 
-  Future<bool> handleWillPop(BuildContext context) async {
-    final now = DateTime.now();
-    final backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
-        backButtonPressTime == null ||
-            now.difference(backButtonPressTime!) > const Duration(seconds: 3);
+  // Future<bool> handleWillPop(BuildContext? context) async {
+  //   if (context == null) return false;
+  //   final now = DateTime.now();
+  //   final backButtonHasNotBeenPressedOrSnackBarHasBeenClosed =
+  //       backButtonPressTime == null ||
+  //           now.difference(backButtonPressTime!) > const Duration(seconds: 3);
 
-    if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
-      backButtonPressTime = now;
-      ShowSnackBar().showSnackBar(
-        context,
-        AppLocalizations.of(context)!.exitConfirm,
-        duration: const Duration(seconds: 2),
-        noAction: true,
-      );
-      return false;
-    }
-    return true;
-  }
+  //   if (backButtonHasNotBeenPressedOrSnackBarHasBeenClosed) {
+  //     backButtonPressTime = now;
+  //     ShowSnackBar().showSnackBar(
+  //       context,
+  //       AppLocalizations.of(context)!.exitConfirm,
+  //       duration: const Duration(seconds: 2),
+  //       noAction: true,
+  //     );
+  //     return false;
+  //   }
+  //   return true;
+  // }
 
   void checkVersion() {
     PackageInfo.fromPlatform().then((PackageInfo packageInfo) {
@@ -336,7 +337,7 @@ class _HomePageState extends State<HomePage> {
                         onTap: () {
                           Navigator.pop(context);
                           if (_selectedIndex.value != 0) {
-                            _onItemTapped(0);
+                            onItemTapped(0);
                           }
                         },
                       ),
@@ -422,7 +423,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.pop(context);
                           if (sectionsToShow.contains('Settings')) {
                             if (_selectedIndex.value != 3) {
-                              _onItemTapped(3);
+                              onItemTapped(3);
                             }
                           } else {
                             Navigator.push(
@@ -475,157 +476,155 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        body: WillPopScope(
-          onWillPop: () => handleWillPop(context),
-          child: SafeArea(
-            child: Row(
-              children: [
-                if (rotated)
-                  ValueListenableBuilder(
-                    valueListenable: _selectedIndex,
-                    builder:
-                        (BuildContext context, int indexValue, Widget? child) {
-                      return NavigationRail(
-                        minWidth: 70.0,
-                        groupAlignment: 0.0,
-                        backgroundColor:
-                            // Colors.transparent,
-                            Theme.of(context).cardColor,
-                        selectedIndex: indexValue,
-                        onDestinationSelected: (int index) {
-                          _onItemTapped(index);
-                        },
-                        labelType: screenWidth > 1050
-                            ? NavigationRailLabelType.selected
-                            : NavigationRailLabelType.none,
-                        selectedLabelTextStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary,
-                          fontWeight: FontWeight.w600,
-                        ),
-                        unselectedLabelTextStyle: TextStyle(
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        selectedIconTheme: Theme.of(context).iconTheme.copyWith(
-                              color: Theme.of(context).colorScheme.secondary,
+        body: SafeArea(
+          child: Row(
+            children: [
+              if (rotated)
+                ValueListenableBuilder(
+                  valueListenable: _selectedIndex,
+                  builder:
+                      (BuildContext context, int indexValue, Widget? child) {
+                    return NavigationRail(
+                      minWidth: 70.0,
+                      groupAlignment: 0.0,
+                      backgroundColor:
+                          // Colors.transparent,
+                          Theme.of(context).cardColor,
+                      selectedIndex: indexValue,
+                      onDestinationSelected: (int index) {
+                        onItemTapped(index);
+                      },
+                      labelType: screenWidth > 1050
+                          ? NavigationRailLabelType.selected
+                          : NavigationRailLabelType.none,
+                      selectedLabelTextStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                      unselectedLabelTextStyle: TextStyle(
+                        color: Theme.of(context).iconTheme.color,
+                      ),
+                      selectedIconTheme: Theme.of(context).iconTheme.copyWith(
+                            color: Theme.of(context).colorScheme.secondary,
+                          ),
+                      unselectedIconTheme: Theme.of(context).iconTheme,
+                      useIndicator: screenWidth < 1050,
+                      indicatorColor: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(0.2),
+                      leading: Builder(
+                        builder: (context) => Transform.rotate(
+                          angle: 22 / 7 * 2,
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.horizontal_split_rounded,
                             ),
-                        unselectedIconTheme: Theme.of(context).iconTheme,
-                        useIndicator: screenWidth < 1050,
-                        indicatorColor: Theme.of(context)
-                            .colorScheme
-                            .secondary
-                            .withOpacity(0.2),
-                        leading: Builder(
-                          builder: (context) => Transform.rotate(
-                            angle: 22 / 7 * 2,
-                            child: IconButton(
-                              icon: const Icon(
-                                Icons.horizontal_split_rounded,
-                              ),
-                              // color: Theme.of(context).iconTheme.color,
-                              onPressed: () {
-                                Scaffold.of(context).openDrawer();
-                              },
-                              tooltip: MaterialLocalizations.of(context)
-                                  .openAppDrawerTooltip,
-                            ),
+                            // color: Theme.of(context).iconTheme.color,
+                            onPressed: () {
+                              Scaffold.of(context).openDrawer();
+                            },
+                            tooltip: MaterialLocalizations.of(context)
+                                .openAppDrawerTooltip,
                           ),
                         ),
-                        destinations: [
+                      ),
+                      destinations: [
+                        NavigationRailDestination(
+                          icon: const Icon(Icons.home_rounded),
+                          label: Text(AppLocalizations.of(context)!.home),
+                        ),
+                        if (sectionsToShow.contains('Top Charts'))
                           NavigationRailDestination(
-                            icon: const Icon(Icons.home_rounded),
-                            label: Text(AppLocalizations.of(context)!.home),
-                          ),
-                          if (sectionsToShow.contains('Top Charts'))
-                            NavigationRailDestination(
-                              icon: const Icon(Icons.trending_up_rounded),
-                              label: Text(
-                                AppLocalizations.of(context)!.topCharts,
-                              ),
+                            icon: const Icon(Icons.trending_up_rounded),
+                            label: Text(
+                              AppLocalizations.of(context)!.topCharts,
                             ),
-                          NavigationRailDestination(
-                            icon: const Icon(MdiIcons.youtube),
-                            label: Text(AppLocalizations.of(context)!.youTube),
                           ),
+                        NavigationRailDestination(
+                          icon: const Icon(MdiIcons.youtube),
+                          label: Text(AppLocalizations.of(context)!.youTube),
+                        ),
+                        NavigationRailDestination(
+                          icon: const Icon(Icons.my_library_music_rounded),
+                          label: Text(AppLocalizations.of(context)!.library),
+                        ),
+                        if (sectionsToShow.contains('Settings'))
                           NavigationRailDestination(
-                            icon: const Icon(Icons.my_library_music_rounded),
-                            label: Text(AppLocalizations.of(context)!.library),
-                          ),
-                          if (sectionsToShow.contains('Settings'))
-                            NavigationRailDestination(
-                              icon: const Icon(Icons.settings_rounded),
-                              label: Text(
-                                AppLocalizations.of(context)!.settings,
-                              ),
+                            icon: const Icon(Icons.settings_rounded),
+                            label: Text(
+                              AppLocalizations.of(context)!.settings,
                             ),
-                        ],
-                      );
+                          ),
+                      ],
+                    );
+                  },
+                ),
+              Expanded(
+                child: PersistentTabView.custom(
+                  context,
+                  controller: _controller,
+                  itemCount: 4,
+                  navBarHeight: rotated ? 75 : 140.0,
+                  confineInSafeArea: false,
+                  onItemTapped: onItemTapped,
+                  routeAndNavigatorSettings:
+                      CustomWidgetRouteAndNavigatorSettings(
+                    routes: namedRoutes,
+                    onGenerateRoute: (RouteSettings settings) {
+                      if (settings.name == '/player') {
+                        return PageRouteBuilder(
+                          opaque: false,
+                          pageBuilder: (_, __, ___) => const PlayScreen(),
+                        );
+                      }
+                      return HandleRoute.handleRoute(settings.name);
                     },
                   ),
-                Expanded(
-                  child: PersistentTabView.custom(
-                    context,
-                    controller: _controller,
-                    itemCount: 4,
-                    navBarHeight: rotated ? 75 : 140.0,
-                    confineInSafeArea: false,
-                    routeAndNavigatorSettings:
-                        CustomWidgetRouteAndNavigatorSettings(
-                      routes: namedRoutes,
-                      onGenerateRoute: (RouteSettings settings) {
-                        if (settings.name == '/player') {
-                          return PageRouteBuilder(
-                            opaque: false,
-                            pageBuilder: (_, __, ___) => const PlayScreen(),
-                          );
-                        }
-                        return HandleRoute.handleRoute(settings.name);
-                      },
-                    ),
-                    customWidget: SafeArea(
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: MiniPlayer(),
-                          ),
-                          if (!rotated)
-                            ValueListenableBuilder(
-                              valueListenable: _selectedIndex,
-                              builder: (
-                                BuildContext context,
-                                int indexValue,
-                                Widget? child,
-                              ) {
-                                return AnimatedContainer(
-                                  duration: const Duration(milliseconds: 100),
-                                  height: 60,
-                                  child: SalomonBottomBar(
-                                    currentIndex: indexValue,
-                                    onTap: (index) {
-                                      _onItemTapped(index);
-                                    },
-                                    items: _navBarItems(context),
-                                  ),
-                                );
-                              },
-                            ),
-                        ],
-                      ),
-                    ),
-                    screens: [
-                      const HomeScreen(),
-                      if (sectionsToShow.contains('Top Charts'))
-                        TopCharts(
-                          pageController: _pageController,
+                  customWidget: SafeArea(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: MiniPlayer(),
                         ),
-                      const YouTube(),
-                      const LibraryPage(),
-                      if (sectionsToShow.contains('Settings'))
-                        NewSettingsPage(callback: callback),
-                    ],
+                        if (!rotated)
+                          ValueListenableBuilder(
+                            valueListenable: _selectedIndex,
+                            builder: (
+                              BuildContext context,
+                              int indexValue,
+                              Widget? child,
+                            ) {
+                              return AnimatedContainer(
+                                duration: const Duration(milliseconds: 100),
+                                height: 60,
+                                child: SalomonBottomBar(
+                                  currentIndex: indexValue,
+                                  onTap: (index) {
+                                    onItemTapped(index);
+                                  },
+                                  items: _navBarItems(context),
+                                ),
+                              );
+                            },
+                          ),
+                      ],
+                    ),
                   ),
+                  screens: [
+                    const HomeScreen(),
+                    if (sectionsToShow.contains('Top Charts'))
+                      TopCharts(
+                        pageController: _pageController,
+                      ),
+                    const YouTube(),
+                    const LibraryPage(),
+                    if (sectionsToShow.contains('Settings'))
+                      NewSettingsPage(callback: callback),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
