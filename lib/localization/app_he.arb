@@ -696,5 +696,11 @@
   "streamWifiQuality": "איכות שידור (רשת אלחוטית)",
   "@streamWifiQuality": {},
   "streamWifiQualitySub": "ייעשה בזה שימוש בעת חיבור לרשת אלחוטית",
-  "@streamWifiQualitySub": {}
+  "@streamWifiQualitySub": {},
+  "minFourRequired": "דרושים לפחות 4",
+  "@minFourRequired": {},
+  "navTabs": "לשוניות סרגל ניווט",
+  "@navTabs": {},
+  "navTabsSub": "לשוניות שתופענה בתחתית סרגל הניווט",
+  "@navTabsSub": {}
 }
