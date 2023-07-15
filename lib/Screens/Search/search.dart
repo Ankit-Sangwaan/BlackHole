@@ -67,8 +67,8 @@ class _SearchPageState extends State<SearchPage> {
     'search',
     defaultValue: [],
   ) as List;
-  bool showHistory =
-      Hive.box('settings').get('showHistory', defaultValue: true) as bool;
+  // bool showHistory =
+  //     Hive.box('settings').get('showHistory', defaultValue: true) as bool;
   bool liveSearch =
       Hive.box('settings').get('liveSearch', defaultValue: true) as bool;
 
@@ -628,6 +628,27 @@ class _SearchPageState extends State<SearchPage> {
                                               );
                                             },
                                             onTap: () {
+                                              query = value[index]['title']
+                                                  .toString()
+                                                  .trim();
+                                              List searchQueries =
+                                                  Hive.box('settings').get(
+                                                'search',
+                                                defaultValue: [],
+                                              ) as List;
+                                              final idx =
+                                                  searchQueries.indexOf(query);
+                                              if (idx != -1) {
+                                                searchQueries.removeAt(idx);
+                                              }
+                                              searchQueries.insert(0, query);
+                                              if (searchQueries.length > 10) {
+                                                searchQueries = searchQueries
+                                                    .sublist(0, 10);
+                                              }
+                                              Hive.box('settings')
+                                                  .put('search', searchQueries);
+
                                               if (key == 'Songs') {
                                                 PlayerInvoke.init(
                                                   songsList: [value[index]],

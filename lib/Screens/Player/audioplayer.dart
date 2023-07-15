@@ -299,7 +299,7 @@ class _PlayScreenState extends State<PlayScreen> {
                           final Map details =
                               MediaItemConverter.mediaItemToMap(mediaItem);
                           details['duration'] =
-                              '${int.parse(details["duration"].toString()) ~/ 60}:${int.parse(details["duration"].toString()) % 60}';
+                              '${(int.parse(details["duration"].toString()) ~/ 60).toString().padLeft(2, "0")}:${(int.parse(details["duration"].toString()) % 60).toString().padLeft(2, "0")}';
                           // style: Theme.of(context).textTheme.caption,
                           if (mediaItem.extras?['size'] != null) {
                             details.addEntries([
@@ -1814,7 +1814,7 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                                           widget.mediaItem,
                                         );
                                         details['duration'] =
-                                            '${int.parse(details["duration"].toString()) ~/ 60}:${int.parse(details["duration"].toString()) % 60}';
+                                            '${(int.parse(details["duration"].toString()) ~/ 60).toString().padLeft(2, "0")}:${(int.parse(details["duration"].toString()) % 60).toString().padLeft(2, "0")}';
                                         // style: Theme.of(context).textTheme.caption,
                                         if (widget.mediaItem.extras?['size'] !=
                                             null) {
