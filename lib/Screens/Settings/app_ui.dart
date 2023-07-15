@@ -612,9 +612,6 @@ class _AppUIPageState extends State<AppUIPage> {
               ),
               keyName: 'showPlaylist',
               defaultValue: true,
-              onChanged: ({required bool val, required Box box}) {
-                widget.callback!();
-              },
             ),
 
             BoxSwitchTile(
@@ -632,9 +629,6 @@ class _AppUIPageState extends State<AppUIPage> {
               ),
               keyName: 'showRecent',
               defaultValue: true,
-              onChanged: ({required bool val, required Box box}) {
-                widget.callback!();
-              },
             ),
             // BoxSwitchTile(
             //   title: Text(

@@ -37,7 +37,7 @@ import 'package:blackhole/Services/player_service.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 bool fetched = false;
 List preferredLanguage = Hive.box('settings')
@@ -157,243 +157,236 @@ class _SaavnHomePageState extends State<SaavnHomePage>
             itemCount: data.isEmpty ? 2 : lists.length,
             itemBuilder: (context, idx) {
               if (idx == recentIndex) {
-                return (recentList.isEmpty ||
-                        !(Hive.box('settings')
-                            .get('showRecent', defaultValue: true) as bool))
-                    ? const SizedBox()
-                    : Column(
-                        children: [
-                          GestureDetector(
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(15, 10, 0, 5),
-                                  child: Text(
-                                    AppLocalizations.of(context)!.lastSession,
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                return ValueListenableBuilder(
+                  valueListenable: Hive.box('settings').listenable(),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(15, 10, 0, 5),
+                              child: Text(
+                                AppLocalizations.of(context)!.lastSession,
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                              ],
+                              ),
                             ),
-                            onTap: () {
-                              Navigator.pushNamed(context, '/recent');
-                            },
-                          ),
-                          HorizontalAlbumsListSeparated(
-                            songsList: recentList,
-                            onTap: (int idx) {
-                              PlayerInvoke.init(
-                                songsList: [recentList[idx]],
-                                index: 0,
-                                isOffline: false,
-                              );
-                            },
-                          ),
-                        ],
-                      );
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/recent');
+                        },
+                      ),
+                      HorizontalAlbumsListSeparated(
+                        songsList: recentList,
+                        onTap: (int idx) {
+                          PlayerInvoke.init(
+                            songsList: [recentList[idx]],
+                            index: 0,
+                            isOffline: false,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                  builder: (BuildContext context, Box box, Widget? child) {
+                    return (recentList.isEmpty ||
+                            !(box.get('showRecent', defaultValue: true)
+                                as bool))
+                        ? const SizedBox()
+                        : child!;
+                  },
+                );
               }
               if (idx == playlistIndex) {
-                return (playlistNames.isEmpty ||
-                        !(Hive.box('settings')
-                            .get('showPlaylist', defaultValue: true) as bool) ||
-                        (playlistNames.length == 1 &&
-                            playlistNames.first == 'Favorite Songs' &&
-                            likedCount() == 0))
-                    ? const SizedBox()
-                    : Column(
-                        children: [
-                          GestureDetector(
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(15, 10, 15, 5),
-                                  child: Text(
-                                    AppLocalizations.of(context)!.yourPlaylists,
-                                    style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
+                return ValueListenableBuilder(
+                  valueListenable: Hive.box('settings').listenable(),
+                  child: Column(
+                    children: [
+                      GestureDetector(
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(15, 10, 15, 5),
+                              child: Text(
+                                AppLocalizations.of(context)!.yourPlaylists,
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                              ],
+                              ),
                             ),
-                            onTap: () {
-                              Navigator.pushNamed(context, '/playlists');
-                            },
-                          ),
-                          SizedBox(
-                            height: boxSize + 15,
-                            child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              scrollDirection: Axis.horizontal,
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              itemCount: playlistNames.length,
-                              itemBuilder: (context, index) {
-                                final String name =
-                                    playlistNames[index].toString();
-                                final String showName =
-                                    playlistDetails.containsKey(name)
-                                        ? playlistDetails[name]['name']
-                                                ?.toString() ??
-                                            name
-                                        : name;
-                                final String? subtitle = playlistDetails[
-                                                name] ==
-                                            null ||
-                                        playlistDetails[name]['count'] ==
-                                            null ||
-                                        playlistDetails[name]['count'] == 0
-                                    ? null
-                                    : '${playlistDetails[name]['count']} ${AppLocalizations.of(context)!.songs}';
-                                return GestureDetector(
-                                  child: SizedBox(
-                                    width: boxSize - 20,
-                                    child: HoverBox(
-                                      child: (playlistDetails[name] == null ||
-                                              playlistDetails[name]
-                                                      ['imagesList'] ==
-                                                  null ||
-                                              (playlistDetails[name]
-                                                      ['imagesList'] as List)
-                                                  .isEmpty)
-                                          ? Card(
-                                              elevation: 5,
-                                              color: Colors.black,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  10.0,
-                                                ),
-                                              ),
-                                              clipBehavior: Clip.antiAlias,
-                                              child: name == 'Favorite Songs'
-                                                  ? const Image(
-                                                      image: AssetImage(
-                                                        'assets/cover.jpg',
-                                                      ),
-                                                    )
-                                                  : const Image(
-                                                      image: AssetImage(
-                                                        'assets/album.png',
-                                                      ),
-                                                    ),
-                                            )
-                                          : Collage(
-                                              borderRadius: 10.0,
-                                              imageList: playlistDetails[name]
-                                                  ['imagesList'] as List,
-                                              showGrid: true,
-                                              placeholderImage:
-                                                  'assets/cover.jpg',
-                                            ),
-                                      builder: ({
-                                        required BuildContext context,
-                                        required bool isHover,
-                                        Widget? child,
-                                      }) {
-                                        return Card(
-                                          color: isHover
-                                              ? null
-                                              : Colors.transparent,
-                                          elevation: 0,
-                                          margin: EdgeInsets.zero,
+                          ],
+                        ),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/playlists');
+                        },
+                      ),
+                      SizedBox(
+                        height: boxSize + 15,
+                        child: ListView.builder(
+                          physics: const BouncingScrollPhysics(),
+                          scrollDirection: Axis.horizontal,
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          itemCount: playlistNames.length,
+                          itemBuilder: (context, index) {
+                            final String name = playlistNames[index].toString();
+                            final String showName = playlistDetails
+                                    .containsKey(name)
+                                ? playlistDetails[name]['name']?.toString() ??
+                                    name
+                                : name;
+                            final String? subtitle = playlistDetails[name] ==
+                                        null ||
+                                    playlistDetails[name]['count'] == null ||
+                                    playlistDetails[name]['count'] == 0
+                                ? null
+                                : '${playlistDetails[name]['count']} ${AppLocalizations.of(context)!.songs}';
+                            return GestureDetector(
+                              child: SizedBox(
+                                width: boxSize - 20,
+                                child: HoverBox(
+                                  child: (playlistDetails[name] == null ||
+                                          playlistDetails[name]['imagesList'] ==
+                                              null ||
+                                          (playlistDetails[name]['imagesList']
+                                                  as List)
+                                              .isEmpty)
+                                      ? Card(
+                                          elevation: 5,
+                                          color: Colors.black,
                                           shape: RoundedRectangleBorder(
                                             borderRadius: BorderRadius.circular(
                                               10.0,
                                             ),
                                           ),
                                           clipBehavior: Clip.antiAlias,
-                                          child: Column(
-                                            children: [
-                                              SizedBox.square(
-                                                dimension: isHover
-                                                    ? boxSize - 25
-                                                    : boxSize - 30,
-                                                child: child,
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                  horizontal: 10.0,
+                                          child: name == 'Favorite Songs'
+                                              ? const Image(
+                                                  image: AssetImage(
+                                                    'assets/cover.jpg',
+                                                  ),
+                                                )
+                                              : const Image(
+                                                  image: AssetImage(
+                                                    'assets/album.png',
+                                                  ),
                                                 ),
-                                                child: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Text(
-                                                      showName,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      softWrap: false,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                    ),
-                                                    if (subtitle != null &&
-                                                        subtitle.isNotEmpty)
-                                                      Text(
-                                                        subtitle,
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        softWrap: false,
-                                                        overflow: TextOverflow
-                                                            .ellipsis,
-                                                        style: TextStyle(
-                                                          fontSize: 11,
-                                                          color:
-                                                              Theme.of(context)
-                                                                  .textTheme
-                                                                  .bodySmall!
-                                                                  .color,
-                                                        ),
-                                                      )
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
+                                        )
+                                      : Collage(
+                                          borderRadius: 10.0,
+                                          imageList: playlistDetails[name]
+                                              ['imagesList'] as List,
+                                          showGrid: true,
+                                          placeholderImage: 'assets/cover.jpg',
+                                        ),
+                                  builder: ({
+                                    required BuildContext context,
+                                    required bool isHover,
+                                    Widget? child,
+                                  }) {
+                                    return Card(
+                                      color:
+                                          isHover ? null : Colors.transparent,
+                                      elevation: 0,
+                                      margin: EdgeInsets.zero,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                          10.0,
+                                        ),
+                                      ),
+                                      clipBehavior: Clip.antiAlias,
+                                      child: Column(
+                                        children: [
+                                          SizedBox.square(
+                                            dimension: isHover
+                                                ? boxSize - 25
+                                                : boxSize - 30,
+                                            child: child,
                                           ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  onTap: () async {
-                                    await Hive.openBox(name);
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => LikedSongs(
-                                          playlistName: name,
-                                          showName: playlistDetails
-                                                  .containsKey(name)
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 10.0,
+                                            ),
+                                            child: Column(
+                                              mainAxisSize: MainAxisSize.min,
+                                              children: [
+                                                Text(
+                                                  showName,
+                                                  textAlign: TextAlign.center,
+                                                  softWrap: false,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                                ),
+                                                if (subtitle != null &&
+                                                    subtitle.isNotEmpty)
+                                                  Text(
+                                                    subtitle,
+                                                    textAlign: TextAlign.center,
+                                                    softWrap: false,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    style: TextStyle(
+                                                      fontSize: 11,
+                                                      color: Theme.of(context)
+                                                          .textTheme
+                                                          .bodySmall!
+                                                          .color,
+                                                    ),
+                                                  )
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                              onTap: () async {
+                                await Hive.openBox(name);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => LikedSongs(
+                                      playlistName: name,
+                                      showName:
+                                          playlistDetails.containsKey(name)
                                               ? playlistDetails[name]['name']
                                                       ?.toString() ??
                                                   name
                                               : name,
-                                        ),
-                                      ),
-                                    );
-                                  },
+                                    ),
+                                  ),
                                 );
                               },
-                            ),
-                          )
-                        ],
-                      );
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  ),
+                  builder: (BuildContext context, Box box, Widget? child) {
+                    return (playlistNames.isEmpty ||
+                            !(box.get('showPlaylist', defaultValue: true)
+                                as bool) ||
+                            (playlistNames.length == 1 &&
+                                playlistNames.first == 'Favorite Songs' &&
+                                likedCount() == 0))
+                        ? const SizedBox()
+                        : child!;
+                  },
+                );
               }
               if (lists[idx] == 'likedArtists') {
                 final List likedArtistsList = likedArtists.values.toList();
