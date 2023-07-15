@@ -708,5 +708,11 @@
   "streamWifiQuality": "Streamkwaliteit (wifi)",
   "@streamWifiQuality": {},
   "streamWifiQualitySub": "Deze instelling wordt gebruikt indien verbonden met wifi",
-  "@streamWifiQualitySub": {}
+  "@streamWifiQualitySub": {},
+  "navTabs": "Tabbladen op navigatiebalk",
+  "@navTabs": {},
+  "minFourRequired": "Min. 4 vereist",
+  "@minFourRequired": {},
+  "navTabsSub": "De tabbladen die op de onderste navigatiebalk dienen te worden getoond",
+  "@navTabsSub": {}
 }
