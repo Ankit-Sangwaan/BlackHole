@@ -31,13 +31,13 @@ class _AppUIPageState extends State<AppUIPage> {
     'preferredCompactNotificationButtons',
     defaultValue: [1, 2, 3],
   ) as List<int>;
-  final List<String> sectionsToShow = Hive.box('settings').get(
+  List<String> sectionsToShow = Hive.box('settings').get(
     'sectionsToShow',
     defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
   ) as List<String>;
   final List<String> sectionsAvailableToShow = Hive.box('settings').get(
     'sectionsAvailableToShow',
-    defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library', 'Settings'],
+    defaultValue: ['Top Charts', 'YouTube', 'Library', 'Settings'],
   ) as List<String>;
 
   @override
@@ -657,13 +657,13 @@ class _AppUIPageState extends State<AppUIPage> {
                 AppLocalizations.of(
                   context,
                 )!
-                    .miniButtons,
+                    .navTabs,
               ),
               subtitle: Text(
                 AppLocalizations.of(
                   context,
                 )!
-                    .miniButtonsSub,
+                    .navTabsSub,
               ),
               dense: true,
               onTap: () {
@@ -676,6 +676,7 @@ class _AppUIPageState extends State<AppUIPage> {
                         BuildContext context,
                         StateSetter setStt,
                       ) {
+                        const Set persist = {'Home', 'Library'};
                         return AlertDialog(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(
@@ -697,21 +698,44 @@ class _AppUIPageState extends State<AppUIPage> {
                                 if (oldIndex < newIndex) {
                                   newIndex--;
                                 }
-                                final temp = sectionsToShow.removeAt(
+                                final temp = sectionsAvailableToShow.removeAt(
                                   oldIndex,
                                 );
-                                sectionsToShow.insert(newIndex, temp);
+                                sectionsAvailableToShow.insert(newIndex, temp);
                                 setStt(
                                   () {},
                                 );
                               },
-                              header: Center(
-                                child: Text(
-                                  AppLocalizations.of(
-                                    context,
-                                  )!
-                                      .changeOrder,
-                                ),
+                              header: Column(
+                                children: [
+                                  Center(
+                                    child: Text(
+                                      '${AppLocalizations.of(
+                                        context,
+                                      )!.navTabs}\n(${AppLocalizations.of(
+                                        context,
+                                      )!.minFourRequired})',
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  CheckboxListTile(
+                                    dense: true,
+                                    contentPadding: const EdgeInsets.only(
+                                      left: 16.0,
+                                    ),
+                                    activeColor:
+                                        Theme.of(context).colorScheme.secondary,
+                                    checkColor: Theme.of(
+                                              context,
+                                            ).colorScheme.secondary ==
+                                            Colors.white
+                                        ? Colors.black
+                                        : null,
+                                    value: true,
+                                    title: const Text('Home'),
+                                    onChanged: null,
+                                  ),
+                                ],
                               ),
                               children: sectionsAvailableToShow.map((e) {
                                 return Row(
@@ -742,15 +766,26 @@ class _AppUIPageState extends State<AppUIPage> {
                                               : null,
                                           value: checked.contains(e),
                                           title: Text(e),
-                                          onChanged: (bool? value) {
-                                            setStt(
-                                              () {
-                                                value!
-                                                    ? checked.add(e)
-                                                    : checked.remove(e);
-                                              },
-                                            );
-                                          },
+                                          onChanged: persist.contains(e)
+                                              ? null
+                                              : (bool? value) {
+                                                  setStt(
+                                                    () {
+                                                      if (value!) {
+                                                        while (checked.length >=
+                                                            5) {
+                                                          checked.remove(
+                                                            checked.last,
+                                                          );
+                                                        }
+
+                                                        checked.add(e);
+                                                      } else {
+                                                        checked.remove(e);
+                                                      }
+                                                    },
+                                                  );
+                                                },
                                         ),
                                       ),
                                     ),
@@ -788,24 +823,34 @@ class _AppUIPageState extends State<AppUIPage> {
                                     Theme.of(context).colorScheme.secondary,
                               ),
                               onPressed: () {
-                                setState(
-                                  () {
-                                    final List temp = [];
-                                    for (int i = 0;
-                                        i < sectionsToShow.length;
-                                        i++) {
-                                      if (checked.contains(sectionsToShow[i])) {
-                                        temp.add(sectionsToShow[i]);
-                                      }
+                                final List<String> newSectionsToShow = ['Home'];
+                                int remaining = 4 - checked.length;
+                                for (int i = 0;
+                                    i < sectionsAvailableToShow.length;
+                                    i++) {
+                                  if (checked
+                                      .contains(sectionsAvailableToShow[i])) {
+                                    newSectionsToShow
+                                        .add(sectionsAvailableToShow[i]);
+                                  } else {
+                                    if (remaining > 0) {
+                                      newSectionsToShow
+                                          .add(sectionsAvailableToShow[i]);
+                                      remaining--;
                                     }
-                                    // sectionsToShow = sectionsToShow;
-                                    Navigator.pop(context);
-                                    // Hive.box('settings').put(
-                                    //   'preferredMiniButtons',
-                                    //   preferredMiniButtons,
-                                    // );
-                                  },
+                                  }
+                                }
+                                sectionsToShow = newSectionsToShow;
+                                Navigator.pop(context);
+                                Hive.box('settings').put(
+                                  'sectionsToShow',
+                                  sectionsToShow,
                                 );
+                                Hive.box('settings').put(
+                                  'sectionsAvailableToShow',
+                                  sectionsAvailableToShow,
+                                );
+                                widget.callback!();
                               },
                               child: Text(
                                 AppLocalizations.of(

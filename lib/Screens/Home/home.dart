@@ -72,6 +72,7 @@ class _HomePageState extends State<HomePage> {
       'sectionsToShow',
       defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
     ) as List;
+    onItemTapped(0);
     setState(() {});
   }
 
@@ -309,144 +310,143 @@ class _HomePageState extends State<HomePage> {
                 SliverList(
                   delegate: SliverChildListDelegate(
                     [
-                      ListTile(
-                        title: ValueListenableBuilder(
-                          valueListenable: _selectedIndex,
-                          builder: (context, value, Widget? child) => Text(
-                            AppLocalizations.of(context)!.home,
-                            style: _selectedIndex.value == 0
-                                ? TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                  )
-                                : null,
-                          ),
-                        ),
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        leading: ValueListenableBuilder(
-                          valueListenable: _selectedIndex,
-                          builder: (context, value, Widget? child) => Icon(
-                            Icons.home_rounded,
-                            color: _selectedIndex.value == 0
-                                ? Theme.of(context).colorScheme.secondary
-                                : null,
-                          ),
-                        ),
-                        selected: _selectedIndex.value == 0,
-                        onTap: () {
-                          Navigator.pop(context);
-                          if (_selectedIndex.value != 0) {
-                            onItemTapped(0);
-                          }
-                        },
-                      ),
-                      ListTile(
-                        title: Text(AppLocalizations.of(context)!.myMusic),
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        leading: Icon(
-                          MdiIcons.folderMusic,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => (Platform.isWindows ||
-                                      Platform.isLinux ||
-                                      Platform.isMacOS)
-                                  ? const DownloadedSongsDesktop()
-                                  : const DownloadedSongs(
-                                      showPlaylists: true,
-                                    ),
-                            ),
-                          );
-                        },
-                      ),
-                      ListTile(
-                        title: Text(AppLocalizations.of(context)!.downs),
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        leading: Icon(
-                          Icons.download_done_rounded,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.pushNamed(context, '/downloads');
-                        },
-                      ),
-                      ListTile(
-                        title: Text(AppLocalizations.of(context)!.playlists),
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        leading: Icon(
-                          Icons.playlist_play_rounded,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.pushNamed(context, '/playlists');
-                        },
-                      ),
-                      ListTile(
-                        title: ValueListenableBuilder(
-                          valueListenable: _selectedIndex,
-                          builder: (context, value, Widget? child) => Text(
-                            AppLocalizations.of(context)!.settings,
-                            style: sectionsToShow.contains('Settings') &&
-                                    _selectedIndex.value == 3
-                                ? TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                  )
-                                : null,
-                          ),
-                        ),
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        leading: ValueListenableBuilder(
-                          valueListenable: _selectedIndex,
-                          builder: (context, value, Widget? child) => Icon(
-                            Icons
-                                .settings_rounded, // miscellaneous_services_rounded,
-                            color: sectionsToShow.contains('Settings') &&
-                                    _selectedIndex.value == 3
-                                ? Theme.of(context).colorScheme.secondary
-                                : null,
-                          ),
-                        ),
-                        selected: _selectedIndex.value == 3,
-                        onTap: () {
-                          Navigator.pop(context);
-                          if (sectionsToShow.contains('Settings')) {
-                            if (_selectedIndex.value != 3) {
-                              onItemTapped(3);
-                            }
-                          } else {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    NewSettingsPage(callback: callback),
+                      ValueListenableBuilder(
+                        valueListenable: _selectedIndex,
+                        builder: (
+                          BuildContext context,
+                          int snapshot,
+                          Widget? child,
+                        ) {
+                          return Column(
+                            children: [
+                              ListTile(
+                                title: Text(
+                                  AppLocalizations.of(context)!.home,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0,
+                                ),
+                                leading: const Icon(
+                                  Icons.home_rounded,
+                                ),
+                                selected: _selectedIndex.value ==
+                                    sectionsToShow.indexOf('Home'),
+                                selectedColor:
+                                    Theme.of(context).colorScheme.secondary,
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  if (_selectedIndex.value != 0) {
+                                    onItemTapped(0);
+                                  }
+                                },
                               ),
-                            );
-                          }
-                        },
-                      ),
-                      ListTile(
-                        title: Text(AppLocalizations.of(context)!.about),
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 20.0),
-                        leading: Icon(
-                          Icons.info_outline_rounded,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.pushNamed(context, '/about');
+                              ListTile(
+                                title:
+                                    Text(AppLocalizations.of(context)!.myMusic),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0,
+                                ),
+                                leading: Icon(
+                                  MdiIcons.folderMusic,
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          (Platform.isWindows ||
+                                                  Platform.isLinux ||
+                                                  Platform.isMacOS)
+                                              ? const DownloadedSongsDesktop()
+                                              : const DownloadedSongs(
+                                                  showPlaylists: true,
+                                                ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              ListTile(
+                                title:
+                                    Text(AppLocalizations.of(context)!.downs),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0,
+                                ),
+                                leading: Icon(
+                                  Icons.download_done_rounded,
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(context, '/downloads');
+                                },
+                              ),
+                              ListTile(
+                                title: Text(
+                                  AppLocalizations.of(context)!.playlists,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0,
+                                ),
+                                leading: Icon(
+                                  Icons.playlist_play_rounded,
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(context, '/playlists');
+                                },
+                              ),
+                              ListTile(
+                                title: Text(
+                                  AppLocalizations.of(context)!.settings,
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0,
+                                ),
+                                // miscellaneous_services_rounded,
+                                leading: const Icon(Icons.settings_rounded),
+                                selected: _selectedIndex.value ==
+                                    sectionsToShow.indexOf('Settings'),
+                                selectedColor:
+                                    Theme.of(context).colorScheme.secondary,
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  final idx =
+                                      sectionsToShow.indexOf('Settings');
+                                  if (idx != -1) {
+                                    if (_selectedIndex.value != idx) {
+                                      onItemTapped(idx);
+                                    }
+                                  } else {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            NewSettingsPage(callback: callback),
+                                      ),
+                                    );
+                                  }
+                                },
+                              ),
+                              ListTile(
+                                title:
+                                    Text(AppLocalizations.of(context)!.about),
+                                contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0,
+                                ),
+                                leading: Icon(
+                                  Icons.info_outline_rounded,
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  Navigator.pushNamed(context, '/about');
+                                },
+                              ),
+                            ],
+                          );
                         },
                       ),
                     ],
@@ -476,11 +476,11 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
-        body: SafeArea(
-          child: Row(
-            children: [
-              if (rotated)
-                ValueListenableBuilder(
+        body: Row(
+          children: [
+            if (rotated)
+              SafeArea(
+                child: ValueListenableBuilder(
                   valueListenable: _selectedIndex,
                   builder:
                       (BuildContext context, int indexValue, Widget? child) {
@@ -529,138 +529,154 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ),
                       ),
-                      destinations: [
-                        NavigationRailDestination(
-                          icon: const Icon(Icons.home_rounded),
-                          label: Text(AppLocalizations.of(context)!.home),
-                        ),
-                        if (sectionsToShow.contains('Top Charts'))
-                          NavigationRailDestination(
-                            icon: const Icon(Icons.trending_up_rounded),
-                            label: Text(
-                              AppLocalizations.of(context)!.topCharts,
-                            ),
-                          ),
-                        NavigationRailDestination(
-                          icon: const Icon(MdiIcons.youtube),
-                          label: Text(AppLocalizations.of(context)!.youTube),
-                        ),
-                        NavigationRailDestination(
-                          icon: const Icon(Icons.my_library_music_rounded),
-                          label: Text(AppLocalizations.of(context)!.library),
-                        ),
-                        if (sectionsToShow.contains('Settings'))
-                          NavigationRailDestination(
-                            icon: const Icon(Icons.settings_rounded),
-                            label: Text(
-                              AppLocalizations.of(context)!.settings,
-                            ),
-                          ),
-                      ],
+                      destinations: sectionsToShow.map((e) {
+                        switch (e) {
+                          case 'Home':
+                            return NavigationRailDestination(
+                              icon: const Icon(Icons.home_rounded),
+                              label: Text(AppLocalizations.of(context)!.home),
+                            );
+                          case 'Top Charts':
+                            return NavigationRailDestination(
+                              icon: const Icon(Icons.trending_up_rounded),
+                              label: Text(
+                                AppLocalizations.of(context)!.topCharts,
+                              ),
+                            );
+                          case 'YouTube':
+                            return NavigationRailDestination(
+                              icon: const Icon(MdiIcons.youtube),
+                              label:
+                                  Text(AppLocalizations.of(context)!.youTube),
+                            );
+                          case 'Library':
+                            return NavigationRailDestination(
+                              icon: const Icon(Icons.my_library_music_rounded),
+                              label:
+                                  Text(AppLocalizations.of(context)!.library),
+                            );
+                          default:
+                            return NavigationRailDestination(
+                              icon: const Icon(Icons.settings_rounded),
+                              label: Text(
+                                AppLocalizations.of(context)!.settings,
+                              ),
+                            );
+                        }
+                      }).toList(),
                     );
                   },
                 ),
-              Expanded(
-                child: PersistentTabView.custom(
-                  context,
-                  controller: _controller,
-                  itemCount: 4,
-                  navBarHeight: rotated ? 75 : 140.0,
-                  confineInSafeArea: false,
-                  onItemTapped: onItemTapped,
-                  routeAndNavigatorSettings:
-                      CustomWidgetRouteAndNavigatorSettings(
-                    routes: namedRoutes,
-                    onGenerateRoute: (RouteSettings settings) {
-                      if (settings.name == '/player') {
-                        return PageRouteBuilder(
-                          opaque: false,
-                          pageBuilder: (_, __, ___) => const PlayScreen(),
-                        );
-                      }
-                      return HandleRoute.handleRoute(settings.name);
-                    },
-                  ),
-                  customWidget: SafeArea(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: MiniPlayer(),
-                        ),
-                        if (!rotated)
-                          ValueListenableBuilder(
-                            valueListenable: _selectedIndex,
-                            builder: (
-                              BuildContext context,
-                              int indexValue,
-                              Widget? child,
-                            ) {
-                              return AnimatedContainer(
-                                duration: const Duration(milliseconds: 100),
-                                height: 60,
-                                child: SalomonBottomBar(
-                                  currentIndex: indexValue,
-                                  onTap: (index) {
-                                    onItemTapped(index);
-                                  },
-                                  items: _navBarItems(context),
-                                ),
-                              );
-                            },
-                          ),
-                      ],
-                    ),
-                  ),
-                  screens: [
-                    const HomeScreen(),
-                    if (sectionsToShow.contains('Top Charts'))
-                      TopCharts(
-                        pageController: _pageController,
-                      ),
-                    const YouTube(),
-                    const LibraryPage(),
-                    if (sectionsToShow.contains('Settings'))
-                      NewSettingsPage(callback: callback),
-                  ],
-                ),
               ),
-            ],
-          ),
+            Expanded(
+              child: PersistentTabView.custom(
+                context,
+                controller: _controller,
+                itemCount: sectionsToShow.length,
+                navBarHeight: rotated ? 95 : 95 + 60.0,
+                // confineInSafeArea: false,
+                onItemTapped: onItemTapped,
+                routeAndNavigatorSettings:
+                    CustomWidgetRouteAndNavigatorSettings(
+                  routes: namedRoutes,
+                  onGenerateRoute: (RouteSettings settings) {
+                    if (settings.name == '/player') {
+                      return PageRouteBuilder(
+                        opaque: false,
+                        pageBuilder: (_, __, ___) => const PlayScreen(),
+                      );
+                    }
+                    return HandleRoute.handleRoute(settings.name);
+                  },
+                ),
+                customWidget: SafeArea(
+                  child: Column(
+                    children: [
+                      MiniPlayer(),
+                      if (!rotated)
+                        ValueListenableBuilder(
+                          valueListenable: _selectedIndex,
+                          builder: (
+                            BuildContext context,
+                            int indexValue,
+                            Widget? child,
+                          ) {
+                            return AnimatedContainer(
+                              duration: const Duration(milliseconds: 100),
+                              height: 60,
+                              child: SalomonBottomBar(
+                                currentIndex: indexValue,
+                                onTap: (index) {
+                                  onItemTapped(index);
+                                },
+                                items: _navBarItems(context),
+                              ),
+                            );
+                          },
+                        ),
+                    ],
+                  ),
+                ),
+                screens: sectionsToShow.map((e) {
+                  switch (e) {
+                    case 'Home':
+                      return const SafeArea(child: HomeScreen());
+                    case 'Top Charts':
+                      return SafeArea(
+                        child: TopCharts(
+                          pageController: _pageController,
+                        ),
+                      );
+                    case 'YouTube':
+                      return const SafeArea(child: YouTube());
+                    case 'Library':
+                      return const LibraryPage();
+                    default:
+                      return NewSettingsPage(callback: callback);
+                  }
+                }).toList(),
+              ),
+            ),
+          ],
         ),
       ),
     );
   }
 
   List<SalomonBottomBarItem> _navBarItems(BuildContext context) {
-    return [
-      SalomonBottomBarItem(
-        icon: const Icon(Icons.home_rounded),
-        title: Text(AppLocalizations.of(context)!.home),
-        selectedColor: Theme.of(context).colorScheme.secondary,
-      ),
-      if (sectionsToShow.contains('Top Charts'))
-        SalomonBottomBarItem(
-          icon: const Icon(Icons.trending_up_rounded),
-          title: Text(AppLocalizations.of(context)!.topCharts),
-          selectedColor: Theme.of(context).colorScheme.secondary,
-        ),
-      if (sectionsToShow.contains('YouTube'))
-        SalomonBottomBarItem(
-          icon: const Icon(MdiIcons.youtube),
-          title: Text(AppLocalizations.of(context)!.youTube),
-          selectedColor: Theme.of(context).colorScheme.secondary,
-        ),
-      SalomonBottomBarItem(
-        icon: const Icon(Icons.my_library_music_rounded),
-        title: Text(AppLocalizations.of(context)!.library),
-        selectedColor: Theme.of(context).colorScheme.secondary,
-      ),
-      if (sectionsToShow.contains('Settings'))
-        SalomonBottomBarItem(
-          icon: const Icon(Icons.settings_rounded),
-          title: Text(AppLocalizations.of(context)!.settings),
-          selectedColor: Theme.of(context).colorScheme.secondary,
-        ),
-    ];
+    return sectionsToShow.map((section) {
+      switch (section) {
+        case 'Home':
+          return SalomonBottomBarItem(
+            icon: const Icon(Icons.home_rounded),
+            title: Text(AppLocalizations.of(context)!.home),
+            selectedColor: Theme.of(context).colorScheme.secondary,
+          );
+        case 'Top Charts':
+          return SalomonBottomBarItem(
+            icon: const Icon(Icons.trending_up_rounded),
+            title: Text(AppLocalizations.of(context)!.topCharts),
+            selectedColor: Theme.of(context).colorScheme.secondary,
+          );
+        case 'YouTube':
+          return SalomonBottomBarItem(
+            icon: const Icon(MdiIcons.youtube),
+            title: Text(AppLocalizations.of(context)!.youTube),
+            selectedColor: Theme.of(context).colorScheme.secondary,
+          );
+        case 'Library':
+          return SalomonBottomBarItem(
+            icon: const Icon(Icons.my_library_music_rounded),
+            title: Text(AppLocalizations.of(context)!.library),
+            selectedColor: Theme.of(context).colorScheme.secondary,
+          );
+        default:
+          return SalomonBottomBarItem(
+            icon: const Icon(Icons.settings_rounded),
+            title: Text(AppLocalizations.of(context)!.settings),
+            selectedColor: Theme.of(context).colorScheme.secondary,
+          );
+      }
+    }).toList();
   }
 }

@@ -81,7 +81,6 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           10.0,
         ),
       ),
-      color: Theme.of(context).scaffoldBackgroundColor,
       elevation: 2.0,
       child: SizedBox(
         height: 55.0,
@@ -171,7 +170,7 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           AppLocalizations.of(context)!.compactNotificationButtons,
           AppLocalizations.of(context)!.showPlaylists,
           AppLocalizations.of(context)!.showLast,
-          AppLocalizations.of(context)!.showTopCharts,
+          AppLocalizations.of(context)!.navTabs,
           AppLocalizations.of(context)!.enableGesture,
         ]
       },
