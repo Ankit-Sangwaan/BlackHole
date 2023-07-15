@@ -56,7 +56,6 @@ dependencies:
       url: https://github.com/Sangwan5688/PersistentBottomNavBar
       ref: ecdadb0
   receive_sharing_intent: ^1.4.5
-  salomon_bottom_bar: ^3.3.2
   share_plus: ^7.0.2
   sliding_up_panel: ^2.0.0+1
   url_launcher: ^6.1.11

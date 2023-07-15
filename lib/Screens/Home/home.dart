@@ -19,6 +19,7 @@
 
 import 'dart:io';
 
+import 'package:blackhole/CustomWidgets/bottom_nav_bar.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
@@ -44,7 +45,6 @@ import 'package:logging/logging.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class HomePage extends StatefulWidget {
@@ -573,7 +573,7 @@ class _HomePageState extends State<HomePage> {
                 context,
                 controller: _controller,
                 itemCount: sectionsToShow.length,
-                navBarHeight: rotated ? 95 : 95 + 60.0,
+                navBarHeight: rotated ? 70 : 70 + 70,
                 // confineInSafeArea: false,
                 onItemTapped: onItemTapped,
                 routeAndNavigatorSettings:
@@ -589,33 +589,32 @@ class _HomePageState extends State<HomePage> {
                     return HandleRoute.handleRoute(settings.name);
                   },
                 ),
-                customWidget: SafeArea(
-                  child: Column(
-                    children: [
-                      MiniPlayer(),
-                      if (!rotated)
-                        ValueListenableBuilder(
-                          valueListenable: _selectedIndex,
-                          builder: (
-                            BuildContext context,
-                            int indexValue,
-                            Widget? child,
-                          ) {
-                            return AnimatedContainer(
-                              duration: const Duration(milliseconds: 100),
-                              height: 60,
-                              child: SalomonBottomBar(
-                                currentIndex: indexValue,
-                                onTap: (index) {
-                                  onItemTapped(index);
-                                },
-                                items: _navBarItems(context),
-                              ),
-                            );
-                          },
-                        ),
-                    ],
-                  ),
+                customWidget: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    MiniPlayer(),
+                    if (!rotated)
+                      ValueListenableBuilder(
+                        valueListenable: _selectedIndex,
+                        builder: (
+                          BuildContext context,
+                          int indexValue,
+                          Widget? child,
+                        ) {
+                          return AnimatedContainer(
+                            duration: const Duration(milliseconds: 100),
+                            height: 60,
+                            child: CustomBottomNavBar(
+                              currentIndex: indexValue,
+                              onTap: (index) {
+                                onItemTapped(index);
+                              },
+                              items: _navBarItems(context),
+                            ),
+                          );
+                        },
+                      ),
+                  ],
                 ),
                 screens: sectionsToShow.map((e) {
                   switch (e) {
@@ -643,35 +642,35 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  List<SalomonBottomBarItem> _navBarItems(BuildContext context) {
+  List<CustomBottomNavBarItem> _navBarItems(BuildContext context) {
     return sectionsToShow.map((section) {
       switch (section) {
         case 'Home':
-          return SalomonBottomBarItem(
+          return CustomBottomNavBarItem(
             icon: const Icon(Icons.home_rounded),
             title: Text(AppLocalizations.of(context)!.home),
             selectedColor: Theme.of(context).colorScheme.secondary,
           );
         case 'Top Charts':
-          return SalomonBottomBarItem(
+          return CustomBottomNavBarItem(
             icon: const Icon(Icons.trending_up_rounded),
             title: Text(AppLocalizations.of(context)!.topCharts),
             selectedColor: Theme.of(context).colorScheme.secondary,
           );
         case 'YouTube':
-          return SalomonBottomBarItem(
+          return CustomBottomNavBarItem(
             icon: const Icon(MdiIcons.youtube),
             title: Text(AppLocalizations.of(context)!.youTube),
             selectedColor: Theme.of(context).colorScheme.secondary,
           );
         case 'Library':
-          return SalomonBottomBarItem(
+          return CustomBottomNavBarItem(
             icon: const Icon(Icons.my_library_music_rounded),
             title: Text(AppLocalizations.of(context)!.library),
             selectedColor: Theme.of(context).colorScheme.secondary,
           );
         default:
-          return SalomonBottomBarItem(
+          return CustomBottomNavBarItem(
             icon: const Icon(Icons.settings_rounded),
             title: Text(AppLocalizations.of(context)!.settings),
             selectedColor: Theme.of(context).colorScheme.secondary,
