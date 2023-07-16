@@ -54,6 +54,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final ValueNotifier<int> _selectedIndex = ValueNotifier<int>(0);
+  final ValueNotifier<bool> _showMiniplayer = ValueNotifier<bool>(false);
   String? appVersion;
   String name =
       Hive.box('settings').get('name', defaultValue: 'Guest') as String;
@@ -240,11 +241,17 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
+  void toggleMiniplayer(bool value) {
+    if (_showMiniplayer.value != value) {
+      _showMiniplayer.value = value;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final bool rotated = MediaQuery.of(context).size.height < screenWidth;
-    final miniplayer = MiniPlayer();
+    final miniplayer = MiniPlayer(toggleMiniplayer);
     return GradientContainer(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -570,27 +577,9 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
             Expanded(
-              child: PersistentTabView.custom(
-                context,
-                controller: _controller,
-                itemCount: sectionsToShow.length,
-                navBarHeight: rotated ? 70 : 70 + 70,
-                // confineInSafeArea: false,
-                onItemTapped: onItemTapped,
-                routeAndNavigatorSettings:
-                    CustomWidgetRouteAndNavigatorSettings(
-                  routes: namedRoutes,
-                  onGenerateRoute: (RouteSettings settings) {
-                    if (settings.name == '/player') {
-                      return PageRouteBuilder(
-                        opaque: false,
-                        pageBuilder: (_, __, ___) => const PlayScreen(),
-                      );
-                    }
-                    return HandleRoute.handleRoute(settings.name);
-                  },
-                ),
-                customWidget: Column(
+              child: ValueListenableBuilder(
+                valueListenable: _showMiniplayer,
+                child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     miniplayer,
@@ -617,24 +606,52 @@ class _HomePageState extends State<HomePage> {
                       ),
                   ],
                 ),
-                screens: sectionsToShow.map((e) {
-                  switch (e) {
-                    case 'Home':
-                      return const SafeArea(child: HomeScreen());
-                    case 'Top Charts':
-                      return SafeArea(
-                        child: TopCharts(
-                          pageController: _pageController,
-                        ),
-                      );
-                    case 'YouTube':
-                      return const SafeArea(child: YouTube());
-                    case 'Library':
-                      return const LibraryPage();
-                    default:
-                      return NewSettingsPage(callback: callback);
-                  }
-                }).toList(),
+                builder: (
+                  BuildContext context,
+                  bool showMiniplayer,
+                  Widget? child,
+                ) {
+                  return PersistentTabView.custom(
+                    context,
+                    controller: _controller,
+                    itemCount: sectionsToShow.length,
+                    navBarHeight: (rotated || !showMiniplayer) ? 70 : 70 + 70,
+                    // confineInSafeArea: false,
+                    onItemTapped: onItemTapped,
+                    routeAndNavigatorSettings:
+                        CustomWidgetRouteAndNavigatorSettings(
+                      routes: namedRoutes,
+                      onGenerateRoute: (RouteSettings settings) {
+                        if (settings.name == '/player') {
+                          return PageRouteBuilder(
+                            opaque: false,
+                            pageBuilder: (_, __, ___) => const PlayScreen(),
+                          );
+                        }
+                        return HandleRoute.handleRoute(settings.name);
+                      },
+                    ),
+                    customWidget: child!,
+                    screens: sectionsToShow.map((e) {
+                      switch (e) {
+                        case 'Home':
+                          return const SafeArea(child: HomeScreen());
+                        case 'Top Charts':
+                          return SafeArea(
+                            child: TopCharts(
+                              pageController: _pageController,
+                            ),
+                          );
+                        case 'YouTube':
+                          return const SafeArea(child: YouTube());
+                        case 'Library':
+                          return const LibraryPage();
+                        default:
+                          return NewSettingsPage(callback: callback);
+                      }
+                    }).toList(),
+                  );
+                },
               ),
             ),
           ],
