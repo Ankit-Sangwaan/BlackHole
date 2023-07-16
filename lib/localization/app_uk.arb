@@ -696,5 +696,11 @@
   "streamWifiQuality": "Якість стримінгу (Wifi)",
   "@streamWifiQuality": {},
   "streamWifiQualitySub": "Він буде використовуватися щоразу, коли підключено Wifi",
-  "@streamWifiQualitySub": {}
+  "@streamWifiQualitySub": {},
+  "minFourRequired": "Потрібно мінімум 4",
+  "@minFourRequired": {},
+  "navTabs": "Вкладки панелі навігації",
+  "@navTabs": {},
+  "navTabsSub": "Вкладки, які буде показано на нижній панелі навігації",
+  "@navTabsSub": {}
 }
