@@ -244,6 +244,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
     final bool rotated = MediaQuery.of(context).size.height < screenWidth;
+    final miniplayer = MiniPlayer();
     return GradientContainer(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
@@ -592,7 +593,7 @@ class _HomePageState extends State<HomePage> {
                 customWidget: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    MiniPlayer(),
+                    miniplayer,
                     if (!rotated)
                       ValueListenableBuilder(
                         valueListenable: _selectedIndex,

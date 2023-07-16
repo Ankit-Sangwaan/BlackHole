@@ -53,191 +53,232 @@ class _MiniPlayerState extends State<MiniPlayer> {
       child: StreamBuilder<MediaItem?>(
         stream: audioHandler.mediaItem,
         builder: (context, snapshot) {
-          if (snapshot.connectionState != ConnectionState.active) {
-            return const SizedBox();
-          }
-          final mediaItem = snapshot.data;
-          if (mediaItem == null) return const SizedBox();
+          // if (snapshot.connectionState != ConnectionState.active) {
+          //   return const SizedBox();
+          // }
+          final MediaItem? mediaItem = snapshot.data;
+          // if (mediaItem == null) return const SizedBox();
           return Dismissible(
-            key: Key(mediaItem.id),
+            key: const Key('miniplayer'),
+            direction: DismissDirection.down,
             confirmDismiss: (DismissDirection direction) {
-              if (direction == DismissDirection.startToEnd) {
-                audioHandler.skipToPrevious();
-              } else {
-                audioHandler.skipToNext();
+              if (mediaItem != null) {
+                if (direction == DismissDirection.down) {
+                  audioHandler.stop();
+                }
               }
               return Future.value(false);
             },
-            child: ValueListenableBuilder(
-              valueListenable: Hive.box('settings').listenable(),
-              child: StreamBuilder<Duration>(
-                stream: AudioService.position,
-                builder: (context, snapshot) {
-                  final position = snapshot.data;
-                  return position == null
-                      ? const SizedBox()
-                      : (position.inSeconds.toDouble() < 0.0 ||
-                              (position.inSeconds.toDouble() >
-                                  mediaItem.duration!.inSeconds.toDouble()))
-                          ? const SizedBox()
-                          : SliderTheme(
-                              data: SliderTheme.of(context).copyWith(
-                                activeTrackColor:
-                                    Theme.of(context).colorScheme.secondary,
-                                inactiveTrackColor: Colors.transparent,
-                                trackHeight: 0.5,
-                                thumbColor:
-                                    Theme.of(context).colorScheme.secondary,
-                                thumbShape: const RoundSliderThumbShape(
-                                  enabledThumbRadius: 1.0,
-                                ),
-                                overlayColor: Colors.transparent,
-                                overlayShape: const RoundSliderOverlayShape(
-                                  overlayRadius: 2.0,
-                                ),
-                              ),
-                              child: Center(
-                                child: Slider(
-                                  inactiveColor: Colors.transparent,
-                                  // activeColor: Colors.white,
-                                  value: position.inSeconds.toDouble(),
-                                  max: mediaItem.duration!.inSeconds.toDouble(),
-                                  onChanged: (newPosition) {
-                                    audioHandler.seek(
-                                      Duration(
-                                        seconds: newPosition.round(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
-                            );
-                },
-              ),
-              builder: (BuildContext context, Box box1, Widget? child) {
-                final bool useDense = box1.get(
-                      'useDenseMini',
-                      defaultValue: false,
-                    ) as bool ||
-                    rotated;
-                final List preferredMiniButtons = Hive.box('settings').get(
-                  'preferredMiniButtons',
-                  defaultValue: ['Like', 'Play/Pause', 'Next'],
-                )?.toList() as List;
+            child: Dismissible(
+              key: Key(mediaItem?.id ?? 'nothingPlaying'),
+              // background: Container(color: Colors.red),
+              confirmDismiss: (DismissDirection direction) {
+                if (mediaItem != null) {
+                  if (direction == DismissDirection.startToEnd) {
+                    audioHandler.skipToPrevious();
+                  } else {
+                    audioHandler.skipToNext();
+                  }
+                }
+                return Future.value(false);
+              },
+              child: ValueListenableBuilder(
+                valueListenable: Hive.box('settings').listenable(),
+                child:
+                    positionSlider(mediaItem?.duration?.inSeconds.toDouble()),
+                builder: (BuildContext context, Box box1, Widget? child) {
+                  final bool useDense = box1.get(
+                        'useDenseMini',
+                        defaultValue: false,
+                      ) as bool ||
+                      rotated;
+                  final List preferredMiniButtons = Hive.box('settings').get(
+                    'preferredMiniButtons',
+                    defaultValue: ['Like', 'Play/Pause', 'Next'],
+                  )?.toList() as List;
 
-                return Card(
-                  margin: const EdgeInsets.symmetric(
-                    horizontal: 2.0,
-                    vertical: 1.0,
-                  ),
-                  elevation: 0,
-                  child: SizedBox(
-                    height: useDense ? 68.0 : 76.0,
-                    child: GradientContainer(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ListTile(
-                            dense: useDense,
-                            onTap: () {
-                              Navigator.pushNamed(context, '/player');
-                            },
-                            title: Text(
-                              mediaItem.title,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
+                  final bool isLocal =
+                      mediaItem?.artUri?.toString().startsWith('file:') ??
+                          false;
+
+                  return Card(
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 2.0,
+                      vertical: 1.0,
+                    ),
+                    elevation: 0,
+                    child: SizedBox(
+                      height: useDense ? 68.0 : 76.0,
+                      child: GradientContainer(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            miniplayerTile(
+                              context: context,
+                              preferredMiniButtons: preferredMiniButtons,
+                              useDense: useDense,
+                              title: mediaItem?.title ?? '',
+                              subtitle: mediaItem?.artist ?? '',
+                              imagePath: (isLocal
+                                      ? mediaItem?.artUri?.toFilePath()
+                                      : mediaItem?.artUri?.toString()) ??
+                                  '',
+                              isLocalImage: isLocal,
+                              isDummy: mediaItem == null,
                             ),
-                            subtitle: Text(
-                              mediaItem.artist ?? '',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            leading: Hero(
-                              tag: 'currentArtwork',
-                              child: Card(
-                                elevation: 8,
-                                margin: EdgeInsets.zero,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(7.0),
-                                ),
-                                clipBehavior: Clip.antiAlias,
-                                child: (mediaItem.artUri
-                                        .toString()
-                                        .startsWith('file:'))
-                                    ? SizedBox.square(
-                                        dimension: useDense ? 40.0 : 50.0,
-                                        child: Image(
-                                          fit: BoxFit.cover,
-                                          image: FileImage(
-                                            File(
-                                              mediaItem.artUri!.toFilePath(),
-                                            ),
-                                          ),
-                                          errorBuilder: (
-                                            context,
-                                            error,
-                                            stackTrace,
-                                          ) {
-                                            return const Image(
-                                              fit: BoxFit.cover,
-                                              image: AssetImage(
-                                                'assets/cover.jpg',
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      )
-                                    : SizedBox.square(
-                                        dimension: useDense ? 40.0 : 50.0,
-                                        child: CachedNetworkImage(
-                                          fit: BoxFit.cover,
-                                          errorWidget: (
-                                            BuildContext context,
-                                            _,
-                                            __,
-                                          ) =>
-                                              const Image(
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(
-                                              'assets/cover.jpg',
-                                            ),
-                                          ),
-                                          placeholder: (
-                                            BuildContext context,
-                                            _,
-                                          ) =>
-                                              const Image(
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(
-                                              'assets/cover.jpg',
-                                            ),
-                                          ),
-                                          imageUrl: mediaItem.artUri.toString(),
-                                        ),
-                                      ),
-                              ),
-                            ),
-                            trailing: ControlButtons(
-                              audioHandler,
-                              miniplayer: true,
-                              buttons: mediaItem.artUri
-                                      .toString()
-                                      .startsWith('file:')
-                                  ? ['Like', 'Play/Pause', 'Next']
-                                  : preferredMiniButtons,
-                            ),
-                          ),
-                          child!,
-                        ],
+                            child!,
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           );
         },
       ),
+    );
+  }
+
+  ListTile miniplayerTile({
+    required BuildContext context,
+    required String title,
+    required String subtitle,
+    required String imagePath,
+    required List preferredMiniButtons,
+    bool useDense = false,
+    bool isLocalImage = false,
+    bool isDummy = false,
+  }) {
+    return ListTile(
+      dense: useDense,
+      onTap: isDummy
+          ? null
+          : () {
+              Navigator.pushNamed(context, '/player');
+            },
+      title: Text(
+        isDummy ? 'Now Playing' : title,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      subtitle: Text(
+        isDummy ? 'Unknown' : subtitle,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      ),
+      leading: Hero(
+        tag: 'currentArtwork',
+        child: Card(
+          elevation: 8,
+          margin: EdgeInsets.zero,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(7.0),
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: SizedBox.square(
+            dimension: useDense ? 40.0 : 50.0,
+            child: isLocalImage
+                ? Image(
+                    fit: BoxFit.cover,
+                    image: FileImage(
+                      File(imagePath),
+                    ),
+                    errorBuilder: (
+                      context,
+                      error,
+                      stackTrace,
+                    ) {
+                      return const Image(
+                        fit: BoxFit.cover,
+                        image: AssetImage(
+                          'assets/cover.jpg',
+                        ),
+                      );
+                    },
+                  )
+                : CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    errorWidget: (
+                      BuildContext context,
+                      _,
+                      __,
+                    ) =>
+                        const Image(
+                      fit: BoxFit.cover,
+                      image: AssetImage(
+                        'assets/cover.jpg',
+                      ),
+                    ),
+                    placeholder: (
+                      BuildContext context,
+                      _,
+                    ) =>
+                        const Image(
+                      fit: BoxFit.cover,
+                      image: AssetImage(
+                        'assets/cover.jpg',
+                      ),
+                    ),
+                    imageUrl: imagePath,
+                  ),
+          ),
+        ),
+      ),
+      trailing: isDummy
+          ? null
+          : ControlButtons(
+              audioHandler,
+              miniplayer: true,
+              buttons: isLocalImage
+                  ? ['Like', 'Play/Pause', 'Next']
+                  : preferredMiniButtons,
+            ),
+    );
+  }
+
+  StreamBuilder<Duration> positionSlider(double? maxDuration) {
+    return StreamBuilder<Duration>(
+      stream: AudioService.position,
+      builder: (context, snapshot) {
+        final position = snapshot.data;
+        return position == null
+            ? const SizedBox()
+            : (position.inSeconds.toDouble() < 0.0 ||
+                    (position.inSeconds.toDouble() > (maxDuration ?? 180.0)))
+                ? const SizedBox()
+                : SliderTheme(
+                    data: SliderTheme.of(context).copyWith(
+                      activeTrackColor: Theme.of(context).colorScheme.secondary,
+                      inactiveTrackColor: Colors.transparent,
+                      trackHeight: 0.5,
+                      thumbColor: Theme.of(context).colorScheme.secondary,
+                      thumbShape: const RoundSliderThumbShape(
+                        enabledThumbRadius: 1.0,
+                      ),
+                      overlayColor: Colors.transparent,
+                      overlayShape: const RoundSliderOverlayShape(
+                        overlayRadius: 2.0,
+                      ),
+                    ),
+                    child: Center(
+                      child: Slider(
+                        inactiveColor: Colors.transparent,
+                        // activeColor: Colors.white,
+                        value: position.inSeconds.toDouble(),
+                        max: maxDuration ?? 180.0,
+                        onChanged: (newPosition) {
+                          audioHandler.seek(
+                            Duration(
+                              seconds: newPosition.round(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  );
+      },
     );
   }
 }
