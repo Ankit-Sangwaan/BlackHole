@@ -708,5 +708,11 @@
   "streamWifiQuality": "Kvalita zvuku (Wi-Fi)",
   "@streamWifiQuality": {},
   "streamWifiQualitySub": "Toto nastavení bude použito při přehrávání na Wi-Fi",
-  "@streamWifiQualitySub": {}
+  "@streamWifiQualitySub": {},
+  "minFourRequired": "Vyžadovány minimálně 4",
+  "@minFourRequired": {},
+  "navTabsSub": "Karty k zobrazení na spodní navigační liště",
+  "@navTabsSub": {},
+  "navTabs": "Karty navigační lišty",
+  "@navTabs": {}
 }
