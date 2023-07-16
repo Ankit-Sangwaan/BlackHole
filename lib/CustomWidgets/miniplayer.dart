@@ -27,17 +27,20 @@ import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-class MiniPlayer extends StatelessWidget {
-  final Function toggle;
-  static MiniPlayer? _instance;
+class MiniPlayer extends StatefulWidget {
+  static const MiniPlayer _instance = MiniPlayer._internal();
 
-  factory MiniPlayer(Function toggle) {
-    _instance ??= MiniPlayer._internal(toggle);
-    return _instance!;
+  factory MiniPlayer() {
+    return _instance;
   }
 
-  MiniPlayer._internal(this.toggle);
+  const MiniPlayer._internal();
 
+  @override
+  _MiniPlayerState createState() => _MiniPlayerState();
+}
+
+class _MiniPlayerState extends State<MiniPlayer> {
   final AudioPlayerHandler audioHandler = GetIt.I<AudioPlayerHandler>();
 
   @override
@@ -54,36 +57,35 @@ class MiniPlayer extends StatelessWidget {
           //   return const SizedBox();
           // }
           final MediaItem? mediaItem = snapshot.data;
-          if (mediaItem == null) {
-            toggle(false);
-            return const SizedBox();
-          } else {
-            toggle(true);
-          }
+          // if (mediaItem == null) return const SizedBox();
           return Dismissible(
             key: const Key('miniplayer'),
-            direction: DismissDirection.vertical,
+            direction: DismissDirection.down,
             confirmDismiss: (DismissDirection direction) {
-              if (direction == DismissDirection.down) {
-                audioHandler.stop();
-              } else {
-                Navigator.pushNamed(context, '/player');
+              if (mediaItem != null) {
+                if (direction == DismissDirection.down) {
+                  audioHandler.stop();
+                }
               }
               return Future.value(false);
             },
             child: Dismissible(
-              key: Key(mediaItem.id),
+              key: Key(mediaItem?.id ?? 'nothingPlaying'),
+              // background: Container(color: Colors.red),
               confirmDismiss: (DismissDirection direction) {
-                if (direction == DismissDirection.startToEnd) {
-                  audioHandler.skipToPrevious();
-                } else {
-                  audioHandler.skipToNext();
+                if (mediaItem != null) {
+                  if (direction == DismissDirection.startToEnd) {
+                    audioHandler.skipToPrevious();
+                  } else {
+                    audioHandler.skipToNext();
+                  }
                 }
                 return Future.value(false);
               },
               child: ValueListenableBuilder(
                 valueListenable: Hive.box('settings').listenable(),
-                child: positionSlider(mediaItem.duration?.inSeconds.toDouble()),
+                child:
+                    positionSlider(mediaItem?.duration?.inSeconds.toDouble()),
                 builder: (BuildContext context, Box box1, Widget? child) {
                   final bool useDense = box1.get(
                         'useDenseMini',
@@ -96,7 +98,8 @@ class MiniPlayer extends StatelessWidget {
                   )?.toList() as List;
 
                   final bool isLocal =
-                      mediaItem.artUri?.toString().startsWith('file:') ?? false;
+                      mediaItem?.artUri?.toString().startsWith('file:') ??
+                          false;
 
                   return Card(
                     margin: const EdgeInsets.symmetric(
@@ -114,13 +117,14 @@ class MiniPlayer extends StatelessWidget {
                               context: context,
                               preferredMiniButtons: preferredMiniButtons,
                               useDense: useDense,
-                              title: mediaItem.title,
-                              subtitle: mediaItem.artist ?? '',
+                              title: mediaItem?.title ?? '',
+                              subtitle: mediaItem?.artist ?? '',
                               imagePath: (isLocal
-                                      ? mediaItem.artUri?.toFilePath()
-                                      : mediaItem.artUri?.toString()) ??
+                                      ? mediaItem?.artUri?.toFilePath()
+                                      : mediaItem?.artUri?.toString()) ??
                                   '',
                               isLocalImage: isLocal,
+                              isDummy: mediaItem == null,
                             ),
                             child!,
                           ],
