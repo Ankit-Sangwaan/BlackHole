@@ -710,5 +710,11 @@
   "streamWifiQuality": "Qualité du flux (Wifi)",
   "@streamWifiQuality": {},
   "streamWifiQualitySub": "Il sera utilisé chaque fois que le Wifi est connecté",
-  "@streamWifiQualitySub": {}
+  "@streamWifiQualitySub": {},
+  "minFourRequired": "4 au minimum",
+  "@minFourRequired": {},
+  "navTabs": "Barre de navigation",
+  "@navTabs": {},
+  "navTabsSub": "Onglets à afficher dans la barre de navigation inférieure",
+  "@navTabsSub": {}
 }
