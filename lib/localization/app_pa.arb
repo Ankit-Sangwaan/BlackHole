@@ -87,7 +87,7 @@
   "@addedBy": {},
   "addedToPlaylists": "ਪਲੇ-ਲਿਸਟ ਵਿੱਚ ਜੋੜਿਆ ਗਿਆ",
   "@addedToPlaylists": {},
-  "albums": "ਐਲਬਮ",
+  "albums": "ਐਲਬਮਜ਼",
   "@albums": {},
   "aboard": "ਸਵਾਰ ਹੋਵੋ",
   "@aboard": {},
@@ -433,9 +433,9 @@
   "@nothingIs": {},
   "nothingTo": "ਇੱਥੇ ਦਿਖਾਉਣ ਲਈ । ",
   "@nothingTo": {},
-  "nothingPlaying": "ਚੱਲ ਰਿਹਾ",
+  "nothingPlaying": "ਕੁਝ ਨਹੀਂ ਚੱਲ ਰਿਹਾ",
   "@nothingPlaying": {},
-  "nowPlaying": "ਚੱਲ ਰਿਹਾ",
+  "nowPlaying": "ਹੁਣ ਚੱਲ ਰਿਹਾ",
   "@nowPlaying": {},
   "ok": "ਠੀਕ ਹੈ",
   "@ok": {},
@@ -696,5 +696,11 @@
   "folders": "ਫ਼ੋਲਡਰ",
   "@folders": {},
   "noFileSelected": "ਕੋਈ ਫਾਈਲ ਨਹੀਂ ਚੁਣੀ",
-  "@noFileSelected": {}
+  "@noFileSelected": {},
+  "navTabs": "ਨੈਵੀਗੇਸ਼ਨ ਬਾਰ ਟੈਬਸ",
+  "@navTabs": {},
+  "minFourRequired": "ਨਿਊਨਤਮ 4 ਜਰੂਰੀ",
+  "@minFourRequired": {},
+  "navTabsSub": "ਹੇਠਾਂ ਨੈਵੀਗੇਸ਼ਨ ਬਾਰ ਵਿੱਚ ਵਿਖਾਉਣ ਲਈ ਟੈਬਾਂ",
+  "@navTabsSub": {}
 }
