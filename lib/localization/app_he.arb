@@ -441,7 +441,7 @@
   "@versionSub": {},
   "version": "גרסה",
   "@version": {},
-  "useVpn": "לא מהודו? כדאי לנסות להשתמש ב־VPN עם שרת הודי",
+  "useVpn": "לא מהודו? כדאי לנסות להשתמש במתווך או ב־VPN עם שרת הודי",
   "@useVpn": {},
   "ytStreamQuality": "איכות התזרים מ־YouTube",
   "@ytStreamQuality": {},
