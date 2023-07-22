@@ -305,7 +305,7 @@ class _DownloadsState extends State<Downloads>
 
     _songs.remove(song);
     try {
-      audioFile.delete();
+      await audioFile.delete();
       if (await imageFile.exists()) {
         imageFile.delete();
       }
