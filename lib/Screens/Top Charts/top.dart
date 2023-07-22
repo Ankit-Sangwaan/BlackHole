@@ -20,6 +20,7 @@
 import 'package:app_links/app_links.dart';
 import 'package:blackhole/APIs/spotify_api.dart';
 import 'package:blackhole/CustomWidgets/custom_physics.dart';
+import 'package:blackhole/CustomWidgets/drawer.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
 import 'package:blackhole/Helpers/spotify_country.dart';
 import 'package:blackhole/Helpers/spotify_helper.dart';
@@ -107,26 +108,7 @@ class _TopChartsState extends State<TopCharts>
           backgroundColor: Colors.transparent,
           elevation: 0,
           automaticallyImplyLeading: false,
-          leading: rotated
-              ? null
-              : Builder(
-                  builder: (BuildContext context) {
-                    return Transform.rotate(
-                      angle: 22 / 7 * 2,
-                      child: IconButton(
-                        color: Theme.of(context).iconTheme.color,
-                        icon: const Icon(
-                          Icons.horizontal_split_rounded,
-                        ),
-                        onPressed: () {
-                          Scaffold.of(cntxt).openDrawer();
-                        },
-                        tooltip: MaterialLocalizations.of(cntxt)
-                            .openAppDrawerTooltip,
-                      ),
-                    );
-                  },
-                ),
+          leading: rotated ? null : homeDrawer(context: context),
         ),
         body: NotificationListener(
           onNotification: (overscroll) {

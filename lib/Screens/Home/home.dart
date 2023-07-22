@@ -20,6 +20,7 @@
 import 'dart:io';
 
 import 'package:blackhole/CustomWidgets/bottom_nav_bar.dart';
+import 'package:blackhole/CustomWidgets/drawer.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/miniplayer.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
@@ -514,21 +515,9 @@ class _HomePageState extends State<HomePage> {
                           .colorScheme
                           .secondary
                           .withOpacity(0.2),
-                      leading: Builder(
-                        builder: (context) => Transform.rotate(
-                          angle: 22 / 7 * 2,
-                          child: IconButton(
-                            icon: const Icon(
-                              Icons.horizontal_split_rounded,
-                            ),
-                            // color: Theme.of(context).iconTheme.color,
-                            onPressed: () {
-                              Scaffold.of(context).openDrawer();
-                            },
-                            tooltip: MaterialLocalizations.of(context)
-                                .openAppDrawerTooltip,
-                          ),
-                        ),
+                      leading: homeDrawer(
+                        context: context,
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
                       ),
                       destinations: sectionsToShow.map((e) {
                         switch (e) {
@@ -607,6 +596,10 @@ class _HomePageState extends State<HomePage> {
                             height: 60,
                             child: CustomBottomNavBar(
                               currentIndex: indexValue,
+                              backgroundColor: Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.black.withOpacity(0.9)
+                                  : Colors.white.withOpacity(0.9),
                               onTap: (index) {
                                 onItemTapped(index);
                               },

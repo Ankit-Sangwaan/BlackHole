@@ -73,7 +73,6 @@ class _MiniPlayerState extends State<MiniPlayer> {
             },
             child: Dismissible(
               key: Key(mediaItem?.id ?? 'nothingPlaying'),
-              // background: Container(color: Colors.red),
               confirmDismiss: (DismissDirection direction) {
                 if (mediaItem != null) {
                   if (direction == DismissDirection.startToEnd) {

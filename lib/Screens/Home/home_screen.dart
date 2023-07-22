@@ -19,6 +19,7 @@
 
 import 'dart:math';
 
+import 'package:blackhole/CustomWidgets/drawer.dart';
 import 'package:blackhole/CustomWidgets/textinput_dialog.dart';
 import 'package:blackhole/Screens/Home/saavn.dart';
 import 'package:blackhole/Screens/Search/search.dart';
@@ -266,28 +267,10 @@ class _HomeScreenState extends State<HomeScreen> {
           body: SaavnHomePage(),
         ),
         if (!rotated)
-          Builder(
-            builder: (context) => Padding(
-              padding: const EdgeInsets.only(
-                top: 8.0,
-                left: 4.0,
-              ),
-              child: Transform.rotate(
-                angle: 22 / 7 * 2,
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.horizontal_split_rounded,
-                  ),
-                  // color: Theme.of(context).iconTheme.color,
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                  tooltip:
-                      MaterialLocalizations.of(context).openAppDrawerTooltip,
-                ),
-              ),
-            ),
-          ),
+          homeDrawer(
+            context: context,
+            padding: const EdgeInsets.only(top: 8.0, left: 4.0),
+          )
       ],
     );
   }

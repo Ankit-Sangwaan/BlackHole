@@ -17,6 +17,7 @@
  * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
+import 'package:blackhole/CustomWidgets/drawer.dart';
 import 'package:blackhole/CustomWidgets/on_hover.dart';
 import 'package:blackhole/Screens/YouTube/youtube_playlist.dart';
 import 'package:blackhole/Screens/YouTube/youtube_search.dart';
@@ -444,20 +445,7 @@ class _YouTubeState extends State<YouTube>
               ),
               child: Row(
                 children: [
-                  Transform.rotate(
-                    angle: 22 / 7 * 2,
-                    child: IconButton(
-                      icon: const Icon(
-                        Icons.horizontal_split_rounded,
-                      ),
-                      // color: Theme.of(context).iconTheme.color,
-                      onPressed: () {
-                        Scaffold.of(context).openDrawer();
-                      },
-                      tooltip: MaterialLocalizations.of(context)
-                          .openAppDrawerTooltip,
-                    ),
-                  ),
+                  homeDrawer(context: context),
                   const SizedBox(
                     width: 5.0,
                   ),

@@ -1,3 +1,4 @@
+import 'package:blackhole/CustomWidgets/drawer.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/Screens/Settings/about.dart';
 import 'package:blackhole/Screens/Settings/app_ui.dart';
@@ -24,23 +25,20 @@ class _NewSettingsPageState extends State<NewSettingsPage>
     with AutomaticKeepAliveClientMixin<NewSettingsPage> {
   final TextEditingController controller = TextEditingController();
   final ValueNotifier<String> searchQuery = ValueNotifier<String>('');
-  final ValueNotifier<List> sectionsToShow = ValueNotifier<List>(
-    Hive.box('settings').get(
-      'sectionsToShow',
-      defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
-    ) as List,
-  );
+  final List sectionsToShow = Hive.box('settings').get(
+    'sectionsToShow',
+    defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
+  ) as List;
 
   @override
   void dispose() {
     controller.dispose();
     searchQuery.dispose();
-    sectionsToShow.dispose();
     super.dispose();
   }
 
   @override
-  bool get wantKeepAlive => sectionsToShow.value.contains('Settings');
+  bool get wantKeepAlive => sectionsToShow.contains('Settings');
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +51,12 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           elevation: 0,
           backgroundColor: Colors.transparent,
           centerTitle: true,
+          leading: sectionsToShow.contains('Settings')
+              ? homeDrawer(
+                  context: context,
+                  padding: const EdgeInsets.only(left: 15.0),
+                )
+              : null,
           title: Text(
             AppLocalizations.of(context)!.settings,
             style: TextStyle(
