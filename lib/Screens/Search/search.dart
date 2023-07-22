@@ -117,7 +117,19 @@ class _SearchPageState extends State<SearchPage> {
       ShowSnackBar().showSnackBar(
         context,
         AppLocalizations.of(context)!.useVpn,
-        duration: const Duration(seconds: 5),
+        duration: const Duration(seconds: 7),
+        action: SnackBarAction(
+          textColor: Theme.of(context).colorScheme.secondary,
+          label: AppLocalizations.of(context)!.useProxy,
+          onPressed: () {
+            setState(() {
+              Hive.box('settings').put('useProxy', true);
+              fetched = false;
+              status = false;
+              searchedData = {};
+            });
+          },
+        ),
       );
       alertShown = true;
     }

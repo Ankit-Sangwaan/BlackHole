@@ -55,7 +55,7 @@ class SaavnAPI {
   Future<Response> getResponse(
     String params, {
     bool usev4 = true,
-    bool useProxy = false,
+    bool useProxy = true,
   }) async {
     Uri url;
     if (!usev4) {
@@ -72,7 +72,8 @@ class SaavnAPI {
     headers = {'cookie': languageHeader, 'Accept': '*/*'};
 
     if (useProxy && settingsBox.get('useProxy', defaultValue: false) as bool) {
-      final String proxyIP = settingsBox.get('proxyIp').toString();
+      final String proxyIP =
+          settingsBox.get('proxyIp', defaultValue: '103.47.67.134').toString();
       // final proxyPort = settingsBox.get('proxyPort');
       // final HttpClient httpClient = HttpClient();
       // httpClient.findProxy = (uri) {
@@ -108,7 +109,7 @@ class SaavnAPI {
   Future<Map> fetchHomePageData() async {
     Map result = {};
     try {
-      final res = await getResponse(endpoints['homeData']!);
+      final res = await getResponse(endpoints['homeData']!, useProxy: false);
       if (res.statusCode == 200) {
         final Map data = json.decode(res.body) as Map;
         result = await FormatResponse.formatHomePageData(data);
@@ -258,7 +259,7 @@ class SaavnAPI {
 
   Future<List<String>> getTopSearches() async {
     try {
-      final res = await getResponse(endpoints['topSearches']!, useProxy: true);
+      final res = await getResponse(endpoints['topSearches']!);
       if (res.statusCode == 200) {
         final List getMain = json.decode(res.body) as List;
         return getMain.map((element) {
@@ -280,7 +281,7 @@ class SaavnAPI {
         "p=$page&q=$searchQuery&n=$count&${endpoints['getResults']}";
 
     try {
-      final res = await getResponse(params, useProxy: true);
+      final res = await getResponse(params);
       if (res.statusCode == 200) {
         final Map getMain = json.decode(res.body) as Map;
         final List responseList = getMain['results'] as List;
@@ -317,7 +318,7 @@ class SaavnAPI {
     final String params =
         '__call=autocomplete.get&cc=in&includeMetaTags=1&query=$searchQuery';
 
-    final res = await getResponse(params, usev4: false, useProxy: true);
+    final res = await getResponse(params, usev4: false);
     if (res.statusCode == 200) {
       final getMain = json.decode(res.body);
       final List albumResponseList = getMain['albums']['data'] as List;
@@ -592,7 +593,7 @@ class SaavnAPI {
 
   Future<List> fetchTopSearchResult(String searchQuery) async {
     final String params = 'p=1&q=$searchQuery&n=10&${endpoints["getResults"]}';
-    final res = await getResponse(params, useProxy: true);
+    final res = await getResponse(params);
     if (res.statusCode == 200) {
       final getMain = json.decode(res.body);
       final List responseList = getMain['results'] as List;

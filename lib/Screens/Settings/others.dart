@@ -513,7 +513,7 @@ class _OthersPageState extends State<OthersPage> {
                 ),
                 dense: true,
                 trailing: Text(
-                  '${Hive.box('settings').get("proxyIp")}:${Hive.box('settings').get("proxyPort")}',
+                  '${Hive.box('settings').get("proxyIp", defaultValue: "103.47.67.134")}:${Hive.box('settings').get("proxyPort", defaultValue: 8080)}',
                   style: const TextStyle(fontSize: 12),
                 ),
                 onTap: () {
@@ -521,10 +521,14 @@ class _OthersPageState extends State<OthersPage> {
                     context: context,
                     builder: (BuildContext context) {
                       final controller = TextEditingController(
-                        text: settingsBox.get('proxyIp').toString(),
+                        text: settingsBox
+                            .get('proxyIp', defaultValue: '103.47.67.134')
+                            .toString(),
                       );
                       final controller2 = TextEditingController(
-                        text: settingsBox.get('proxyPort').toString(),
+                        text: settingsBox
+                            .get('proxyPort', defaultValue: 8080)
+                            .toString(),
                       );
                       return AlertDialog(
                         shape: RoundedRectangleBorder(

@@ -216,12 +216,6 @@ class _HomePageState extends State<HomePage> {
         }
       }
     });
-    if (Hive.box('settings').get('proxyIp') == null) {
-      Hive.box('settings').put('proxyIp', '103.47.67.134');
-    }
-    if (Hive.box('settings').get('proxyPort') == null) {
-      Hive.box('settings').put('proxyPort', 8080);
-    }
     downloadChecker();
   }
 

@@ -663,7 +663,7 @@
   "@useProxySub": {},
   "useSystemTheme": "Use System Theme",
   "@useSystemTheme": {},
-  "useVpn": "Not from India? Try using VPN with Indian Server",
+  "useVpn": "Not from India? Try using Proxy or VPN with Indian Server",
   "@useVpn": {},
   "version": "Version",
   "@version": {},

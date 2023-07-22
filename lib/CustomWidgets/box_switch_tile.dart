@@ -10,6 +10,7 @@ class BoxSwitchTile extends StatelessWidget {
     required this.defaultValue,
     this.isThreeLine,
     this.onChanged,
+    this.contentPadding,
   });
 
   final Text title;
@@ -17,6 +18,7 @@ class BoxSwitchTile extends StatelessWidget {
   final String keyName;
   final bool defaultValue;
   final bool? isThreeLine;
+  final EdgeInsetsGeometry? contentPadding;
   final Function({required bool val, required Box box})? onChanged;
 
   @override
@@ -26,6 +28,7 @@ class BoxSwitchTile extends StatelessWidget {
       builder: (BuildContext context, Box box, Widget? widget) {
         return SwitchListTile(
           activeColor: Theme.of(context).colorScheme.secondary,
+          contentPadding: contentPadding,
           title: title,
           subtitle: subtitle,
           isThreeLine: isThreeLine ?? false,

@@ -35,6 +35,9 @@ class ShowSnackBar {
           duration: duration,
           elevation: 6,
           backgroundColor: Colors.grey[900],
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
           behavior: SnackBarBehavior.floating,
           content: Text(
             title,
