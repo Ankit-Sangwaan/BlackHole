@@ -26,6 +26,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive/hive.dart';
+import 'package:sizer/sizer.dart';
 
 class PrefScreen extends StatefulWidget {
   const PrefScreen({super.key});
@@ -130,7 +131,7 @@ class _PrefScreenState extends State<PrefScreen> {
                                   text:
                                       '${AppLocalizations.of(context)!.welcome}\n',
                                   style: TextStyle(
-                                    fontSize: 65,
+                                    fontSize: 46.sp,
                                     height: 1.0,
                                     fontWeight: FontWeight.bold,
                                     color:
@@ -140,9 +141,9 @@ class _PrefScreenState extends State<PrefScreen> {
                                     TextSpan(
                                       text:
                                           AppLocalizations.of(context)!.aboard,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 75,
+                                        fontSize: 52.sp,
                                         color: Colors.white,
                                       ),
                                     ),
@@ -150,7 +151,7 @@ class _PrefScreenState extends State<PrefScreen> {
                                       text: '!\n',
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        fontSize: 70,
+                                        fontSize: 54.sp,
                                         color: Theme.of(context)
                                             .colorScheme
                                             .secondary,
@@ -159,10 +160,10 @@ class _PrefScreenState extends State<PrefScreen> {
                                     TextSpan(
                                       text:
                                           AppLocalizations.of(context)!.prefReq,
-                                      style: const TextStyle(
+                                      style: TextStyle(
                                         height: 1.5,
                                         fontWeight: FontWeight.w300,
-                                        fontSize: 20,
+                                        fontSize: 14.sp,
                                         color: Colors.white,
                                       ),
                                     ),

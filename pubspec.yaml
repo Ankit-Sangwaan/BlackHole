@@ -57,6 +57,7 @@ dependencies:
       ref: ecdadb0
   receive_sharing_intent: ^1.4.5
   share_plus: ^7.0.2
+  sizer: ^2.0.15
   sliding_up_panel: ^2.0.0+1
   url_launcher: ^6.1.11
   uuid: ^3.0.7
