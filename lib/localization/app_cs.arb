@@ -635,7 +635,7 @@
   "@useDown": {},
   "useProxySub": "Pokud nejste z Indie a máte problémy s vyhledáváním, jako například zobrazování pouze indických skladeb nebo žádných výsledků apod., můžete použít VPN s indickým serverem\n",
   "@useProxySub": {},
-  "useVpn": "Nejste z Indie? Zkuste použít VPN s indickým serverem",
+  "useVpn": "Nejste z Indie? Zkuste použít Proxy nebo VPN s indickým serverem",
   "@useVpn": {},
   "willPlayNext": "bude přehráváno jako další",
   "@willPlayNext": {},
