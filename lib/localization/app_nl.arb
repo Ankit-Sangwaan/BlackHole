@@ -605,7 +605,7 @@
   "@useProxy": {},
   "useSystemTheme": "Systeemthema gebruiken",
   "@useSystemTheme": {},
-  "useVpn": "Ben je niet woonachtig in India? Probeer dan een vpn met Indiase server!",
+  "useVpn": "Ben je niet woonachtig in India? Probeer dan een proxy of vpn met Indiase server!",
   "@useVpn": {},
   "version": "Versie",
   "@version": {},
