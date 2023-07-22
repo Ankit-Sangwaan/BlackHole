@@ -665,6 +665,9 @@ class _AppUIPageState extends State<AppUIPage> {
                   context: context,
                   builder: (BuildContext context) {
                     final List checked = List.from(sectionsToShow);
+                    sectionsAvailableToShow.removeWhere(
+                      (element) => element == 'Home',
+                    );
                     return StatefulBuilder(
                       builder: (
                         BuildContext context,

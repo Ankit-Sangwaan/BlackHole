@@ -59,6 +59,8 @@ Future<void> createBackup(
   if (savePath.trim() != '') {
     try {
       final saveDir = Directory(savePath);
+      final dirExists = await saveDir.exists();
+      if (!dirExists) saveDir.create(recursive: true);
       final List<File> files = [];
       final List boxNames = [];
 

@@ -60,11 +60,13 @@ class _MiniPlayerState extends State<MiniPlayer> {
           // if (mediaItem == null) return const SizedBox();
           return Dismissible(
             key: const Key('miniplayer'),
-            direction: DismissDirection.down,
+            direction: DismissDirection.vertical,
             confirmDismiss: (DismissDirection direction) {
               if (mediaItem != null) {
                 if (direction == DismissDirection.down) {
                   audioHandler.stop();
+                } else {
+                  Navigator.pushNamed(context, '/player');
                 }
               }
               return Future.value(false);
