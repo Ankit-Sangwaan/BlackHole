@@ -567,7 +567,7 @@
   "@useProxySub": {},
   "useSystemTheme": "Utiliser le thème du système",
   "@useSystemTheme": {},
-  "useVpn": "Vous ne venez pas d'Inde ? Essayez d'utiliser un RPV avec un serveur indien",
+  "useVpn": "Vous n'êtes pas en Inde ? Essayez d'utiliser un proxy ou un VPN avec un serveur indien",
   "@useVpn": {},
   "version": "Version",
   "@version": {},
