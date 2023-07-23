@@ -613,7 +613,7 @@
   "@supportEqSub": {},
   "updateAvailable": "¡Actualización disponible!",
   "@updateAvailable": {},
-  "useVpn": "¿No está en la India? Intente usar una VPN con un servidor en la India",
+  "useVpn": "¿No eres de la India? Prueba utilizando un proxy o una VPN con servidor indio",
   "@useVpn": {},
   "viewArtist": "Ver artista",
   "@viewArtist": {},
