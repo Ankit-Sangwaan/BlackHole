@@ -70,5 +70,15 @@
   "aboutLine2": "ನಿಮಗೆ ನನ್ನ ಕೆಲಸ ನಿಚ್ಚೆದಲ್ಲಿ ಕೆಲವು ♥ ಮತ್ತು ಭಂಡಾರವನ್ನು⭐ ಮಾಡಿ",
   "@aboutLine2": {},
   "accent": "ಉಚ್ಚಾರಣೆ ಬಣ್ಣ ಮತ್ತು ವರ್ಣ",
-  "@accent": {}
+  "@accent": {},
+  "blacklistHomeSections": "ಈ ಭಾಗವನ್ನು ಕಪ್ಪುಪಟ್ಟಿಗೆ ಸೇರಿಸಿ",
+  "@blacklistHomeSections": {},
+  "buyCoffee": "ನನಗೆ ಕಾಫಿಯನ್ನು ಖರೀದಿಸಿ",
+  "@buyCoffee": {},
+  "blacklistHomeSectionsConfirm": "ಈ ವಿಭಾಗವನ್ನು ನೀವು ಕಪ್ಪುಪಟ್ಟಿಗೆ ಸೇರಿಸಲು ಖಚಿತವಾಗಿರುವಿರಾ? ಒಮ್ಮೆ ಕಪ್ಪುಪಟ್ಟಿಗೆ ಸೇರಿಸಿದ ನಂತರ, ಅದನ್ನು ಹೋಮ್ ಸ್ಕ್ರೀನ್ ನಲ್ಲಿ ತೋರಿಸಲಾಗುವುದಿಲ್ಲ",
+  "@blacklistHomeSectionsConfirm": {},
+  "bottomGrad": "ಕೆಳಗಿನ ಶೀಟ್ ಗಳ ಗ್ರೇಡಿಯಂಟ್",
+  "@bottomGrad": {},
+  "ytStreamQualitySub": "ಒಳ್ಳೆಯ ಗುಣಮಟ್ಟ ಹೆಚ್ಚಿನ ಡಾಟಾವನ್ನು ಬಳಸುತ್ತದೆ",
+  "@ytStreamQualitySub": {}
 }
