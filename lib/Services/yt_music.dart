@@ -20,6 +20,7 @@
 import 'dart:convert';
 
 import 'package:blackhole/Helpers/extensions.dart';
+import 'package:blackhole/Models/song_item.dart';
 import 'package:blackhole/Services/ytmusic/nav.dart';
 import 'package:blackhole/Services/ytmusic/playlist.dart';
 import 'package:http/http.dart';
@@ -215,7 +216,10 @@ class YtMusicService {
     if (params != null) {
       return params;
     } else {
-      return '$param1$param2$param3';
+      if (param1 == null && param2 == null && param3 == null) {
+        return null;
+      }
+      return '${param1 ?? ""}${param2 ?? ""}${param3 ?? ""}';
     }
   }
 
@@ -334,6 +338,18 @@ class YtMusicService {
             } else {
               if (count == 0) {
                 type += element['text'].toString();
+                if (![
+                  'song',
+                  'video',
+                  'single',
+                  'album',
+                  'playlist',
+                  'artist',
+                  'profile',
+                ].contains(type.toLowerCase())) {
+                  type = 'unknown';
+                  count += 1;
+                }
               }
               if (count == 1) {
                 if (sectionTitle == 'Artists') {
@@ -402,6 +418,37 @@ class YtMusicService {
       return searchResults;
     } catch (e) {
       Logger.root.severe('Error in yt search', e);
+      return List.empty();
+    }
+  }
+
+  Future<List<SongItem>> searchSongs(
+    String query, {
+    bool ignoreSpelling = false,
+  }) async {
+    if (headers == null) {
+      await init();
+    }
+    try {
+      final searchResults = await search(
+        query,
+        ignoreSpelling: ignoreSpelling,
+        filter: 'songs',
+      );
+      final List<SongItem> songs = [];
+      for (final section in searchResults) {
+        if (section['title'] != 'Songs') {
+          continue;
+        }
+        for (final item in section['items'] as List) {
+          item['permaUrl'] = 'https://youtube.com/watch?v=${item["id"]}';
+          final songItem = SongItem.fromMap(item as Map);
+          songs.add(songItem);
+        }
+      }
+      return songs;
+    } catch (e) {
+      Logger.root.severe('Error in yt song search', e);
       return List.empty();
     }
   }

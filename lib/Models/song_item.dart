@@ -22,7 +22,7 @@ import 'dart:convert';
 class SongItem {
   final String id;
   final String album;
-  final String albumId;
+  final String? albumId;
   final List<String> artists;
   final List<Map<String, String>>? artistIds;
   final String? albumArtist;
@@ -31,14 +31,14 @@ class SongItem {
   final bool hasLyrics;
   final String image;
   final List allImages;
-  final String language;
-  final String releaseDate;
-  final String subtitle;
+  final String? language;
+  final String? releaseDate;
+  final String? subtitle;
   final String title;
-  final String url;
+  final String? url;
   final List<String> allUrls;
-  final int year;
-  final int quality;
+  final int? year;
+  final int? quality;
   final String permaUrl;
   final int expireAt;
   final bool isYt;
@@ -48,11 +48,12 @@ class SongItem {
   final bool isOffline;
   final bool addedByAutoplay;
   final bool kbps320;
+  final int likes;
 
   SongItem({
     required this.id,
     required this.album,
-    required this.albumId,
+    this.albumId,
     required this.artists,
     this.artistIds,
     this.albumArtist,
@@ -61,14 +62,14 @@ class SongItem {
     this.hasLyrics = false,
     required this.image,
     required this.allImages,
-    required this.language,
-    required this.releaseDate,
-    required this.subtitle,
+    this.language,
+    this.releaseDate,
+    this.subtitle,
     required this.title,
-    required this.url,
+    this.url,
     required this.allUrls,
-    required this.year,
-    required this.quality,
+    this.year,
+    this.quality,
     required this.permaUrl,
     required this.expireAt,
     required this.isYt,
@@ -78,39 +79,62 @@ class SongItem {
     this.isOffline = false,
     this.addedByAutoplay = false,
     this.kbps320 = false,
+    this.likes = 0,
   });
 
-  factory SongItem.fromMap(Map<String, dynamic> map) {
-    return SongItem(
-      id: map['id'].toString(),
-      album: map['album'].toString(),
-      artists: map['artists'] as List<String>,
-      duration: Duration(seconds: int.parse(map['duration'].toString())),
-      genre: map['genre'].toString(),
-      image: map['image'].toString(),
-      allImages: map['allImages'] as List,
-      language: map['language'].toString(),
-      releaseDate: map['releaseDate'].toString(),
-      subtitle: map['subtitle'].toString(),
-      title: map['title'].toString(),
-      url: map['url'].toString(),
-      allUrls: map['allUrls'] as List<String>,
-      year: int.parse(map['year'].toString()),
-      quality: int.parse(map['quality'].toString()),
-      permaUrl: map['permaUrl'].toString(),
-      expireAt: int.parse(map['expireAt']?.toString() ?? '0'),
-      lyrics: map['lyrics']?.toString() ?? '',
-      trackNumber: int.parse(map['trackNumber']?.toString() ?? '0'),
-      discNumber: int.parse(map['discNumber']?.toString() ?? '0'),
-      isOffline: map['isOffline'] as bool,
-      addedByAutoplay: map['addedByAutoplay'] as bool,
-      albumId: map['albumId'].toString(),
-      artistIds: map['artistIds'] as List<Map<String, String>>?,
-      isYt: map['isYt'] as bool,
-      kbps320: map['320kbps'] as bool,
-      albumArtist: map['albumArtist']?.toString(),
-      hasLyrics: map['hasLyrics'] as bool? ?? false,
-    );
+  factory SongItem.fromMap(Map<dynamic, dynamic> map) {
+    try {
+      final List<String> parts = map['duration'].toString().split(':');
+      int dur = 0;
+      for (int i = 0; i < parts.length; i++) {
+        dur += int.parse(parts[i]) * (60 ^ (parts.length - i - 1));
+      }
+      final songItem = SongItem(
+        id: map['id'].toString(),
+        album: map['album']?.toString() ?? '',
+        artists: map['artists'] as List<String>? ??
+            map['artist']?.split(',') as List<String>? ??
+            [],
+        duration: Duration(
+          seconds: dur,
+        ),
+        genre: map['genre'].toString(),
+        image: map['image'].toString(),
+        allImages: map['allImages'] as List? ??
+            map['allImages'] as List? ??
+            (map['image']?.toString() != null
+                ? [map['image']?.toString()]
+                : []),
+        language: map['language']?.toString(),
+        releaseDate: map['releaseDate']?.toString(),
+        subtitle: map['subtitle']?.toString(),
+        title: map['title'].toString(),
+        url: map['url']?.toString(),
+        allUrls: map['allUrls'] as List<String>? ??
+            ((map['url'] != null && map['url'] != '')
+                ? [map['url'].toString()]
+                : []),
+        year: int.tryParse(map['year'].toString()),
+        quality: int.tryParse(map['quality'].toString()),
+        permaUrl: map['permaUrl'].toString(),
+        expireAt: int.tryParse(map['expireAt'].toString()) ?? 0,
+        lyrics: map['lyrics']?.toString() ?? '',
+        trackNumber: int.tryParse(map['trackNumber'].toString()),
+        discNumber: int.tryParse(map['discNumber'].toString()),
+        isOffline: map['isOffline'] as bool? ?? false,
+        addedByAutoplay: map['addedByAutoplay'] as bool? ?? false,
+        albumId: map['albumId']?.toString(),
+        artistIds: map['artistIds'] as List<Map<String, String>>?,
+        isYt: map['isYt'] as bool? ?? false,
+        kbps320: map['320kbps'] as bool? ?? false,
+        albumArtist: map['albumArtist']?.toString(),
+        hasLyrics: map['hasLyrics'] as bool? ?? false,
+        likes: int.parse(map['likes']?.toString() ?? '0'),
+      );
+      return songItem;
+    } catch (e) {
+      throw Exception('Error parsing song item: $e');
+    }
   }
 
   factory SongItem.fromJson(String source) =>
@@ -146,6 +170,7 @@ class SongItem {
       '320kbps': kbps320,
       'albumArtist': albumArtist,
       'hasLyrics': hasLyrics,
+      'likes': likes,
     };
   }
 

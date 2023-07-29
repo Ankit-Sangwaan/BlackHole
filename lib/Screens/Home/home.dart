@@ -557,7 +557,7 @@ class _HomePageState extends State<HomePage> {
                 context,
                 controller: _controller,
                 itemCount: sectionsToShow.length,
-                navBarHeight: rotated ? 70 : 70 + 70,
+                navBarHeight: rotated ? 55 : 55 + 70,
                 // confineInSafeArea: false,
                 onItemTapped: onItemTapped,
                 routeAndNavigatorSettings:

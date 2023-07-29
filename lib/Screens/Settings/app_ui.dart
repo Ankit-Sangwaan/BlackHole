@@ -110,23 +110,23 @@ class _AppUIPageState extends State<AppUIPage> {
             //   defaultValue: true,
             //   isThreeLine: true,
             // ),
-            BoxSwitchTile(
-              title: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .useDenseMini,
-              ),
-              subtitle: Text(
-                AppLocalizations.of(
-                  context,
-                )!
-                    .useDenseMiniSub,
-              ),
-              keyName: 'useDenseMini',
-              defaultValue: false,
-              isThreeLine: false,
-            ),
+            // BoxSwitchTile(
+            //   title: Text(
+            //     AppLocalizations.of(
+            //       context,
+            //     )!
+            //         .useDenseMini,
+            //   ),
+            //   subtitle: Text(
+            //     AppLocalizations.of(
+            //       context,
+            //     )!
+            //         .useDenseMiniSub,
+            //   ),
+            //   keyName: 'useDenseMini',
+            //   defaultValue: false,
+            //   isThreeLine: false,
+            // ),
             ListTile(
               title: Text(
                 AppLocalizations.of(

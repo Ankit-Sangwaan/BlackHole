@@ -45,9 +45,9 @@ class _MiniPlayerState extends State<MiniPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double screenHeight = MediaQuery.of(context).size.height;
-    final bool rotated = screenHeight < screenWidth;
+    // final double screenWidth = MediaQuery.of(context).size.width;
+    // final double screenHeight = MediaQuery.of(context).size.height;
+    // final bool rotated = screenHeight < screenWidth;
     return SafeArea(
       top: false,
       child: StreamBuilder<MediaItem?>(
@@ -58,6 +58,15 @@ class _MiniPlayerState extends State<MiniPlayer> {
           // }
           final MediaItem? mediaItem = snapshot.data;
           // if (mediaItem == null) return const SizedBox();
+
+          final List preferredMiniButtons = Hive.box('settings').get(
+            'preferredMiniButtons',
+            defaultValue: ['Like', 'Play/Pause', 'Next'],
+          )?.toList() as List;
+
+          final bool isLocal =
+              mediaItem?.artUri?.toString().startsWith('file:') ?? false;
+
           return Dismissible(
             key: const Key('miniplayer'),
             direction: DismissDirection.vertical,
@@ -83,57 +92,38 @@ class _MiniPlayerState extends State<MiniPlayer> {
                 }
                 return Future.value(false);
               },
-              child: ValueListenableBuilder(
-                valueListenable: Hive.box('settings').listenable(),
-                child:
-                    positionSlider(mediaItem?.duration?.inSeconds.toDouble()),
-                builder: (BuildContext context, Box box1, Widget? child) {
-                  final bool useDense = box1.get(
-                        'useDenseMini',
-                        defaultValue: false,
-                      ) as bool ||
-                      rotated;
-                  final List preferredMiniButtons = Hive.box('settings').get(
-                    'preferredMiniButtons',
-                    defaultValue: ['Like', 'Play/Pause', 'Next'],
-                  )?.toList() as List;
-
-                  final bool isLocal =
-                      mediaItem?.artUri?.toString().startsWith('file:') ??
-                          false;
-
-                  return Card(
-                    margin: const EdgeInsets.symmetric(
-                      horizontal: 2.0,
-                      vertical: 1.0,
-                    ),
-                    elevation: 0,
-                    child: SizedBox(
-                      height: useDense ? 68.0 : 76.0,
-                      child: GradientContainer(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            miniplayerTile(
-                              context: context,
-                              preferredMiniButtons: preferredMiniButtons,
-                              useDense: useDense,
-                              title: mediaItem?.title ?? '',
-                              subtitle: mediaItem?.artist ?? '',
-                              imagePath: (isLocal
-                                      ? mediaItem?.artUri?.toFilePath()
-                                      : mediaItem?.artUri?.toString()) ??
-                                  '',
-                              isLocalImage: isLocal,
-                              isDummy: mediaItem == null,
-                            ),
-                            child!,
-                          ],
+              child: Card(
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 2.0,
+                  vertical: 1.0,
+                ),
+                elevation: 0,
+                child: SizedBox(
+                  height: 68.0,
+                  child: GradientContainer(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        miniplayerTile(
+                          context: context,
+                          preferredMiniButtons: preferredMiniButtons,
+                          useDense: true,
+                          title: mediaItem?.title ?? '',
+                          subtitle: mediaItem?.artist ?? '',
+                          imagePath: (isLocal
+                                  ? mediaItem?.artUri?.toFilePath()
+                                  : mediaItem?.artUri?.toString()) ??
+                              '',
+                          isLocalImage: isLocal,
+                          isDummy: mediaItem == null,
                         ),
-                      ),
+                        positionSlider(
+                          mediaItem?.duration?.inSeconds.toDouble(),
+                        ),
+                      ],
                     ),
-                  );
-                },
+                  ),
+                ),
               ),
             ),
           );

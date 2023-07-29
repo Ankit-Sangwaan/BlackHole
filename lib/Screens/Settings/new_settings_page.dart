@@ -168,7 +168,7 @@ class _NewSettingsPageState extends State<NewSettingsPage>
         'items': [
           AppLocalizations.of(context)!.playerScreenBackground,
           AppLocalizations.of(context)!.miniButtons,
-          AppLocalizations.of(context)!.useDenseMini,
+          // AppLocalizations.of(context)!.useDenseMini,
           AppLocalizations.of(context)!.blacklistedHomeSections,
           AppLocalizations.of(context)!.changeOrder,
           AppLocalizations.of(context)!.compactNotificationButtons,

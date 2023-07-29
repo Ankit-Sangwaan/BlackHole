@@ -22,6 +22,8 @@ import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/search_bar.dart' as searchbar;
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
+import 'package:blackhole/Helpers/extensions.dart';
+import 'package:blackhole/Screens/Common/song_list_view.dart';
 import 'package:blackhole/Screens/YouTube/youtube_artist.dart';
 import 'package:blackhole/Screens/YouTube/youtube_playlist.dart';
 import 'package:blackhole/Services/player_service.dart';
@@ -364,53 +366,90 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                               FontWeight.w800,
                                                         ),
                                                       ),
-                                                      //   if (section['title'] !=
-                                                      //       'Top Result')
-                                                      //     Row(
-                                                      //       mainAxisAlignment:
-                                                      //           MainAxisAlignment
-                                                      //               .end,
-                                                      //       children: [
-                                                      //         GestureDetector(
-                                                      //           onTap: () {},
-                                                      //           child: Row(
-                                                      //             children: [
-                                                      //               Text(
-                                                      //                 AppLocalizations
-                                                      //                         .of(
-                                                      //                   context,
-                                                      //                 )!
-                                                      //                     .viewAll,
-                                                      //                 style:
-                                                      //                     TextStyle(
-                                                      //                   color: Theme
-                                                      //                           .of(
-                                                      //                     context,
-                                                      //                   )
-                                                      //                       .textTheme
-                                                      //                       .caption!
-                                                      //                       .color,
-                                                      //                   fontWeight:
-                                                      //                       FontWeight
-                                                      //                           .w800,
-                                                      //                 ),
-                                                      //               ),
-                                                      //               Icon(
-                                                      //                 Icons
-                                                      //                     .chevron_right_rounded,
-                                                      //                 color: Theme
-                                                      //                         .of(
-                                                      //                   context,
-                                                      //                 )
-                                                      //                     .textTheme
-                                                      //                     .caption!
-                                                      //                     .color,
-                                                      //               ),
-                                                      //             ],
-                                                      //           ),
-                                                      //         ),
-                                                      //       ],
-                                                      //     ),
+                                                      if (section['title']
+                                                              .toString() ==
+                                                          // 'Top Result')
+                                                          'Songs')
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  PageRouteBuilder(
+                                                                    opaque:
+                                                                        false,
+                                                                    pageBuilder: (
+                                                                      _,
+                                                                      __,
+                                                                      ___,
+                                                                    ) =>
+                                                                        SongsListViewPage(
+                                                                      onTap: (
+                                                                        index,
+                                                                        listItems,
+                                                                      ) {},
+                                                                      title:
+                                                                          'Search Results',
+                                                                      subtitle:
+                                                                          '\nType: ${section['title']}\nSearched Text: "${(query == '' ? widget.query : query).capitalize()}"',
+                                                                      listItemsTitle:
+                                                                          section['title']
+                                                                              .toString(),
+                                                                      loadFunction:
+                                                                          () {
+                                                                        return YtMusicService()
+                                                                            .searchSongs(
+                                                                          query == ''
+                                                                              ? widget.query
+                                                                              : query,
+                                                                        );
+                                                                      },
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              },
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(
+                                                                    AppLocalizations
+                                                                            .of(
+                                                                      context,
+                                                                    )!
+                                                                        .viewAll,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Theme
+                                                                              .of(
+                                                                        context,
+                                                                      )
+                                                                          .textTheme
+                                                                          .bodySmall!
+                                                                          .color,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w800,
+                                                                    ),
+                                                                  ),
+                                                                  Icon(
+                                                                    Icons
+                                                                        .chevron_right_rounded,
+                                                                    color: Theme
+                                                                            .of(
+                                                                      context,
+                                                                    )
+                                                                        .textTheme
+                                                                        .bodySmall!
+                                                                        .color,
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
                                                     ],
                                                   ),
                                                 ),
