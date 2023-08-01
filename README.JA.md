@@ -14,24 +14,25 @@
 
 ## ダウンロード
 
-[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
-     alt="Get it on IzzyDroid"
-     height="100">](https://android.izzysoft.de/repo/apk/com.shadow.blackhole)
+[<img src="get_website.png"
+     alt="サイトからダウンロード"
+     height="90">](https://sangwan5688.github.io/download/)
+[<img src="get_github.png"
+     alt="GitHub からダウンロード"
+     height="90">](https://github.com/Sangwan5688/BlackHole/releases)
+[<img src="get_telegram.png"
+     alt="Telegram のチャンネルに参加"
+     height="90">](https://t.me/blackhole_official)
 [<img src="https://fdroid.gitlab.io/artwork/badge/get-it-on.png"
-     alt="Get it on F-Droid"
-     height="100">](https://f-droid.org/packages/com.shadow.blackhole/)
-
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[<img src="https://img.shields.io/badge/GitHub-181717?logo=github&logoColor=white"
-     alt="Download from GitHub"
-     height="60">](https://github.com/Sangwan5688/BlackHole/releases)
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-[<img src="https://img.shields.io/badge/Telegram-2CA5E0?logo=telegram&logoColor=white"
-     alt="Join Telegram Channel"
-     height="60">](https://t.me/blackhole_official)
+     alt="F-Droidから入手"
+     height="90">](https://f-droid.org/packages/com.shadow.blackhole/)
+[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
+     alt="IzzyDroidから入手"
+     height="90">](https://android.izzysoft.de/repo/apk/com.shadow.blackhole)
 
 ## 翻訳
 
+- [Turkish :tr:](/README.TR.md)
 - [English :uk:](/README.md)
 - [Spanish :es:](/README.ES.md)
 - [Russian :ru:](/README.RU.md)
@@ -45,41 +46,40 @@
 ## 特徴
 
 - 最高のストリーミング品質(320kbps aac)
-- 曲、アルバム、アーティスト、プレイリストの検索
-- 言語別のプロモートプレイリスト
-- トレンドソング
+- 曲、アルバム、アーティスト、再生リストの検索
+- 言語別におすすめされる再生リスト
+- 急上昇中の曲
 - アーティストとジャンルのラジオ
-- 15以上の音楽言語をサポート
-- ローカルおよびグローバルなSpotifyのトップソング
+- 15以上の音楽の言語に対応
+- 地域および国際的なSpotifyのランキング
 - お気に入りへの曲の追加
-- プレイリスト対応
-- SpotifyとYouTubeからプレイリストをインポート
-- プレイリストをJSONファイルとしてインポート/エクスポート
-- プレイリストの共有
+- 再生リストに対応
+- SpotifyとYouTubeから再生リストをインポート
+- 再生リストをJSONファイルとしてインポート/エクスポート
+- 再生リストの共有
 - スリープタイマー
-- 歌詞のサポート
-- キュー管理
+- 歌詞に対応
+- 再生キューの管理
 - 視聴履歴の記録
 - ダークモード/アクセントカラー
-- カスタムグラディエントなどテーマオプション
-- ポートレートモードだけでなく、ランドスケープモードにも対応
-- オフライン再生用ダウンロード（320kbps、ID3タグ付き）
+- グラデーションの指定やその他のテーマ用オプション
+- 縦向き画面だけでなく、横向きにも対応
+- オフライン再生用のダウンロード（320kbps、ID3タグ付き）
 - オンラインだけでなく、オフラインの曲も再生可能
 - タグの編集に対応
-- トレンド検索結果
-- YouTube検索サポート
-- YouTubeプレイリストのプロモート
-- ビデオをオーディオとして再生
-- 曲の自動レコメンド
+- 急上昇の曲を含む検索結果
+- YouTube検索に対応
+- YouTube再生リストをおすすめ
+- 動画を音声として再生
+- 曲の自動推薦
 - 内蔵イコライザー
-- バックアップ＆リストア
-- 自動更新チェック
+- バックアップ＆復元
+- 自動の更新チェック
 - キャッシュ対応
-- サブスクリプションなし
+- 購読料なし
 - 広告なし
 
-他にもまだまだ...
-ご自身でお確かめください:)
+他にもまだまだ... ご自身でお確かめください:)
 
 ## スクリーンショット
 
@@ -130,15 +130,15 @@ flutter pub get
 flutter run
 ```
 
-## コントリビュート
+## 貢献
 
-コントリビュートを歓迎します。コントリビュートする前に、[コントリビュートガイドライン](https://github.com/Sangwan5688/BlackHole/blob/main/CONTRIBUTING.md)をお読みください。
+貢献を歓迎します。先に[貢献ガイドライン](https://github.com/Sangwan5688/BlackHole/blob/main/CONTRIBUTING.md)をお読みください。
 
-## 何か問題がありますか？
+## 問題にお困りですか？
 
-お客様が直面する可能性のある[一般的な問題](https://github.com/Sangwan5688/BlackHole/wiki/Common-Issues)をご覧ください。もしあなたの問題がそこにない場合は、お気軽にIssueをご作成ください :)
+起こりうる[よくある問題](https://github.com/Sangwan5688/BlackHole/wiki/Common-Issues)をご覧ください。問題の回答が見つからなければ、お気軽にIssueを作成してください :)
 
-## ベータ版をテストしたいですか？ヘルプが必要ですか？？
+## ベータ版をテストしたいですか？助けが必要ですか？？
 
 [Telegramチャンネル](https://t.me/blackhole_official)または[Telegramグループ](https://t.me/joinchat/fHDC1AWnOhw0ZmI9)に参加すると、プロジェクトのベータ版アップデートを受け取ることができます。
 
@@ -148,4 +148,16 @@ flutter run
 
 ## 最新情報
 
-全てのchangelogは[wikiページ](https://github.com/Sangwan5688/BlackHole/wiki/Changelog)をご覧ください
+すべてのchangelogは[wikiページ](https://github.com/Sangwan5688/BlackHole/wiki/Changelog)をご覧ください
+
+## 免責条項
+```
+BlackHole does not own or have any affiliation with the songs and other content available through the app.
+All songs and other content are the property of their respective owners and are protected by copyright law.
+BlackHole is not responsible for any infringement of copyright or other intellectual property rights that may result
+from the use of the songs and other content available through the app. BlackHole uses third-party plugins and
+is not responsible for any harm or damage to the respective owners or any other parties resulting from the use
+of the songs and other content through the third-party plugins.
+By using the app, you agree to use the songs and other content only for personal, non-commercial purposes
+and in compliance with all applicable laws and regulations.
+```

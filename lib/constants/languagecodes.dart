@@ -32,6 +32,7 @@ class LanguageCodes {
     'Hungarian': 'hu',
     'Indonesian': 'id',
     'Italian': 'it',
+    'Japanese': 'ja',
     'Korean': 'ko',
     'Malayalam': 'ml',
     'Nepali': 'ne',
