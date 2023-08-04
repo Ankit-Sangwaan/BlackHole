@@ -709,7 +709,7 @@
   "@noFileSelected": {},
   "streamWifiQuality": "Qualité du flux (Wi-Fi)",
   "@streamWifiQuality": {},
-  "streamWifiQualitySub": "Il sera utilisé chaque fois que le Wi-Fi est connecté",
+  "streamWifiQualitySub": "Ceci sera utilisé chaque fois que le Wi-Fi est connecté",
   "@streamWifiQualitySub": {},
   "minFourRequired": "4 au minimum",
   "@minFourRequired": {},
