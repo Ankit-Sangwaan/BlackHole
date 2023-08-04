@@ -327,7 +327,7 @@
   "@useDenseMini": {},
   "useDenseMiniSub": "Höhe des Miniplayers wird reduziert",
   "@useDenseMiniSub": {},
-  "useVpn": "Nicht aus Indien? Versuche es mit VPN mit indischem Server",
+  "useVpn": "Nicht aus Indien? Versuche es mit einem Proxy oder einer VPN mit indischem Server",
   "@useVpn": {},
   "versionSub": "Tippe um nach Aktualisierugen zu suchen",
   "@versionSub": {},
