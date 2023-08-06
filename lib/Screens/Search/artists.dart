@@ -124,7 +124,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                         AppLocalizations.of(context)!.songs,
                     placeholderImage: 'assets/artist.png',
                     imageUrl: UrlImageGetter([widget.data['image'].toString()])
-                        .highQuality,
+                        .mediumQuality,
                     sliverList: SliverList(
                       delegate: SliverChildListDelegate(
                         [

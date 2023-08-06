@@ -265,7 +265,7 @@ class _SongsListPageState extends State<SongsListPage> {
                 ),
                 placeholderImage: 'assets/album.png',
                 imageUrl: UrlImageGetter([widget.listItem['image']?.toString()])
-                    .highQuality,
+                    .mediumQuality,
                 sliverList: SliverList(
                   delegate: SliverChildListDelegate([
                     if (songList.isNotEmpty)

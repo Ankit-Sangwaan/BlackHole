@@ -161,7 +161,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
         tag: 'currentArtwork',
         child: imageCard(
           elevation: 8,
-          boxDimension: useDense ? 40.0 : 55.0,
+          boxDimension: useDense ? 40.0 : 50.0,
           localImage: isLocalImage,
           imageUrl: isLocalImage ? imagePath : imagePath,
         ),

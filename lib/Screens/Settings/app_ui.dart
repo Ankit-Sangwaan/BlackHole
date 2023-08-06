@@ -884,6 +884,23 @@ class _AppUIPageState extends State<AppUIPage> {
               defaultValue: true,
               isThreeLine: true,
             ),
+            BoxSwitchTile(
+              title: Text(
+                AppLocalizations.of(
+                  context,
+                )!
+                    .useLessDataImage,
+              ),
+              subtitle: Text(
+                AppLocalizations.of(
+                  context,
+                )!
+                    .useLessDataImageSub,
+              ),
+              keyName: 'enableImageOptimization',
+              defaultValue: false,
+              isThreeLine: true,
+            ),
           ],
         ),
       ),

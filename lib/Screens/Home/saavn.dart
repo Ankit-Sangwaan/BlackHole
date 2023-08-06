@@ -23,18 +23,18 @@ import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/CustomWidgets/collage.dart';
 import 'package:blackhole/CustomWidgets/horizontal_albumlist.dart';
 import 'package:blackhole/CustomWidgets/horizontal_albumlist_separated.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/like_button.dart';
 import 'package:blackhole/CustomWidgets/on_hover.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Helpers/extensions.dart';
 import 'package:blackhole/Helpers/format.dart';
-import 'package:blackhole/Models/url_image_generator.dart';
+import 'package:blackhole/Models/image_quality.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Library/liked.dart';
 import 'package:blackhole/Screens/Search/artists.dart';
 import 'package:blackhole/Services/player_service.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -600,51 +600,28 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                               backgroundColor:
                                                   Colors.transparent,
                                               contentPadding: EdgeInsets.zero,
-                                              content: Card(
-                                                elevation: 5,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                    item['type'] ==
-                                                            'radio_station'
-                                                        ? 1000.0
-                                                        : 15.0,
-                                                  ),
-                                                ),
-                                                clipBehavior: Clip.antiAlias,
-                                                child: CachedNetworkImage(
-                                                  fit: BoxFit.cover,
-                                                  errorWidget:
-                                                      (context, _, __) =>
-                                                          const Image(
-                                                    fit: BoxFit.cover,
-                                                    image: AssetImage(
-                                                      'assets/cover.jpg',
-                                                    ),
-                                                  ),
-                                                  imageUrl: UrlImageGetter([
-                                                    item['image'].toString()
-                                                  ]).highQuality,
-                                                  placeholder: (context, url) =>
-                                                      Image(
-                                                    fit: BoxFit.cover,
-                                                    image: (item['type'] ==
-                                                                'playlist' ||
-                                                            item['type'] ==
-                                                                'album')
+                                              content: imageCard(
+                                                borderRadius: item['type'] ==
+                                                        'radio_station'
+                                                    ? 1000.0
+                                                    : 15.0,
+                                                imageUrl:
+                                                    item['image'].toString(),
+                                                imageQuality: ImageQuality.high,
+                                                placeholderImage: (item[
+                                                                'type'] ==
+                                                            'playlist' ||
+                                                        item['type'] == 'album')
+                                                    ? const AssetImage(
+                                                        'assets/album.png',
+                                                      )
+                                                    : item['type'] == 'artist'
                                                         ? const AssetImage(
-                                                            'assets/album.png',
+                                                            'assets/artist.png',
                                                           )
-                                                        : item['type'] ==
-                                                                'artist'
-                                                            ? const AssetImage(
-                                                                'assets/artist.png',
-                                                              )
-                                                            : const AssetImage(
-                                                                'assets/cover.jpg',
-                                                              ),
-                                                  ),
-                                                ),
+                                                        : const AssetImage(
+                                                            'assets/cover.jpg',
+                                                          ),
                                               ),
                                             ),
                                           ],
@@ -719,31 +696,16 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                 child: SizedBox(
                                   width: boxSize - 30,
                                   child: HoverBox(
-                                    child: Card(
-                                      elevation: 5,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
+                                    child: imageCard(
+                                      margin: const EdgeInsets.all(4.0),
+                                      borderRadius:
                                           item['type'] == 'radio_station'
                                               ? 1000.0
                                               : 10.0,
-                                        ),
-                                      ),
-                                      clipBehavior: Clip.antiAlias,
-                                      child: CachedNetworkImage(
-                                        fit: BoxFit.cover,
-                                        errorWidget: (context, _, __) =>
-                                            const Image(
-                                          fit: BoxFit.cover,
-                                          image: AssetImage(
-                                            'assets/cover.jpg',
-                                          ),
-                                        ),
-                                        imageUrl: UrlImageGetter(
-                                          [item['image'].toString()],
-                                        ).highQuality,
-                                        placeholder: (context, url) => Image(
-                                          fit: BoxFit.cover,
-                                          image: (item['type'] == 'playlist' ||
+                                      imageUrl: item['image'].toString(),
+                                      imageQuality: ImageQuality.medium,
+                                      placeholderImage:
+                                          (item['type'] == 'playlist' ||
                                                   item['type'] == 'album')
                                               ? const AssetImage(
                                                   'assets/album.png',
@@ -755,8 +717,6 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                                   : const AssetImage(
                                                       'assets/cover.jpg',
                                                     ),
-                                        ),
-                                      ),
                                     ),
                                     builder: ({
                                       required BuildContext context,

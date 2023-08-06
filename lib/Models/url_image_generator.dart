@@ -1,7 +1,12 @@
 import 'package:blackhole/Models/image_quality.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class UrlImageGetter {
   final List<String?> _imageUrls;
+  final _enableImageOptimization = Hive.box('settings').get(
+    'enableImageOptimization',
+    defaultValue: false,
+  ) as bool;
 
   UrlImageGetter(this._imageUrls);
 
@@ -19,7 +24,22 @@ class UrlImageGetter {
     if (_imageUrls.isEmpty) return '';
     final length = _imageUrls.length;
 
-    switch (quality) {
+    ImageQuality? imageQuality = quality;
+
+    if (_enableImageOptimization == false) {
+      switch (imageQuality) {
+        case ImageQuality.low:
+          imageQuality = ImageQuality.medium;
+          break;
+        case ImageQuality.medium:
+          imageQuality = ImageQuality.high;
+          break;
+        default:
+          imageQuality = ImageQuality.high;
+      }
+    }
+
+    switch (imageQuality) {
       case ImageQuality.high:
         return length == 1
             ? _imageUrls.first!

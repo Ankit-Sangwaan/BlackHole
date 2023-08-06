@@ -134,7 +134,7 @@ class HorizontalAlbumsList extends StatelessWidget {
                       : 10.0,
                   imageUrl: item['image'].toString(),
                   boxDimension: double.infinity,
-                  imageQuality: ImageQuality.high,
+                  imageQuality: ImageQuality.medium,
                   placeholderImage:
                       (item['type'] == 'playlist' || item['type'] == 'album')
                           ? const AssetImage(

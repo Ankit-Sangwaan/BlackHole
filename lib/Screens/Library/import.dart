@@ -20,13 +20,13 @@
 import 'package:app_links/app_links.dart';
 import 'package:blackhole/APIs/spotify_api.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/textinput_dialog.dart';
 import 'package:blackhole/Helpers/import_export_playlist.dart';
 import 'package:blackhole/Helpers/playlist.dart';
 import 'package:blackhole/Helpers/search_add_playlist.dart';
 import 'package:blackhole/Helpers/spotify_helper.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -464,29 +464,12 @@ Future<void> fetchPlaylists(
                           ? '$playTotal ${AppLocalizations.of(context)!.song}'
                           : '$playTotal ${AppLocalizations.of(context)!.songs}',
                     ),
-                    leading: Card(
-                      margin: EdgeInsets.zero,
-                      elevation: 8,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7.0),
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      child:
+                    leading: imageCard(
+                      imageUrl:
                           (spotifyPlaylists[idx - 1]['images'] as List).isEmpty
-                              ? Image.asset('assets/cover.jpg')
-                              : CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  errorWidget: (context, _, __) => const Image(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage('assets/cover.jpg'),
-                                  ),
-                                  imageUrl:
-                                      '${spotifyPlaylists[idx - 1]["images"][0]['url'].replaceAll('http:', 'https:')}',
-                                  placeholder: (context, url) => const Image(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage('assets/cover.jpg'),
-                                  ),
-                                ),
+                              ? ''
+                              : spotifyPlaylists[idx - 1]['images'][0]['url']
+                                  .toString(),
                     ),
                     onTap: () async {
                       Navigator.pop(context);
