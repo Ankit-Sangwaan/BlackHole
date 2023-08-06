@@ -84,12 +84,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       // collapseMode: CollapseMode.parallax,
                       background: GestureDetector(
                         onTap: () async {
-                          await showTextInputDialog(
+                          showTextInputDialog(
                             context: context,
                             title: 'Name',
                             initialText: name,
                             keyboardType: TextInputType.name,
-                            onSubmitted: (value) {
+                            onSubmitted: (String value, BuildContext context) {
                               Hive.box('settings').put(
                                 'name',
                                 value.trim(),

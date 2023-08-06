@@ -353,7 +353,7 @@ class _OthersPageState extends State<OthersPage> {
                           .get('minDuration', defaultValue: 10) as int)
                       .toString(),
                   keyboardType: TextInputType.number,
-                  onSubmitted: (String value) {
+                  onSubmitted: (String value, BuildContext context) {
                     if (value.trim() == '') {
                       value = '0';
                     }

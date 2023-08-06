@@ -177,12 +177,12 @@ class _PlayScreenState extends State<PlayScreen> {
   }
 
   Future<dynamic> setCounter() async {
-    await showTextInputDialog(
+    showTextInputDialog(
       context: context,
       title: AppLocalizations.of(context)!.enterSongsCount,
       initialText: '',
       keyboardType: TextInputType.number,
-      onSubmitted: (String value) {
+      onSubmitted: (String value, BuildContext context) {
         sleepCounter(
           int.parse(value),
         );

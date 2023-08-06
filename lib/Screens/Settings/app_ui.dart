@@ -544,7 +544,8 @@ class _AppUIPageState extends State<AppUIPage> {
                                       )!
                                           .enterText,
                                       keyboardType: TextInputType.text,
-                                      onSubmitted: (String value) {
+                                      onSubmitted:
+                                          (String value, BuildContext context) {
                                         Navigator.pop(context);
                                         blacklistedHomeSections.add(
                                           value.trim().toLowerCase(),

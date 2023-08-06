@@ -198,12 +198,12 @@ Future<void> importYt(
   List playlistNames,
   Box settingsBox,
 ) async {
-  await showTextInputDialog(
+  showTextInputDialog(
     context: context,
     title: AppLocalizations.of(context)!.enterPlaylistLink,
     initialText: '',
     keyboardType: TextInputType.url,
-    onSubmitted: (value) async {
+    onSubmitted: (String value, BuildContext context) async {
       final String link = value.trim();
       Navigator.pop(context);
       final Map data = await SearchAddPlaylist.addYtPlaylist(link);
@@ -253,12 +253,12 @@ Future<void> importResso(
   List playlistNames,
   Box settingsBox,
 ) async {
-  await showTextInputDialog(
+  showTextInputDialog(
     context: context,
     title: AppLocalizations.of(context)!.enterPlaylistLink,
     initialText: '',
     keyboardType: TextInputType.url,
-    onSubmitted: (value) async {
+    onSubmitted: (String value, BuildContext context) async {
       final String link = value.trim();
       Navigator.pop(context);
       final Map data = await SearchAddPlaylist.addRessoPlaylist(link);
@@ -346,12 +346,12 @@ Future<void> importSpotifyViaLink(
   Box settingsBox,
   String accessToken,
 ) async {
-  await showTextInputDialog(
+  showTextInputDialog(
     context: context,
     title: AppLocalizations.of(context)!.enterPlaylistLink,
     initialText: '',
     keyboardType: TextInputType.url,
-    onSubmitted: (String value) async {
+    onSubmitted: (String value, BuildContext context) async {
       Navigator.pop(context);
       final String playlistId = value.split('?')[0].split('/').last;
       final playlistName = AppLocalizations.of(context)!.spotifyPublic;
@@ -372,12 +372,12 @@ Future<void> importJioSaavn(
   List playlistNames,
   Box settingsBox,
 ) async {
-  await showTextInputDialog(
+  showTextInputDialog(
     context: context,
     title: AppLocalizations.of(context)!.enterPlaylistLink,
     initialText: '',
     keyboardType: TextInputType.url,
-    onSubmitted: (value) async {
+    onSubmitted: (String value, BuildContext context) async {
       final String link = value.trim();
       Navigator.pop(context);
       final Map data = await SearchAddPlaylist.addJioSaavnPlaylist(

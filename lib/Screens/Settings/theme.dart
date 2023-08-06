@@ -955,7 +955,7 @@ class _ThemePageState extends State<ThemePage> {
                       context,
                     )!
                         .enterThemeName,
-                    onSubmitted: (value) {
+                    onSubmitted: (String value, BuildContext context) {
                       if (value == '') return;
                       currentTheme.saveTheme(value);
                       currentTheme.setInitialTheme(value);

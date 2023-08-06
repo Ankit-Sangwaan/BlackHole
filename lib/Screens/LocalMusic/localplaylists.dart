@@ -65,12 +65,12 @@ class _LocalPlaylistsState extends State<LocalPlaylists> {
               ),
             ),
             onTap: () async {
-              await showTextInputDialog(
+              showTextInputDialog(
                 context: context,
                 title: AppLocalizations.of(context)!.createNewPlaylist,
                 initialText: '',
                 keyboardType: TextInputType.name,
-                onSubmitted: (String value) async {
+                onSubmitted: (String value, BuildContext context) async {
                   if (value.trim() != '') {
                     Navigator.pop(context);
                     await widget.offlineAudioQuery.createPlaylist(

@@ -80,12 +80,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                   ),
                 ),
                 onTap: () async {
-                  await showTextInputDialog(
+                  showTextInputDialog(
                     context: context,
                     title: AppLocalizations.of(context)!.createNewPlaylist,
                     initialText: '',
                     keyboardType: TextInputType.name,
-                    onSubmitted: (String value) async {
+                    onSubmitted: (String value, BuildContext context) async {
                       final RegExp avoid = RegExp(r'[\.\\\*\:\"\?#/;\|]');
                       value.replaceAll(avoid, '').replaceAll('  ', ' ');
                       if (value.trim() == '') {

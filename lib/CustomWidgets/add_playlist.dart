@@ -67,7 +67,7 @@ class AddToOffPlaylist {
                       context: context,
                       keyboardType: TextInputType.text,
                       title: AppLocalizations.of(context)!.createNewPlaylist,
-                      onSubmitted: (String value) async {
+                      onSubmitted: (String value, BuildContext context) async {
                         await offlineAudioQuery.createPlaylist(name: value);
                         playlistDetails =
                             await offlineAudioQuery.getPlaylists();
@@ -177,7 +177,7 @@ class AddToPlaylist {
                       context: context,
                       keyboardType: TextInputType.name,
                       title: AppLocalizations.of(context)!.createNewPlaylist,
-                      onSubmitted: (String value) async {
+                      onSubmitted: (String value, BuildContext context) async {
                         final RegExp avoid = RegExp(r'[\.\\\*\:\"\?#/;\|]');
                         value.replaceAll(avoid, '').replaceAll('  ', ' ');
                         if (value.trim() == '') {
