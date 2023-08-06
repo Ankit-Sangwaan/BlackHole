@@ -565,7 +565,7 @@
   "@trendingSearch": {},
   "ui": "מנשק המשתמש של היישומון",
   "@ui": {},
-  "undo": "ביטול",
+  "undo": "החזרה",
   "@undo": {},
   "unknown": "לא ידוע",
   "@unknown": {},
@@ -702,5 +702,9 @@
   "navTabs": "לשוניות סרגל ניווט",
   "@navTabs": {},
   "navTabsSub": "לשוניות שתופענה בתחתית סרגל הניווט",
-  "@navTabsSub": {}
+  "@navTabsSub": {},
+  "useLessDataImage": "להשתמש בפחות תעבורה לתמונות",
+  "@useLessDataImage": {},
+  "useLessDataImageSub": "הגדרה זו תצמצם את איכות התמונות ביישומון כדי לחסוך בתעבורה",
+  "@useLessDataImageSub": {}
 }
