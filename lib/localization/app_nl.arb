@@ -714,5 +714,9 @@
   "minFourRequired": "Min. 4 vereist",
   "@minFourRequired": {},
   "navTabsSub": "De tabbladen die op de onderste navigatiebalk dienen te worden getoond",
-  "@navTabsSub": {}
+  "@navTabsSub": {},
+  "useLessDataImage": "Minder mb's gebruiken voor afbeeldingen",
+  "@useLessDataImage": {},
+  "useLessDataImageSub": "Hierdoor wordt de afbeeldingskwaliteit beperkt, maar bespaar je mb's",
+  "@useLessDataImageSub": {}
 }
