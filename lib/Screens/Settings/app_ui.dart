@@ -31,14 +31,14 @@ class _AppUIPageState extends State<AppUIPage> {
     'preferredCompactNotificationButtons',
     defaultValue: [1, 2, 3],
   ) as List<int>;
-  List<String> sectionsToShow = Hive.box('settings').get(
+  List sectionsToShow = Hive.box('settings').get(
     'sectionsToShow',
     defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
-  ) as List<String>;
-  final List<String> sectionsAvailableToShow = Hive.box('settings').get(
+  ) as List;
+  final List sectionsAvailableToShow = Hive.box('settings').get(
     'sectionsAvailableToShow',
     defaultValue: ['Top Charts', 'YouTube', 'Library', 'Settings'],
-  ) as List<String>;
+  ) as List;
 
   @override
   Widget build(BuildContext context) {
@@ -736,7 +736,7 @@ class _AppUIPageState extends State<AppUIPage> {
                               ),
                               children: sectionsAvailableToShow.map((e) {
                                 return Row(
-                                  key: Key(e),
+                                  key: Key(e.toString()),
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
                                     ReorderableDragStartListener(
@@ -762,7 +762,7 @@ class _AppUIPageState extends State<AppUIPage> {
                                               ? Colors.black
                                               : null,
                                           value: checked.contains(e),
-                                          title: Text(e),
+                                          title: Text(e.toString()),
                                           onChanged: persist.contains(e)
                                               ? null
                                               : (bool? value) {
@@ -820,7 +820,7 @@ class _AppUIPageState extends State<AppUIPage> {
                                     Theme.of(context).colorScheme.secondary,
                               ),
                               onPressed: () {
-                                final List<String> newSectionsToShow = ['Home'];
+                                final List newSectionsToShow = ['Home'];
                                 int remaining = 4 - checked.length;
                                 for (int i = 0;
                                     i < sectionsAvailableToShow.length;
