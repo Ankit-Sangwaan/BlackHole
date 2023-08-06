@@ -17,12 +17,10 @@
  * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
-import 'dart:io';
-
 import 'package:audio_service/audio_service.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/Screens/Player/audioplayer.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -107,7 +105,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                         miniplayerTile(
                           context: context,
                           preferredMiniButtons: preferredMiniButtons,
-                          useDense: true,
+                          // useDense: true,
                           title: mediaItem?.title ?? '',
                           subtitle: mediaItem?.artist ?? '',
                           imagePath: (isLocal
@@ -161,60 +159,11 @@ class _MiniPlayerState extends State<MiniPlayer> {
       ),
       leading: Hero(
         tag: 'currentArtwork',
-        child: Card(
+        child: imageCard(
           elevation: 8,
-          margin: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7.0),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: SizedBox.square(
-            dimension: useDense ? 40.0 : 50.0,
-            child: isLocalImage
-                ? Image(
-                    fit: BoxFit.cover,
-                    image: FileImage(
-                      File(imagePath),
-                    ),
-                    errorBuilder: (
-                      context,
-                      error,
-                      stackTrace,
-                    ) {
-                      return const Image(
-                        fit: BoxFit.cover,
-                        image: AssetImage(
-                          'assets/cover.jpg',
-                        ),
-                      );
-                    },
-                  )
-                : CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    errorWidget: (
-                      BuildContext context,
-                      _,
-                      __,
-                    ) =>
-                        const Image(
-                      fit: BoxFit.cover,
-                      image: AssetImage(
-                        'assets/cover.jpg',
-                      ),
-                    ),
-                    placeholder: (
-                      BuildContext context,
-                      _,
-                    ) =>
-                        const Image(
-                      fit: BoxFit.cover,
-                      image: AssetImage(
-                        'assets/cover.jpg',
-                      ),
-                    ),
-                    imageUrl: imagePath,
-                  ),
-          ),
+          boxDimension: useDense ? 40.0 : 55.0,
+          localImage: isLocalImage,
+          imageUrl: isLocalImage ? imagePath : imagePath,
         ),
       ),
       trailing: isDummy

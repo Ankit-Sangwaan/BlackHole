@@ -17,13 +17,11 @@
  * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
-import 'dart:io';
-
 import 'package:blackhole/CustomWidgets/download_button.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Helpers/audio_query.dart';
 import 'package:blackhole/Services/player_service.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -259,39 +257,11 @@ class DownloadsSearch extends SearchDelegate {
       itemExtent: 70.0,
       itemCount: suggestionList.length,
       itemBuilder: (context, index) => ListTile(
-        leading: Card(
-          elevation: 5,
-          margin: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7.0),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: SizedBox.square(
-            dimension: 50,
-            child: isDowns
-                ? Image(
-                    fit: BoxFit.cover,
-                    image: FileImage(
-                      File(suggestionList[index]['image'].toString()),
-                    ),
-                    errorBuilder: (_, __, ___) =>
-                        Image.asset('assets/cover.jpg'),
-                  )
-                : CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    errorWidget: (context, _, __) => const Image(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/cover.jpg'),
-                    ),
-                    imageUrl: suggestionList[index]['image']
-                        .toString()
-                        .replaceAll('http:', 'https:'),
-                    placeholder: (context, url) => const Image(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/cover.jpg'),
-                    ),
-                  ),
-          ),
+        leading: imageCard(
+          imageUrl: isDowns
+              ? suggestionList[index]['image'].toString()
+              : suggestionList[index]['image'].toString(),
+          localImage: isDowns,
         ),
         title: Text(
           suggestionList[index]['title'].toString(),
@@ -356,39 +326,11 @@ class DownloadsSearch extends SearchDelegate {
       itemExtent: 70.0,
       itemCount: suggestionList.length,
       itemBuilder: (context, index) => ListTile(
-        leading: Card(
-          elevation: 5,
-          margin: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(7.0),
-          ),
-          clipBehavior: Clip.antiAlias,
-          child: SizedBox.square(
-            dimension: 50,
-            child: isDowns
-                ? Image(
-                    fit: BoxFit.cover,
-                    image: FileImage(
-                      File(suggestionList[index]['image'].toString()),
-                    ),
-                    errorBuilder: (_, __, ___) =>
-                        Image.asset('assets/cover.jpg'),
-                  )
-                : CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    errorWidget: (context, _, __) => const Image(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/cover.jpg'),
-                    ),
-                    imageUrl: suggestionList[index]['image']
-                        .toString()
-                        .replaceAll('http:', 'https:'),
-                    placeholder: (context, url) => const Image(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/cover.jpg'),
-                    ),
-                  ),
-          ),
+        leading: imageCard(
+          imageUrl: isDowns
+              ? suggestionList[index]['image'].toString()
+              : suggestionList[index]['image'].toString(),
+          localImage: isDowns,
         ),
         title: Text(
           suggestionList[index]['title'].toString(),

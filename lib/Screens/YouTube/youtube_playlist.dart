@@ -20,12 +20,12 @@
 import 'package:blackhole/CustomWidgets/bouncy_playlist_header_scroll_view.dart';
 import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/playlist_popupmenu.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
 import 'package:blackhole/Services/yt_music.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logging/logging.dart';
@@ -232,36 +232,8 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                             child: ListTile(
                               leading: widget.type == 'album'
                                   ? null
-                                  : Card(
-                                      margin: EdgeInsets.zero,
-                                      elevation: 8,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          5.0,
-                                        ),
-                                      ),
-                                      clipBehavior: Clip.antiAlias,
-                                      child: SizedBox.square(
-                                        dimension: 50,
-                                        child: CachedNetworkImage(
-                                          fit: BoxFit.cover,
-                                          errorWidget: (context, _, __) =>
-                                              const Image(
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(
-                                              'assets/cover.jpg',
-                                            ),
-                                          ),
-                                          imageUrl: entry['image'].toString(),
-                                          placeholder: (context, url) =>
-                                              const Image(
-                                            fit: BoxFit.cover,
-                                            image: AssetImage(
-                                              'assets/cover.jpg',
-                                            ),
-                                          ),
-                                        ),
-                                      ),
+                                  : imageCard(
+                                      imageUrl: entry['image'].toString(),
                                     ),
                               title: Text(
                                 entry['title'].toString(),

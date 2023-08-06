@@ -29,7 +29,7 @@ import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Helpers/extensions.dart';
 import 'package:blackhole/Helpers/format.dart';
-import 'package:blackhole/Helpers/image_resolution_modifier.dart';
+import 'package:blackhole/Models/url_image_generator.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Library/liked.dart';
 import 'package:blackhole/Screens/Search/artists.dart';
@@ -622,9 +622,9 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                                       'assets/cover.jpg',
                                                     ),
                                                   ),
-                                                  imageUrl: getImageUrl(
-                                                    item['image'].toString(),
-                                                  ),
+                                                  imageUrl: UrlImageGetter([
+                                                    item['image'].toString()
+                                                  ]).highQuality,
                                                   placeholder: (context, url) =>
                                                       Image(
                                                     fit: BoxFit.cover,
@@ -738,9 +738,9 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                             'assets/cover.jpg',
                                           ),
                                         ),
-                                        imageUrl: getImageUrl(
-                                          item['image'].toString(),
-                                        ),
+                                        imageUrl: UrlImageGetter(
+                                          [item['image'].toString()],
+                                        ).highQuality,
                                         placeholder: (context, url) => Image(
                                           fit: BoxFit.cover,
                                           image: (item['type'] == 'playlist' ||

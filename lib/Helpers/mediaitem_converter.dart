@@ -18,8 +18,8 @@
  */
 
 import 'package:audio_service/audio_service.dart';
-import 'package:blackhole/Helpers/image_resolution_modifier.dart';
 import 'package:blackhole/Models/song_item.dart';
+import 'package:blackhole/Models/url_image_generator.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 // ignore: avoid_classes_with_only_static_members
@@ -70,7 +70,7 @@ class MediaItemConverter {
       ),
       title: song['title'].toString(),
       artUri: Uri.parse(
-        getImageUrl(song['image'].toString()),
+        UrlImageGetter([song['image'].toString()]).highQuality,
       ),
       genre: song['language'].toString(),
       extras: {
@@ -136,7 +136,7 @@ class MediaItemConverter {
       duration: songItem.duration,
       title: songItem.title,
       artUri: Uri.parse(
-        getImageUrl(songItem.image),
+        UrlImageGetter([songItem.image]).highQuality,
       ),
       genre: songItem.genre,
       extras: {

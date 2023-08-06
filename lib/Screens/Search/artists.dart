@@ -25,14 +25,14 @@ import 'package:blackhole/CustomWidgets/download_button.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/horizontal_albumlist.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/like_button.dart';
 import 'package:blackhole/CustomWidgets/playlist_popupmenu.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
-import 'package:blackhole/Helpers/image_resolution_modifier.dart';
+import 'package:blackhole/Models/url_image_generator.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Services/player_service.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:share_plus/share_plus.dart';
@@ -123,7 +123,8 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                     title: widget.data['title']?.toString() ??
                         AppLocalizations.of(context)!.songs,
                     placeholderImage: 'assets/artist.png',
-                    imageUrl: getImageUrl(widget.data['image'].toString()),
+                    imageUrl: UrlImageGetter([widget.data['image'].toString()])
+                        .highQuality,
                     sliverList: SliverList(
                       delegate: SliverChildListDelegate(
                         [
@@ -573,45 +574,17 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
                                             '${entry.value[index]["subtitle"]}',
                                             overflow: TextOverflow.ellipsis,
                                           ),
-                                          leading: Card(
-                                            margin: EdgeInsets.zero,
-                                            elevation: 8,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                7.0,
-                                              ),
+                                          leading: imageCard(
+                                            placeholderImage: AssetImage(
+                                              (entry.key == 'Top Songs' ||
+                                                      entry.key ==
+                                                          'Latest Release')
+                                                  ? 'assets/cover.jpg'
+                                                  : 'assets/album.png',
                                             ),
-                                            clipBehavior: Clip.antiAlias,
-                                            child: CachedNetworkImage(
-                                              fit: BoxFit.cover,
-                                              errorWidget: (context, _, __) =>
-                                                  Image(
-                                                fit: BoxFit.cover,
-                                                image: AssetImage(
-                                                  (entry.key == 'Top Songs' ||
-                                                          entry.key ==
-                                                              'Latest Release')
-                                                      ? 'assets/cover.jpg'
-                                                      : 'assets/album.png',
-                                                ),
-                                              ),
-                                              imageUrl:
-                                                  '${entry.value[index]["image"].replaceAll('http:', 'https:')}',
-                                              placeholder: (context, url) =>
-                                                  Image(
-                                                fit: BoxFit.cover,
-                                                image: AssetImage(
-                                                  (entry.key == 'Top Songs' ||
-                                                          entry.key ==
-                                                              'Latest Release' ||
-                                                          entry.key ==
-                                                              'Singles')
-                                                      ? 'assets/cover.jpg'
-                                                      : 'assets/album.png',
-                                                ),
-                                              ),
-                                            ),
+                                            imageUrl: entry.value[index]
+                                                    ['image']
+                                                .toString(),
                                           ),
                                           trailing: (entry.key == 'Top Songs' ||
                                                   entry.key ==

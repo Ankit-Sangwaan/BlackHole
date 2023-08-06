@@ -17,11 +17,9 @@
  * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
-import 'dart:io';
-
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/Services/player_service.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
@@ -242,53 +240,11 @@ class _SongsListState extends State<SongsList> {
                   return _songs.isEmpty
                       ? const SizedBox()
                       : ListTile(
-                          leading: Card(
-                            margin: EdgeInsets.zero,
-                            elevation: 5,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7.0),
-                            ),
-                            clipBehavior: Clip.antiAlias,
-                            child: offline
-                                ? Stack(
-                                    children: [
-                                      const Image(
-                                        image: AssetImage(
-                                          'assets/cover.jpg',
-                                        ),
-                                      ),
-                                      if (_songs[index]['image'] == null)
-                                        const SizedBox()
-                                      else
-                                        SizedBox.square(
-                                          dimension: 50,
-                                          child: Image(
-                                            fit: BoxFit.cover,
-                                            image: FileImage(
-                                              File(
-                                                _songs[index]['image']
-                                                    .toString(),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                    ],
-                                  )
-                                : CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    errorWidget: (context, _, __) =>
-                                        const Image(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage('assets/cover.jpg'),
-                                    ),
-                                    imageUrl: _songs[index]['image']
-                                        .toString()
-                                        .replaceAll('http:', 'https:'),
-                                    placeholder: (context, url) => const Image(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage('assets/cover.jpg'),
-                                    ),
-                                  ),
+                          leading: imageCard(
+                            localImage: offline,
+                            imageUrl: offline
+                                ? _songs[index]['image'].toString()
+                                : _songs[index]['image'].toString(),
                           ),
                           title: Text(
                             '${_songs[index]['title']}',

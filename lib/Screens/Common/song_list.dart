@@ -24,14 +24,14 @@ import 'package:blackhole/CustomWidgets/bouncy_playlist_header_scroll_view.dart'
 import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/download_button.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/like_button.dart';
 import 'package:blackhole/CustomWidgets/playlist_popupmenu.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Helpers/extensions.dart';
-import 'package:blackhole/Helpers/image_resolution_modifier.dart';
+import 'package:blackhole/Models/url_image_generator.dart';
 import 'package:blackhole/Services/player_service.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logging/logging.dart';
@@ -264,7 +264,8 @@ class _SongsListPageState extends State<SongsListPage> {
                   shuffle: true,
                 ),
                 placeholderImage: 'assets/album.png',
-                imageUrl: getImageUrl(widget.listItem['image']?.toString()),
+                imageUrl: UrlImageGetter([widget.listItem['image']?.toString()])
+                    .highQuality,
                 sliverList: SliverList(
                   delegate: SliverChildListDelegate([
                     if (songList.isNotEmpty)
@@ -303,31 +304,7 @@ class _SongsListPageState extends State<SongsListPage> {
                           '${entry["subtitle"]}',
                           overflow: TextOverflow.ellipsis,
                         ),
-                        leading: Card(
-                          margin: EdgeInsets.zero,
-                          elevation: 8,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7.0),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            errorWidget: (context, _, __) => const Image(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                'assets/cover.jpg',
-                              ),
-                            ),
-                            imageUrl:
-                                '${entry["image"].replaceAll('http:', 'https:')}',
-                            placeholder: (context, url) => const Image(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                'assets/cover.jpg',
-                              ),
-                            ),
-                          ),
-                        ),
+                        leading: imageCard(imageUrl: entry['image'].toString()),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

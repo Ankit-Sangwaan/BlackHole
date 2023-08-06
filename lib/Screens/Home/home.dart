@@ -67,6 +67,7 @@ class _HomePageState extends State<HomePage> {
     defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
   ) as List;
   DateTime? backButtonPressTime;
+  final bool useDense = false;
 
   void callback() {
     sectionsToShow = Hive.box('settings').get(
@@ -557,7 +558,7 @@ class _HomePageState extends State<HomePage> {
                 context,
                 controller: _controller,
                 itemCount: sectionsToShow.length,
-                navBarHeight: rotated ? 55 : 55 + 70,
+                navBarHeight: (rotated ? 55 : 55 + 70) + (useDense ? 0 : 15),
                 // confineInSafeArea: false,
                 onItemTapped: onItemTapped,
                 routeAndNavigatorSettings:

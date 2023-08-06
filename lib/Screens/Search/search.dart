@@ -22,6 +22,7 @@ import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/download_button.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/like_button.dart';
 import 'package:blackhole/CustomWidgets/search_bar.dart' as searchbar;
 import 'package:blackhole/CustomWidgets/snackbar.dart';
@@ -30,7 +31,6 @@ import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Search/albums.dart';
 import 'package:blackhole/Screens/Search/artists.dart';
 import 'package:blackhole/Services/player_service.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
@@ -550,57 +550,25 @@ class _SearchPageState extends State<SearchPage> {
                                                 (key == 'Top Result' &&
                                                     value[0]['type'] ==
                                                         'album'),
-                                            leading: Card(
-                                              margin: EdgeInsets.zero,
-                                              elevation: 8,
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(
-                                                  key == 'Artists' ||
-                                                          (key == 'Top Result' &&
-                                                              value[0][
-                                                                      'type'] ==
-                                                                  'artist')
-                                                      ? 50.0
-                                                      : 7.0,
-                                                ),
+                                            leading: imageCard(
+                                              borderRadius: key == 'Artists' ||
+                                                      (key == 'Top Result' &&
+                                                          value[0]['type'] ==
+                                                              'artist')
+                                                  ? 50.0
+                                                  : 7.0,
+                                              placeholderImage: AssetImage(
+                                                key == 'Artists' ||
+                                                        (key == 'Top Result' &&
+                                                            value[0]['type'] ==
+                                                                'artist')
+                                                    ? 'assets/artist.png'
+                                                    : key == 'Songs'
+                                                        ? 'assets/cover.jpg'
+                                                        : 'assets/album.png',
                                               ),
-                                              clipBehavior: Clip.antiAlias,
-                                              child: CachedNetworkImage(
-                                                fit: BoxFit.cover,
-                                                errorWidget: (context, _, __) =>
-                                                    Image(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                    key == 'Artists' ||
-                                                            (key == 'Top Result' &&
-                                                                value[0][
-                                                                        'type'] ==
-                                                                    'artist')
-                                                        ? 'assets/artist.png'
-                                                        : key == 'Songs'
-                                                            ? 'assets/cover.jpg'
-                                                            : 'assets/album.png',
-                                                  ),
-                                                ),
-                                                imageUrl:
-                                                    '${value[index]["image"].replaceAll('http:', 'https:')}',
-                                                placeholder: (context, url) =>
-                                                    Image(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                    key == 'Artists' ||
-                                                            (key == 'Top Result' &&
-                                                                value[0][
-                                                                        'type'] ==
-                                                                    'artist')
-                                                        ? 'assets/artist.png'
-                                                        : key == 'Songs'
-                                                            ? 'assets/cover.jpg'
-                                                            : 'assets/album.png',
-                                                  ),
-                                                ),
-                                              ),
+                                              imageUrl: value[index]['image']
+                                                  .toString(),
                                             ),
                                             trailing: key != 'Albums'
                                                 ? key == 'Songs'

@@ -2096,7 +2096,7 @@ class NameNControls extends StatelessWidget {
                   ],
                   child: Center(
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: width * 0.1),
+                      padding: EdgeInsets.symmetric(horizontal: width * 0.07),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -2112,8 +2112,8 @@ class NameNControls extends StatelessWidget {
                                 .trim(),
                             pauseAfterRound: const Duration(seconds: 3),
                             showFadingOnlyWhenScrolling: false,
-                            fadingEdgeEndFraction: 0.1,
-                            fadingEdgeStartFraction: 0.1,
+                            fadingEdgeEndFraction: 0.05,
+                            fadingEdgeStartFraction: 0.05,
                             startAfter: const Duration(seconds: 2),
                             style: TextStyle(
                               fontSize: titleBoxHeight / 2.75,
@@ -2135,8 +2135,8 @@ class NameNControls extends StatelessWidget {
                                 : '${(mediaItem.artist ?? "").isEmpty ? "Unknown" : mediaItem.artist} • ${mediaItem.album}',
                             pauseAfterRound: const Duration(seconds: 3),
                             showFadingOnlyWhenScrolling: false,
-                            fadingEdgeEndFraction: 0.1,
-                            fadingEdgeStartFraction: 0.1,
+                            fadingEdgeEndFraction: 0.05,
+                            fadingEdgeStartFraction: 0.05,
                             startAfter: const Duration(seconds: 2),
                             style: TextStyle(
                               fontSize: titleBoxHeight / 6.75,

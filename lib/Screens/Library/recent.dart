@@ -19,9 +19,9 @@
 
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/like_button.dart';
 import 'package:blackhole/Services/player_service.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
@@ -113,30 +113,8 @@ class _RecentlyPlayedState extends State<RecentlyPlayed> {
                             Hive.box('cache').put('recentSongs', _songs);
                           },
                           child: ListTile(
-                            leading: Card(
-                              margin: EdgeInsets.zero,
-                              elevation: 5,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(7.0),
-                              ),
-                              clipBehavior: Clip.antiAlias,
-                              child: SizedBox.square(
-                                dimension: 55.0,
-                                child: CachedNetworkImage(
-                                  fit: BoxFit.cover,
-                                  errorWidget: (context, _, __) => const Image(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage('assets/cover.jpg'),
-                                  ),
-                                  imageUrl: _songs[index]['image']
-                                      .toString()
-                                      .replaceAll('http:', 'https:'),
-                                  placeholder: (context, url) => const Image(
-                                    fit: BoxFit.cover,
-                                    image: AssetImage('assets/cover.jpg'),
-                                  ),
-                                ),
-                              ),
+                            leading: imageCard(
+                              imageUrl: _songs[index]['image'].toString(),
                             ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,

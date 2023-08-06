@@ -18,9 +18,8 @@
  */
 
 import 'package:blackhole/CustomWidgets/custom_physics.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
-import 'package:blackhole/Helpers/image_resolution_modifier.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class HorizontalAlbumsListSeparated extends StatelessWidget {
@@ -106,39 +105,20 @@ class HorizontalAlbumsListSeparated extends StatelessWidget {
                       subTitle,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    leading: Card(
-                      margin: EdgeInsets.zero,
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(7.0),
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      child: SizedBox.square(
-                        dimension: 55.0,
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          errorWidget: (context, _, __) => const Image(
-                            fit: BoxFit.cover,
-                            image: AssetImage('assets/cover.jpg'),
-                          ),
-                          imageUrl: getImageUrl(item['image'].toString()),
-                          placeholder: (context, url) => Image(
-                            fit: BoxFit.cover,
-                            image: (item['type'] == 'playlist' ||
-                                    item['type'] == 'album')
-                                ? const AssetImage(
-                                    'assets/album.png',
-                                  )
-                                : item['type'] == 'artist'
-                                    ? const AssetImage(
-                                        'assets/artist.png',
-                                      )
-                                    : const AssetImage(
-                                        'assets/cover.jpg',
-                                      ),
-                          ),
-                        ),
-                      ),
+                    leading: imageCard(
+                      imageUrl: item['image'].toString(),
+                      placeholderImage: (item['type'] == 'playlist' ||
+                              item['type'] == 'album')
+                          ? const AssetImage(
+                              'assets/album.png',
+                            )
+                          : item['type'] == 'artist'
+                              ? const AssetImage(
+                                  'assets/artist.png',
+                                )
+                              : const AssetImage(
+                                  'assets/cover.jpg',
+                                ),
                     ),
                     trailing: SongTileTrailingMenu(
                       data: item,

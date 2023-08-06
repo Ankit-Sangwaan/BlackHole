@@ -23,9 +23,9 @@ import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/download_button.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Search/artists.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -177,36 +177,16 @@ class _AlbumSearchPageState extends State<AlbumSearchPage> {
                                         '${entry["subtitle"]}',
                                         overflow: TextOverflow.ellipsis,
                                       ),
-                                leading: Card(
-                                  margin: EdgeInsets.zero,
+                                leading: imageCard(
                                   elevation: 8,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(
+                                  borderRadius:
                                       widget.type == 'Artists' ? 50.0 : 7.0,
-                                    ),
+                                  placeholderImage: AssetImage(
+                                    widget.type == 'Artists'
+                                        ? 'assets/artist.png'
+                                        : 'assets/album.png',
                                   ),
-                                  clipBehavior: Clip.antiAlias,
-                                  child: CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    errorWidget: (context, _, __) => Image(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(
-                                        widget.type == 'Artists'
-                                            ? 'assets/artist.png'
-                                            : 'assets/album.png',
-                                      ),
-                                    ),
-                                    imageUrl:
-                                        '${entry["image"].replaceAll('http:', 'https:')}',
-                                    placeholder: (context, url) => Image(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(
-                                        widget.type == 'Artists'
-                                            ? 'assets/artist.png'
-                                            : 'assets/album.png',
-                                      ),
-                                    ),
-                                  ),
+                                  imageUrl: entry['image'].toString(),
                                 ),
                                 trailing: widget.type != 'Albums'
                                     ? null

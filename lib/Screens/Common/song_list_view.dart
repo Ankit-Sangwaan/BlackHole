@@ -22,9 +22,9 @@ import 'dart:async';
 import 'package:blackhole/CustomWidgets/bouncy_playlist_header_scroll_view.dart';
 import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
-import 'package:blackhole/Helpers/image_resolution_modifier.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/Models/song_item.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:blackhole/Models/url_image_generator.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
 
@@ -167,7 +167,7 @@ class _SongsListViewPageState extends State<SongsListViewPage> {
                 onShuffleTap: widget.onShuffle,
                 placeholderImage:
                     widget.placeholderImageUrl ?? 'assets/cover.jpg',
-                imageUrl: getImageUrl(widget.imageUrl),
+                imageUrl: UrlImageGetter([widget.imageUrl]).mediumQuality,
                 sliverList: SliverList(
                   delegate: SliverChildListDelegate([
                     if (itemsList.isNotEmpty && widget.listItemsTitle != null)
@@ -209,29 +209,9 @@ class _SongsListViewPageState extends State<SongsListViewPage> {
                                 overflow: TextOverflow.ellipsis,
                               )
                             : null,
-                        leading: Card(
-                          margin: EdgeInsets.zero,
+                        leading: imageCard(
                           elevation: 8,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(7.0),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          child: CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            errorWidget: (context, _, __) => const Image(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                'assets/cover.jpg',
-                              ),
-                            ),
-                            imageUrl: entry.image,
-                            placeholder: (context, url) => const Image(
-                              fit: BoxFit.cover,
-                              image: AssetImage(
-                                'assets/cover.jpg',
-                              ),
-                            ),
-                          ),
+                          imageUrl: entry.image,
                         ),
                         // trailing: Row(
                         //   mainAxisSize: MainAxisSize.min,

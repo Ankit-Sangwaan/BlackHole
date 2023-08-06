@@ -25,6 +25,7 @@ import 'package:blackhole/CustomWidgets/custom_physics.dart';
 import 'package:blackhole/CustomWidgets/data_search.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/playlist_head.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/Helpers/picker.dart';
@@ -921,37 +922,19 @@ class _DownSongsTabState extends State<DownSongsTab>
                   itemExtent: 70.0,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      leading: Card(
-                        elevation: 5,
-                        margin: EdgeInsets.zero,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7.0),
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        child: SizedBox.square(
-                          dimension: 50,
-                          child: Image(
-                            fit: BoxFit.cover,
-                            image: FileImage(
-                              File(
-                                widget.songs[index]['image'].toString(),
-                              ),
-                            ),
-                            errorBuilder: (_, __, ___) {
-                              if (widget.songs[index]['image'] != null &&
-                                  widget.songs[index]['image_url'] != null) {
-                                downImage(
-                                  widget.songs[index]['image'].toString(),
-                                  widget.songs[index]['path'].toString(),
-                                  widget.songs[index]['image_url'].toString(),
-                                );
-                              }
-                              return Image.asset(
-                                'assets/cover.jpg',
-                              );
-                            },
-                          ),
-                        ),
+                      leading: imageCard(
+                        imageUrl: widget.songs[index]['image'].toString(),
+                        localImage: true,
+                        localErrorFunction: (_, __) {
+                          if (widget.songs[index]['image'] != null &&
+                              widget.songs[index]['image_url'] != null) {
+                            downImage(
+                              widget.songs[index]['image'].toString(),
+                              widget.songs[index]['path'].toString(),
+                              widget.songs[index]['image_url'].toString(),
+                            );
+                          }
+                        },
                       ),
                       onTap: () {
                         PlayerInvoke.init(

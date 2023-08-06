@@ -22,12 +22,12 @@ import 'package:blackhole/APIs/spotify_api.dart';
 import 'package:blackhole/CustomWidgets/custom_physics.dart';
 import 'package:blackhole/CustomWidgets/drawer.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/Helpers/spotify_country.dart';
 import 'package:blackhole/Helpers/spotify_helper.dart';
 // import 'package:blackhole/Helpers/countrycodes.dart';
 import 'package:blackhole/Screens/Search/search.dart';
 import 'package:blackhole/constants/countrycodes.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -328,34 +328,8 @@ class _TopPageState extends State<TopPage>
                   itemExtent: 70.0,
                   itemBuilder: (context, index) {
                     return ListTile(
-                      leading: Card(
-                        margin: EdgeInsets.zero,
-                        elevation: 5,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(7.0),
-                        ),
-                        clipBehavior: Clip.antiAlias,
-                        child: Stack(
-                          children: [
-                            const Image(
-                              image: AssetImage('assets/cover.jpg'),
-                            ),
-                            if (showList[index]['image_url_small'] != '')
-                              CachedNetworkImage(
-                                fit: BoxFit.cover,
-                                imageUrl: showList[index]['image_url_small']
-                                    .toString(),
-                                errorWidget: (context, _, __) => const Image(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage('assets/cover.jpg'),
-                                ),
-                                placeholder: (context, url) => const Image(
-                                  fit: BoxFit.cover,
-                                  image: AssetImage('assets/cover.jpg'),
-                                ),
-                              ),
-                          ],
-                        ),
+                      leading: imageCard(
+                        imageUrl: showList[index]['image_url_small'].toString(),
                       ),
                       title: Text(
                         '${index + 1}. ${showList[index]["name"]}',

@@ -19,6 +19,7 @@
 
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/search_bar.dart' as searchbar;
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
@@ -29,7 +30,6 @@ import 'package:blackhole/Screens/YouTube/youtube_playlist.dart';
 import 'package:blackhole/Services/player_service.dart';
 import 'package:blackhole/Services/youtube_services.dart';
 import 'package:blackhole/Services/yt_music.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
@@ -366,10 +366,12 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                               FontWeight.w800,
                                                         ),
                                                       ),
-                                                      if (section['title']
-                                                              .toString() ==
-                                                          // 'Top Result')
-                                                          'Songs')
+                                                      if (['songs'].contains(
+                                                        section['title']
+                                                            .toString()
+                                                            .toLowerCase(),
+                                                      ))
+                                                        // 'Top Result'))
                                                         Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -489,51 +491,16 @@ class _YouTubeSearchPageState extends State<YouTubeSearchPage> {
                                                           const EdgeInsets.only(
                                                         left: 15.0,
                                                       ),
-                                                      leading: Card(
-                                                        margin: EdgeInsets.zero,
-                                                        elevation: 8,
-                                                        shape:
-                                                            RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
+                                                      leading: imageCard(
+                                                        borderRadius:
                                                             itemType == 'Artist'
                                                                 ? 50.0
                                                                 : 7.0,
-                                                          ),
-                                                        ),
-                                                        clipBehavior:
-                                                            Clip.antiAlias,
-                                                        child:
-                                                            CachedNetworkImage(
-                                                          fit: BoxFit.cover,
-                                                          errorWidget: (
-                                                            context,
-                                                            _,
-                                                            __,
-                                                          ) =>
-                                                              const Image(
-                                                            fit: BoxFit.cover,
-                                                            image: AssetImage(
-                                                              'assets/cover.jpg',
-                                                            ),
-                                                          ),
-                                                          imageUrl:
-                                                              section['items']
-                                                                          [idx]
-                                                                      ['image']
-                                                                  .toString(),
-                                                          placeholder: (
-                                                            context,
-                                                            url,
-                                                          ) =>
-                                                              const Image(
-                                                            fit: BoxFit.cover,
-                                                            image: AssetImage(
-                                                              'assets/cover.jpg',
-                                                            ),
-                                                          ),
-                                                        ),
+                                                        imageUrl:
+                                                            section['items']
+                                                                        [idx]
+                                                                    ['image']
+                                                                .toString(),
                                                       ),
                                                       trailing: (itemType ==
                                                                   'Song' ||

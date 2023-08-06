@@ -17,11 +17,11 @@
  * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/like_button.dart';
 import 'package:blackhole/CustomWidgets/on_hover.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
-import 'package:blackhole/Helpers/image_resolution_modifier.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:blackhole/Models/image_quality.dart';
 import 'package:flutter/material.dart';
 
 class HorizontalAlbumsList extends StatelessWidget {
@@ -97,70 +97,13 @@ class HorizontalAlbumsList extends StatelessWidget {
                     ),
                     backgroundColor: Colors.transparent,
                     contentPadding: EdgeInsets.zero,
-                    content: Card(
-                      elevation: 5,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(
+                    content: imageCard(
+                      borderRadius:
                           item['type'] == 'radio_station' ? 1000.0 : 15.0,
-                        ),
-                      ),
-                      clipBehavior: Clip.antiAlias,
-                      child: CachedNetworkImage(
-                        fit: BoxFit.cover,
-                        errorWidget: (context, _, __) => const Image(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/cover.jpg'),
-                        ),
-                        imageUrl: getImageUrl(item['image'].toString()),
-                        placeholder: (context, url) => Image(
-                          fit: BoxFit.cover,
-                          image: (item['type'] == 'playlist' ||
-                                  item['type'] == 'album')
-                              ? const AssetImage(
-                                  'assets/album.png',
-                                )
-                              : item['type'] == 'artist'
-                                  ? const AssetImage(
-                                      'assets/artist.png',
-                                    )
-                                  : const AssetImage(
-                                      'assets/cover.jpg',
-                                    ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              );
-            },
-            onTap: () {
-              onTap(index);
-            },
-            child: SizedBox(
-              width: boxSize - 30,
-              child: HoverBox(
-                child: Card(
-                  elevation: 5,
-                  color: Colors.black,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      item['type'] == 'radio_station' ||
-                              item['type'] == 'artist'
-                          ? 1000.0
-                          : 10.0,
-                    ),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  child: CachedNetworkImage(
-                    fit: BoxFit.cover,
-                    errorWidget: (context, _, __) => const Image(
-                      fit: BoxFit.cover,
-                      image: AssetImage('assets/cover.jpg'),
-                    ),
-                    imageUrl: getImageUrl(item['image'].toString()),
-                    placeholder: (context, url) => Image(
-                      fit: BoxFit.cover,
-                      image: (item['type'] == 'playlist' ||
+                      imageUrl: item['image'].toString(),
+                      boxDimension: MediaQuery.of(context).size.width * 0.8,
+                      imageQuality: ImageQuality.high,
+                      placeholderImage: (item['type'] == 'playlist' ||
                               item['type'] == 'album')
                           ? const AssetImage(
                               'assets/album.png',
@@ -173,7 +116,37 @@ class HorizontalAlbumsList extends StatelessWidget {
                                   'assets/cover.jpg',
                                 ),
                     ),
-                  ),
+                  );
+                },
+              );
+            },
+            onTap: () {
+              onTap(index);
+            },
+            child: SizedBox(
+              width: boxSize - 30,
+              child: HoverBox(
+                child: imageCard(
+                  margin: const EdgeInsets.all(4.0),
+                  borderRadius: item['type'] == 'radio_station' ||
+                          item['type'] == 'artist'
+                      ? 1000.0
+                      : 10.0,
+                  imageUrl: item['image'].toString(),
+                  boxDimension: double.infinity,
+                  imageQuality: ImageQuality.high,
+                  placeholderImage:
+                      (item['type'] == 'playlist' || item['type'] == 'album')
+                          ? const AssetImage(
+                              'assets/album.png',
+                            )
+                          : item['type'] == 'artist'
+                              ? const AssetImage(
+                                  'assets/artist.png',
+                                )
+                              : const AssetImage(
+                                  'assets/cover.jpg',
+                                ),
                 ),
                 builder: ({
                   required BuildContext context,

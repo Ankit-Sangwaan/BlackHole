@@ -19,48 +19,82 @@
 
 import 'dart:io';
 
+import 'package:blackhole/Models/image_quality.dart';
+import 'package:blackhole/Models/url_image_generator.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-Widget imageCard(
-  String imageUrl, {
+Widget imageCard({
+  required String imageUrl,
   bool localImage = false,
   double elevation = 5,
-  double radius = 15.0,
-  ImageProvider? placeholderImage,
+  EdgeInsetsGeometry margin = EdgeInsets.zero,
+  double borderRadius = 7.0,
+  double? boxDimension = 55.0,
+  ImageProvider placeholderImage = const AssetImage(
+    'assets/cover.jpg',
+  ),
+  bool selected = false,
+  ImageQuality imageQuality = ImageQuality.low,
+  Function(Object, StackTrace?)? localErrorFunction,
 }) {
   return Card(
     elevation: elevation,
+    margin: margin,
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(radius),
+      borderRadius: BorderRadius.circular(borderRadius),
     ),
     clipBehavior: Clip.antiAlias,
-    child: localImage
-        ? Image(
-            fit: BoxFit.cover,
-            errorBuilder: (context, _, __) => const Image(
+    child: SizedBox.square(
+      dimension: boxDimension,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          if (localImage)
+            Image(
               fit: BoxFit.cover,
-              image: AssetImage('assets/cover.jpg'),
-            ),
-            image: FileImage(
-              File(
-                imageUrl,
+              errorBuilder: (context, error, stacktrace) {
+                if (localErrorFunction != null) {
+                  localErrorFunction(error, stacktrace);
+                }
+                return Image(
+                  fit: BoxFit.cover,
+                  image: placeholderImage,
+                );
+              },
+              image: FileImage(
+                File(
+                  imageUrl,
+                ),
+              ),
+            )
+          else
+            CachedNetworkImage(
+              fit: BoxFit.cover,
+              errorWidget: (context, _, __) => Image(
+                fit: BoxFit.cover,
+                image: placeholderImage,
+              ),
+              imageUrl:
+                  UrlImageGetter([imageUrl]).getImageUrl(quality: imageQuality),
+              placeholder: (context, url) => Image(
+                fit: BoxFit.cover,
+                image: placeholderImage,
               ),
             ),
-          )
-        : CachedNetworkImage(
-            fit: BoxFit.cover,
-            errorWidget: (context, _, __) => const Image(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/cover.jpg'),
+          if (selected)
+            Container(
+              decoration: const BoxDecoration(
+                color: Colors.black54,
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.check_rounded,
+                ),
+              ),
             ),
-            imageUrl: imageUrl,
-            placeholder: placeholderImage == null
-                ? null
-                : (context, url) => Image(
-                      fit: BoxFit.cover,
-                      image: placeholderImage,
-                    ),
-          ),
+        ],
+      ),
+    ),
   );
 }

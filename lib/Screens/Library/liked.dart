@@ -23,13 +23,13 @@ import 'package:blackhole/CustomWidgets/data_search.dart';
 import 'package:blackhole/CustomWidgets/download_button.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
+import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/like_button.dart';
 import 'package:blackhole/CustomWidgets/playlist_head.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Helpers/songs_count.dart' as songs_count;
 import 'package:blackhole/Screens/Library/show_songs.dart';
 import 'package:blackhole/Services/player_service.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -679,54 +679,9 @@ class _SongsTabState extends State<SongsTab>
                         final bool selected =
                             selectedItems.contains(widget.songs[index]['id']);
                         return ListTile(
-                          leading: Card(
-                            elevation: 5,
-                            margin: EdgeInsets.zero,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(7.0),
-                            ),
-                            clipBehavior: Clip.antiAlias,
-                            child: SizedBox.square(
-                              dimension: 50,
-                              child: Stack(
-                                fit: StackFit.expand,
-                                children: [
-                                  CachedNetworkImage(
-                                    fit: BoxFit.cover,
-                                    errorWidget: (context, _, __) =>
-                                        const Image(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(
-                                        'assets/cover.jpg',
-                                      ),
-                                    ),
-                                    imageUrl: widget.songs[index]['image']
-                                        .toString()
-                                        .replaceAll('http:', 'https:'),
-                                    placeholder: (context, url) => const Image(
-                                      fit: BoxFit.cover,
-                                      image: AssetImage(
-                                        'assets/cover.jpg',
-                                      ),
-                                    ),
-                                  ),
-                                  if (selected)
-                                    Container(
-                                      decoration: const BoxDecoration(
-                                        color: Colors.black54,
-                                      ),
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.check_rounded,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .secondary,
-                                        ),
-                                      ),
-                                    ),
-                                ],
-                              ),
-                            ),
+                          leading: imageCard(
+                            imageUrl: widget.songs[index]['image'].toString(),
+                            selected: selected,
                           ),
                           onTap: () {
                             if (selectMode.value) {
