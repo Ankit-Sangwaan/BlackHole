@@ -714,5 +714,9 @@
   "navTabsSub": "Karty k zobrazení na spodní navigační liště",
   "@navTabsSub": {},
   "navTabs": "Karty navigační lišty",
-  "@navTabs": {}
+  "@navTabs": {},
+  "useLessDataImage": "Používat méně dat pro obrázky",
+  "@useLessDataImage": {},
+  "useLessDataImageSub": "Tato možnost sníží kvalitu obrázků v aplikaci, ušetří ale vaše data",
+  "@useLessDataImageSub": {}
 }
