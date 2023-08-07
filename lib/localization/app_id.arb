@@ -712,5 +712,9 @@
   "noFileSelected": "Tidak ada File yang dipilih",
   "@noFileSelected": {},
   "streamWifiQualitySub": "Ini akan digunakan setiap kali Wifi terhubung",
-  "@streamWifiQualitySub": {}
+  "@streamWifiQualitySub": {},
+  "useLessDataImage": "Gunakan Lebih Sedikit Data untuk Gambar",
+  "@useLessDataImage": {},
+  "useLessDataImageSub": "Ini akan mengurangi kualitas gambar dalam aplikasi, tetapi akan menghemat data Anda",
+  "@useLessDataImageSub": {}
 }
