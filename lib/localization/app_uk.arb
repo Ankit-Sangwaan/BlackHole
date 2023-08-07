@@ -702,5 +702,9 @@
   "navTabs": "Вкладки панелі навігації",
   "@navTabs": {},
   "navTabsSub": "Вкладки, які буде показано на нижній панелі навігації",
-  "@navTabsSub": {}
+  "@navTabsSub": {},
+  "useLessDataImage": "Використовувати менше даних для зображень",
+  "@useLessDataImage": {},
+  "useLessDataImageSub": "Це знизить якість зображень в застосунку, але збереже ваші дані",
+  "@useLessDataImageSub": {}
 }
