@@ -716,5 +716,9 @@
   "minFourRequired": "Mindestens 4 erforderlich",
   "@minFourRequired": {},
   "navTabs": "Navigationsleisten-Tabs",
-  "@navTabs": {}
+  "@navTabs": {},
+  "useLessDataImage": "Weniger Daten für Bilder verwenden",
+  "@useLessDataImage": {},
+  "useLessDataImageSub": "Dies reduziert die Qualität der Bilder in der Anwendung, speichert aber Ihre Daten",
+  "@useLessDataImageSub": {}
 }
