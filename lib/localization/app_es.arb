@@ -710,5 +710,9 @@
   "navTabs": "Pestañas de la barra de navegación",
   "@navTabs": {},
   "navTabsSub": "Pestañas para mostrar en la barra de navegación inferior",
-  "@navTabsSub": {}
+  "@navTabsSub": {},
+  "useLessDataImage": "Usa menos datos para las imágenes",
+  "@useLessDataImage": {},
+  "useLessDataImageSub": "Esto reducirá la calidad de las imágenes en la aplicación, pero ahorrará datos",
+  "@useLessDataImageSub": {}
 }
