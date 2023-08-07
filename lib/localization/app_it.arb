@@ -706,5 +706,9 @@
   "navTabs": "Schede della barra di navigazione",
   "@navTabs": {},
   "noFileSelected": "Nessun file selezionato",
-  "@noFileSelected": {}
+  "@noFileSelected": {},
+  "useLessDataImageSub": "Ciò ridurrà la qualità delle immagini nell’applicazione ma salverà i dati",
+  "@useLessDataImageSub": {},
+  "useLessDataImage": "Usa meno dati per immagini",
+  "@useLessDataImage": {}
 }
