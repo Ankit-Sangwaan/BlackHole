@@ -702,5 +702,9 @@
   "navTabs": "ナビゲーションバーのタブ",
   "@navTabs": {},
   "minFourRequired": "最低4つ必要",
-  "@minFourRequired": {}
+  "@minFourRequired": {},
+  "useLessDataImageSub": "アプリ中の画像の品質を下げデータを節約",
+  "@useLessDataImageSub": {},
+  "useLessDataImage": "画像のデータ量を減らす",
+  "@useLessDataImage": {}
 }
