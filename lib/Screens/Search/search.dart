@@ -31,6 +31,7 @@ import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Search/albums.dart';
 import 'package:blackhole/Screens/Search/artists.dart';
 import 'package:blackhole/Services/player_service.dart';
+import 'package:blackhole/Services/youtube_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
@@ -38,11 +39,13 @@ import 'package:hive/hive.dart';
 class SearchPage extends StatefulWidget {
   final String query;
   final bool fromHome;
+  final String? searchType;
   final bool autofocus;
   const SearchPage({
     super.key,
     required this.query,
     this.fromHome = false,
+    this.searchType,
     this.autofocus = false,
   });
 
@@ -52,64 +55,74 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   String query = '';
-  bool status = false;
-  Map searchedData = {};
-  Map position = {};
-  List sortedKeys = [];
-  final ValueNotifier<List<String>> topSearch = ValueNotifier<List<String>>(
-    [],
-  );
+  bool fetchResultCalled = false;
   bool fetched = false;
   bool alertShown = false;
-  bool albumFetched = false;
+  // bool albumFetched = false;
   bool? fromHome;
-  List search = Hive.box('settings').get(
-    'search',
-    defaultValue: [],
-  ) as List;
+  List<Map<String, dynamic>> searchedList = [];
+  String searchType =
+      Hive.box('settings').get('searchType', defaultValue: 'saavn').toString();
+  List searchHistory =
+      Hive.box('settings').get('search', defaultValue: []) as List;
   // bool showHistory =
   //     Hive.box('settings').get('showHistory', defaultValue: true) as bool;
   bool liveSearch =
       Hive.box('settings').get('liveSearch', defaultValue: true) as bool;
+  final ValueNotifier<List<String>> topSearch = ValueNotifier<List<String>>(
+    [],
+  );
 
-  final controller = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
-    controller.text = widget.query;
+    _controller.text = widget.query;
+    if (widget.searchType != null) {
+      searchType = widget.searchType!;
+    }
     super.initState();
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
   Future<void> fetchResults() async {
-    // this fetches top 5 songs results
-    final Map result = await SaavnAPI().fetchSongSearchResults(
-      searchQuery: query == '' ? widget.query : query,
-      count: 5,
-    );
-    final List songResults = result['songs'] as List;
-    if (songResults.isNotEmpty) searchedData['Songs'] = songResults;
-    fetched = true;
-    // this fetches albums, playlists, artists, etc
-    final List<Map> value =
+    // this fetches songs, albums, playlists, artists, etc
+    searchedList =
         await SaavnAPI().fetchSearchResults(query == '' ? widget.query : query);
-
-    searchedData.addEntries(value[0].entries);
-    position = value[1];
-    sortedKeys = position.keys.toList()..sort();
-    albumFetched = true;
-    setState(
-      () {},
-    );
+    setState(() {
+      fetched = true;
+    });
   }
 
   Future<void> getTrendingSearch() async {
     topSearch.value = await SaavnAPI().getTopSearches();
+  }
+
+  void addToHistory(String title) {
+    final tempquery = title.trim();
+    if (tempquery == '') {
+      return;
+    }
+    final idx = searchHistory.indexOf(tempquery);
+    if (idx != -1) {
+      searchHistory.removeAt(idx);
+    }
+    searchHistory.insert(
+      0,
+      tempquery,
+    );
+    if (searchHistory.length > 10) {
+      searchHistory = searchHistory.sublist(0, 10);
+    }
+    Hive.box('settings').put(
+      'search',
+      searchHistory,
+    );
   }
 
   Widget nothingFound(BuildContext context) {
@@ -125,8 +138,8 @@ class _SearchPageState extends State<SearchPage> {
             setState(() {
               Hive.box('settings').put('useProxy', true);
               fetched = false;
-              status = false;
-              searchedData = {};
+              fetchResultCalled = false;
+              searchedList = [];
             });
           },
         ),
@@ -148,8 +161,8 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     fromHome ??= widget.fromHome;
-    if (!status) {
-      status = true;
+    if (!fetchResultCalled) {
+      fetchResultCalled = true;
       fromHome! ? getTrendingSearch() : fetchResults();
     }
     return GradientContainer(
@@ -159,8 +172,8 @@ class _SearchPageState extends State<SearchPage> {
           backgroundColor: Colors.transparent,
           body: searchbar.SearchBar(
             isYt: false,
-            controller: controller,
-            liveSearch: liveSearch,
+            controller: _controller,
+            liveSearch: true,
             autofocus: widget.autofocus,
             hintText: AppLocalizations.of(context)!.searchText,
             leading: IconButton(
@@ -191,7 +204,7 @@ class _SearchPageState extends State<SearchPage> {
                           alignment: Alignment.topLeft,
                           child: Wrap(
                             children: List<Widget>.generate(
-                              search.length,
+                              searchHistory.length,
                               (int index) {
                                 return Padding(
                                   padding: const EdgeInsets.symmetric(
@@ -200,7 +213,7 @@ class _SearchPageState extends State<SearchPage> {
                                   child: GestureDetector(
                                     child: Chip(
                                       label: Text(
-                                        search[index].toString(),
+                                        searchHistory[index].toString(),
                                       ),
                                       labelStyle: TextStyle(
                                         color: Theme.of(context)
@@ -211,10 +224,10 @@ class _SearchPageState extends State<SearchPage> {
                                       ),
                                       onDeleted: () {
                                         setState(() {
-                                          search.removeAt(index);
+                                          searchHistory.removeAt(index);
                                           Hive.box('settings').put(
                                             'search',
-                                            search,
+                                            searchHistory,
                                           );
                                         });
                                       },
@@ -223,28 +236,21 @@ class _SearchPageState extends State<SearchPage> {
                                       setState(
                                         () {
                                           fetched = false;
-                                          query = search
+                                          query = searchHistory
                                               .removeAt(index)
                                               .toString()
                                               .trim();
-                                          search.insert(
-                                            0,
-                                            query,
-                                          );
-                                          Hive.box('settings').put(
-                                            'search',
-                                            search,
-                                          );
-                                          controller.text = query;
-                                          controller.selection =
+                                          addToHistory(query);
+                                          _controller.text = query;
+                                          _controller.selection =
                                               TextSelection.fromPosition(
                                             TextPosition(
                                               offset: query.length,
                                             ),
                                           );
-                                          status = false;
+                                          fetchResultCalled = false;
                                           fromHome = false;
-                                          searchedData = {};
+                                          searchedList = [];
                                         },
                                       );
                                     },
@@ -315,34 +321,17 @@ class _SearchPageState extends State<SearchPage> {
                                                   () {
                                                     fetched = false;
                                                     query = value[index].trim();
-                                                    controller.text = query;
-                                                    controller.selection =
+                                                    _controller.text = query;
+                                                    _controller.selection =
                                                         TextSelection
                                                             .fromPosition(
                                                       TextPosition(
                                                         offset: query.length,
                                                       ),
                                                     );
-                                                    status = false;
+                                                    fetchResultCalled = false;
                                                     fromHome = false;
-                                                    searchedData = {};
-                                                    if (search.contains(
-                                                      query,
-                                                    )) {
-                                                      search.remove(query);
-                                                    }
-                                                    search.insert(
-                                                      0,
-                                                      query,
-                                                    );
-                                                    if (search.length > 10) {
-                                                      search =
-                                                          search.sublist(0, 10);
-                                                    }
-                                                    Hive.box('settings').put(
-                                                      'search',
-                                                      search,
-                                                    );
+                                                    searchedList = [];
                                                   },
                                                 );
                                               }
@@ -360,338 +349,412 @@ class _SearchPageState extends State<SearchPage> {
                       ],
                     ),
                   )
-                : !fetched
-                    ? const Center(
-                        child: CircularProgressIndicator(),
-                      )
-                    : (searchedData.isEmpty)
-                        ? nothingFound(context)
-                        : SingleChildScrollView(
-                            padding: const EdgeInsets.only(
-                              top: 100,
-                            ),
-                            physics: const BouncingScrollPhysics(),
-                            child: Column(
-                              children: sortedKeys.map(
-                                (e) {
-                                  final String key = position[e].toString();
-                                  final List? value =
-                                      searchedData[key] as List?;
+                : Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          top: 70,
+                          left: 20,
+                        ),
+                        child: (query.isEmpty && widget.query.isEmpty)
+                            ? null
+                            : Row(
+                                children: getChoices(context, [
+                                  {'label': 'Saavn', 'key': 'saavn'},
+                                  {'label': 'YtMusic', 'key': 'ytm'},
+                                  {'label': 'YouTube', 'key': 'yt'}
+                                ]),
+                              ),
+                      ),
+                      Expanded(
+                        child: !fetched
+                            ? const Center(
+                                child: CircularProgressIndicator(),
+                              )
+                            : (searchedList.isEmpty)
+                                ? nothingFound(context)
+                                : SingleChildScrollView(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 5.0,
+                                      vertical: 5.0,
+                                    ),
+                                    physics: const BouncingScrollPhysics(),
+                                    child: Column(
+                                      children: searchedList.map(
+                                        (Map section) {
+                                          final String key =
+                                              section.keys.first.toString();
+                                          final List? value =
+                                              section.values.first as List?;
 
-                                  if (value == null) {
-                                    return const SizedBox();
-                                  }
-                                  return Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          left: 25,
-                                          top: 10,
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              key,
-                                              style: TextStyle(
-                                                color: Theme.of(context)
-                                                    .colorScheme
-                                                    .secondary,
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w800,
-                                              ),
-                                            ),
-                                            if (key != 'Top Result')
+                                          if (value == null) {
+                                            return const SizedBox();
+                                          }
+                                          return Column(
+                                            children: [
                                               Padding(
-                                                padding:
-                                                    const EdgeInsets.fromLTRB(
-                                                  25,
-                                                  0,
-                                                  25,
-                                                  0,
+                                                padding: const EdgeInsets.only(
+                                                  left: 25,
+                                                  top: 10,
                                                 ),
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment.end,
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: [
-                                                    GestureDetector(
-                                                      onTap: () {
-                                                        if (key == 'Albums' ||
-                                                            key ==
-                                                                'Playlists' ||
-                                                            key == 'Artists') {
-                                                          Navigator.push(
-                                                            context,
-                                                            PageRouteBuilder(
-                                                              opaque: false,
-                                                              pageBuilder: (
-                                                                _,
-                                                                __,
-                                                                ___,
-                                                              ) =>
-                                                                  AlbumSearchPage(
-                                                                query: query ==
-                                                                        ''
-                                                                    ? widget
-                                                                        .query
-                                                                    : query,
-                                                                type: key,
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
-                                                        if (key == 'Songs') {
-                                                          Navigator.push(
-                                                            context,
-                                                            PageRouteBuilder(
-                                                              opaque: false,
-                                                              pageBuilder: (
-                                                                _,
-                                                                __,
-                                                                ___,
-                                                              ) =>
-                                                                  SongsListPage(
-                                                                listItem: {
-                                                                  'id': query ==
-                                                                          ''
-                                                                      ? widget
-                                                                          .query
-                                                                      : query,
-                                                                  'title': key,
-                                                                  'type':
-                                                                      'songs',
-                                                                },
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
-                                                      },
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            AppLocalizations.of(
-                                                              context,
-                                                            )!
-                                                                .viewAll,
-                                                            style: TextStyle(
-                                                              color: Theme.of(
-                                                                context,
-                                                              )
-                                                                  .textTheme
-                                                                  .bodySmall!
-                                                                  .color,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w800,
-                                                            ),
-                                                          ),
-                                                          Icon(
-                                                            Icons
-                                                                .chevron_right_rounded,
-                                                            color: Theme.of(
-                                                              context,
-                                                            )
-                                                                .textTheme
-                                                                .bodySmall!
-                                                                .color,
-                                                          ),
-                                                        ],
+                                                    Text(
+                                                      key,
+                                                      style: TextStyle(
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .secondary,
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w800,
                                                       ),
                                                     ),
+                                                    if (key != 'Top Result')
+                                                      Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .fromLTRB(
+                                                          25,
+                                                          0,
+                                                          25,
+                                                          0,
+                                                        ),
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .end,
+                                                          children: [
+                                                            GestureDetector(
+                                                              onTap: () {
+                                                                if (key == 'Albums' ||
+                                                                    key ==
+                                                                        'Playlists' ||
+                                                                    key ==
+                                                                        'Artists') {
+                                                                  Navigator
+                                                                      .push(
+                                                                    context,
+                                                                    PageRouteBuilder(
+                                                                      opaque:
+                                                                          false,
+                                                                      pageBuilder: (
+                                                                        _,
+                                                                        __,
+                                                                        ___,
+                                                                      ) =>
+                                                                          AlbumSearchPage(
+                                                                        query: query ==
+                                                                                ''
+                                                                            ? widget.query
+                                                                            : query,
+                                                                        type:
+                                                                            key,
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                }
+                                                                if (key ==
+                                                                    'Songs') {
+                                                                  Navigator
+                                                                      .push(
+                                                                    context,
+                                                                    PageRouteBuilder(
+                                                                      opaque:
+                                                                          false,
+                                                                      pageBuilder: (
+                                                                        _,
+                                                                        __,
+                                                                        ___,
+                                                                      ) =>
+                                                                          SongsListPage(
+                                                                        listItem: {
+                                                                          'id': query == ''
+                                                                              ? widget.query
+                                                                              : query,
+                                                                          'title':
+                                                                              key,
+                                                                          'type':
+                                                                              'songs',
+                                                                        },
+                                                                      ),
+                                                                    ),
+                                                                  );
+                                                                }
+                                                              },
+                                                              child: Row(
+                                                                children: [
+                                                                  Text(
+                                                                    AppLocalizations
+                                                                            .of(
+                                                                      context,
+                                                                    )!
+                                                                        .viewAll,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Theme
+                                                                              .of(
+                                                                        context,
+                                                                      )
+                                                                          .textTheme
+                                                                          .bodySmall!
+                                                                          .color,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w800,
+                                                                    ),
+                                                                  ),
+                                                                  Icon(
+                                                                    Icons
+                                                                        .chevron_right_rounded,
+                                                                    color: Theme
+                                                                            .of(
+                                                                      context,
+                                                                    )
+                                                                        .textTheme
+                                                                        .bodySmall!
+                                                                        .color,
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ),
                                                   ],
                                                 ),
                                               ),
-                                          ],
-                                        ),
-                                      ),
-                                      ListView.builder(
-                                        itemCount: value.length,
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        padding: const EdgeInsets.only(
-                                          left: 5,
-                                          right: 10,
-                                        ),
-                                        itemBuilder: (context, index) {
-                                          final int count =
-                                              value[index]['count'] as int? ??
-                                                  0;
-                                          String countText =
-                                              value[index]['artist'].toString();
-                                          count > 1
-                                              ? countText =
-                                                  '$count ${AppLocalizations.of(context)!.songs}'
-                                              : countText =
-                                                  '$count ${AppLocalizations.of(context)!.song}';
-                                          return ListTile(
-                                            contentPadding:
-                                                const EdgeInsets.only(
-                                              left: 15.0,
-                                            ),
-                                            title: Text(
-                                              '${value[index]["title"]}',
-                                              style: const TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                              ),
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            subtitle: Text(
-                                              key == 'Albums' ||
-                                                      (key == 'Top Result' &&
-                                                          value[0]['type'] ==
-                                                              'album')
-                                                  ? '$countText\n${value[index]["subtitle"]}'
-                                                  : '${value[index]["subtitle"]}',
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                            isThreeLine: key == 'Albums' ||
-                                                (key == 'Top Result' &&
-                                                    value[0]['type'] ==
-                                                        'album'),
-                                            leading: imageCard(
-                                              borderRadius: key == 'Artists' ||
-                                                      (key == 'Top Result' &&
-                                                          value[0]['type'] ==
-                                                              'artist')
-                                                  ? 50.0
-                                                  : 7.0,
-                                              placeholderImage: AssetImage(
-                                                key == 'Artists' ||
+                                              ListView.builder(
+                                                itemCount: value.length,
+                                                physics:
+                                                    const NeverScrollableScrollPhysics(),
+                                                shrinkWrap: true,
+                                                padding: const EdgeInsets.only(
+                                                  left: 5,
+                                                  right: 10,
+                                                ),
+                                                itemBuilder: (context, index) {
+                                                  final int count = value[index]
+                                                          ['count'] as int? ??
+                                                      0;
+                                                  String countText =
+                                                      value[index]['artist']
+                                                          .toString();
+                                                  count > 1
+                                                      ? countText =
+                                                          '$count ${AppLocalizations.of(context)!.songs}'
+                                                      : countText =
+                                                          '$count ${AppLocalizations.of(context)!.song}';
+                                                  return ListTile(
+                                                    contentPadding:
+                                                        const EdgeInsets.only(
+                                                      left: 15.0,
+                                                    ),
+                                                    title: Text(
+                                                      '${value[index]["title"]}',
+                                                      style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                    subtitle: Text(
+                                                      key == 'Albums' ||
+                                                              (key == 'Top Result' &&
+                                                                  value[0][
+                                                                          'type'] ==
+                                                                      'album')
+                                                          ? '$countText\n${value[index]["subtitle"]}'
+                                                          : '${value[index]["subtitle"]}',
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                    ),
+                                                    isThreeLine: key ==
+                                                            'Albums' ||
                                                         (key == 'Top Result' &&
                                                             value[0]['type'] ==
-                                                                'artist')
-                                                    ? 'assets/artist.png'
-                                                    : key == 'Songs'
-                                                        ? 'assets/cover.jpg'
-                                                        : 'assets/album.png',
-                                              ),
-                                              imageUrl: value[index]['image']
-                                                  .toString(),
-                                            ),
-                                            trailing: key != 'Albums'
-                                                ? key == 'Songs'
-                                                    ? Row(
-                                                        mainAxisSize:
-                                                            MainAxisSize.min,
-                                                        children: [
-                                                          DownloadButton(
-                                                            data: value[index]
-                                                                as Map,
-                                                            icon: 'download',
-                                                          ),
-                                                          LikeButton(
-                                                            mediaItem: null,
-                                                            data: value[index]
-                                                                as Map,
-                                                          ),
-                                                          SongTileTrailingMenu(
-                                                            data: value[index]
-                                                                as Map,
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : null
-                                                : AlbumDownloadButton(
-                                                    albumName: value[index]
-                                                            ['title']
-                                                        .toString(),
-                                                    albumId: value[index]['id']
-                                                        .toString(),
-                                                  ),
-                                            onLongPress: () {
-                                              copyToClipboard(
-                                                context: context,
-                                                text:
-                                                    '${value[index]["title"]}',
-                                              );
-                                            },
-                                            onTap: () {
-                                              query = value[index]['title']
-                                                  .toString()
-                                                  .trim();
-                                              List searchQueries =
-                                                  Hive.box('settings').get(
-                                                'search',
-                                                defaultValue: [],
-                                              ) as List;
-                                              final idx =
-                                                  searchQueries.indexOf(query);
-                                              if (idx != -1) {
-                                                searchQueries.removeAt(idx);
-                                              }
-                                              searchQueries.insert(0, query);
-                                              if (searchQueries.length > 10) {
-                                                searchQueries = searchQueries
-                                                    .sublist(0, 10);
-                                              }
-                                              Hive.box('settings')
-                                                  .put('search', searchQueries);
-
-                                              if (key == 'Songs') {
-                                                PlayerInvoke.init(
-                                                  songsList: [value[index]],
-                                                  index: 0,
-                                                  isOffline: false,
-                                                );
-                                              } else {
-                                                Navigator.push(
-                                                  context,
-                                                  PageRouteBuilder(
-                                                    opaque: false,
-                                                    pageBuilder: (
-                                                      _,
-                                                      __,
-                                                      ___,
-                                                    ) =>
+                                                                'album'),
+                                                    leading: imageCard(
+                                                      borderRadius: key ==
+                                                                  'Artists' ||
+                                                              (key == 'Top Result' &&
+                                                                  value[0][
+                                                                          'type'] ==
+                                                                      'artist')
+                                                          ? 50.0
+                                                          : 7.0,
+                                                      placeholderImage:
+                                                          AssetImage(
                                                         key == 'Artists' ||
                                                                 (key == 'Top Result' &&
                                                                     value[0][
                                                                             'type'] ==
                                                                         'artist')
-                                                            ? ArtistSearchPage(
-                                                                data:
-                                                                    value[index]
+                                                            ? 'assets/artist.png'
+                                                            : key == 'Songs'
+                                                                ? 'assets/cover.jpg'
+                                                                : 'assets/album.png',
+                                                      ),
+                                                      imageUrl: value[index]
+                                                              ['image']
+                                                          .toString(),
+                                                    ),
+                                                    trailing: key != 'Albums'
+                                                        ? key == 'Songs'
+                                                            ? Row(
+                                                                mainAxisSize:
+                                                                    MainAxisSize
+                                                                        .min,
+                                                                children: [
+                                                                  DownloadButton(
+                                                                    data: value[
+                                                                            index]
                                                                         as Map,
+                                                                    icon:
+                                                                        'download',
+                                                                  ),
+                                                                  LikeButton(
+                                                                    mediaItem:
+                                                                        null,
+                                                                    data: value[
+                                                                            index]
+                                                                        as Map,
+                                                                  ),
+                                                                  SongTileTrailingMenu(
+                                                                    data: value[
+                                                                            index]
+                                                                        as Map,
+                                                                  ),
+                                                                ],
                                                               )
-                                                            : SongsListPage(
-                                                                listItem:
-                                                                    value[index]
-                                                                        as Map,
-                                                              ),
-                                                  ),
-                                                );
-                                              }
-                                            },
+                                                            : null
+                                                        : AlbumDownloadButton(
+                                                            albumName: value[
+                                                                        index]
+                                                                    ['title']
+                                                                .toString(),
+                                                            albumId:
+                                                                value[index]
+                                                                        ['id']
+                                                                    .toString(),
+                                                          ),
+                                                    onLongPress: () {
+                                                      copyToClipboard(
+                                                        context: context,
+                                                        text:
+                                                            '${value[index]["title"]}',
+                                                      );
+                                                    },
+                                                    onTap: () {
+                                                      if (key == 'Songs') {
+                                                        PlayerInvoke.init(
+                                                          songsList: [
+                                                            value[index]
+                                                          ],
+                                                          index: 0,
+                                                          isOffline: false,
+                                                        );
+                                                      } else {
+                                                        Navigator.push(
+                                                          context,
+                                                          PageRouteBuilder(
+                                                            opaque: false,
+                                                            pageBuilder: (
+                                                              _,
+                                                              __,
+                                                              ___,
+                                                            ) =>
+                                                                key == 'Artists' ||
+                                                                        (key == 'Top Result' &&
+                                                                            value[0]['type'] ==
+                                                                                'artist')
+                                                                    ? ArtistSearchPage(
+                                                                        data: value[index]
+                                                                            as Map,
+                                                                      )
+                                                                    : SongsListPage(
+                                                                        listItem:
+                                                                            value[index]
+                                                                                as Map,
+                                                                      ),
+                                                          ),
+                                                        );
+                                                      }
+                                                    },
+                                                  );
+                                                },
+                                              ),
+                                            ],
                                           );
                                         },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ).toList(),
-                            ),
-                          ),
+                                      ).toList(),
+                                    ),
+                                  ),
+                      ),
+                    ],
+                  ),
             onSubmitted: (String submittedQuery) {
               setState(
                 () {
                   fetched = false;
-                  query = submittedQuery;
-                  status = false;
                   fromHome = false;
-                  searchedData = {};
+                  fetchResultCalled = false;
+                  query = submittedQuery;
+                  _controller.text = submittedQuery;
+                  _controller.selection = TextSelection.fromPosition(
+                    TextPosition(
+                      offset: query.length,
+                    ),
+                  );
+                  searchedList = [];
                 },
               );
             },
-            onQueryCleared: () {
-              setState(() {
-                fromHome = true;
-              });
+            onQueryChanged: (changedQuery) {
+              return YouTubeServices()
+                  .getSearchSuggestions(query: changedQuery);
             },
           ),
         ),
       ),
     );
+  }
+
+  List<Widget> getChoices(
+    BuildContext context,
+    List<Map<String, String>> choices,
+  ) {
+    return choices.map((Map<String, String> element) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        child: ChoiceChip(
+          label: Text(element['label']!),
+          selectedColor:
+              Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+          labelStyle: TextStyle(
+            color: searchType == element['key']
+                ? Theme.of(context).colorScheme.secondary
+                : Theme.of(context).textTheme.bodyLarge!.color,
+            fontWeight: searchType == element['key']
+                ? FontWeight.w600
+                : FontWeight.normal,
+          ),
+          selected: searchType == element['key'],
+          onSelected: (bool selected) {
+            if (selected) {
+              searchType = element['key']!;
+              fetched = false;
+              fetchResultCalled = false;
+              Hive.box('settings').put('searchType', element['key']);
+              setState(() {});
+            }
+          },
+        ),
+      );
+    }).toList();
   }
 }

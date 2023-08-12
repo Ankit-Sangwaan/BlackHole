@@ -305,9 +305,12 @@ class SaavnAPI {
     }
   }
 
-  Future<List<Map>> fetchSearchResults(String searchQuery) async {
+  Future<List<Map<String, dynamic>>> fetchSearchResults(
+    String searchQuery,
+  ) async {
     final Map<String, List> result = {};
     final Map<int, String> position = {};
+    List searchedSongList = [];
     List searchedAlbumList = [];
     List searchedPlaylistList = [];
     List searchedArtistList = [];
@@ -372,6 +375,15 @@ class SaavnAPI {
         result['Artists'] = searchedArtistList;
       }
 
+      searchedSongList = (await SaavnAPI().fetchSongSearchResults(
+            searchQuery: searchQuery,
+            count: 5,
+          ))['songs'] as List? ??
+          [];
+      if (searchedSongList.isNotEmpty) {
+        result['Songs'] = searchedSongList;
+      }
+
       if (topQuery.isNotEmpty &&
           (topQuery[0]['type'] != 'playlist' ||
               topQuery[0]['type'] == 'artist' ||
@@ -406,7 +418,17 @@ class SaavnAPI {
         }
       }
     }
-    return [result, position];
+
+    final sortedKeys = position.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+
+    final List<Map<String, dynamic>> finalList = [];
+    for (final entry in sortedKeys) {
+      if (result.containsKey(entry.value)) {
+        finalList.add({entry.value: result[entry.value]});
+      }
+    }
+    return finalList;
   }
 
   Future<List<Map>> fetchAlbums({

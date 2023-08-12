@@ -62,7 +62,7 @@ dependencies:
   url_launcher: ^6.1.12
   uuid: ^3.0.7
   workmanager: ^0.5.1
-  youtube_explode_dart: ^1.12.4
+  youtube_explode_dart: ^2.0.1
 
 dev_dependencies:
   flutter_test:
