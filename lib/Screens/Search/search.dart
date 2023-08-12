@@ -215,7 +215,7 @@ class _SearchPageState extends State<SearchPage> {
           backgroundColor: Colors.transparent,
           body: searchbar.SearchBar(
             controller: _controller,
-            liveSearch: true,
+            liveSearch: liveSearch,
             autofocus: widget.autofocus,
             hintText: AppLocalizations.of(context)!.searchText,
             leading: IconButton(

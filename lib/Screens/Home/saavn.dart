@@ -249,44 +249,22 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                     playlistDetails[name]['count'] == 0
                                 ? null
                                 : '${playlistDetails[name]['count']} ${AppLocalizations.of(context)!.songs}';
+                            if (playlistDetails[name] == null ||
+                                playlistDetails[name]['count'] == null ||
+                                playlistDetails[name]['count'] == 0) {
+                              return const SizedBox();
+                            }
                             return GestureDetector(
                               child: SizedBox(
                                 width: boxSize - 20,
                                 child: HoverBox(
-                                  child: (playlistDetails[name] == null ||
-                                          playlistDetails[name]['imagesList'] ==
-                                              null ||
-                                          (playlistDetails[name]['imagesList']
-                                                  as List)
-                                              .isEmpty)
-                                      ? Card(
-                                          elevation: 5,
-                                          color: Colors.black,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              10.0,
-                                            ),
-                                          ),
-                                          clipBehavior: Clip.antiAlias,
-                                          child: name == 'Favorite Songs'
-                                              ? const Image(
-                                                  image: AssetImage(
-                                                    'assets/cover.jpg',
-                                                  ),
-                                                )
-                                              : const Image(
-                                                  image: AssetImage(
-                                                    'assets/album.png',
-                                                  ),
-                                                ),
-                                        )
-                                      : Collage(
-                                          borderRadius: 10.0,
-                                          imageList: playlistDetails[name]
-                                              ['imagesList'] as List,
-                                          showGrid: true,
-                                          placeholderImage: 'assets/cover.jpg',
-                                        ),
+                                  child: Collage(
+                                    borderRadius: 10.0,
+                                    imageList: playlistDetails[name]
+                                        ['imagesList'] as List,
+                                    showGrid: true,
+                                    placeholderImage: 'assets/cover.jpg',
+                                  ),
                                   builder: ({
                                     required BuildContext context,
                                     required bool isHover,
@@ -608,6 +586,11 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                                 imageUrl:
                                                     item['image'].toString(),
                                                 imageQuality: ImageQuality.high,
+                                                boxDimension:
+                                                    MediaQuery.of(context)
+                                                            .size
+                                                            .width *
+                                                        0.8,
                                                 placeholderImage: (item[
                                                                 'type'] ==
                                                             'playlist' ||

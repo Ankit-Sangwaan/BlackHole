@@ -182,41 +182,40 @@ class _MiniPlayerState extends State<MiniPlayer> {
       stream: AudioService.position,
       builder: (context, snapshot) {
         final position = snapshot.data;
-        return position == null
+        return ((position?.inSeconds.toDouble() ?? 0) < 0.0 ||
+                ((position?.inSeconds.toDouble() ?? 0) >
+                    (maxDuration ?? 180.0)))
             ? const SizedBox()
-            : (position.inSeconds.toDouble() < 0.0 ||
-                    (position.inSeconds.toDouble() > (maxDuration ?? 180.0)))
-                ? const SizedBox()
-                : SliderTheme(
-                    data: SliderTheme.of(context).copyWith(
-                      activeTrackColor: Theme.of(context).colorScheme.secondary,
-                      inactiveTrackColor: Colors.transparent,
-                      trackHeight: 0.5,
-                      thumbColor: Theme.of(context).colorScheme.secondary,
-                      thumbShape: const RoundSliderThumbShape(
-                        enabledThumbRadius: 1.0,
-                      ),
-                      overlayColor: Colors.transparent,
-                      overlayShape: const RoundSliderOverlayShape(
-                        overlayRadius: 2.0,
-                      ),
-                    ),
-                    child: Center(
-                      child: Slider(
-                        inactiveColor: Colors.transparent,
-                        // activeColor: Colors.white,
-                        value: position.inSeconds.toDouble(),
-                        max: maxDuration ?? 180.0,
-                        onChanged: (newPosition) {
-                          audioHandler.seek(
-                            Duration(
-                              seconds: newPosition.round(),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  );
+            : SliderTheme(
+                data: SliderTheme.of(context).copyWith(
+                  activeTrackColor: Theme.of(context).colorScheme.secondary,
+                  inactiveTrackColor: Colors.transparent,
+                  trackHeight: 0.5,
+                  thumbColor: Theme.of(context).colorScheme.secondary,
+                  thumbShape: const RoundSliderThumbShape(
+                    enabledThumbRadius: 1.0,
+                  ),
+                  overlayColor: Colors.transparent,
+                  overlayShape: const RoundSliderOverlayShape(
+                    overlayRadius: 2.0,
+                  ),
+                ),
+                child: Center(
+                  child: Slider(
+                    inactiveColor: Colors.transparent,
+                    // activeColor: Colors.white,
+                    value: position?.inSeconds.toDouble() ?? 0,
+                    max: maxDuration ?? 180.0,
+                    onChanged: (newPosition) {
+                      audioHandler.seek(
+                        Duration(
+                          seconds: newPosition.round(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              );
       },
     );
   }

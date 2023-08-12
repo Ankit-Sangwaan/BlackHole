@@ -68,6 +68,17 @@ Future<void> addPlaylist(String inputName, List data) async {
   final RegExp avoid = RegExp(r'[\.\\\*\:\"\?#/;\|]');
   String name = inputName.replaceAll(avoid, '').replaceAll('  ', ' ');
 
+  final List playlistNames =
+      Hive.box('settings').get('playlistNames', defaultValue: []) as List;
+
+  if (name.trim() == '') {
+    name = 'Playlist ${playlistNames.length}';
+  }
+  while (playlistNames.contains(name)) {
+    // ignore: use_string_buffers
+    name += ' (1)';
+  }
+
   await Hive.openBox(name);
   final Box playlistBox = Hive.box(name);
 
@@ -79,16 +90,6 @@ Future<void> addPlaylist(String inputName, List data) async {
   final Map result = {for (var v in data) v['id'].toString(): v};
   playlistBox.putAll(result);
 
-  final List playlistNames =
-      Hive.box('settings').get('playlistNames', defaultValue: []) as List;
-
-  if (name.trim() == '') {
-    name = 'Playlist ${playlistNames.length}';
-  }
-  while (playlistNames.contains(name)) {
-    // ignore: use_string_buffers
-    name += ' (1)';
-  }
   playlistNames.add(name);
   Hive.box('settings').put('playlistNames', playlistNames);
 }
