@@ -397,7 +397,7 @@ class _SearchPageState extends State<SearchPage> {
                       Padding(
                         padding: const EdgeInsets.only(
                           top: 70,
-                          left: 20,
+                          left: 15,
                         ),
                         child: (query.isEmpty && widget.query.isEmpty)
                             ? null
@@ -419,7 +419,6 @@ class _SearchPageState extends State<SearchPage> {
                                 : SingleChildScrollView(
                                     padding: const EdgeInsets.symmetric(
                                       horizontal: 5.0,
-                                      vertical: 5.0,
                                     ),
                                     physics: const BouncingScrollPhysics(),
                                     child: Column(
@@ -437,9 +436,9 @@ class _SearchPageState extends State<SearchPage> {
                                             children: [
                                               Padding(
                                                 padding: const EdgeInsets.only(
-                                                  left: 15,
+                                                  left: 17,
+                                                  right: 15,
                                                   top: 15,
-                                                  bottom: 5,
                                                 ),
                                                 child: Row(
                                                   mainAxisAlignment:
@@ -460,22 +459,47 @@ class _SearchPageState extends State<SearchPage> {
                                                     if (section[
                                                             'allowViewAll'] ==
                                                         true)
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .symmetric(
-                                                          horizontal: 15,
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .end,
-                                                          children: [
-                                                            GestureDetector(
-                                                              onTap:
-                                                                  searchType !=
-                                                                          'saavn'
-                                                                      ? () {
+                                                      Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          GestureDetector(
+                                                            onTap:
+                                                                searchType !=
+                                                                        'saavn'
+                                                                    ? () {
+                                                                        Navigator
+                                                                            .push(
+                                                                          context,
+                                                                          PageRouteBuilder(
+                                                                            opaque:
+                                                                                false,
+                                                                            pageBuilder: (
+                                                                              _,
+                                                                              __,
+                                                                              ___,
+                                                                            ) =>
+                                                                                SongsListViewPage(
+                                                                              onTap: (index, listItems) {},
+                                                                              title: 'Search Results',
+                                                                              subtitle: '\nType: $title\nSearched Text: "${(query == '' ? widget.query : query).capitalize()}"',
+                                                                              listItemsTitle: title,
+                                                                              loadFunction: () {
+                                                                                return YtMusicService().searchSongs(
+                                                                                  query == '' ? widget.query : query,
+                                                                                );
+                                                                              },
+                                                                            ),
+                                                                          ),
+                                                                        );
+                                                                      }
+                                                                    : () {
+                                                                        if (title == 'Albums' ||
+                                                                            title ==
+                                                                                'Playlists' ||
+                                                                            title ==
+                                                                                'Artists') {
                                                                           Navigator
                                                                               .push(
                                                                             context,
@@ -486,87 +510,46 @@ class _SearchPageState extends State<SearchPage> {
                                                                                 __,
                                                                                 ___,
                                                                               ) =>
-                                                                                  SongsListViewPage(
-                                                                                onTap: (index, listItems) {},
-                                                                                title: 'Search Results',
-                                                                                subtitle: '\nType: $title\nSearched Text: "${(query == '' ? widget.query : query).capitalize()}"',
-                                                                                listItemsTitle: title,
-                                                                                loadFunction: () {
-                                                                                  return YtMusicService().searchSongs(
-                                                                                    query == '' ? widget.query : query,
-                                                                                  );
+                                                                                  AlbumSearchPage(
+                                                                                query: query == '' ? widget.query : query,
+                                                                                type: title,
+                                                                              ),
+                                                                            ),
+                                                                          );
+                                                                        }
+                                                                        if (title ==
+                                                                            'Songs') {
+                                                                          Navigator
+                                                                              .push(
+                                                                            context,
+                                                                            PageRouteBuilder(
+                                                                              opaque: false,
+                                                                              pageBuilder: (
+                                                                                _,
+                                                                                __,
+                                                                                ___,
+                                                                              ) =>
+                                                                                  SongsListPage(
+                                                                                listItem: {
+                                                                                  'id': query == '' ? widget.query : query,
+                                                                                  'title': title,
+                                                                                  'type': 'songs',
                                                                                 },
                                                                               ),
                                                                             ),
                                                                           );
                                                                         }
-                                                                      : () {
-                                                                          if (title == 'Albums' ||
-                                                                              title == 'Playlists' ||
-                                                                              title == 'Artists') {
-                                                                            Navigator.push(
-                                                                              context,
-                                                                              PageRouteBuilder(
-                                                                                opaque: false,
-                                                                                pageBuilder: (
-                                                                                  _,
-                                                                                  __,
-                                                                                  ___,
-                                                                                ) =>
-                                                                                    AlbumSearchPage(
-                                                                                  query: query == '' ? widget.query : query,
-                                                                                  type: title,
-                                                                                ),
-                                                                              ),
-                                                                            );
-                                                                          }
-                                                                          if (title ==
-                                                                              'Songs') {
-                                                                            Navigator.push(
-                                                                              context,
-                                                                              PageRouteBuilder(
-                                                                                opaque: false,
-                                                                                pageBuilder: (
-                                                                                  _,
-                                                                                  __,
-                                                                                  ___,
-                                                                                ) =>
-                                                                                    SongsListPage(
-                                                                                  listItem: {
-                                                                                    'id': query == '' ? widget.query : query,
-                                                                                    'title': title,
-                                                                                    'type': 'songs',
-                                                                                  },
-                                                                                ),
-                                                                              ),
-                                                                            );
-                                                                          }
-                                                                        },
-                                                              child: Row(
-                                                                children: [
-                                                                  Text(
-                                                                    AppLocalizations
-                                                                            .of(
-                                                                      context,
-                                                                    )!
-                                                                        .viewAll,
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Theme
-                                                                              .of(
-                                                                        context,
-                                                                      )
-                                                                          .textTheme
-                                                                          .bodySmall!
-                                                                          .color,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w800,
-                                                                    ),
-                                                                  ),
-                                                                  Icon(
-                                                                    Icons
-                                                                        .chevron_right_rounded,
+                                                                      },
+                                                            child: Row(
+                                                              children: [
+                                                                Text(
+                                                                  AppLocalizations
+                                                                          .of(
+                                                                    context,
+                                                                  )!
+                                                                      .viewAll,
+                                                                  style:
+                                                                      TextStyle(
                                                                     color: Theme
                                                                             .of(
                                                                       context,
@@ -574,12 +557,26 @@ class _SearchPageState extends State<SearchPage> {
                                                                         .textTheme
                                                                         .bodySmall!
                                                                         .color,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w800,
                                                                   ),
-                                                                ],
-                                                              ),
+                                                                ),
+                                                                Icon(
+                                                                  Icons
+                                                                      .chevron_right_rounded,
+                                                                  color: Theme
+                                                                          .of(
+                                                                    context,
+                                                                  )
+                                                                      .textTheme
+                                                                      .bodySmall!
+                                                                      .color,
+                                                                ),
+                                                              ],
                                                             ),
-                                                          ],
-                                                        ),
+                                                          ),
+                                                        ],
                                                       ),
                                                   ],
                                                 ),
@@ -589,9 +586,9 @@ class _SearchPageState extends State<SearchPage> {
                                                 physics:
                                                     const NeverScrollableScrollPhysics(),
                                                 shrinkWrap: true,
-                                                padding: const EdgeInsets.only(
-                                                  left: 5,
-                                                  right: 10,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                  horizontal: 5,
                                                 ),
                                                 itemBuilder: (context, index) {
                                                   final int count = items[index]
@@ -602,28 +599,24 @@ class _SearchPageState extends State<SearchPage> {
                                                           ?.toString()
                                                           .toLowerCase() ??
                                                       'video';
-                                                  String countText =
-                                                      items[index]['artist']
-                                                          .toString();
-                                                  count > 1
-                                                      ? countText =
-                                                          '$count ${AppLocalizations.of(context)!.songs}'
-                                                      : countText =
-                                                          '$count ${AppLocalizations.of(context)!.song}';
+                                                  String countText = '';
+                                                  if (count >= 1) {
+                                                    count > 1
+                                                        ? countText =
+                                                            '$count ${AppLocalizations.of(context)!.songs}'
+                                                        : countText =
+                                                            '$count ${AppLocalizations.of(context)!.song}';
+                                                  }
                                                   return MediaTile(
                                                     title: items[index]['title']
                                                         .toString(),
-                                                    subtitle: items[index]
+                                                    subtitle: countText != ''
+                                                        ? '$countText\n${items[index]["subtitle"]}'
+                                                        : items[index]
                                                                 ['subtitle']
-                                                            ?.toString() ??
-                                                        (title == 'Albums' ||
-                                                                itemType ==
-                                                                    'album'
-                                                            ? '$countText\n${items[index]["subtitle"]}'
-                                                            : '${items[index]["subtitle"]}'),
+                                                            .toString(),
                                                     isThreeLine:
-                                                        title == 'Albums' ||
-                                                            itemType == 'album',
+                                                        countText != '',
                                                     leadingWidget: imageCard(
                                                       borderRadius:
                                                           title == 'Artists' ||
@@ -881,7 +874,7 @@ class _SearchPageState extends State<SearchPage> {
   ) {
     return choices.map((Map<String, String> element) {
       return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+        padding: const EdgeInsets.symmetric(horizontal: 2.5),
         child: ChoiceChip(
           label: Text(element['label']!),
           selectedColor:

@@ -97,7 +97,6 @@ class _MiniPlayerState extends State<MiniPlayer> {
                 ),
                 elevation: 0,
                 child: SizedBox(
-                  height: 68.0,
                   child: GradientContainer(
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
