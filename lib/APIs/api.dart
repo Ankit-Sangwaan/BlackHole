@@ -425,7 +425,7 @@ class SaavnAPI {
     final List<Map<String, dynamic>> finalList = [];
     for (final entry in sortedKeys) {
       if (result.containsKey(entry.value)) {
-        finalList.add({entry.value: result[entry.value]});
+        finalList.add({'title': entry.value, 'items': result[entry.value]});
       }
     }
     return finalList;

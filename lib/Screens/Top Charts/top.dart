@@ -296,6 +296,10 @@ class _TopPageState extends State<TopPage>
                     onPressed: () {
                       scrapData(widget.type, signIn: true);
                     },
+                    style: TextButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.secondary,
+                      foregroundColor: Colors.black,
+                    ),
                     child: Text(AppLocalizations.of(context)!.signInSpotify),
                   ),
                 ),

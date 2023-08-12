@@ -19,15 +19,11 @@
 
 import 'dart:math';
 
-import 'package:blackhole/Screens/YouTube/youtube_search.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive/hive.dart';
 
 class SearchBar extends StatefulWidget {
-  final bool isYt;
   final Widget body;
   final bool autofocus;
   final bool liveSearch;
@@ -35,7 +31,7 @@ class SearchBar extends StatefulWidget {
   final Widget? leading;
   final String? hintText;
   final TextEditingController controller;
-  final Function(String)? onQueryChanged;
+  final Future<List> Function(String)? onQueryChanged;
   final Function()? onQueryCleared;
   final Function(String) onSubmitted;
   const SearchBar({
@@ -47,7 +43,6 @@ class SearchBar extends StatefulWidget {
     this.onQueryChanged,
     this.onQueryCleared,
     required this.body,
-    required this.isYt,
     required this.controller,
     required this.liveSearch,
     required this.onSubmitted,
@@ -164,41 +159,24 @@ class _SearchBarState extends State<SearchBar> {
                       }
                       if (widget.liveSearch && val.trim() != '') {
                         hide.value = false;
-                        if (widget.isYt) {
-                          Future.delayed(
-                            const Duration(
-                              milliseconds: 600,
-                            ),
-                            () async {
-                              if (tempQuery == val &&
-                                  tempQuery.trim() != '' &&
-                                  tempQuery != query) {
-                                query = tempQuery;
+                        Future.delayed(
+                          const Duration(
+                            milliseconds: 400,
+                          ),
+                          () async {
+                            if (tempQuery == val &&
+                                tempQuery.trim() != '' &&
+                                tempQuery != query) {
+                              query = tempQuery;
+                              if (widget.onQueryChanged == null) {
+                                widget.onSubmitted(tempQuery);
+                              } else {
                                 suggestionsList.value =
-                                    await widget.onQueryChanged!(tempQuery)
-                                        as List;
+                                    await widget.onQueryChanged!(tempQuery);
                               }
-                            },
-                          );
-                        } else {
-                          Future.delayed(
-                            const Duration(
-                              milliseconds: 600,
-                            ),
-                            () async {
-                              if (tempQuery == val &&
-                                  tempQuery.trim() != '' &&
-                                  tempQuery != query) {
-                                query = tempQuery;
-                                if (widget.onQueryChanged == null) {
-                                  widget.onSubmitted(tempQuery);
-                                } else {
-                                  widget.onQueryChanged!(tempQuery);
-                                }
-                              }
-                            },
-                          );
-                        }
+                            }
+                          },
+                        );
                       }
                     },
                     onSubmitted: (submittedQuery) {
@@ -222,40 +200,6 @@ class _SearchBarState extends State<SearchBar> {
                 ),
               ),
             ),
-            if (!widget.isYt)
-              Padding(
-                padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                child: RichText(
-                  text: TextSpan(
-                    children: <TextSpan>[
-                      TextSpan(
-                        style: const TextStyle(color: Colors.grey),
-                        text: AppLocalizations.of(context)!.cantFind,
-                      ),
-                      TextSpan(
-                        text: AppLocalizations.of(context)!.searchYt,
-                        style: TextStyle(
-                          color: Theme.of(context).textTheme.bodyLarge!.color,
-                        ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.push(
-                              context,
-                              PageRouteBuilder(
-                                opaque: false,
-                                pageBuilder: (_, __, ___) => YouTubeSearchPage(
-                                  query: query.isNotEmpty
-                                      ? query
-                                      : widget.controller.text,
-                                ),
-                              ),
-                            );
-                          },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
             ValueListenableBuilder(
               valueListenable: hide,
               builder: (

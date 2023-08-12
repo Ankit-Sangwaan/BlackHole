@@ -19,8 +19,8 @@
 
 import 'package:blackhole/CustomWidgets/drawer.dart';
 import 'package:blackhole/CustomWidgets/on_hover.dart';
+import 'package:blackhole/Screens/Search/search.dart';
 import 'package:blackhole/Screens/YouTube/youtube_playlist.dart';
-import 'package:blackhole/Screens/YouTube/youtube_search.dart';
 import 'package:blackhole/Services/youtube_services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -144,7 +144,7 @@ class _YouTubeState extends State<YouTube>
                             context,
                             PageRouteBuilder(
                               opaque: false,
-                              pageBuilder: (_, __, ___) => YouTubeSearchPage(
+                              pageBuilder: (_, __, ___) => SearchPage(
                                 query: headList[index]['title'].toString(),
                               ),
                             ),
@@ -223,7 +223,7 @@ class _YouTubeState extends State<YouTube>
                                             PageRouteBuilder(
                                               opaque: false,
                                               pageBuilder: (_, __, ___) =>
-                                                  YouTubeSearchPage(
+                                                  SearchPage(
                                                 query: item['title'].toString(),
                                               ),
                                             ),
@@ -466,8 +466,13 @@ class _YouTubeState extends State<YouTube>
             onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const YouTubeSearchPage(
+                builder: (context) => SearchPage(
                   query: '',
+                  fromHome: true,
+                  searchType: Hive.box('settings')
+                          .get('searchYtMusic', defaultValue: true) as bool
+                      ? 'ytm'
+                      : 'yt',
                   autofocus: true,
                 ),
               ),

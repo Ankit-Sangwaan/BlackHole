@@ -42,35 +42,39 @@ class UrlImageGetter {
     switch (imageQuality) {
       case ImageQuality.high:
         return length == 1
-            ? _imageUrls.first!
-                .trim()
-                .replaceAll('http:', 'https:')
-                .replaceAll('50x50', '500x500')
-                .replaceAll('150x150', '500x500')
-            : _imageUrls.last!;
+            ? (_imageUrls.first
+                    ?.trim()
+                    .replaceAll('http:', 'https:')
+                    .replaceAll('50x50', '500x500')
+                    .replaceAll('150x150', '500x500') ??
+                '')
+            : _imageUrls.last ?? '';
       case ImageQuality.medium:
         return length == 1
-            ? _imageUrls.first!
-                .trim()
-                .replaceAll('http:', 'https:')
-                .replaceAll('50x50', '150x150')
-                .replaceAll('500x500', '150x150')
-            : _imageUrls[length ~/ 2]!;
+            ? _imageUrls.first
+                    ?.trim()
+                    .replaceAll('http:', 'https:')
+                    .replaceAll('50x50', '150x150')
+                    .replaceAll('500x500', '150x150') ??
+                ''
+            : _imageUrls[length ~/ 2] ?? '';
       case ImageQuality.low:
         return length == 1
-            ? _imageUrls.first!
-                .trim()
-                .replaceAll('http:', 'https:')
-                .replaceAll('150x150', '50x50')
-                .replaceAll('500x500', '50x50')
+            ? _imageUrls.first
+                    ?.trim()
+                    .replaceAll('http:', 'https:')
+                    .replaceAll('150x150', '50x50')
+                    .replaceAll('500x500', '50x50') ??
+                ''
             : _imageUrls.first!;
       default:
         return length == 1
-            ? _imageUrls.first!
-                .trim()
-                .replaceAll('http:', 'https:')
-                .replaceAll('50x50', '500x500')
-                .replaceAll('150x150', '500x500')
+            ? _imageUrls.first
+                    ?.trim()
+                    .replaceAll('http:', 'https:')
+                    .replaceAll('50x50', '500x500')
+                    .replaceAll('150x150', '500x500') ??
+                ''
             : _imageUrls.last!;
     }
   }

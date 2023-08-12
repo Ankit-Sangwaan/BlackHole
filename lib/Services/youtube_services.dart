@@ -480,6 +480,7 @@ class YouTubeServices {
       {
         'title': 'Videos',
         'items': videoResult,
+        'allowViewAll': false,
       }
     ];
     // return searchResults;
