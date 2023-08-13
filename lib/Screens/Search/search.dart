@@ -481,9 +481,41 @@ class _SearchPageState extends State<SearchPage> {
                                                                               ___,
                                                                             ) =>
                                                                                 SongsListViewPage(
-                                                                              onTap: (index, listItems) {},
-                                                                              title: 'Search Results',
-                                                                              subtitle: '\nType: $title\nSearched Text: "${(query == '' ? widget.query : query).capitalize()}"',
+                                                                              onTap: (index, listItems) async {
+                                                                                final Map? response = await YouTubeServices().formatVideoFromId(
+                                                                                  id: items[index]['id'].toString(),
+                                                                                  data: items[index] as Map,
+                                                                                );
+
+                                                                                final Map response2 = await YtMusicService().getSongData(
+                                                                                  videoId: items[index]['id'].toString(),
+                                                                                );
+                                                                                if (response != null && response2['image'] != null) {
+                                                                                  response['image'] = response2['image'] ?? response['image'];
+                                                                                }
+
+                                                                                if (response != null) {
+                                                                                  PlayerInvoke.init(
+                                                                                    songsList: [
+                                                                                      response
+                                                                                    ],
+                                                                                    index: 0,
+                                                                                    isOffline: false,
+                                                                                  );
+                                                                                }
+                                                                                if (response == null) {
+                                                                                  ShowSnackBar().showSnackBar(
+                                                                                    context,
+                                                                                    AppLocalizations.of(
+                                                                                      context,
+                                                                                    )!
+                                                                                        .ytLiveAlert,
+                                                                                  );
+                                                                                }
+                                                                              },
+                                                                              title: title,
+                                                                              subtitle: '\nShowing Search Results for',
+                                                                              secondarySubtitle: '"${(query == '' ? widget.query : query).capitalize()}"',
                                                                               listItemsTitle: title,
                                                                               loadFunction: () {
                                                                                 return YtMusicService().searchSongs(

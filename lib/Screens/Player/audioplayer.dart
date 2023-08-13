@@ -222,25 +222,27 @@ class _PlayScreenState extends State<PlayScreen> {
           if (mediaItem == null) return const SizedBox();
           final offline =
               !mediaItem.extras!['url'].toString().startsWith('http');
-          mediaItem.artUri.toString().startsWith('file')
-              ? getColors(
-                  imageProvider: FileImage(
-                    File(
-                      mediaItem.artUri!.toFilePath(),
+          if (mediaItem.artUri != null && mediaItem.artUri.toString() != '') {
+            mediaItem.artUri.toString().startsWith('file')
+                ? getColors(
+                    imageProvider: FileImage(
+                      File(
+                        mediaItem.artUri!.toFilePath(),
+                      ),
                     ),
-                  ),
-                  // useDominantAndDarkerColors: gradientType == 'halfLight' ||
-                  //     gradientType == 'fullLight' ||
-                  //     gradientType == 'fullMix',
-                ).then((value) => updateBackgroundColors(value))
-              : getColors(
-                  imageProvider: CachedNetworkImageProvider(
-                    mediaItem.artUri.toString(),
-                  ),
-                  // useDominantAndDarkerColors: gradientType == 'halfLight' ||
-                  //     gradientType == 'fullLight' ||
-                  //     gradientType == 'fullMix',
-                ).then((value) => updateBackgroundColors(value));
+                    // useDominantAndDarkerColors: gradientType == 'halfLight' ||
+                    //     gradientType == 'fullLight' ||
+                    //     gradientType == 'fullMix',
+                  ).then((value) => updateBackgroundColors(value))
+                : getColors(
+                    imageProvider: CachedNetworkImageProvider(
+                      mediaItem.artUri.toString(),
+                    ),
+                    // useDominantAndDarkerColors: gradientType == 'halfLight' ||
+                    //     gradientType == 'fullLight' ||
+                    //     gradientType == 'fullMix',
+                  ).then((value) => updateBackgroundColors(value));
+          }
           return ValueListenableBuilder(
             valueListenable: gradientColor,
             child: SafeArea(

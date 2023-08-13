@@ -50,7 +50,7 @@ Widget imageCard({
       child: Stack(
         fit: StackFit.expand,
         children: [
-          if (localImage)
+          if (localImage || imageUrl == '')
             Image(
               fit: BoxFit.cover,
               errorBuilder: (context, error, stacktrace) {
