@@ -778,42 +778,58 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                                   Align(
                                                     alignment:
                                                         Alignment.topRight,
-                                                    child: IconButton(
-                                                      icon: likedRadio
-                                                              .contains(item)
-                                                          ? const Icon(
-                                                              Icons
-                                                                  .favorite_rounded,
-                                                              color: Colors.red,
-                                                            )
-                                                          : const Icon(
-                                                              Icons
-                                                                  .favorite_border_rounded,
-                                                            ),
-                                                      tooltip: likedRadio
-                                                              .contains(item)
-                                                          ? AppLocalizations.of(
-                                                              context,
-                                                            )!
-                                                              .unlike
-                                                          : AppLocalizations.of(
-                                                              context,
-                                                            )!
-                                                              .like,
-                                                      onPressed: () {
-                                                        likedRadio
+                                                    child: Card(
+                                                      margin: EdgeInsets.zero,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          1000.0,
+                                                        ),
+                                                      ),
+                                                      color: Colors.black54,
+                                                      child: IconButton(
+                                                        icon: likedRadio
                                                                 .contains(item)
-                                                            ? likedRadio
-                                                                .remove(item)
-                                                            : likedRadio
-                                                                .add(item);
-                                                        Hive.box('settings')
-                                                            .put(
-                                                          'likedRadio',
-                                                          likedRadio,
-                                                        );
-                                                        setState(() {});
-                                                      },
+                                                            ? const Icon(
+                                                                Icons
+                                                                    .favorite_rounded,
+                                                                color:
+                                                                    Colors.red,
+                                                              )
+                                                            : const Icon(
+                                                                Icons
+                                                                    .favorite_border_rounded,
+                                                              ),
+                                                        tooltip: likedRadio
+                                                                .contains(item)
+                                                            ? AppLocalizations
+                                                                    .of(
+                                                                context,
+                                                              )!
+                                                                .unlike
+                                                            : AppLocalizations
+                                                                    .of(
+                                                                context,
+                                                              )!
+                                                                .like,
+                                                        onPressed: () {
+                                                          likedRadio.contains(
+                                                            item,
+                                                          )
+                                                              ? likedRadio
+                                                                  .remove(item)
+                                                              : likedRadio
+                                                                  .add(item);
+                                                          Hive.box('settings')
+                                                              .put(
+                                                            'likedRadio',
+                                                            likedRadio,
+                                                          );
+                                                          setState(() {});
+                                                        },
+                                                      ),
                                                     ),
                                                   ),
                                                 if (item['type'] == 'song' ||

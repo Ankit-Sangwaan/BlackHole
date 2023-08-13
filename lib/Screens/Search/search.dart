@@ -17,6 +17,8 @@
  * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
+import 'dart:io';
+
 import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/CustomWidgets/download_button.dart';
 import 'package:blackhole/CustomWidgets/empty_screen.dart';
@@ -45,12 +47,14 @@ import 'package:logging/logging.dart';
 class SearchPage extends StatefulWidget {
   final String query;
   final bool fromHome;
+  final bool fromDirectSearch;
   final String? searchType;
   final bool autofocus;
   const SearchPage({
     super.key,
     required this.query,
     this.fromHome = false,
+    this.fromDirectSearch = false,
     this.searchType,
     this.autofocus = false,
   });
@@ -221,7 +225,7 @@ class _SearchPageState extends State<SearchPage> {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_rounded),
               onPressed: () {
-                if (fromHome ?? false) {
+                if ((fromHome ?? false) || widget.fromDirectSearch) {
                   Navigator.pop(context);
                 } else {
                   setState(() {
@@ -250,8 +254,13 @@ class _SearchPageState extends State<SearchPage> {
                               searchHistory.length,
                               (int index) {
                                 return Padding(
-                                  padding: const EdgeInsets.symmetric(
+                                  padding: EdgeInsets.symmetric(
                                     horizontal: 5.0,
+                                    vertical: (Platform.isWindows ||
+                                            Platform.isLinux ||
+                                            Platform.isMacOS)
+                                        ? 5.0
+                                        : 0.0,
                                   ),
                                   child: GestureDetector(
                                     child: Chip(
@@ -341,8 +350,13 @@ class _SearchPageState extends State<SearchPage> {
                                       value.length,
                                       (int index) {
                                         return Padding(
-                                          padding: const EdgeInsets.symmetric(
+                                          padding: EdgeInsets.symmetric(
                                             horizontal: 5.0,
+                                            vertical: (Platform.isWindows ||
+                                                    Platform.isLinux ||
+                                                    Platform.isMacOS)
+                                                ? 5.0
+                                                : 0.0,
                                           ),
                                           child: ChoiceChip(
                                             label: Text(value[index]),
@@ -372,6 +386,7 @@ class _SearchPageState extends State<SearchPage> {
                                                         offset: query.length,
                                                       ),
                                                     );
+                                                    addToHistory(query);
                                                     fetchResultCalled = false;
                                                     fromHome = false;
                                                     searchedList = [];

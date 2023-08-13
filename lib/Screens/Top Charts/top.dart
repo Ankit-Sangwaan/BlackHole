@@ -381,6 +381,7 @@ class _TopPageState extends State<TopPage>
                           MaterialPageRoute(
                             builder: (context) => SearchPage(
                               query: showList[index]['name'].toString(),
+                              fromDirectSearch: true,
                             ),
                           ),
                         );

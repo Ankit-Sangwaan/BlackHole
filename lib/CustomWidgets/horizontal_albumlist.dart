@@ -17,12 +17,16 @@
  * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
+import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/like_button.dart';
 import 'package:blackhole/CustomWidgets/on_hover.dart';
+import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Models/image_quality.dart';
+import 'package:blackhole/Services/player_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HorizontalAlbumsList extends StatelessWidget {
   final List songsList;
@@ -200,6 +204,57 @@ class HorizontalAlbumsList extends StatelessWidget {
                                         size: 50.0,
                                       ),
                                     ),
+                                  ),
+                                ),
+                              ),
+                            if (item['type'] == 'artist')
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: Card(
+                                  margin: EdgeInsets.zero,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(
+                                      1000.0,
+                                    ),
+                                  ),
+                                  color: Colors.black54,
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      Icons.podcasts_rounded,
+                                    ),
+                                    tooltip:
+                                        AppLocalizations.of(context)!.playRadio,
+                                    onPressed: () {
+                                      // start radio
+                                      ShowSnackBar().showSnackBar(
+                                        context,
+                                        AppLocalizations.of(context)!
+                                            .connectingRadio,
+                                        duration: const Duration(seconds: 2),
+                                      );
+                                      SaavnAPI().createRadio(
+                                        names: [
+                                          item['title']?.toString() ?? '',
+                                        ],
+                                        language:
+                                            item['language']?.toString() ??
+                                                'hindi',
+                                        stationType: 'artist',
+                                      ).then((value) {
+                                        if (value != null) {
+                                          SaavnAPI()
+                                              .getRadioSongs(stationId: value)
+                                              .then((value) {
+                                            PlayerInvoke.init(
+                                              songsList: value,
+                                              index: 0,
+                                              isOffline: false,
+                                              shuffle: true,
+                                            );
+                                          });
+                                        }
+                                      });
+                                    },
                                   ),
                                 ),
                               ),
