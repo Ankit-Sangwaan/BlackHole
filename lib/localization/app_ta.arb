@@ -716,5 +716,9 @@
   "navTabs": "வழிசெலுத்தல் பட்டை தாவல்கள்",
   "@navTabs": {},
   "minFourRequired": "குறைந்தது 4 தேவை",
-  "@minFourRequired": {}
+  "@minFourRequired": {},
+  "useLessDataImage": "படங்களுக்கு குறைந்த தரவைப் பயன்படுத்து",
+  "@useLessDataImage": {},
+  "useLessDataImageSub": "இது செயலியில் படங்களின் தரத்தைக் குறைக்கும், ஆனால் உமது தரவைச் சேமிக்கும்",
+  "@useLessDataImageSub": {}
 }
