@@ -303,6 +303,7 @@ class YtMusicService {
         );
 
         if (containsHeader) {
+          Logger.root.info('This search contains header');
           final res = parseInfoFromSubtitle(
             sectionItem,
             titleNavPath: [sectionSelfRenderer, ...NavClass.titleRuns],
@@ -457,8 +458,8 @@ class YtMusicService {
       'artist',
       'profile',
     ].contains(type.toLowerCase())) {
-      type = 'unknown';
-      return null;
+      type = 'Song';
+      subtitleList.insert(0, 'Song');
     }
 
     final List idNav = (type == 'Song' || type == 'Video')
