@@ -15,158 +15,191 @@
  * along with BlackHole.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * Copyright (c) 2021-2023, Ankit Sangwan
-const  */
+*/
 
-const content = ['contents', 0];
-const runText = ['runs', 0, 'text'];
-const tabContent = ['tabs', 0, 'tabRenderer', 'content'];
-const tab1Content = ['tabs', 1, 'tabRenderer', 'content'];
-const singleColumn = ['contents', 'singleColumnBrowseResultsRenderer'];
-const singleColumnTab = [...singleColumn, ...tabContent];
-const sectionList = ['sectionListRenderer', 'contents'];
-const sectionListItem = ['sectionListRenderer', ...content];
-const itemSection = ['itemSectionRenderer', ...content];
-const musicShelf = ['musicShelfRenderer'];
-const musicShelfContent = [...musicShelf, ...content];
-const musicShelfContents = [...musicShelf, 'contents'];
-const grid = ['gridRenderer'];
-const gridItems = [...grid, 'items'];
-const menu = ['menu', 'menuRenderer'];
-const menuItems = [...menu, 'items'];
-const menuLikeStatus = [
-  ...menu,
-  'topLevelButtons',
-  0,
-  'likeButtonRenderer',
-  'likeStatus'
-];
-const menuService = ['menuServiceItemRenderer', 'serviceEndpoint'];
-const toggleMenu = 'toggleMenuServiceItemRenderer';
-const playButton = [
-  'overlay',
-  'musicItemThumbnailOverlayRenderer',
-  'content',
-  'musicPlayButtonRenderer'
-];
-const navigationBrowse = ['navigationEndpoint', 'browseEndpoint'];
-const navigationBrowseId = [...navigationBrowse, 'browseId'];
-const pageType = [
-  'browseEndpointContextSupportedConfigs',
-  'browseEndpointContextMusicConfig',
-  'pageType'
-];
-const navigationVideoId = ['navigationEndpoint', 'watchEndpoint', 'videoId'];
-const navigationPlaylistId = [
-  'navigationEndpoint',
-  'watchEndpoint',
-  'playlistId'
-];
-const navigationWatchPlaylistId = [
-  'navigationEndpoint',
-  'watchPlaylistEndpoint',
-  'playlistId'
-];
-const navigationVideoType = [
-  'watchEndpoint',
-  'watchEndpointMusicSupportedConfigs',
-  'watchEndpointMusicConfig',
-  'musicVideoType'
-];
-const headerDetail = ['header', 'musicDetailHeaderRenderer'];
-const immersiveHeaderDetail = ['header', 'musicImmersiveHeaderRenderer'];
-const descriptionShelf = ['musicDescriptionShelfRenderer'];
-const description = ['description', ...runText];
-const carousel = ['musicCarouselShelfRenderer'];
-const immersiveCarousel = ['musicImmersiveCarouselShelfRenderer'];
-const carouselContents = [...carousel, 'contents'];
-const carouselTitle = [
-  'header',
-  'musicCarouselShelfBasicHeaderRenderer',
-  'title',
-  'runs',
-  0
-];
-const frameworkMutations = [
-  'frameworkUpdates',
-  'entityBatchUpdate',
-  'mutations'
-];
-const title = ['title', 'runs', 0];
-final titleText = ['title', ...runText];
-const textRuns = ['text', 'runs'];
-const textRun = [...textRuns, 0];
-const textRunText = [...textRun, 'text'];
-const subtitle = ['subtitle', runText];
-const subtitleRuns = ['subtitle', 'runs'];
-const secondSubtitleRuns = ['secondSubtitle', 'runs'];
-const subtitle2 = ['subtitle', 'runs', 2, 'text'];
-const subtitle3 = ['subtitle', 'runs', 4, 'text'];
-const thumbnail = ['thumbnail', 'thumbnails'];
-const thumbnails = ['thumbnail', 'musicThumbnailRenderer', ...thumbnail];
-const thumbnailRenderer = [
-  'thumbnailRenderer',
-  'musicThumbnailRenderer',
-  ...thumbnail
-];
-const thumbnailCropped = [
-  'thumbnail',
-  'croppedSquareThumbnailRenderer',
-  ...thumbnail
-];
-const feedbackToken = ['feedbackEndpoint', 'feedbackToken'];
-const badgePath = [
-  0,
-  'musicInlineBadgeRenderer',
-  'accessibilityData',
-  'accessibilityData',
-  'label'
-];
-const badgeLabel = ['badges', ...badgePath];
-const subtitleBadgeLabel = ['subtitleBadges', ...badgePath];
-const categoryTitle = [
-  'musicNavigationButtonRenderer',
-  'buttonText',
-  ...runText
-];
-const categoryParams = [
-  'musicNavigationButtonRenderer',
-  'clickCommand',
-  'browseEndpoint',
-  'params'
-];
-const mTRIR = 'musicTwoRowItemRenderer';
-const mRLIR = 'musicResponsiveListItemRenderer';
-const mRLIFCR = 'musicResponsiveListItemFlexColumnRenderer';
-const mrlirPlaylistId = [mRLIR, 'playlistItemData', 'videoId'];
-const tasteProfileItems = ['contents', 'tastebuilderRenderer', 'contents'];
-const tasteProfileArtist = ['title', 'runs'];
-const sectionListContinuation = [
-  'continuationContents',
-  'sectionListContinuation'
-];
-const menuPlaylistId = [
-  ...menuItems,
-  0,
-  'menuNavigationItemRenderer',
-  ...navigationWatchPlaylistId
-];
+// ignore: avoid_classes_with_only_static_members
+class NavClass {
+  static const content = ['contents', 0];
+  static const runText = ['runs', 0, 'text'];
+  static const tabContent = ['tabs', 0, 'tabRenderer', 'content'];
+  static const tab1Content = ['tabs', 1, 'tabRenderer', 'content'];
+  static const singleColumn = ['contents', 'singleColumnBrowseResultsRenderer'];
+  static const singleColumnTab = [...singleColumn, ...tabContent];
+  static const sectionList = ['sectionListRenderer', 'contents'];
+  static const sectionListItem = ['sectionListRenderer', ...content];
+  static const itemSection = ['itemSectionRenderer', ...content];
+  static const musicShelf = ['musicShelfRenderer'];
+  static const musicShelfContent = [...musicShelf, ...content];
+  static const musicShelfContents = [...musicShelf, 'contents'];
+  static const grid = ['gridRenderer'];
+  static const gridItems = [...grid, 'items'];
+  static const menu = ['menu', 'menuRenderer'];
+  static const menuItems = [...menu, 'items'];
+  static const menuLikeStatus = [
+    ...menu,
+    'topLevelButtons',
+    0,
+    'likeButtonRenderer',
+    'likeStatus'
+  ];
+  static const menuService = ['menuServiceItemRenderer', 'serviceEndpoint'];
+  static const toggleMenu = 'toggleMenuServiceItemRenderer';
+  static const playButton = [
+    'overlay',
+    'musicItemThumbnailOverlayRenderer',
+    'content',
+    'musicPlayButtonRenderer'
+  ];
+  static const navigationBrowse = ['navigationEndpoint', 'browseEndpoint'];
+  static const navigationBrowseId = [...navigationBrowse, 'browseId'];
+  static const pageType = [
+    'browseEndpointContextSupportedConfigs',
+    'browseEndpointContextMusicConfig',
+    'pageType'
+  ];
+  static const navigationVideoId = [
+    'navigationEndpoint',
+    'watchEndpoint',
+    'videoId'
+  ];
+  static const navigationPlaylistId = [
+    'navigationEndpoint',
+    'watchEndpoint',
+    'playlistId'
+  ];
+  static const navigationWatchPlaylistId = [
+    'navigationEndpoint',
+    'watchPlaylistEndpoint',
+    'playlistId'
+  ];
+  static const navigationVideoType = [
+    'watchEndpoint',
+    'watchEndpointMusicSupportedConfigs',
+    'watchEndpointMusicConfig',
+    'musicVideoType'
+  ];
+  static const headerDetail = ['header', 'musicDetailHeaderRenderer'];
+  static const headerCardShelf = [
+    'header',
+    'musicCardShelfHeaderBasicRenderer'
+  ];
+  static const immersiveHeaderDetail = [
+    'header',
+    'musicImmersiveHeaderRenderer'
+  ];
+  static const descriptionShelf = ['musicDescriptionShelfRenderer'];
+  static const description = ['description', ...runText];
+  static const carousel = ['musicCarouselShelfRenderer'];
+  static const immersiveCarousel = ['musicImmersiveCarouselShelfRenderer'];
+  static const carouselContents = [...carousel, 'contents'];
+  static const carouselTitle = [
+    'header',
+    'musicCarouselShelfBasicHeaderRenderer',
+    'title',
+    'runs',
+    0
+  ];
+  static const frameworkMutations = [
+    'frameworkUpdates',
+    'entityBatchUpdate',
+    'mutations'
+  ];
+  static const title = ['title', 'runs', 0];
+  static const titleText = ['title', ...runText];
+  static const titleRuns = ['title', 'runs'];
+  static const titleRun = [...titleRuns, 0];
+  static const textRuns = ['text', 'runs'];
+  static const textRun = [...textRuns, 0];
+  static const textRunText = [...textRun, 'text'];
+  static const subtitle = ['subtitle', runText];
+  static const subtitleRuns = ['subtitle', 'runs'];
+  static const secondSubtitleRuns = ['secondSubtitle', 'runs'];
+  static const subtitle2 = ['subtitle', 'runs', 2, 'text'];
+  static const subtitle3 = ['subtitle', 'runs', 4, 'text'];
+  static const thumbnail = ['thumbnail', 'thumbnails'];
+  static const thumbnails = [
+    'thumbnail',
+    'musicThumbnailRenderer',
+    ...thumbnail
+  ];
+  static const thumbnailRenderer = [
+    'thumbnailRenderer',
+    'musicThumbnailRenderer',
+    ...thumbnail
+  ];
+  static const thumbnailCropped = [
+    'thumbnail',
+    'croppedSquareThumbnailRenderer',
+    ...thumbnail
+  ];
+  static const feedbackToken = ['feedbackEndpoint', 'feedbackToken'];
+  static const badgePath = [
+    0,
+    'musicInlineBadgeRenderer',
+    'accessibilityData',
+    'accessibilityData',
+    'label'
+  ];
+  static const badgeLabel = ['badges', ...badgePath];
+  static const subtitleBadgeLabel = ['subtitleBadges', ...badgePath];
+  static const categoryTitle = [
+    'musicNavigationButtonRenderer',
+    'buttonText',
+    ...runText
+  ];
+  static const categoryParams = [
+    'musicNavigationButtonRenderer',
+    'clickCommand',
+    'browseEndpoint',
+    'params'
+  ];
+  static const mTRIR = 'musicTwoRowItemRenderer';
+  static const mRLIR = 'musicResponsiveListItemRenderer';
+  static const mRLIRFlex = ['musicResponsiveListItemRenderer', 'flexColumns'];
+  static const mRLIFCR = 'musicResponsiveListItemFlexColumnRenderer';
+  static const mrlirPlaylistId = [mRLIR, 'playlistItemData', 'videoId'];
+  static const mrlirBrowseId = [mRLIR, ...navigationBrowseId];
+  static const tasteProfileItems = [
+    'contents',
+    'tastebuilderRenderer',
+    'contents'
+  ];
+  static const tasteProfileArtist = ['title', 'runs'];
+  static const sectionListContinuation = [
+    'continuationContents',
+    'sectionListContinuation'
+  ];
+  static const menuPlaylistId = [
+    ...menuItems,
+    0,
+    'menuNavigationItemRenderer',
+    ...navigationWatchPlaylistId
+  ];
 
-dynamic nav(dynamic root, List items) {
-  try {
-    dynamic res = root;
-    for (final item in items) {
-      res = res[item];
+  static dynamic nav(dynamic root, List items) {
+    try {
+      dynamic res = root;
+      for (final item in items) {
+        res = res[item];
+      }
+      return res;
+    } catch (e) {
+      return null;
     }
-    return res;
-  } catch (e) {
-    return null;
   }
-}
 
-String joinRunTexts(List runs) {
-  return runs.map((e) => e['text']).toList().join();
-}
+  static String joinRunTexts(List? runs) {
+    if (runs == null) return '';
+    return runs.map((e) => e['text']).toList().join();
+  }
 
-List runUrls(List runs) {
-  return runs.map((e) => e['url']).toList();
+  static List runUrls(List? runs) {
+    if (runs == null) return [];
+    return runs.map((e) => e['url']).toList();
+  }
+
+  static List runThumnbails(List? runs) {
+    if (runs == null) return [];
+    return runs.map((e) => e['url']).toList();
+  }
 }
