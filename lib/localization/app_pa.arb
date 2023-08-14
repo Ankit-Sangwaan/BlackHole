@@ -702,5 +702,9 @@
   "minFourRequired": "ਨਿਊਨਤਮ 4 ਜਰੂਰੀ",
   "@minFourRequired": {},
   "navTabsSub": "ਹੇਠਾਂ ਨੈਵੀਗੇਸ਼ਨ ਬਾਰ ਵਿੱਚ ਵਿਖਾਉਣ ਲਈ ਟੈਬਾਂ",
-  "@navTabsSub": {}
+  "@navTabsSub": {},
+  "useLessDataImage": "ਤਸਵੀਰਾਂ ਲਈ ਘੱਟ ਡਾਟਾ ਦੀ ਵਰਤੋਂ ਕਰੋ",
+  "@useLessDataImage": {},
+  "useLessDataImageSub": "ਇਹ ਐਪ ਵਿੱਚ ਤਸਵੀਰਾਂ ਦੀ ਗੁਣਵੱਤਾ ਨੂੰ ਘਟਾ ਦੇਵੇਗਾ, ਪਰ ਤੁਹਾਡੇ ਡਾਟਾ ਨੂੰ ਬਚਾਏਗਾ",
+  "@useLessDataImageSub": {}
 }
