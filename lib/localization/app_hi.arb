@@ -710,5 +710,9 @@
   "navTabs": "नेविगेशन बार टैबस",
   "@navTabs": {},
   "navTabsSub": "टैब निचले नेविगेशन बार में दिखाए जाएंगे",
-  "@navTabsSub": {}
+  "@navTabsSub": {},
+  "useLessDataImage": "छवियों के लिए कम डेटा का उपयोग करें",
+  "@useLessDataImage": {},
+  "useLessDataImageSub": "इससे ऐप में छवियों की गुणवत्ता कम हो जाएगी, लेकिन आपका डेटा बच जाएगा",
+  "@useLessDataImageSub": {}
 }
