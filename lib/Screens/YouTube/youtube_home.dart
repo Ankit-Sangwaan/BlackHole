@@ -146,6 +146,13 @@ class _YouTubeState extends State<YouTube>
                               opaque: false,
                               pageBuilder: (_, __, ___) => SearchPage(
                                 query: headList[index]['title'].toString(),
+                                searchType: Hive.box('settings').get(
+                                  'searchYtMusic',
+                                  defaultValue: true,
+                                ) as bool
+                                    ? 'ytm'
+                                    : 'yt',
+                                fromDirectSearch: true,
                               ),
                             ),
                           );
@@ -225,6 +232,14 @@ class _YouTubeState extends State<YouTube>
                                               pageBuilder: (_, __, ___) =>
                                                   SearchPage(
                                                 query: item['title'].toString(),
+                                                searchType:
+                                                    Hive.box('settings').get(
+                                                  'searchYtMusic',
+                                                  defaultValue: true,
+                                                ) as bool
+                                                        ? 'ytm'
+                                                        : 'yt',
+                                                fromDirectSearch: true,
                                               ),
                                             ),
                                           )

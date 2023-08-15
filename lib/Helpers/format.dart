@@ -38,7 +38,8 @@ class FormatResponse {
     final String decoded = utf8
         .decode(decrypted)
         .replaceAll(RegExp(r'\.mp4.*'), '.mp4')
-        .replaceAll(RegExp(r'\.m4a.*'), '.m4a');
+        .replaceAll(RegExp(r'\.m4a.*'), '.m4a')
+        .replaceAll(RegExp(r'\.mp3.*'), '.mp3');
     return decoded.replaceAll('http:', 'https:');
   }
 

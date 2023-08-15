@@ -30,6 +30,7 @@ import 'package:blackhole/Screens/Player/audioplayer.dart';
 import 'package:blackhole/Services/isolate_service.dart';
 import 'package:blackhole/Services/yt_music.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:just_audio/just_audio.dart';
@@ -262,7 +263,8 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     }).whereType<MediaItem>().distinct().listen(mediaItem.add);
 
     // Propagate all events from the audio player to AudioService clients.
-    _player!.playbackEventStream.listen(_broadcastState);
+    _player!.playbackEventStream
+        .listen(_broadcastState, onError: _playbackError);
 
     _player!.shuffleModeEnabledStream
         .listen((enabled) => _broadcastState(_player!.playbackEvent));
@@ -283,6 +285,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
               sequence.map((source) => _mediaItemExpando[source]!).toList(),
         )
         .pipe(queue);
+
     try {
       if (loadStart) {
         final List lastQueueList = await Hive.box('cache')
@@ -300,36 +303,66 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
               .map((e) => MediaItemConverter.mapToMediaItem(e as Map))
               .toList();
           if (lastQueue.isEmpty) {
-            await _player!.setAudioSource(_playlist, preload: false);
+            await _player!
+                .setAudioSource(_playlist, preload: false)
+                .onError((error, stackTrace) {
+              _onError(error, stackTrace, stopService: true);
+              return null;
+            });
           } else {
             await _playlist.addAll(_itemsToSources(lastQueue));
             try {
-              await _player!.setAudioSource(
+              await _player!
+                  .setAudioSource(
                 _playlist,
                 // commented out due to some bug in audio_service which causes app to freeze
                 // instead manually seeking after audiosource initialised
 
                 // initialIndex: lastIndex,
                 // initialPosition: Duration(seconds: lastPos),
-              );
+              )
+                  .onError((error, stackTrace) {
+                _onError(error, stackTrace, stopService: true);
+                return null;
+              });
               if (lastIndex != 0 || lastPos > 0) {
                 await _player!
                     .seek(Duration(seconds: lastPos), index: lastIndex);
               }
             } catch (e) {
               Logger.root.severe('Error while setting last audiosource', e);
-              await _player!.setAudioSource(_playlist, preload: false);
+              await _player!
+                  .setAudioSource(_playlist, preload: false)
+                  .onError((error, stackTrace) {
+                _onError(error, stackTrace, stopService: true);
+                return null;
+              });
             }
           }
         } else {
-          await _player!.setAudioSource(_playlist, preload: false);
+          await _player!
+              .setAudioSource(_playlist, preload: false)
+              .onError((error, stackTrace) {
+            _onError(error, stackTrace, stopService: true);
+            return null;
+          });
         }
       } else {
-        await _player!.setAudioSource(_playlist, preload: false);
+        await _player!
+            .setAudioSource(_playlist, preload: false)
+            .onError((error, stackTrace) {
+          _onError(error, stackTrace, stopService: true);
+          return null;
+        });
       }
     } catch (e) {
       Logger.root.severe('Error while loading last queue', e);
-      await _player!.setAudioSource(_playlist, preload: false);
+      await _player!
+          .setAudioSource(_playlist, preload: false)
+          .onError((error, stackTrace) {
+        _onError(error, stackTrace, stopService: true);
+        return null;
+      });
     }
     if (!jobRunning) {
       refreshJob();
@@ -389,103 +422,108 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
 
   AudioSource? _itemToSource(MediaItem mediaItem) {
     AudioSource? audioSource;
-    if (mediaItem.artUri.toString().startsWith('file:')) {
-      audioSource =
-          AudioSource.uri(Uri.file(mediaItem.extras!['url'].toString()));
-    } else {
-      if (downloadsBox != null &&
-          downloadsBox!.containsKey(mediaItem.id) &&
-          useDown) {
-        Logger.root.info('Found ${mediaItem.id} in downloads');
-        audioSource = AudioSource.uri(
-          Uri.file(
-            (downloadsBox!.get(mediaItem.id) as Map)['path'].toString(),
-          ),
-          tag: mediaItem.id,
-        );
+    try {
+      if (mediaItem.artUri.toString().startsWith('file:')) {
+        audioSource =
+            AudioSource.uri(Uri.file(mediaItem.extras!['url'].toString()));
       } else {
-        if (mediaItem.genre == 'YouTube') {
-          final int expiredAt =
-              int.parse((mediaItem.extras!['expire_at'] ?? '0').toString());
-          if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
-              expiredAt) {
-            // Logger.root.info(
-            //   'player | youtube link expired for ${mediaItem.title}, searching cache',
-            // );
-            if (Hive.box('ytlinkcache').containsKey(mediaItem.id)) {
-              final Map cachedData =
-                  Hive.box('ytlinkcache').get(mediaItem.id) as Map;
-              final int cachedExpiredAt =
-                  int.parse(cachedData['expire_at'].toString());
-              if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
-                  cachedExpiredAt) {
+        if (downloadsBox != null &&
+            downloadsBox!.containsKey(mediaItem.id) &&
+            useDown) {
+          Logger.root.info('Found ${mediaItem.id} in downloads');
+          audioSource = AudioSource.uri(
+            Uri.file(
+              (downloadsBox!.get(mediaItem.id) as Map)['path'].toString(),
+            ),
+            tag: mediaItem.id,
+          );
+        } else {
+          if (mediaItem.genre == 'YouTube') {
+            final int expiredAt =
+                int.parse((mediaItem.extras!['expire_at'] ?? '0').toString());
+            if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
+                expiredAt) {
+              // Logger.root.info(
+              //   'player | youtube link expired for ${mediaItem.title}, searching cache',
+              // );
+              if (Hive.box('ytlinkcache').containsKey(mediaItem.id)) {
+                final Map cachedData =
+                    Hive.box('ytlinkcache').get(mediaItem.id) as Map;
+                final int cachedExpiredAt =
+                    int.parse(cachedData['expire_at'].toString());
+                if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
+                    cachedExpiredAt) {
+                  Logger.root.info(
+                    'youtube link expired for ${mediaItem.title}, refreshing',
+                  );
+                  refreshLinks.add(mediaItem.id);
+                  if (!jobRunning) {
+                    refreshJob();
+                  }
+                } else {
+                  Logger.root.info(
+                    'youtube link found in cache for ${mediaItem.title}',
+                  );
+                  if (cacheSong) {
+                    audioSource = LockCachingAudioSource(
+                      Uri.parse(cachedData['url'].toString()),
+                    );
+                  } else {
+                    audioSource = AudioSource.uri(
+                      Uri.parse(cachedData['url'].toString()),
+                    );
+                  }
+                  mediaItem.extras!['url'] = cachedData['url'];
+                  _mediaItemExpando[audioSource] = mediaItem;
+                  return audioSource;
+                }
+              } else {
                 Logger.root.info(
-                  'youtube link expired for ${mediaItem.title}, refreshing',
+                  'youtube link not found in cache for ${mediaItem.title}, refreshing',
                 );
                 refreshLinks.add(mediaItem.id);
                 if (!jobRunning) {
                   refreshJob();
                 }
-              } else {
-                Logger.root.info(
-                  'youtube link found in cache for ${mediaItem.title}',
-                );
-                if (cacheSong) {
-                  audioSource = LockCachingAudioSource(
-                    Uri.parse(cachedData['url'].toString()),
-                  );
-                } else {
-                  audioSource =
-                      AudioSource.uri(Uri.parse(cachedData['url'].toString()));
-                }
-                mediaItem.extras!['url'] = cachedData['url'];
-                _mediaItemExpando[audioSource] = mediaItem;
-                return audioSource;
               }
             } else {
-              Logger.root.info(
-                'youtube link not found in cache for ${mediaItem.title}, refreshing',
-              );
-              refreshLinks.add(mediaItem.id);
-              if (!jobRunning) {
-                refreshJob();
+              if (cacheSong) {
+                audioSource = LockCachingAudioSource(
+                  Uri.parse(mediaItem.extras!['url'].toString()),
+                );
+              } else {
+                audioSource = AudioSource.uri(
+                  Uri.parse(mediaItem.extras!['url'].toString()),
+                );
               }
+              _mediaItemExpando[audioSource] = mediaItem;
+              return audioSource;
             }
           } else {
             if (cacheSong) {
               audioSource = LockCachingAudioSource(
-                Uri.parse(mediaItem.extras!['url'].toString()),
+                Uri.parse(
+                  mediaItem.extras!['url'].toString().replaceAll(
+                        '_96.',
+                        "_${preferredQuality.replaceAll(' kbps', '')}.",
+                      ),
+                ),
               );
             } else {
               audioSource = AudioSource.uri(
-                Uri.parse(mediaItem.extras!['url'].toString()),
+                Uri.parse(
+                  mediaItem.extras!['url'].toString().replaceAll(
+                        '_96.',
+                        "_${preferredQuality.replaceAll(' kbps', '')}.",
+                      ),
+                ),
               );
             }
-            _mediaItemExpando[audioSource] = mediaItem;
-            return audioSource;
-          }
-        } else {
-          if (cacheSong) {
-            audioSource = LockCachingAudioSource(
-              Uri.parse(
-                mediaItem.extras!['url'].toString().replaceAll(
-                      '_96.',
-                      "_${preferredQuality.replaceAll(' kbps', '')}.",
-                    ),
-              ),
-            );
-          } else {
-            audioSource = AudioSource.uri(
-              Uri.parse(
-                mediaItem.extras!['url'].toString().replaceAll(
-                      '_96.',
-                      "_${preferredQuality.replaceAll(' kbps', '')}.",
-                    ),
-              ),
-            );
           }
         }
       }
+    } catch (e) {
+      Logger.root.severe('Error while creating audiosource', e);
     }
     if (audioSource != null) {
       _mediaItemExpando[audioSource] = mediaItem;
@@ -952,6 +990,19 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       final current = _tappedMediaActionNumber.value;
       _tappedMediaActionNumber.add(current + 1);
     }
+  }
+
+  void _playbackError(err) {
+    Logger.root.severe('Error from audioservice: ${err.code}', err);
+    if (err is PlatformException &&
+        err.code == 'abort' &&
+        err.message == 'Connection aborted') return;
+    _onError(err, null);
+  }
+
+  void _onError(err, stacktrace, {bool stopService = false}) {
+    Logger.root.severe('Error from audioservice: ${err.code}', err);
+    if (stopService) stop();
   }
 
   /// Broadcasts the current state to all clients.
