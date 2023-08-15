@@ -189,6 +189,29 @@ class _LikedSongsState extends State<LikedSongs>
 
   void sortSongs({required int sortVal, required int order}) {
     switch (sortVal) {
+      case -1:
+        final List order = Hive.box('settings')
+            .get('order_${widget.playlistName}', defaultValue: []) as List;
+        final keyIndices = Map.fromIterables(
+          order,
+          List.generate(order.length, (index) => index),
+        );
+
+        _songs.sort((a, b) {
+          final aIndex = keyIndices[a['id']];
+          final bIndex = keyIndices[b['id']];
+
+          if (aIndex != null && bIndex != null) {
+            return aIndex.compareTo(bIndex);
+          } else if (aIndex != null) {
+            return 1;
+          } else if (bIndex != null) {
+            return -1;
+          } else {
+            return 0;
+          }
+        });
+        break;
       case 0:
         _songs.sort(
           (a, b) => a['title']
@@ -550,6 +573,18 @@ class _LikedSongsState extends State<LikedSongs>
                       onDelete: (Map item) {
                         deleteLiked(item);
                       },
+                      sortSongs: (int sortVal, int? orderVal) {
+                        sortValue = sortVal;
+                        Hive.box('settings').put('sortValue', sortVal);
+                        if (orderVal != null && orderVal != orderValue) {
+                          orderValue = orderVal;
+                          Hive.box('settings').put('orderValue', orderVal);
+                        }
+                        sortSongs(
+                          sortVal: sortVal,
+                          order: orderVal ?? orderValue,
+                        );
+                      },
                       playlistName: widget.playlistName,
                       scrollController: _scrollController,
                     ),
@@ -626,12 +661,14 @@ class SongsTab extends StatefulWidget {
   final String playlistName;
   final Function(Map item) onDelete;
   final ScrollController scrollController;
+  final Function(int, int?) sortSongs;
   const SongsTab({
     super.key,
     required this.songs,
     required this.onDelete,
     required this.playlistName,
     required this.scrollController,
+    required this.sortSongs,
   });
 
   @override
@@ -642,6 +679,12 @@ class _SongsTabState extends State<SongsTab>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
+
+  void _saveItems() {
+    final List newOrder = widget.songs.map((e) => e['id']).toList();
+    Hive.box('settings').put('order_${widget.playlistName}', newOrder);
+    widget.sortSongs(-1, 0);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -665,8 +708,16 @@ class _SongsTabState extends State<SongsTab>
                 fromDownloads: false,
               ),
               Expanded(
-                child: ListView.builder(
-                  controller: widget.scrollController,
+                child: ReorderableListView.builder(
+                  onReorder: (oldIndex, newIndex) {
+                    if (newIndex > oldIndex) {
+                      newIndex -= 1;
+                    }
+                    final item = widget.songs.removeAt(oldIndex);
+                    widget.songs.insert(newIndex, item);
+                    _saveItems();
+                  },
+                  // controller: widget.scrollController,
                   physics: const BouncingScrollPhysics(),
                   padding: const EdgeInsets.only(bottom: 10),
                   shrinkWrap: true,
@@ -674,6 +725,7 @@ class _SongsTabState extends State<SongsTab>
                   itemExtent: 70.0,
                   itemBuilder: (context, index) {
                     return ValueListenableBuilder(
+                      key: Key(widget.songs[index]['id'].toString()),
                       valueListenable: selectMode,
                       builder: (context, value, child) {
                         final bool selected =
@@ -710,22 +762,22 @@ class _SongsTabState extends State<SongsTab>
                               );
                             }
                           },
-                          onLongPress: () {
-                            selectMode.value = false;
-                            if (selected) {
-                              selectedItems
-                                  .remove(widget.songs[index]['id'].toString());
-                              selectMode.value = true;
-                              if (selectedItems.isEmpty) {
-                                selectMode.value = false;
-                              }
-                            } else {
-                              selectedItems
-                                  .add(widget.songs[index]['id'].toString());
-                              selectMode.value = true;
-                            }
-                            setState(() {});
-                          },
+                          // onLongPress: () {
+                          //   selectMode.value = false;
+                          //   if (selected) {
+                          //     selectedItems
+                          //         .remove(widget.songs[index]['id'].toString());
+                          //     selectMode.value = true;
+                          //     if (selectedItems.isEmpty) {
+                          //       selectMode.value = false;
+                          //     }
+                          //   } else {
+                          //     selectedItems
+                          //         .add(widget.songs[index]['id'].toString());
+                          //     selectMode.value = true;
+                          //   }
+                          //   setState(() {});
+                          // },
                           selected: selected,
                           selectedTileColor: Colors.white10,
                           title: Text(

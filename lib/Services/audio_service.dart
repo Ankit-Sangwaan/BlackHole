@@ -396,6 +396,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
       if (downloadsBox != null &&
           downloadsBox!.containsKey(mediaItem.id) &&
           useDown) {
+        Logger.root.info('Found ${mediaItem.id} in downloads');
         audioSource = AudioSource.uri(
           Uri.file(
             (downloadsBox!.get(mediaItem.id) as Map)['path'].toString(),
