@@ -21,6 +21,7 @@ class LanguageCodes {
   // supported languages and their code
   static const Map<String, String> languageCodes = {
     'English': 'en',
+    'Arabic': 'ar',
     'Belarusian': 'be',
     'Chinese': 'zh',
     'Czech': 'cs',
