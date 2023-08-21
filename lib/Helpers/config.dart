@@ -318,20 +318,23 @@ class MyTheme with ChangeNotifier {
   void saveTheme(String themeName) {
     final userThemes =
         Hive.box('settings').get('userThemes', defaultValue: {}) as Map;
-    Hive.box('settings').put('userThemes', {
-      ...userThemes,
-      themeName: {
-        'isDark': _isDark,
-        'useSystemTheme': _useSystemTheme,
-        'accentColor': accentColor,
-        'canvasColor': canvasColor,
-        'cardColor': cardColor,
-        'backGrad': backGrad,
-        'cardGrad': cardGrad,
-        'bottomGrad': bottomGrad,
-        'colorHue': colorHue,
-      }
-    });
+    Hive.box('settings').put(
+      'userThemes',
+      {
+        ...userThemes,
+        themeName: {
+          'isDark': _isDark,
+          'useSystemTheme': _useSystemTheme,
+          'accentColor': accentColor,
+          'canvasColor': canvasColor,
+          'cardColor': cardColor,
+          'backGrad': backGrad,
+          'cardGrad': cardGrad,
+          'bottomGrad': bottomGrad,
+          'colorHue': colorHue,
+        },
+      },
+    );
   }
 
   void deleteTheme(String themeName) {

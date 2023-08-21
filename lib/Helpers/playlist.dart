@@ -87,7 +87,7 @@ Future<void> addPlaylist(String inputName, List data) async {
     data.length,
     data.length >= 4 ? data.sublist(0, 4) : data.sublist(0, data.length),
   );
-  final Map result = {for (var v in data) v['id'].toString(): v};
+  final Map result = {for (final v in data) v['id'].toString(): v};
   playlistBox.putAll(result);
 
   playlistNames.add(name);

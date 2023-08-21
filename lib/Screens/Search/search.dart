@@ -420,7 +420,7 @@ class _SearchPageState extends State<SearchPage> {
                                 children: getChoices(context, [
                                   {'label': 'Saavn', 'key': 'saavn'},
                                   {'label': 'YtMusic', 'key': 'ytm'},
-                                  {'label': 'YouTube', 'key': 'yt'}
+                                  {'label': 'YouTube', 'key': 'yt'},
                                 ]),
                               ),
                       ),
@@ -512,7 +512,7 @@ class _SearchPageState extends State<SearchPage> {
                                                                                 if (response != null) {
                                                                                   PlayerInvoke.init(
                                                                                     songsList: [
-                                                                                      response
+                                                                                      response,
                                                                                     ],
                                                                                     index: 0,
                                                                                     isOffline: false,
@@ -822,7 +822,7 @@ class _SearchPageState extends State<SearchPage> {
                                                                 PlayerInvoke
                                                                     .init(
                                                                   songsList: [
-                                                                    response
+                                                                    response,
                                                                   ],
                                                                   index: 0,
                                                                   isOffline:
@@ -848,7 +848,7 @@ class _SearchPageState extends State<SearchPage> {
                                                                 'Songs') {
                                                               PlayerInvoke.init(
                                                                 songsList: [
-                                                                  items[index]
+                                                                  items[index],
                                                                 ],
                                                                 index: 0,
                                                                 isOffline:

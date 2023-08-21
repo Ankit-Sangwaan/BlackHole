@@ -514,7 +514,9 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                             Navigator.pop(context);
                                             playlistDetails[name] == null
                                                 ? playlistDetails.addAll({
-                                                    name: {'name': value.trim()}
+                                                    name: {
+                                                      'name': value.trim(),
+                                                    },
                                                   })
                                                 : playlistDetails[name].addAll({
                                                     'name': value.trim(),
@@ -557,11 +559,12 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                                               ? playlistDetails.addAll({
                                                   name: {
                                                     'name':
-                                                        controller.text.trim()
-                                                  }
+                                                        controller.text.trim(),
+                                                  },
                                                 })
                                               : playlistDetails[name].addAll({
-                                                  'name': controller.text.trim()
+                                                  'name':
+                                                      controller.text.trim(),
                                                 });
 
                                           await settingsBox.put(
@@ -666,7 +669,7 @@ class _PlaylistScreenState extends State<PlaylistScreen> {
                     },
                   );
                 },
-              )
+              ),
             ],
           ),
         ),

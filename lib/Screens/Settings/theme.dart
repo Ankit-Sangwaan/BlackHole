@@ -127,7 +127,7 @@ class _ThemePageState extends State<ThemePage> {
                           0.0,
                           3.0,
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
@@ -179,7 +179,7 @@ class _ThemePageState extends State<ThemePage> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
-                                for (int hue in [100, 200, 400, 700])
+                                for (final hue in [100, 200, 400, 700])
                                   GestureDetector(
                                     onTap: () {
                                       themeColor = colors[index];
@@ -216,7 +216,7 @@ class _ThemePageState extends State<ThemePage> {
                                               0.0,
                                               3.0,
                                             ),
-                                          )
+                                          ),
                                         ],
                                       ),
                                       child: (themeColor == colors[index] &&
@@ -286,7 +286,7 @@ class _ThemePageState extends State<ThemePage> {
                                 0.0,
                                 3.0,
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -403,7 +403,7 @@ class _ThemePageState extends State<ThemePage> {
                                 0.0,
                                 3.0,
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -520,7 +520,7 @@ class _ThemePageState extends State<ThemePage> {
                                 0.0,
                                 3.0,
                               ),
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -927,7 +927,7 @@ class _ThemePageState extends State<ThemePage> {
                                 Icons.delete_rounded,
                               ),
                             ),
-                          )
+                          ),
                       ],
                     ),
                   );
@@ -980,7 +980,7 @@ class _ThemePageState extends State<ThemePage> {
                 },
                 dense: true,
               ),
-            )
+            ),
           ],
         ),
       ),

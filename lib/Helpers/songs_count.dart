@@ -26,7 +26,7 @@ void addSongsCount(String playlistName, int len, List images) {
     playlistDetails[playlistName].addAll({'count': len, 'imagesList': images});
   } else {
     playlistDetails.addEntries([
-      MapEntry(playlistName, {'count': len, 'imagesList': images})
+      MapEntry(playlistName, {'count': len, 'imagesList': images}),
     ]);
   }
   Hive.box('settings').put('playlistDetails', playlistDetails);

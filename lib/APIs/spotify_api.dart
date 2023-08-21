@@ -77,7 +77,7 @@ class SpotifyApi {
       body = {
         'grant_type': 'authorization_code',
         'code': code,
-        'redirect_uri': redirectUrl
+        'redirect_uri': redirectUrl,
       };
     } else if (refreshToken != null) {
       body = {
@@ -122,7 +122,7 @@ class SpotifyApi {
         path,
         headers: {
           'Authorization': 'Bearer $accessToken',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
         },
       );
       if (response.statusCode == 200) {
@@ -182,7 +182,7 @@ class SpotifyApi {
         path,
         headers: {
           'Authorization': 'Bearer $accessToken',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
         },
       );
 
@@ -217,7 +217,7 @@ class SpotifyApi {
       path,
       headers: {
         'Authorization': 'Bearer $accessToken',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
       },
     );
 
@@ -241,7 +241,7 @@ class SpotifyApi {
       path,
       headers: {
         'Authorization': 'Bearer $accessToken',
-        'Accept': 'application/json'
+        'Accept': 'application/json',
       },
     );
 
@@ -266,7 +266,7 @@ class SpotifyApi {
         path,
         headers: {
           'Authorization': 'Bearer $accessToken',
-          'Accept': 'application/json'
+          'Accept': 'application/json',
         },
       );
       final List<Map> songsData = [];

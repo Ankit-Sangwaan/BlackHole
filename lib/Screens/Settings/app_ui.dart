@@ -323,7 +323,7 @@ class _AppUIPageState extends State<AppUIPage> {
                   context: context,
                   builder: (BuildContext context) {
                     final Set<int> checked = {
-                      ...preferredCompactNotificationButtons
+                      ...preferredCompactNotificationButtons,
                     };
                     final List<Map> buttons = [
                       {
@@ -421,7 +421,7 @@ class _AppUIPageState extends State<AppUIPage> {
                                       );
                                     },
                                   );
-                                })
+                                }),
                               ],
                             ),
                           ),

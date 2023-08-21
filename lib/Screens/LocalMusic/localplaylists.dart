@@ -218,7 +218,7 @@ class _LocalPlaylistsState extends State<LocalPlaylists> {
                   },
                 );
               },
-            )
+            ),
         ],
       ),
     );

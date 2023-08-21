@@ -902,7 +902,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
           (e) => {
             'centerFrequency': e.centerFrequency,
             'gain': e.gain,
-            'index': e.index
+            'index': e.index,
           },
         )
         .toList();
@@ -910,7 +910,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     return {
       'maxDecibels': _equalizerParams!.maxDecibels,
       'minDecibels': _equalizerParams!.minDecibels,
-      'bands': bandList
+      'bands': bandList,
     };
   }
 

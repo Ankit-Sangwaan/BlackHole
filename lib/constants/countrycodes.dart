@@ -86,7 +86,7 @@ class CountryCodes {
     'United Kingdom': 'gb',
     'United States': 'us',
     'Uruguay': 'uy',
-    'Vietnam': 'vn'
+    'Vietnam': 'vn',
   };
 
   // supported local charts and their codes
@@ -163,6 +163,6 @@ class CountryCodes {
     'USA': '37i9dQZEVXbLRQDuF5jeBp',
     'Uruguay': '37i9dQZEVXbMJJi3wgRbAy',
     'Venezuela': '37i9dQZEVXbJ6IpvItkve3',
-    'Vietnam': '37i9dQZEVXbLdGSmz6xilI'
+    'Vietnam': '37i9dQZEVXbLdGSmz6xilI',
   };
 }

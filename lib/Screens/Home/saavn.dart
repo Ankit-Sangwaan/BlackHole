@@ -321,7 +321,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                                           .bodySmall!
                                                           .color,
                                                     ),
-                                                  )
+                                                  ),
                                               ],
                                             ),
                                           ),
@@ -351,7 +351,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                             );
                           },
                         ),
-                      )
+                      ),
                     ],
                   ),
                   builder: (BuildContext context, Box box, Widget? child) {
@@ -629,7 +629,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                               'artist'
                                           ? [
                                               item['more_info']['query']
-                                                  .toString()
+                                                  .toString(),
                                             ]
                                           : [item['id'].toString()],
                                       language: item['more_info']['language']
@@ -890,7 +890,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                                             .bodySmall!
                                                             .color,
                                                       ),
-                                                    )
+                                                    ),
                                                 ],
                                               ),
                                             ),

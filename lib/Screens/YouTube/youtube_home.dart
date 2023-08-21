@@ -360,7 +360,7 @@ class _YouTubeState extends State<YouTube>
                                                                   .playlist_play_rounded,
                                                               size: 40,
                                                             ),
-                                                          )
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
@@ -397,7 +397,7 @@ class _YouTubeState extends State<YouTube>
                                                 ),
                                                 const SizedBox(
                                                   height: 5.0,
-                                                )
+                                                ),
                                               ],
                                             ),
                                           ),
@@ -455,7 +455,7 @@ class _YouTubeState extends State<YouTube>
                     blurRadius: 5.0,
                     offset: Offset(1.5, 1.5),
                     // shadow direction: bottom right
-                  )
+                  ),
                 ],
               ),
               child: Row(

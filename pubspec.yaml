@@ -4,7 +4,7 @@ description: An Open Source Music Player App.
 # Prevent accidental publishing to pub.dev.
 publish_to: "none"
 
-version: 1.15.8+39
+version: 1.15.9+40
 
 environment:
   sdk: ">=2.18.0 <4.0.0"

@@ -53,7 +53,7 @@ class _PrefScreenState extends State<PrefScreen> {
     'Haryanvi',
     'Rajasthani',
     'Odia',
-    'Assamese'
+    'Assamese',
   ];
   List<bool> isSelected = [true, false];
   List preferredLanguage = Hive.box('settings')
@@ -208,7 +208,7 @@ class _PrefScreenState extends State<PrefScreen> {
                                             color: Colors.black26,
                                             blurRadius: 5.0,
                                             offset: Offset(0.0, 3.0),
-                                          )
+                                          ),
                                         ],
                                       ),
                                       child: Center(
@@ -408,7 +408,7 @@ class _PrefScreenState extends State<PrefScreen> {
                                             color: Colors.black26,
                                             blurRadius: 5.0,
                                             offset: Offset(0.0, 3.0),
-                                          )
+                                          ),
                                         ],
                                       ),
                                       child: Center(
@@ -572,7 +572,7 @@ class _PrefScreenState extends State<PrefScreen> {
                                             color: Colors.black26,
                                             blurRadius: 5.0,
                                             offset: Offset(0.0, 3.0),
-                                          )
+                                          ),
                                         ],
                                       ),
                                       child: Center(

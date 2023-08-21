@@ -235,7 +235,7 @@ class _SongsListViewPageState extends State<SongsListViewPage> {
                           widget.onTap?.call(idx, itemsList);
                         },
                       );
-                    })
+                    }),
                   ]),
                 ),
               ),

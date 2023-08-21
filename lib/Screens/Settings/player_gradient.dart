@@ -38,7 +38,7 @@ class _PlayerGradientSelectionState extends State<PlayerGradientSelection> {
     'halfDark',
     'fullLight',
     'fullDark',
-    'fullMix'
+    'fullMix',
   ];
   final List<String> recommended = [
     'halfDark',
@@ -135,7 +135,7 @@ class _PlayerGradientSelectionState extends State<PlayerGradientSelection> {
                                             if (type == 'fullMix')
                                               gradientColor[1] ?? Colors.black
                                             else
-                                              Colors.black
+                                              Colors.black,
                                           ]
                                         : [
                                             gradientColor[0] ??

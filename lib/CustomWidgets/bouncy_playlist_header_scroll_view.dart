@@ -214,7 +214,7 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                                                 color: Colors.black26,
                                                 blurRadius: 5.0,
                                                 offset: Offset(0.0, 3.0),
-                                              )
+                                              ),
                                             ],
                                           ),
                                           child: Padding(

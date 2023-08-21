@@ -40,7 +40,7 @@ class NavClass {
     'topLevelButtons',
     0,
     'likeButtonRenderer',
-    'likeStatus'
+    'likeStatus',
   ];
   static const menuService = ['menuServiceItemRenderer', 'serviceEndpoint'];
   static const toggleMenu = 'toggleMenuServiceItemRenderer';
@@ -48,44 +48,44 @@ class NavClass {
     'overlay',
     'musicItemThumbnailOverlayRenderer',
     'content',
-    'musicPlayButtonRenderer'
+    'musicPlayButtonRenderer',
   ];
   static const navigationBrowse = ['navigationEndpoint', 'browseEndpoint'];
   static const navigationBrowseId = [...navigationBrowse, 'browseId'];
   static const pageType = [
     'browseEndpointContextSupportedConfigs',
     'browseEndpointContextMusicConfig',
-    'pageType'
+    'pageType',
   ];
   static const navigationVideoId = [
     'navigationEndpoint',
     'watchEndpoint',
-    'videoId'
+    'videoId',
   ];
   static const navigationPlaylistId = [
     'navigationEndpoint',
     'watchEndpoint',
-    'playlistId'
+    'playlistId',
   ];
   static const navigationWatchPlaylistId = [
     'navigationEndpoint',
     'watchPlaylistEndpoint',
-    'playlistId'
+    'playlistId',
   ];
   static const navigationVideoType = [
     'watchEndpoint',
     'watchEndpointMusicSupportedConfigs',
     'watchEndpointMusicConfig',
-    'musicVideoType'
+    'musicVideoType',
   ];
   static const headerDetail = ['header', 'musicDetailHeaderRenderer'];
   static const headerCardShelf = [
     'header',
-    'musicCardShelfHeaderBasicRenderer'
+    'musicCardShelfHeaderBasicRenderer',
   ];
   static const immersiveHeaderDetail = [
     'header',
-    'musicImmersiveHeaderRenderer'
+    'musicImmersiveHeaderRenderer',
   ];
   static const descriptionShelf = ['musicDescriptionShelfRenderer'];
   static const description = ['description', ...runText];
@@ -97,12 +97,12 @@ class NavClass {
     'musicCarouselShelfBasicHeaderRenderer',
     'title',
     'runs',
-    0
+    0,
   ];
   static const frameworkMutations = [
     'frameworkUpdates',
     'entityBatchUpdate',
-    'mutations'
+    'mutations',
   ];
   static const title = ['title', 'runs', 0];
   static const titleText = ['title', ...runText];
@@ -120,17 +120,17 @@ class NavClass {
   static const thumbnails = [
     'thumbnail',
     'musicThumbnailRenderer',
-    ...thumbnail
+    ...thumbnail,
   ];
   static const thumbnailRenderer = [
     'thumbnailRenderer',
     'musicThumbnailRenderer',
-    ...thumbnail
+    ...thumbnail,
   ];
   static const thumbnailCropped = [
     'thumbnail',
     'croppedSquareThumbnailRenderer',
-    ...thumbnail
+    ...thumbnail,
   ];
   static const feedbackToken = ['feedbackEndpoint', 'feedbackToken'];
   static const badgePath = [
@@ -138,20 +138,20 @@ class NavClass {
     'musicInlineBadgeRenderer',
     'accessibilityData',
     'accessibilityData',
-    'label'
+    'label',
   ];
   static const badgeLabel = ['badges', ...badgePath];
   static const subtitleBadgeLabel = ['subtitleBadges', ...badgePath];
   static const categoryTitle = [
     'musicNavigationButtonRenderer',
     'buttonText',
-    ...runText
+    ...runText,
   ];
   static const categoryParams = [
     'musicNavigationButtonRenderer',
     'clickCommand',
     'browseEndpoint',
-    'params'
+    'params',
   ];
   static const mTRIR = 'musicTwoRowItemRenderer';
   static const mRLIR = 'musicResponsiveListItemRenderer';
@@ -162,18 +162,18 @@ class NavClass {
   static const tasteProfileItems = [
     'contents',
     'tastebuilderRenderer',
-    'contents'
+    'contents',
   ];
   static const tasteProfileArtist = ['title', 'runs'];
   static const sectionListContinuation = [
     'continuationContents',
-    'sectionListContinuation'
+    'sectionListContinuation',
   ];
   static const menuPlaylistId = [
     ...menuItems,
     0,
     'menuNavigationItemRenderer',
-    ...navigationWatchPlaylistId
+    ...navigationWatchPlaylistId,
   ];
 
   static dynamic nav(dynamic root, List items) {

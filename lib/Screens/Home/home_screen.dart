@@ -215,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 blurRadius: 5.0,
                                 offset: Offset(1.5, 1.5),
                                 // shadow direction: bottom right
-                              )
+                              ),
                             ],
                           ),
                           child: Row(
@@ -270,7 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
           homeDrawer(
             context: context,
             padding: const EdgeInsets.only(top: 8.0, left: 4.0),
-          )
+          ),
       ],
     );
   }

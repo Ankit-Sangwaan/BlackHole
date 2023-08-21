@@ -41,7 +41,7 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
     'Haryanvi',
     'Rajasthani',
     'Odia',
-    'Assamese'
+    'Assamese',
   ];
   List preferredLanguage = Hive.box('settings')
       .get('preferredLanguage', defaultValue: ['Hindi'])?.toList() as List;
