@@ -696,5 +696,7 @@
   "searchHome": "بحث الصفحة الرئيسية",
   "@searchHome": {},
   "topCharts": "أعلى الرسوم البيانية",
-  "@topCharts": {}
+  "@topCharts": {},
+  "minFourRequired": "مطلوب 4 دقائق",
+  "@minFourRequired": {}
 }
