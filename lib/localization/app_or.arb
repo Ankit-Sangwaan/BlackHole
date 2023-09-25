@@ -74,5 +74,9 @@
   "bgGrad": "ପୃଷ୍ଠଭୂମି ଗ୍ରେଡିଏଣ୍ଟ",
   "@bgGrad": {},
   "bgGradSub": "ସବୁଆଡ଼େ ପୃଷ୍ଠଭୂମି ଭାବରେ ବ୍ୟବହୃତ ଗ୍ରେଡିଏଣ୍ଟ",
-  "@bgGradSub": {}
+  "@bgGradSub": {},
+  "bottomGradSub": "ତଳ ପୃଷ୍ଠାଗୁଡ଼ିକରେ ବ୍ୟବହୃତ ଗ୍ରେଡିଏଣ୍ଟ",
+  "@bottomGradSub": {},
+  "bottomGrad": "ତଳ ପୃଷ୍ଠାଗୁଡ଼ିକ କ୍ରମବଦ୍ଧ",
+  "@bottomGrad": {}
 }
