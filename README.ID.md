@@ -43,7 +43,7 @@ Sebuah Pemutar Musik Sumber Terbuka untuk semua kebutuhanmu!
 
 ## Fitur
 
-- Kualitas siaran terbaik (320kbit aac)
+- Kualitas siaran yang tinggi (320kbit AAC)
 - Lagu, Album, Artis dan Pencarian Daftar Putar
 - Daftar Putar yang Dipromosikan dalam Bahasa yang Spesifik
 - Lagu yang sedang tren

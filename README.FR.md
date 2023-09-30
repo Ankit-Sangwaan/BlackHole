@@ -42,7 +42,7 @@ Merci à [Euri](https://github.com/EuriNaiz) et [Nikita](https://github.com/Tire
 
 ## Fonctionnalités
 
-* Meilleure qualité d'écoute (320kbps aac)
+* Haute qualité d'écoute (320kbps AAC)
 * Recherche de Morceau, Album, Artiste et Liste de Lecture
 * Listes de Lecture d'un Langage Spécifique Promu
 * Morceaux Tendances

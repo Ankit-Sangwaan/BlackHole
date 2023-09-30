@@ -45,7 +45,7 @@ Tüm ihtiyaçlarınız için bir Açık Kaynaklı Müzik Çalar Uygulaması!
 
 ## Özellikler
 
-- En İyi Akış Kalitesi (320kbps aac)
+- Yüksek Yayın Kalitesi (320kbps AAC)
 - Şarkı, Albüm, Sanatçı ve Çalma Listesi Arama
 - Dile Özgü Tanıtılan Oynatma Listeleri
 - Trend Olan Şarkılar
