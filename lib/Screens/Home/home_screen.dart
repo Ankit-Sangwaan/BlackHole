@@ -55,8 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     String name =
         Hive.box('settings').get('name', defaultValue: 'Guest') as String;
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final bool rotated = MediaQuery.of(context).size.height < screenWidth;
+    final double screenWidth = MediaQuery.sizeOf(context).width;
+    final bool rotated = MediaQuery.sizeOf(context).height < screenWidth;
     return Stack(
       children: [
         NestedScrollView(
@@ -191,11 +191,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: AnimatedContainer(
                           width: (!_scrollController.hasClients ||
                                   _scrollController.positions.length > 1)
-                              ? MediaQuery.of(context).size.width
+                              ? MediaQuery.sizeOf(context).width
                               : max(
-                                  MediaQuery.of(context).size.width -
+                                  MediaQuery.sizeOf(context).width -
                                       _scrollController.offset.roundToDouble(),
-                                  MediaQuery.of(context).size.width -
+                                  MediaQuery.sizeOf(context).width -
                                       (rotated ? 0 : 75),
                                 ),
                           height: 55.0,

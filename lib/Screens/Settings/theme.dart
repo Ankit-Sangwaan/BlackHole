@@ -195,11 +195,10 @@ class _ThemePageState extends State<ThemePage> {
                                       Navigator.pop(context);
                                     },
                                     child: Container(
-                                      width: MediaQuery.of(context).size.width *
+                                      width: MediaQuery.sizeOf(context).width *
                                           0.125,
-                                      height:
-                                          MediaQuery.of(context).size.width *
-                                              0.125,
+                                      height: MediaQuery.sizeOf(context).width *
+                                          0.125,
                                       decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(
                                           100.0,
@@ -329,9 +328,9 @@ class _ThemePageState extends State<ThemePage> {
                                     );
                                   },
                                   child: Container(
-                                    width: MediaQuery.of(context).size.width *
+                                    width: MediaQuery.sizeOf(context).width *
                                         0.125,
-                                    height: MediaQuery.of(context).size.width *
+                                    height: MediaQuery.sizeOf(context).width *
                                         0.125,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(
@@ -446,9 +445,9 @@ class _ThemePageState extends State<ThemePage> {
                                     );
                                   },
                                   child: Container(
-                                    width: MediaQuery.of(context).size.width *
+                                    width: MediaQuery.sizeOf(context).width *
                                         0.125,
-                                    height: MediaQuery.of(context).size.width *
+                                    height: MediaQuery.sizeOf(context).width *
                                         0.125,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(
@@ -562,9 +561,9 @@ class _ThemePageState extends State<ThemePage> {
                                     );
                                   },
                                   child: Container(
-                                    width: MediaQuery.of(context).size.width *
+                                    width: MediaQuery.sizeOf(context).width *
                                         0.125,
-                                    height: MediaQuery.of(context).size.width *
+                                    height: MediaQuery.sizeOf(context).width *
                                         0.125,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(

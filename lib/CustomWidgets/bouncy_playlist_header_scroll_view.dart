@@ -83,13 +83,13 @@ class BouncyPlaylistHeaderScrollView extends StatelessWidget {
                 ),
               );
     final bool rotated =
-        MediaQuery.of(context).size.height < MediaQuery.of(context).size.width;
+        MediaQuery.sizeOf(context).height < MediaQuery.sizeOf(context).width;
     final double expandedHeight = rotated
-        ? MediaQuery.of(context).size.width * 0.35
-        : MediaQuery.of(context).size.width * 0.6;
+        ? MediaQuery.sizeOf(context).width * 0.35
+        : MediaQuery.sizeOf(context).width * 0.6;
     final double screenWidth = rotated
-        ? MediaQuery.of(context).size.width * 0.3
-        : MediaQuery.of(context).size.width * 0.5;
+        ? MediaQuery.sizeOf(context).width * 0.3
+        : MediaQuery.sizeOf(context).width * 0.5;
 
     return CustomScrollView(
       controller: scrollController,

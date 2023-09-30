@@ -72,8 +72,8 @@ class _PlayerGradientSelectionState extends State<PlayerGradientSelection> {
       body: SafeArea(
         child: GridView.count(
           shrinkWrap: true,
-          crossAxisCount: MediaQuery.of(context).size.width >
-                  MediaQuery.of(context).size.height
+          crossAxisCount: MediaQuery.sizeOf(context).width >
+                  MediaQuery.sizeOf(context).height
               ? 6
               : 3,
           physics: const BouncingScrollPhysics(),
@@ -164,7 +164,7 @@ class _PlayerGradientSelectionState extends State<PlayerGradientSelection> {
                                 child: FittedBox(
                                   child: SizedBox.square(
                                     dimension:
-                                        MediaQuery.of(context).size.width / 5,
+                                        MediaQuery.sizeOf(context).width / 5,
                                   ),
                                 ),
                               ),
@@ -184,10 +184,9 @@ class _PlayerGradientSelectionState extends State<PlayerGradientSelection> {
                                 clipBehavior: Clip.antiAlias,
                                 child: FittedBox(
                                   child: SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width / 5,
+                                    width: MediaQuery.sizeOf(context).width / 5,
                                     height:
-                                        MediaQuery.of(context).size.width / 25,
+                                        MediaQuery.sizeOf(context).width / 25,
                                   ),
                                 ),
                               ),
@@ -205,10 +204,9 @@ class _PlayerGradientSelectionState extends State<PlayerGradientSelection> {
                                 clipBehavior: Clip.antiAlias,
                                 child: FittedBox(
                                   child: SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width / 5,
+                                    width: MediaQuery.sizeOf(context).width / 5,
                                     height:
-                                        MediaQuery.of(context).size.width / 25,
+                                        MediaQuery.sizeOf(context).width / 25,
                                   ),
                                 ),
                               ),

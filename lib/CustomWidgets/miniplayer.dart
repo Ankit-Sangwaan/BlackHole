@@ -43,8 +43,8 @@ class _MiniPlayerState extends State<MiniPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    // final double screenWidth = MediaQuery.of(context).size.width;
-    // final double screenHeight = MediaQuery.of(context).size.height;
+    // final double screenWidth = MediaQuery.sizeOf(context).width;
+    // final double screenHeight = MediaQuery.sizeOf(context).height;
     // final bool rotated = screenHeight < screenWidth;
     return SafeArea(
       top: false,

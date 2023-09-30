@@ -103,11 +103,11 @@ class _YouTubeState extends State<YouTube>
   @override
   Widget build(BuildContext cntxt) {
     super.build(context);
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final bool rotated = MediaQuery.of(context).size.height < screenWidth;
+    final double screenWidth = MediaQuery.sizeOf(context).width;
+    final bool rotated = MediaQuery.sizeOf(context).height < screenWidth;
     double boxSize = !rotated
-        ? MediaQuery.of(context).size.width / 2
-        : MediaQuery.of(context).size.height / 2.5;
+        ? MediaQuery.sizeOf(context).width / 2
+        : MediaQuery.sizeOf(context).height / 2.5;
     if (boxSize > 250) boxSize = 250;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -438,7 +438,7 @@ class _YouTubeState extends State<YouTube>
             ),
           GestureDetector(
             child: Container(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               height: 55.0,
               padding: const EdgeInsets.all(5.0),
               margin:

@@ -61,7 +61,7 @@ class _EqualizerState extends State<Equalizer> {
             ),
             if (enabled)
               SizedBox(
-                height: MediaQuery.of(context).size.height / 2,
+                height: MediaQuery.sizeOf(context).height / 2,
                 child: EqualizerControls(
                   audioHandler: audioHandler,
                 ),

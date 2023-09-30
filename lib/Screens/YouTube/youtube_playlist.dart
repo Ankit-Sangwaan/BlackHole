@@ -309,8 +309,8 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
             if (!done)
               Center(
                 child: SizedBox(
-                  height: MediaQuery.of(context).size.width / 2,
-                  width: MediaQuery.of(context).size.width / 2,
+                  height: MediaQuery.sizeOf(context).width / 2,
+                  width: MediaQuery.sizeOf(context).width / 2,
                   child: Card(
                     elevation: 10,
                     shape: RoundedRectangleBorder(

@@ -135,9 +135,9 @@ class _SaavnHomePageState extends State<SaavnHomePage>
       fetched = true;
     }
     double boxSize =
-        MediaQuery.of(context).size.height > MediaQuery.of(context).size.width
-            ? MediaQuery.of(context).size.width / 2
-            : MediaQuery.of(context).size.height / 2.5;
+        MediaQuery.sizeOf(context).height > MediaQuery.sizeOf(context).width
+            ? MediaQuery.sizeOf(context).width / 2
+            : MediaQuery.sizeOf(context).height / 2.5;
     if (boxSize > 250) boxSize = 250;
     if (playlistNames.length >= 3) {
       recentIndex = 0;
@@ -587,8 +587,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                                                     item['image'].toString(),
                                                 imageQuality: ImageQuality.high,
                                                 boxDimension:
-                                                    MediaQuery.of(context)
-                                                            .size
+                                                    MediaQuery.sizeOf(context)
                                                             .width *
                                                         0.8,
                                                 placeholderImage: (item[

@@ -287,7 +287,7 @@ class _NewSettingsPageState extends State<NewSettingsPage>
     }
 
     final bool isRotated =
-        MediaQuery.of(context).orientation == Orientation.landscape;
+        MediaQuery.orientationOf(context) == Orientation.landscape;
 
     return Stack(
       children: [

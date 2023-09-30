@@ -230,7 +230,7 @@ class _SearchBarState extends State<SearchBar> {
                               elevation: 8.0,
                               child: SizedBox(
                                 height: min(
-                                  MediaQuery.of(context).size.height / 1.75,
+                                  MediaQuery.sizeOf(context).height / 1.75,
                                   70.0 * suggestedList.length,
                                 ),
                                 child: ListView.builder(

@@ -238,8 +238,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final bool rotated = MediaQuery.of(context).size.height < screenWidth;
+    final double screenWidth = MediaQuery.sizeOf(context).width;
+    final bool rotated = MediaQuery.sizeOf(context).height < screenWidth;
     final miniplayer = MiniPlayer();
     return GradientContainer(
       child: Scaffold(
@@ -256,7 +256,7 @@ class _HomePageState extends State<HomePage> {
                   automaticallyImplyLeading: false,
                   elevation: 0,
                   stretch: true,
-                  expandedHeight: MediaQuery.of(context).size.height * 0.2,
+                  expandedHeight: MediaQuery.sizeOf(context).height * 0.2,
                   flexibleSpace: FlexibleSpaceBar(
                     title: RichText(
                       text: TextSpan(

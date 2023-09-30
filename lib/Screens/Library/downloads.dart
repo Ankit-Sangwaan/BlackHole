@@ -632,8 +632,8 @@ Future<Map> editTags(Map song, BuildContext context) async {
                     ),
                     clipBehavior: Clip.antiAlias,
                     child: SizedBox(
-                      height: MediaQuery.of(context).size.width / 2,
-                      width: MediaQuery.of(context).size.width / 2,
+                      height: MediaQuery.sizeOf(context).width / 2,
+                      width: MediaQuery.sizeOf(context).width / 2,
                       child: Image(
                         fit: BoxFit.cover,
                         image: songImage,

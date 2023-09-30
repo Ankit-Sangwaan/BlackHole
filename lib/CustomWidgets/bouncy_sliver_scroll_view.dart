@@ -77,9 +77,9 @@ class BouncyImageSliverScrollView extends StatelessWidget {
                 ),
               );
     // final bool rotated =
-    // MediaQuery.of(context).size.height < MediaQuery.of(context).size.width;
+    // MediaQuery.sizeOf(context).height < MediaQuery.sizeOf(context).width;
     final double expandedHeight =
-        MediaQuery.of(context).size.height * (fromYt ? 0.2 : 0.4);
+        MediaQuery.sizeOf(context).height * (fromYt ? 0.2 : 0.4);
 
     return CustomScrollView(
       controller: scrollController,

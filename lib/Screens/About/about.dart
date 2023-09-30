@@ -47,16 +47,16 @@ class _AboutScreenState extends State<AboutScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final double separationHeight = MediaQuery.of(context).size.height * 0.035;
+    final double separationHeight = MediaQuery.sizeOf(context).height * 0.035;
 
     return GradientContainer(
       child: Stack(
         children: [
           Positioned(
-            left: MediaQuery.of(context).size.width / 2,
-            top: MediaQuery.of(context).size.width / 5,
+            left: MediaQuery.sizeOf(context).width / 2,
+            top: MediaQuery.sizeOf(context).width / 5,
             child: SizedBox(
-              width: MediaQuery.of(context).size.width,
+              width: MediaQuery.sizeOf(context).width,
               child: const Image(
                 fit: BoxFit.fill,
                 image: AssetImage(
@@ -140,7 +140,7 @@ class _AboutScreenState extends State<AboutScreen> {
                             );
                           },
                           child: SizedBox(
-                            width: MediaQuery.of(context).size.width / 4,
+                            width: MediaQuery.sizeOf(context).width / 4,
                             child: Image(
                               image: Theme.of(context).brightness ==
                                       Brightness.dark
@@ -178,7 +178,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           );
                         },
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width / 2,
+                          width: MediaQuery.sizeOf(context).width / 2,
                           child: const Image(
                             image: AssetImage('assets/black-button.png'),
                           ),
@@ -214,7 +214,7 @@ class _AboutScreenState extends State<AboutScreen> {
                           );
                         },
                         child: SizedBox(
-                          width: MediaQuery.of(context).size.width / 2,
+                          width: MediaQuery.sizeOf(context).width / 2,
                           child: Image(
                             image: AssetImage(
                               Theme.of(context).brightness == Brightness.dark

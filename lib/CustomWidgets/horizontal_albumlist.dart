@@ -75,9 +75,9 @@ class HorizontalAlbumsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double boxSize =
-        MediaQuery.of(context).size.height > MediaQuery.of(context).size.width
-            ? MediaQuery.of(context).size.width / 2
-            : MediaQuery.of(context).size.height / 2.5;
+        MediaQuery.sizeOf(context).height > MediaQuery.sizeOf(context).width
+            ? MediaQuery.sizeOf(context).width / 2
+            : MediaQuery.sizeOf(context).height / 2.5;
     if (boxSize > 250) boxSize = 250;
     return SizedBox(
       height: boxSize + 15,
@@ -105,7 +105,7 @@ class HorizontalAlbumsList extends StatelessWidget {
                       borderRadius:
                           item['type'] == 'radio_station' ? 1000.0 : 15.0,
                       imageUrl: item['image'].toString(),
-                      boxDimension: MediaQuery.of(context).size.width * 0.8,
+                      boxDimension: MediaQuery.sizeOf(context).width * 0.8,
                       imageQuality: ImageQuality.high,
                       placeholderImage: (item['type'] == 'playlist' ||
                               item['type'] == 'album')

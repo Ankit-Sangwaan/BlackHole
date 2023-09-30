@@ -57,10 +57,10 @@ class _AuthScreenState extends State<AuthScreen> {
           child: Stack(
             children: [
               Positioned(
-                left: MediaQuery.of(context).size.width / 1.85,
+                left: MediaQuery.sizeOf(context).width / 1.85,
                 child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.width,
+                  width: MediaQuery.sizeOf(context).width,
+                  height: MediaQuery.sizeOf(context).width,
                   child: const Image(
                     image: AssetImage(
                       'assets/icon-white-trans.png',
@@ -152,7 +152,7 @@ class _AuthScreenState extends State<AuthScreen> {
                               ],
                             ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.1,
+                              height: MediaQuery.sizeOf(context).height * 0.1,
                             ),
                             Column(
                               children: [
