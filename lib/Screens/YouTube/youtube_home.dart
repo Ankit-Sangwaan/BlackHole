@@ -46,6 +46,7 @@ class _YouTubeState extends State<YouTube>
   // bool showHistory =
   // Hive.box('settings').get('showHistory', defaultValue: true) as bool;
   final TextEditingController _controller = TextEditingController();
+
   // int _currentPage = 0;
   // final PageController _pageController = PageController(
   // viewportFraction:
@@ -187,23 +188,29 @@ class _YouTubeState extends State<YouTube>
                     padding: const EdgeInsets.only(bottom: 10),
                     itemBuilder: (context, index) {
                       return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Row(
-                            children: [
-                              Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(10, 10, 0, 5),
-                                child: Text(
-                                  '${searchedList[index]["title"]}',
-                                  style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w800,
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.fromLTRB(10, 10, 0, 5),
+                                  child: Text(
+                                    '${searchedList[index]["title"]}',
+                                    style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w800,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                           SizedBox(
                             height: boxSize + 10,
