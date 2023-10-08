@@ -176,12 +176,12 @@ class _MyAppState extends State<MyApp> {
     HomeWidget.setAppGroupId('com.shadow.blackhole');
     HomeWidget.registerBackgroundCallback(backgroundCallback);
     final String systemLangCode = Platform.localeName.substring(0, 2);
-    if (LanguageCodes.languageCodes.values.contains(systemLangCode)) {
+    final String? lang = Hive.box('settings').get('lang') as String?;
+    if (lang == null &&
+        LanguageCodes.languageCodes.values.contains(systemLangCode)) {
       _locale = Locale(systemLangCode);
     } else {
-      final String lang =
-          Hive.box('settings').get('lang', defaultValue: 'English') as String;
-      _locale = Locale(LanguageCodes.languageCodes[lang] ?? 'en');
+      _locale = Locale(LanguageCodes.languageCodes[lang ?? 'English'] ?? 'en');
     }
 
     AppTheme.currentTheme.addListener(() {
