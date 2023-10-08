@@ -1020,12 +1020,13 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     playbackState.add(
       playbackState.value.copyWith(
         controls: [
-          if (liked) MediaControl.rewind else MediaControl.fastForward,
+          // workaround to add like button
+          if (!Platform.isIOS)
+            if (liked) MediaControl.rewind else MediaControl.fastForward,
           MediaControl.skipToPrevious,
           if (playing) MediaControl.pause else MediaControl.play,
           MediaControl.skipToNext,
-          // workaround to add like button
-          MediaControl.stop,
+          if (!Platform.isIOS) MediaControl.stop,
         ],
         systemActions: const {
           MediaAction.seek,

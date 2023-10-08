@@ -37,7 +37,7 @@ Future<void> createBackup(
   String? fileName,
   bool showDialog = true,
 }) async {
-  if (!Platform.isWindows) {
+  if (Platform.isAndroid) {
     PermissionStatus status = await Permission.storage.status;
     if (status.isDenied) {
       await [

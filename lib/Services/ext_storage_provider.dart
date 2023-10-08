@@ -78,12 +78,13 @@ class ExtStorageProvider {
         } else {
           return throw 'something went wrong';
         }
-      } else if (Platform.isIOS) {
+      } else if (Platform.isIOS || Platform.isMacOS) {
         directory = await getApplicationDocumentsDirectory();
-        return directory.path;
+        final finalDirName = dirName.replaceAll('BlackHole/', '');
+        return '${directory.path}/$finalDirName';
       } else {
         directory = await getDownloadsDirectory();
-        return directory!.path;
+        return '${directory!.path}/$dirName';
       }
     } catch (e) {
       rethrow;

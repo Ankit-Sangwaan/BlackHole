@@ -50,7 +50,9 @@ Future<void> main() async {
   Paint.enableDithering = true;
 
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
-    await Hive.initFlutter('BlackHole');
+    await Hive.initFlutter('BlackHole/Database');
+  } else if (Platform.isIOS) {
+    await Hive.initFlutter('Database');
   } else {
     await Hive.initFlutter();
   }
