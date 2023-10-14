@@ -203,7 +203,7 @@ class _SaavnHomePageState extends State<SaavnHomePage>
                   },
                 );
               }
-              if (idx == playlistIndex) {
+              if (idx == playlistIndex && playlistNames.isNotEmpty) {
                 return ValueListenableBuilder(
                   valueListenable: Hive.box('settings').listenable(),
                   child: Column(

@@ -39,7 +39,7 @@ class Collage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       elevation: 5,
-      color: Colors.black,
+      color: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(
           borderRadius,
@@ -54,7 +54,13 @@ class Collage extends StatelessWidget {
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
                 crossAxisCount: imageList.length < 4 ? 1 : 2,
-                children: imageList
+                children: (imageList.isEmpty
+                        ? [
+                            {
+                              'image': '',
+                            }
+                          ]
+                        : imageList)
                     .map(
                       (image) => CachedNetworkImage(
                         fit: BoxFit.cover,
