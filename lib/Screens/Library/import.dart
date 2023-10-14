@@ -42,6 +42,48 @@ class ImportPlaylist extends StatelessWidget {
       Hive.box('settings').get('playlistNames')?.toList() as List? ??
           ['Favorite Songs'];
 
+  void _triggerImport({required String type, required BuildContext context}) {
+    switch (type) {
+      case 'file':
+        importFile(
+          context,
+          playlistNames,
+          settingsBox,
+        );
+        break;
+      case 'spotify':
+        connectToSpotify(
+          context,
+          playlistNames,
+          settingsBox,
+        );
+        break;
+      case 'youtube':
+        importYt(
+          context,
+          playlistNames,
+          settingsBox,
+        );
+        break;
+      case 'jiosaavn':
+        importJioSaavn(
+          context,
+          playlistNames,
+          settingsBox,
+        );
+        break;
+      case 'resso':
+        importResso(
+          context,
+          playlistNames,
+          settingsBox,
+        );
+        break;
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GradientContainer(
@@ -64,67 +106,40 @@ class ImportPlaylist extends StatelessWidget {
           itemBuilder: (cntxt, index) {
             return ListTile(
               title: Text(
-                index == 0
-                    ? AppLocalizations.of(context)!.importFile
-                    : index == 1
-                        ? AppLocalizations.of(context)!.importSpotify
-                        : index == 2
-                            ? AppLocalizations.of(context)!.importYt
-                            : index == 3
-                                ? AppLocalizations.of(
-                                    context,
-                                  )!
-                                    .importJioSaavn
-                                : AppLocalizations.of(
-                                    context,
-                                  )!
-                                    .importResso,
+                [
+                  AppLocalizations.of(context)!.importFile,
+                  AppLocalizations.of(context)!.importSpotify,
+                  AppLocalizations.of(context)!.importYt,
+                  AppLocalizations.of(context)!.importJioSaavn,
+                  AppLocalizations.of(context)!.importResso,
+                ][index],
               ),
               leading: SizedBox.square(
                 dimension: 50,
                 child: Center(
                   child: Icon(
-                    index == 0
-                        ? MdiIcons.import
-                        : index == 1
-                            ? MdiIcons.spotify
-                            : index == 2
-                                ? MdiIcons.youtube
-                                : Icons.music_note_rounded,
+                    [
+                      MdiIcons.import,
+                      MdiIcons.spotify,
+                      MdiIcons.youtube,
+                      Icons.music_note_rounded,
+                      Icons.music_note_rounded,
+                    ][index],
                     color: Theme.of(context).iconTheme.color,
                   ),
                 ),
               ),
               onTap: () {
-                index == 0
-                    ? importFile(
-                        cntxt,
-                        playlistNames,
-                        settingsBox,
-                      )
-                    : index == 1
-                        ? connectToSpotify(
-                            cntxt,
-                            playlistNames,
-                            settingsBox,
-                          )
-                        : index == 2
-                            ? importYt(
-                                cntxt,
-                                playlistNames,
-                                settingsBox,
-                              )
-                            : index == 3
-                                ? importJioSaavn(
-                                    cntxt,
-                                    playlistNames,
-                                    settingsBox,
-                                  )
-                                : importResso(
-                                    cntxt,
-                                    playlistNames,
-                                    settingsBox,
-                                  );
+                _triggerImport(
+                  type: [
+                    'file',
+                    'spotify',
+                    'youtube',
+                    'jiosaavn',
+                    'resso',
+                  ][index],
+                  context: cntxt,
+                );
               },
             );
           },

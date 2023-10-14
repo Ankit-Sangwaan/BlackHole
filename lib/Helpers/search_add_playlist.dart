@@ -22,6 +22,7 @@ import 'dart:convert';
 import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/APIs/spotify_api.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
+import 'package:blackhole/Helpers/matcher.dart';
 import 'package:blackhole/Helpers/playlist.dart';
 import 'package:blackhole/Services/youtube_services.dart';
 import 'package:flutter/material.dart';
@@ -153,9 +154,21 @@ class SearchAddPlaylist {
         yield {'done': ++done, 'name': ''};
       }
       try {
-        final List result =
-            await SaavnAPI().fetchTopSearchResult(trackName!.split('|')[0]);
-        addMapToPlaylist(playName, result[0] as Map);
+        final Map data = await SaavnAPI().fetchSongSearchResults(
+          searchQuery: trackName!.split('|')[0],
+          count: 3,
+        );
+        final List result = data['songs'] as List;
+        final index = findBestMatch(
+          result,
+          {
+            'title': trackName,
+            'artist': trackName,
+          },
+        );
+        if (index != -1) {
+          addMapToPlaylist(playName, result[index] as Map);
+        }
       } catch (e) {
         Logger.root.severe('Error in $done: $e');
       }
@@ -178,9 +191,21 @@ class SearchAddPlaylist {
         yield {'done': ++done, 'name': ''};
       }
       try {
-        final List result =
-            await SaavnAPI().fetchTopSearchResult('$trackName by $artistName');
-        addMapToPlaylist(playName, result[0] as Map);
+        final Map data = await SaavnAPI().fetchSongSearchResults(
+          searchQuery: '$trackName - $artistName',
+          count: 3,
+        );
+        final List result = data['songs'] as List;
+        final index = findBestMatch(
+          result,
+          {
+            'title': trackName,
+            'artist': artistName,
+          },
+        );
+        if (index != -1) {
+          addMapToPlaylist(playName, result[index] as Map);
+        }
       } catch (e) {
         Logger.root.severe('Error in $done: $e');
       }
@@ -204,9 +229,21 @@ class SearchAddPlaylist {
         yield {'done': ++done, 'name': ''};
       }
       try {
-        final List result =
-            await SaavnAPI().fetchTopSearchResult('$trackName by $artistName');
-        addMapToPlaylist(playName, result[0] as Map);
+        final Map data = await SaavnAPI().fetchSongSearchResults(
+          searchQuery: '$trackName - $artistName',
+          count: 3,
+        );
+        final List result = data['songs'] as List;
+        final index = findBestMatch(
+          result,
+          {
+            'title': trackName,
+            'artist': artistName,
+          },
+        );
+        if (index != -1) {
+          addMapToPlaylist(playName, result[index] as Map);
+        }
       } catch (e) {
         Logger.root.severe('Error in $done: $e');
       }

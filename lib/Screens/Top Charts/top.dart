@@ -380,7 +380,8 @@ class _TopPageState extends State<TopPage>
                           context,
                           MaterialPageRoute(
                             builder: (context) => SearchPage(
-                              query: showList[index]['name'].toString(),
+                              query:
+                                  '${showList[index]["name"]} - ${showList[index]["artist"]}',
                               fromDirectSearch: true,
                             ),
                           ),

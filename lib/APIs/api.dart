@@ -278,8 +278,7 @@ class SaavnAPI {
     int page = 1,
   }) async {
     final String params =
-        "p=$page&q=$searchQuery&n=$count&${endpoints['getResults']}";
-
+        'p=$page&q=$searchQuery&n=$count&${endpoints["getResults"]}';
     try {
       final res = await getResponse(params);
       if (res.statusCode == 200) {
@@ -611,19 +610,6 @@ class SaavnAPI {
         'error': e,
       };
     }
-  }
-
-  Future<List> fetchTopSearchResult(String searchQuery) async {
-    final String params = 'p=1&q=$searchQuery&n=10&${endpoints["getResults"]}';
-    final res = await getResponse(params);
-    if (res.statusCode == 200) {
-      final getMain = json.decode(res.body);
-      final List responseList = getMain['results'] as List;
-      return [
-        await FormatResponse.formatSingleSongResponse(responseList[0] as Map),
-      ];
-    }
-    return List.empty();
   }
 
   Future<Map> fetchSongDetails(String songId) async {

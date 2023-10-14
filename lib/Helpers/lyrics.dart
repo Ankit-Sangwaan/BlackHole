@@ -150,7 +150,7 @@ class Lyrics {
             artist: artist,
             title2: title2,
             artist2: artist2,
-          )) {
+          ).matched) {
             final Map<String, String> res =
                 await getSpotifyLyricsFromId(trackId);
             result['lyrics'] = res['lyrics']!;

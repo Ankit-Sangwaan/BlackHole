@@ -19,95 +19,138 @@
 
 import 'package:logging/logging.dart';
 
-bool matchSongs({
+int findBestMatch(
+  List songs,
+  Map matchSong, {
+  bool shouldMatch = true,
+  double breakThreshold = 1,
+}) {
+  int bestMatchIndex = -1;
+  MatchResponse bestMatchResponse = MatchResponse(matched: false, accuracy: 0);
+  for (int i = 0; i < songs.length; i++) {
+    final res = matchSongs(
+      title: songs[i]['title'].toString(),
+      artist: songs[i]['artist'].toString(),
+      title2: matchSong['title'].toString(),
+      artist2: matchSong['artist'].toString(),
+    );
+    if ((res.matched || !shouldMatch) &&
+        res.accuracy > bestMatchResponse.accuracy) {
+      bestMatchResponse = res;
+      bestMatchIndex = i;
+      if (res.accuracy == 1) {
+        break;
+      }
+    }
+  }
+  return bestMatchIndex;
+}
+
+MatchResponse matchSongs({
   required String title,
   required String artist,
   required String title2,
   required String artist2,
-  double artistFlexibility = 0.15,
-  double titleFlexibility = 0.7,
+  double artistAccuracy = 0.85,
+  double titleAccuracy = 0.7,
   bool allowTitleToArtistMatch = true,
 }) {
   Logger.root.info('Matching $title by $artist with $title2 by $artist2');
   final names1 = artist.replaceAll('&', ',').replaceAll('-', ',').split(',');
   final names2 = artist2.replaceAll('&', ',').replaceAll('-', ',').split(',');
-  bool artistMatched = false;
-  bool titleMatched = false;
+  MatchResponse artistMatchResponse =
+      MatchResponse(matched: false, accuracy: 0);
+  MatchResponse titleMatchResponse = MatchResponse(matched: false, accuracy: 0);
 
   // Check if at least one artist name matches
   for (final String name1 in names1) {
     for (final String name2 in names2) {
-      if (flexibleMatch(
+      artistMatchResponse = flexibleMatch(
         string1: name1,
         string2: name2,
-        flexibility: artistFlexibility,
-      )) {
-        artistMatched = true;
+        accuracy: artistAccuracy,
+      );
+
+      if (artistMatchResponse.matched) {
         break;
       } else if (allowTitleToArtistMatch) {
         if (title2.contains(name1) || title.contains(name2)) {
-          artistMatched = true;
+          artistMatchResponse = MatchResponse(matched: true, accuracy: 0.8);
           break;
         }
       }
     }
-    if (artistMatched) {
+    if (artistMatchResponse.matched) {
       break;
     }
   }
 
-  titleMatched = flexibleMatch(
+  titleMatchResponse = flexibleMatch(
     string1: title,
     string2: title2,
     wordMatch: true,
-    flexibility: titleFlexibility,
+    accuracy: titleAccuracy,
   );
 
-  Logger.root
-      .info('TitleMatched: $titleMatched, ArtistMatched: $artistMatched');
+  Logger.root.info(
+    'TitleMatched: ${titleMatchResponse.matched} - ${titleMatchResponse.accuracy}, ArtistMatched: ${artistMatchResponse.matched} - ${artistMatchResponse.accuracy}',
+  );
 
-  return artistMatched && titleMatched;
+  return MatchResponse(
+    matched: titleMatchResponse.matched && artistMatchResponse.matched,
+    accuracy: (titleMatchResponse.accuracy + artistMatchResponse.accuracy) / 2,
+  );
 }
 
-bool flexibleMatch({
+MatchResponse flexibleMatch({
   required String string1,
   required String string2,
-  double flexibility = 0.7,
+  double accuracy = 0.7,
   bool wordMatch = false,
 }) {
   final text1 = string1.toLowerCase().trim();
   final text2 = string2.toLowerCase().trim();
   if (text1 == text2) {
-    return true;
+    return MatchResponse(matched: true, accuracy: 1);
   } else if (text1.contains(text2) || text2.contains(text1)) {
-    return true;
-  } else if (flexibility > 0) {
-    final bool matched = flexibilityCheck(
+    return MatchResponse(matched: true, accuracy: 0.9);
+  } else if (accuracy < 1) {
+    final MatchResponse matchResponse = accuracyCheck(
       text1: text1,
       text2: text2,
       wordMatch: wordMatch,
-      flexibility: flexibility,
+      accuracy: accuracy,
     );
-    if (matched) {
-      return true;
+    if (matchResponse.matched) {
+      return MatchResponse(
+        matched: matchResponse.matched,
+        accuracy: matchResponse.accuracy - 0.2,
+      );
     } else if (text1.contains('(') || text2.contains('(')) {
-      return flexibilityCheck(
+      final res = accuracyCheck(
         text1: text1.split('(')[0].trim(),
         text2: text2.split('(')[0].trim(),
         wordMatch: wordMatch,
-        flexibility: flexibility,
+        accuracy: accuracy,
+      );
+      return MatchResponse(
+        matched: res.matched,
+        accuracy: res.accuracy - 0.3,
       );
     }
   }
 
-  return false;
+  return MatchResponse(
+    matched: false,
+    accuracy: 0,
+  );
 }
 
-bool flexibilityCheck({
+MatchResponse accuracyCheck({
   required String text1,
   required String text2,
   required bool wordMatch,
-  required double flexibility,
+  required double accuracy,
 }) {
   int count = 0;
   final list1 = wordMatch ? text1.split(' ') : text1.split('');
@@ -122,8 +165,17 @@ bool flexibilityCheck({
     }
   }
   final percentage = count / minLength;
-  if ((1 - percentage) <= flexibility) {
-    return true;
+  if (percentage >= accuracy) {
+    return MatchResponse(matched: true, accuracy: percentage);
   }
-  return false;
+  return MatchResponse(matched: false, accuracy: 0);
+}
+
+class MatchResponse {
+  final bool matched;
+  final double accuracy;
+  MatchResponse({
+    required this.matched,
+    required this.accuracy,
+  });
 }
