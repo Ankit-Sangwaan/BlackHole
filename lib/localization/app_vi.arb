@@ -390,5 +390,15 @@
   "yesReplace": "Vâng, nhưng thay thế cái cũ",
   "@yesReplace": {},
   "latest": "Chúc mừng! Bạn đang sử dụng phiên bản mới nhất :)",
-  "@latest": {}
+  "@latest": {},
+  "lyrics": "Lời bài hát",
+  "@lyrics": {},
+  "mergePlaylists": "Trộn danh sách phát",
+  "@mergePlaylists": {},
+  "loadLastSub": "Tự động tải phiên cuối khi khởi động ứng dụng",
+  "@loadLastSub": {},
+  "local": "Bản địa",
+  "@local": {},
+  "madeBy": "Được phát triển ♥ bởi Ankit Sangwan",
+  "@madeBy": {}
 }
