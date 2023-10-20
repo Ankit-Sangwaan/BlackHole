@@ -71,7 +71,7 @@
   "@remove": {},
   "removed": "已移除",
   "@removed": {},
-  "restoreSub": "从备份文件中恢复数据\n您需要在恢复成功后重启应用\n",
+  "restoreSub": "从备份文件中恢复数据。",
   "@restoreSub": {},
   "like": "收藏",
   "@like": {},
