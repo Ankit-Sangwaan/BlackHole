@@ -284,9 +284,13 @@ class SaavnAPI {
       if (res.statusCode == 200) {
         final Map getMain = json.decode(res.body) as Map;
         final List responseList = getMain['results'] as List;
+        final finalSongs =
+            await FormatResponse.formatSongsResponse(responseList, 'song');
+        if (finalSongs.length > count) {
+          finalSongs.removeRange(count, finalSongs.length);
+        }
         return {
-          'songs':
-              await FormatResponse.formatSongsResponse(responseList, 'song'),
+          'songs': finalSongs,
           'error': '',
         };
       } else {

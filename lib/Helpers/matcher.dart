@@ -17,13 +17,15 @@
  * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
+import 'dart:math';
+
 import 'package:logging/logging.dart';
 
 int findBestMatch(
   List songs,
   Map matchSong, {
   bool shouldMatch = true,
-  double breakThreshold = 1,
+  double breakThreshold = 0.9,
 }) {
   int bestMatchIndex = -1;
   MatchResponse bestMatchResponse = MatchResponse(matched: false, accuracy: 0);
@@ -38,7 +40,7 @@ int findBestMatch(
         res.accuracy > bestMatchResponse.accuracy) {
       bestMatchResponse = res;
       bestMatchIndex = i;
-      if (res.accuracy == 1) {
+      if (res.accuracy >= breakThreshold) {
         break;
       }
     }
@@ -113,7 +115,14 @@ MatchResponse flexibleMatch({
   if (text1 == text2) {
     return MatchResponse(matched: true, accuracy: 1);
   } else if (text1.contains(text2) || text2.contains(text1)) {
-    return MatchResponse(matched: true, accuracy: 0.9);
+    return MatchResponse(
+      matched: true,
+      accuracy: 0.9 -
+          0.1 *
+              (1 -
+                  (min(text1.length, text2.length) /
+                      max(text1.length, text2.length))),
+    );
   } else if (accuracy < 1) {
     final MatchResponse matchResponse = accuracyCheck(
       text1: text1,
@@ -124,7 +133,7 @@ MatchResponse flexibleMatch({
     if (matchResponse.matched) {
       return MatchResponse(
         matched: matchResponse.matched,
-        accuracy: matchResponse.accuracy - 0.2,
+        accuracy: 0.8 - 0.1 * (1 - matchResponse.accuracy),
       );
     } else if (text1.contains('(') || text2.contains('(')) {
       final res = accuracyCheck(
@@ -135,7 +144,7 @@ MatchResponse flexibleMatch({
       );
       return MatchResponse(
         matched: res.matched,
-        accuracy: res.accuracy - 0.3,
+        accuracy: 0.7 - 0.1 * (1 - res.accuracy),
       );
     }
   }
