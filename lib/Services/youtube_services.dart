@@ -547,8 +547,19 @@ class YouTubeServices {
     Video video,
     // {bool preferM4a = true}
   ) async {
+    final List<AudioOnlyStreamInfo> sortedStreamInfo =
+        await getStreamInfo(video.id.toString());
+    return [
+      sortedStreamInfo.first.url.toString(),
+      sortedStreamInfo.last.url.toString(),
+    ];
+  }
+
+  Future<List<AudioOnlyStreamInfo>> getStreamInfo(
+    String videoId,
+  ) async {
     final StreamManifest manifest =
-        await yt.videos.streamsClient.getManifest(video.id);
+        await yt.videos.streamsClient.getManifest(VideoId(videoId));
     final List<AudioOnlyStreamInfo> sortedStreamInfo =
         manifest.audioOnly.sortByBitrate();
     if (Platform.isIOS || Platform.isMacOS) {
@@ -557,15 +568,16 @@ class YouTubeServices {
           .toList();
 
       if (m4aStreams.isNotEmpty) {
-        return [
-          m4aStreams.first.url.toString(),
-          m4aStreams.last.url.toString(),
-        ];
+        return m4aStreams;
       }
     }
-    return [
-      sortedStreamInfo.first.url.toString(),
-      sortedStreamInfo.last.url.toString(),
-    ];
+
+    return sortedStreamInfo;
+  }
+
+  Stream<List<int>> getStreamClient(
+    AudioOnlyStreamInfo streamInfo,
+  ) {
+    return yt.videos.streamsClient.get(streamInfo);
   }
 }

@@ -24,6 +24,7 @@ import 'package:audiotagger/models/tag.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/Helpers/lyrics.dart';
 import 'package:blackhole/Services/ext_storage_provider.dart';
+import 'package:blackhole/Services/youtube_services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_downloader/flutter_downloader.dart';
@@ -34,6 +35,7 @@ import 'package:logging/logging.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 class Download with ChangeNotifier {
   static final Map<String, Download> _instances = {};
@@ -388,22 +390,34 @@ class Download with ChangeNotifier {
       );
     }
 
-    Logger.root.info('Connecting to Client');
-    final client = Client();
-    final response = await client.send(Request('GET', Uri.parse(kUrl)));
-    final int total = response.contentLength ?? 0;
+    int total = 0;
     int recieved = 0;
+    Client? client;
+    Stream<List<int>> stream;
+    // Download from yt
+    if (data['url'].toString().contains('google')) {
+      final AudioOnlyStreamInfo streamInfo =
+          (await YouTubeServices().getStreamInfo(data['id'].toString())).last;
+      total = streamInfo.size.totalBytes;
+      // Get the actual stream
+      stream = YouTubeServices().getStreamClient(streamInfo);
+    } else {
+      Logger.root.info('Connecting to Client');
+      client = Client();
+      final response = await client.send(Request('GET', Uri.parse(kUrl)));
+      total = response.contentLength ?? 0;
+      stream = response.stream.asBroadcastStream();
+    }
     Logger.root.info('Client connected, Starting download');
-    response.stream.asBroadcastStream();
-    Logger.root.info('broadcasting download state');
-    response.stream.listen((value) {
+    stream.listen((value) {
       bytes.addAll(value);
       try {
         recieved += value.length;
         progress = recieved / total;
         notifyListeners();
-        if (!download) {
+        if (!download && client != null) {
           client.close();
+          // need to add for yt as well
         }
       } catch (e) {
         Logger.root.severe('Error in download: $e');
