@@ -441,7 +441,7 @@
   "@remove": {},
   "removed": "Odebráno",
   "@removed": {},
-  "restoreSub": "Obnovte vaše data ze zálohy.\nMožná budete muset restartovat aplikaci\n",
+  "restoreSub": "Obnovte vaše data ze zálohy.",
   "@restoreSub": {},
   "searchHome": "Hledat doma",
   "@searchHome": {},
@@ -718,5 +718,9 @@
   "useLessDataImage": "Používat méně dat pro obrázky",
   "@useLessDataImage": {},
   "useLessDataImageSub": "Tato možnost sníží kvalitu obrázků v aplikaci, ušetří ale vaše data",
-  "@useLessDataImageSub": {}
+  "@useLessDataImageSub": {},
+  "restart": "Možná budete muset restartovat aplikaci",
+  "@restart": {},
+  "restartRequired": "Je vyžadován restart aplikace",
+  "@restartRequired": {}
 }
