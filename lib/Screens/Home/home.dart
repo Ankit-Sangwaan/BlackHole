@@ -67,7 +67,10 @@ class _HomePageState extends State<HomePage> {
     defaultValue: ['Home', 'Top Charts', 'YouTube', 'Library'],
   ) as List;
   DateTime? backButtonPressTime;
-  final bool useDense = false;
+  final bool useDense = Hive.box('settings').get(
+    'useDenseMini',
+    defaultValue: false,
+  ) as bool;
 
   void callback() {
     sectionsToShow = Hive.box('settings').get(
@@ -263,7 +266,7 @@ class _HomePageState extends State<HomePage> {
                         text: AppLocalizations.of(context)!.appTitle,
                         style: const TextStyle(
                           fontSize: 30.0,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                         ),
                         children: <TextSpan>[
                           TextSpan(
@@ -557,7 +560,10 @@ class _HomePageState extends State<HomePage> {
                   context,
                   controller: _controller,
                   itemCount: sectionsToShow.length,
-                  navBarHeight: (rotated ? 55 : 55 + 70) + (useDense ? 0 : 15),
+                  navBarHeight: 60 +
+                      (rotated ? 0 : 70) +
+                      (useDense ? 0 : 10) +
+                      (rotated && useDense ? 10 : 0),
                   // confineInSafeArea: false,
                   onItemTapped: onItemTapped,
                   routeAndNavigatorSettings:

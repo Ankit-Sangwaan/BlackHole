@@ -17,6 +17,8 @@
  * Copyright (c) 2021-2023, Ankit Sangwan
  */
 
+import 'dart:async';
+
 import 'package:blackhole/CustomWidgets/bouncy_playlist_header_scroll_view.dart';
 import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
@@ -29,6 +31,7 @@ import 'package:blackhole/Services/yt_music.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:logging/logging.dart';
+import 'package:share_plus/share_plus.dart';
 
 class YouTubePlaylist extends StatefulWidget {
   final String playlistId;
@@ -61,6 +64,8 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
   String playlistSubtitle = '';
   String? playlistSecondarySubtitle;
   String playlistImage = '';
+
+  bool isSharePopupShown = false;
 
   @override
   void initState() {
@@ -155,6 +160,23 @@ class _YouTubePlaylistState extends State<YouTubePlaylist> {
                 secondarySubtitle: playlistSecondarySubtitle,
                 imageUrl: playlistImage,
                 actions: [
+                  IconButton(
+                    icon: const Icon(Icons.share_rounded),
+                    tooltip: AppLocalizations.of(context)!.share,
+                    onPressed: () {
+                      if (!isSharePopupShown) {
+                        isSharePopupShown = true;
+
+                        Share.share(
+                          'https://youtube.com/playlist?list=${widget.playlistId}',
+                        ).whenComplete(() {
+                          Timer(const Duration(milliseconds: 500), () {
+                            isSharePopupShown = false;
+                          });
+                        });
+                      }
+                    },
+                  ),
                   PlaylistPopupMenu(
                     data: searchedList,
                     title: playlistName,

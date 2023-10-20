@@ -266,10 +266,11 @@ class _BackupAndRestorePageState extends State<BackupAndRestorePage> {
                     .restore,
               ),
               subtitle: Text(
-                AppLocalizations.of(
+                '${AppLocalizations.of(
                   context,
-                )!
-                    .restoreSub,
+                )!.restoreSub}\n(${AppLocalizations.of(
+                  context,
+                )!.restart})',
               ),
               dense: true,
               onTap: () async {

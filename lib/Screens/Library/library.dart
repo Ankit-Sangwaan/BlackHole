@@ -133,9 +133,11 @@ class LibraryTile extends StatelessWidget {
     required this.icon,
     required this.title,
     required this.onTap,
+    this.subtitle,
   });
 
   final String title;
+  final String? subtitle;
   final IconData icon;
   final Function() onTap;
 
@@ -148,6 +150,14 @@ class LibraryTile extends StatelessWidget {
           color: Theme.of(context).iconTheme.color,
         ),
       ),
+      subtitle: subtitle != null
+          ? Text(
+              subtitle!,
+              style: TextStyle(
+                color: Theme.of(context).iconTheme.color,
+              ),
+            )
+          : null,
       leading: Icon(
         icon,
         color: Theme.of(context).iconTheme.color,

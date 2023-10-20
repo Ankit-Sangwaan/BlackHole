@@ -25,6 +25,7 @@ import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/Helpers/matcher.dart';
 import 'package:blackhole/Helpers/playlist.dart';
 import 'package:blackhole/Services/youtube_services.dart';
+import 'package:blackhole/Services/yt_music.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:http/http.dart';
@@ -38,18 +39,8 @@ class SearchAddPlaylist {
     try {
       final RegExpMatch? id = RegExp(r'.*list\=(.*?)&').firstMatch(link);
       if (id != null) {
-        final Playlist metadata =
-            await YouTubeServices().getPlaylistDetails(id[1]!);
-        final List<Video> tracks =
-            await YouTubeServices().getPlaylistSongs(id[1]!);
-        return {
-          'title': metadata.title,
-          'image': metadata.thumbnails.standardResUrl,
-          'author': metadata.author,
-          'description': metadata.description,
-          'tracks': tracks,
-          'count': tracks.length,
-        };
+        final Map metadata = await YtMusicService().getPlaylistDetails(id[1]!);
+        return metadata;
       }
       return {};
     } catch (e) {
@@ -168,6 +159,18 @@ class SearchAddPlaylist {
         );
         if (index != -1) {
           addMapToPlaylist(playName, result[index] as Map);
+        } else {
+          YouTubeServices()
+              .formatVideo(
+            video: track as Video,
+            getUrl: false,
+            quality: 'low',
+          )
+              .then((songMap) {
+            if (songMap != null) {
+              addMapToPlaylist(playName, songMap);
+            }
+          });
         }
       } catch (e) {
         Logger.root.severe('Error in $done: $e');

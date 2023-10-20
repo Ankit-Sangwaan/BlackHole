@@ -43,9 +43,9 @@ class _MiniPlayerState extends State<MiniPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    // final double screenWidth = MediaQuery.sizeOf(context).width;
-    // final double screenHeight = MediaQuery.sizeOf(context).height;
-    // final bool rotated = screenHeight < screenWidth;
+    final double screenWidth = MediaQuery.sizeOf(context).width;
+    final double screenHeight = MediaQuery.sizeOf(context).height;
+    final bool rotated = screenHeight < screenWidth;
     return SafeArea(
       top: false,
       child: StreamBuilder<MediaItem?>(
@@ -64,6 +64,12 @@ class _MiniPlayerState extends State<MiniPlayer> {
 
           final bool isLocal =
               mediaItem?.artUri?.toString().startsWith('file:') ?? false;
+
+          final bool useDense = Hive.box('settings').get(
+                'useDenseMini',
+                defaultValue: false,
+              ) as bool ||
+              rotated;
 
           return Dismissible(
             key: const Key('miniplayer'),
@@ -104,7 +110,7 @@ class _MiniPlayerState extends State<MiniPlayer> {
                         miniplayerTile(
                           context: context,
                           preferredMiniButtons: preferredMiniButtons,
-                          // useDense: true,
+                          useDense: useDense,
                           title: mediaItem?.title ?? '',
                           subtitle: mediaItem?.artist ?? '',
                           imagePath: (isLocal
