@@ -246,6 +246,11 @@ class _HomePageState extends State<HomePage> {
     final miniplayer = MiniPlayer();
     return GradientContainer(
       child: Scaffold(
+        appBar: AppBar(
+          toolbarHeight: 0,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+        ),
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
         drawer: Drawer(
