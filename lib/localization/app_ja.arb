@@ -223,7 +223,7 @@
   "@reset": {},
   "restore": "復元",
   "@restore": {},
-  "restoreSub": "バックアップからデータを復元\nアプリを再起動する必要があるかもしれません\n",
+  "restoreSub": "バックアップからデータを復元しました。",
   "@restoreSub": {},
   "resultsNotFound": "結果が見つかりませんでした",
   "@resultsNotFound": {},
@@ -706,5 +706,9 @@
   "useLessDataImageSub": "アプリ中の画像の品質を下げデータを節約",
   "@useLessDataImageSub": {},
   "useLessDataImage": "画像のデータ量を減らす",
-  "@useLessDataImage": {}
+  "@useLessDataImage": {},
+  "restart": "アプリを再起動する必要があるかもしれません",
+  "@restart": {},
+  "restartRequired": "アプリを再起動してください",
+  "@restartRequired": {}
 }
