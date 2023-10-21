@@ -603,7 +603,7 @@
   "@selectJsonImport": {},
   "stopOnCloseSub": "Si se desactiva, la música no se detendrá al cerrar la aplicación, hasta que presiones el botón de detener. La música se reproduce en segundo plano, esta configuración es para cuando se cierra la applicación.\n",
   "@stopOnCloseSub": {},
-  "restoreSub": "Restaura tus datos desde un Backup.\nPuede que necesites reiniciar la app\n",
+  "restoreSub": "Restaura tus datos desde la copia de seguridad.",
   "@restoreSub": {},
   "sleepAfter": "Dormir después de N canciones",
   "@sleepAfter": {},
@@ -714,5 +714,9 @@
   "useLessDataImage": "Usa menos datos para las imágenes",
   "@useLessDataImage": {},
   "useLessDataImageSub": "Esto reducirá la calidad de las imágenes en la aplicación, pero ahorrará datos",
-  "@useLessDataImageSub": {}
+  "@useLessDataImageSub": {},
+  "restart": "Puede que tengas que reiniciar la aplicación",
+  "@restart": {},
+  "restartRequired": "Tienes que reiniciar la aplicación",
+  "@restartRequired": {}
 }
