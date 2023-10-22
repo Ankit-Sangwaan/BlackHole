@@ -459,7 +459,7 @@
   "@reset": {},
   "restore": "Herstellen",
   "@restore": {},
-  "restoreSub": "Herstel je gegevens uit een reservekopie.\nHerstart nadien de app.\n",
+  "restoreSub": "Herstel je gegevens uit een reservekopie.",
   "@restoreSub": {},
   "resultsNotFound": "Er zijn geen zoekresultaten",
   "@resultsNotFound": {},
@@ -718,5 +718,9 @@
   "useLessDataImage": "Minder mb's gebruiken voor afbeeldingen",
   "@useLessDataImage": {},
   "useLessDataImageSub": "Hierdoor wordt de afbeeldingskwaliteit beperkt, maar bespaar je mb's",
-  "@useLessDataImageSub": {}
+  "@useLessDataImageSub": {},
+  "restart": "De app dient mogelijk te worden herstart",
+  "@restart": {},
+  "restartRequired": "Herstart de app",
+  "@restartRequired": {}
 }
