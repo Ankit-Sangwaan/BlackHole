@@ -571,7 +571,7 @@
   "@play": {},
   "playNext": "अगला चलाएं",
   "@playNext": {},
-  "restoreSub": "बैकअप से अपना डेटा पुनर्स्थापित करें। \nआपको ऐप को पुनरारंभ करने की आवश्यकता हो सकती है\n",
+  "restoreSub": "बैकअप से अपना डेटा पुनर्स्थापित करें।",
   "@restoreSub": {},
   "prefReq": "हमें कुछ बताने का कष्ट करेंगे?",
   "@prefReq": {},
@@ -714,5 +714,9 @@
   "useLessDataImage": "छवियों के लिए कम डेटा का उपयोग करें",
   "@useLessDataImage": {},
   "useLessDataImageSub": "इससे ऐप में छवियों की गुणवत्ता कम हो जाएगी, लेकिन आपका डेटा बच जाएगा",
-  "@useLessDataImageSub": {}
+  "@useLessDataImageSub": {},
+  "restart": "आपको ऐप पुनः आरंभ करने की आवश्यकता हो सकती है",
+  "@restart": {},
+  "restartRequired": "आपको ऐप पुनः आरंभ करना होगा",
+  "@restartRequired": {}
 }
