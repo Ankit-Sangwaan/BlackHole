@@ -407,7 +407,7 @@
   "@reset": {},
   "restore": "Restaurer",
   "@restore": {},
-  "restoreSub": "Restaurer vos données depuis une sauvegarde.\nVous devrez probablement relancer l'application\n",
+  "restoreSub": "Restaurer vos données depuis une sauvegarde.",
   "@restoreSub": {},
   "resultsNotFound": "Aucun résultat trouvé",
   "@resultsNotFound": {},
@@ -720,5 +720,9 @@
   "useLessDataImage": "Utiliser moins de données pour les images",
   "@useLessDataImage": {},
   "useLessDataImageSub": "Ceci réduira la qualité des images dans l’appli mais économisera vos données",
-  "@useLessDataImageSub": {}
+  "@useLessDataImageSub": {},
+  "restart": "Il se peut que vous deviez redémarrer l'application",
+  "@restart": {},
+  "restartRequired": "Vous devez redémarrer l'application",
+  "@restartRequired": {}
 }
