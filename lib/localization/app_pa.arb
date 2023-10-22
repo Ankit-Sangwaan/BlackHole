@@ -559,7 +559,7 @@
   "@ytStreamQualitySub": {},
   "popularity": "ਲੋਕਪ੍ਰਿਅਤਾ",
   "@popularity": {},
-  "restoreSub": "ਬੈਕਅੱਪ ਤੋਂ ਆਪਣਾ ਡਾਟਾ ਰੀਸਟੋਰ ਕਰੋ।\nਤੁਹਾਨੂੰ ਐਪ ਨੂੰ ਰੀਸਟਾਰਟ ਕਰਨ ਦੀ ਲੋੜ ਹੋ ਸਕਦੀ ਹੈ\n",
+  "restoreSub": "ਬੈਕਅੱਪ ਤੋਂ ਆਪਣਾ ਡਾਟਾ ਰੀਸਟੋਰ ਕਰੋ।",
   "@restoreSub": {},
   "searchVideo": "ਵੀਡੀਓ ਖੋਜੋ",
   "@searchVideo": {},
@@ -706,5 +706,9 @@
   "useLessDataImage": "ਤਸਵੀਰਾਂ ਲਈ ਘੱਟ ਡਾਟਾ ਦੀ ਵਰਤੋਂ ਕਰੋ",
   "@useLessDataImage": {},
   "useLessDataImageSub": "ਇਹ ਐਪ ਵਿੱਚ ਤਸਵੀਰਾਂ ਦੀ ਗੁਣਵੱਤਾ ਨੂੰ ਘਟਾ ਦੇਵੇਗਾ, ਪਰ ਤੁਹਾਡੇ ਡਾਟਾ ਨੂੰ ਬਚਾਏਗਾ",
-  "@useLessDataImageSub": {}
+  "@useLessDataImageSub": {},
+  "restart": "ਤੁਹਾਨੂੰ ਐਪ ਨੂੰ ਰੀਸਟਾਰਟ ਕਰਨ ਦੀ ਲੋੜ ਹੋ ਸਕਦੀ ਹੈ",
+  "@restart": {},
+  "restartRequired": "ਤੁਹਾਨੂੰ ਐਪ ਨੂੰ ਰੀਸਟਾਰਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ",
+  "@restartRequired": {}
 }
