@@ -599,7 +599,7 @@
   "@themeDeleted": {},
   "tgCh": "ערוץ בטלגרם",
   "@tgCh": {},
-  "restoreSub": "שחזור הנתונים שלך מגיבוי.\nיתכן שיהיה עליך להפעיל את היישומון מחדש\n",
+  "restoreSub": "שחזור הנתונים שלך מגיבוי.",
   "@restoreSub": {},
   "spotifyPublic": "Spotify ציבורי",
   "@spotifyPublic": {},
@@ -706,5 +706,9 @@
   "useLessDataImage": "להשתמש בפחות תעבורה לתמונות",
   "@useLessDataImage": {},
   "useLessDataImageSub": "הגדרה זו תצמצם את איכות התמונות ביישומון כדי לחסוך בתעבורה",
-  "@useLessDataImageSub": {}
+  "@useLessDataImageSub": {},
+  "restart": "ייתכן שצריך להפעיל את היישומון מחדש",
+  "@restart": {},
+  "restartRequired": "צריך להפעיל את היישומון מחדש",
+  "@restartRequired": {}
 }
