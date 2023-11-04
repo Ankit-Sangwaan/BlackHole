@@ -247,6 +247,9 @@ class SaavnAPI {
       if (res.statusCode == 200) {
         final Map getMain = json.decode(res.body) as Map;
         final List responseList = [];
+        if (getMain['error'] != null && getMain['error'] != '') {
+          return [];
+        }
         for (int i = 0; i < count; i++) {
           responseList.add(getMain[i.toString()]['song']);
         }

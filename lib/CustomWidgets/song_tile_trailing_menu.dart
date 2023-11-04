@@ -21,6 +21,7 @@ import 'package:audio_service/audio_service.dart';
 import 'package:blackhole/CustomWidgets/add_playlist.dart';
 import 'package:blackhole/Helpers/add_mediaitem_to_queue.dart';
 import 'package:blackhole/Helpers/mediaitem_converter.dart';
+import 'package:blackhole/Helpers/radio.dart';
 import 'package:blackhole/Screens/Common/song_list.dart';
 import 'package:blackhole/Screens/Search/albums.dart';
 import 'package:blackhole/Screens/Search/search.dart';
@@ -156,6 +157,19 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
                 ),
               ),
         PopupMenuItem(
+          value: 7,
+          child: Row(
+            children: [
+              Icon(
+                Icons.podcasts_rounded,
+                color: Theme.of(context).iconTheme.color,
+              ),
+              const SizedBox(width: 10.0),
+              Text(AppLocalizations.of(context)!.playRadio),
+            ],
+          ),
+        ),
+        PopupMenuItem(
           value: 3,
           child: Row(
             children: [
@@ -193,6 +207,9 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
             break;
           case 6:
             widget.deleteLiked!(widget.data);
+            break;
+          case 7:
+            createRadioItems(stationNames: [mediaItem.title]);
             break;
           case 0:
             AddToPlaylist().addToPlaylist(context, mediaItem);

@@ -236,9 +236,7 @@ class HorizontalAlbumsList extends StatelessWidget {
                                         names: [
                                           item['title']?.toString() ?? '',
                                         ],
-                                        language:
-                                            item['language']?.toString() ??
-                                                'hindi',
+                                        language: item['language']?.toString(),
                                         stationType: 'artist',
                                       ).then((value) {
                                         if (value != null) {
