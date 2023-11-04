@@ -194,8 +194,13 @@ class DataSearch extends SearchDelegate {
 class DownloadsSearch extends SearchDelegate {
   final bool isDowns;
   final List data;
+  final Function(Map)? onDelete;
 
-  DownloadsSearch({required this.data, this.isDowns = false});
+  DownloadsSearch({
+    required this.data,
+    this.isDowns = false,
+    this.onDelete,
+  });
 
   @override
   List<Widget> buildActions(BuildContext context) {
@@ -283,6 +288,7 @@ class DownloadsSearch extends SearchDelegate {
                   SongTileTrailingMenu(
                     data: suggestionList[index] as Map,
                     isPlaylist: true,
+                    deleteLiked: onDelete,
                   ),
                 ],
               ),
@@ -368,6 +374,7 @@ class DownloadsSearch extends SearchDelegate {
       ),
       inputDecorationTheme:
           const InputDecorationTheme(focusedBorder: InputBorder.none),
+      scaffoldBackgroundColor: Colors.transparent,
     );
   }
 }

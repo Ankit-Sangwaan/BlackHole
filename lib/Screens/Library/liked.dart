@@ -410,7 +410,13 @@ class _LikedSongsState extends State<LikedSongs>
                       onPressed: () {
                         showSearch(
                           context: context,
-                          delegate: DownloadsSearch(data: _songs),
+                          delegate: DownloadsSearch(
+                            data: _songs,
+                            onDelete: (Map item) {
+                              deleteLiked(item);
+                              Navigator.of(context).pop();
+                            },
+                          ),
                         );
                       },
                     ),
