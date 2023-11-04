@@ -82,6 +82,7 @@ class _ArtistSearchPageState extends State<ArtistSearchPage> {
     }
     return GradientContainer(
       child: Scaffold(
+        extendBodyBehindAppBar: true,
         backgroundColor: Colors.transparent,
         body: !fetched
             ? const Center(

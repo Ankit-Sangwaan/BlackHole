@@ -209,7 +209,7 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
             widget.deleteLiked!(widget.data);
             break;
           case 7:
-            createRadioItems(stationNames: [mediaItem.title]);
+            createRadioItems(stationNames: [mediaItem.id]);
             break;
           case 0:
             AddToPlaylist().addToPlaylist(context, mediaItem);

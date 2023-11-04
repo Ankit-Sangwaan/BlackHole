@@ -19,12 +19,15 @@
 
 import 'package:blackhole/APIs/api.dart';
 import 'package:blackhole/Services/player_service.dart';
+import 'package:logging/logging.dart';
 
 Future<void> createRadioItems({
   required List<String> stationNames,
   String stationType = 'entity',
   int count = 20,
 }) async {
+  Logger.root
+      .info('Creating Radio Station of type $stationType with $stationNames');
   String stationId = '';
   final String? value = await SaavnAPI()
       .createRadio(names: stationNames, stationType: stationType);
