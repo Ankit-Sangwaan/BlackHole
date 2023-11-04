@@ -255,6 +255,8 @@ class _SearchBarState extends State<SearchBar> {
                                           suggestedList[index].toString(),
                                         );
                                         hide.value = true;
+                                        FocusManager.instance.primaryFocus
+                                            ?.unfocus();
                                         List searchQueries =
                                             Hive.box('settings').get(
                                           'search',

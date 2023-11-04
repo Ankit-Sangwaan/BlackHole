@@ -107,10 +107,10 @@ class DataSearch extends SearchDelegate {
               : suggestionList[index].artist!,
           overflow: TextOverflow.ellipsis,
         ),
-        onTap: () async {
+        onTap: () {
           PlayerInvoke.init(
-            songsList: suggestionList,
-            index: index,
+            songsList: data,
+            index: data.indexOf(suggestionList[index]),
             isOffline: true,
             recommend: false,
           );
@@ -160,10 +160,10 @@ class DataSearch extends SearchDelegate {
               : suggestionList[index].artist!,
           overflow: TextOverflow.ellipsis,
         ),
-        onTap: () async {
+        onTap: () {
           PlayerInvoke.init(
-            songsList: suggestionList,
-            index: index,
+            songsList: data,
+            index: data.indexOf(suggestionList[index]),
             isOffline: true,
             recommend: false,
           );
@@ -294,8 +294,8 @@ class DownloadsSearch extends SearchDelegate {
               ),
         onTap: () {
           PlayerInvoke.init(
-            songsList: suggestionList,
-            index: index,
+            songsList: data,
+            index: data.indexOf(suggestionList[index]),
             isOffline: isDowns,
             fromDownloads: isDowns,
             recommend: false,
@@ -348,8 +348,8 @@ class DownloadsSearch extends SearchDelegate {
         ),
         onTap: () {
           PlayerInvoke.init(
-            songsList: suggestionList,
-            index: index,
+            songsList: data,
+            index: data.indexOf(suggestionList[index]),
             isOffline: isDowns,
             fromDownloads: isDowns,
             recommend: false,
