@@ -289,8 +289,8 @@ class SearchAddPlaylist {
                             ),
                           ),
                           SizedBox(
-                            height: 80,
-                            width: 80,
+                            height: 90,
+                            width: 90,
                             child: Stack(
                               children: [
                                 Center(
@@ -298,8 +298,8 @@ class SearchAddPlaylist {
                                 ),
                                 Center(
                                   child: SizedBox(
-                                    height: 77,
-                                    width: 77,
+                                    height: 85,
+                                    width: 85,
                                     child: CircularProgressIndicator(
                                       valueColor: AlwaysStoppedAnimation<Color>(
                                         Theme.of(ctxt).colorScheme.secondary,
@@ -313,7 +313,9 @@ class SearchAddPlaylist {
                           ),
                           Center(
                             child: Text(
-                              name,
+                              '$name\n',
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
                             ),
                           ),

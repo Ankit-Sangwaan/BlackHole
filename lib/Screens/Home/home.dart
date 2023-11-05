@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
   String name =
       Hive.box('settings').get('name', defaultValue: 'Guest') as String;
   bool checkUpdate =
-      Hive.box('settings').get('checkUpdate', defaultValue: false) as bool;
+      Hive.box('settings').get('checkUpdate', defaultValue: true) as bool;
   bool autoBackup =
       Hive.box('settings').get('autoBackup', defaultValue: false) as bool;
   List sectionsToShow = Hive.box('settings').get(

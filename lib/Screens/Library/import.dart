@@ -138,7 +138,7 @@ class ImportPlaylist extends StatelessWidget {
                     'jiosaavn',
                     'resso',
                   ][index],
-                  context: cntxt,
+                  context: context,
                 );
               },
             );
@@ -324,7 +324,9 @@ Future<void> importSpotify(
     accessToken,
     playlistId,
   );
-  if (data.isNotEmpty) {
+  if (data.isNotEmpty &&
+      data['tracks'] != null &&
+      (data['tracks'] as List).isNotEmpty) {
     String playName = data['title'].toString();
     while (playlistNames.contains(playName) || await Hive.boxExists(playName)) {
       // ignore: use_string_buffers

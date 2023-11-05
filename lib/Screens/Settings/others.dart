@@ -471,7 +471,7 @@ class _OthersPageState extends State<OthersPage> {
               ),
               keyName: 'checkUpdate',
               isThreeLine: true,
-              defaultValue: false,
+              defaultValue: true,
             ),
             BoxSwitchTile(
               title: Text(

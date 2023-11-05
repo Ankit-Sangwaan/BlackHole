@@ -153,6 +153,9 @@ class SpotifyApi {
       playlistId,
       0,
     );
+    if (data['tracks'] == null) {
+      return [];
+    }
     totalTracks = data['total'] as int;
     tracks.addAll(data['tracks'] as List);
 
@@ -163,7 +166,9 @@ class SpotifyApi {
           playlistId,
           i * 100,
         );
-        tracks.addAll(data['tracks'] as List);
+        if (data['tracks'] != null) {
+          tracks.addAll(data['tracks'] as List);
+        }
       }
     }
     return tracks;
@@ -196,11 +201,15 @@ class SpotifyApi {
           'Error in getHundredTracksOfPlaylist, called: $path, returned: ${response.statusCode}',
           response.body,
         );
+        final jsonRes = jsonDecode(response.body);
+        final errorMsg =
+            jsonRes['error']['message'] ??= 'Error in getting tracks';
+        return {'error': errorMsg};
       }
     } catch (e) {
       Logger.root.severe('Error in getting spotify playlist tracks: $e');
+      return {'error': e.toString()};
     }
-    return {};
   }
 
   Future<Map> searchTrack({

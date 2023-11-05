@@ -50,7 +50,7 @@ import 'package:flutter_lyric/lyrics_model_builder.dart';
 import 'package:flutter_lyric/lyrics_reader_model.dart';
 import 'package:flutter_lyric/lyrics_reader_widget.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:logging/logging.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:rxdart/rxdart.dart';
@@ -751,10 +751,22 @@ class ControlButtons extends StatelessWidget {
           case 'Like':
             return !online
                 ? const SizedBox()
-                : LikeButton(
-                    mediaItem: mediaItem,
-                    size: 22.0,
-                  );
+                : miniplayer
+                    ? ValueListenableBuilder(
+                        valueListenable:
+                            Hive.box('Favorite Songs').listenable(),
+                        builder:
+                            (BuildContext context, Box box, Widget? widget) {
+                          return LikeButton(
+                            mediaItem: mediaItem,
+                            size: 22.0,
+                          );
+                        },
+                      )
+                    : LikeButton(
+                        mediaItem: mediaItem,
+                        size: 22.0,
+                      );
           case 'Previous':
             return StreamBuilder<QueueState>(
               stream: audioHandler.queueState,
@@ -1794,7 +1806,7 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                                 ),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                      MainAxisAlignment.spaceAround,
                                   children: [
                                     Visibility(
                                       visible: value == -1,
