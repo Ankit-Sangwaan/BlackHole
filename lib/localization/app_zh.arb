@@ -720,5 +720,9 @@
   "navTabs": "导航栏选项卡",
   "@navTabs": {},
   "navTabsSub": "显示在底部导航栏的选项卡",
-  "@navTabsSub": {}
+  "@navTabsSub": {},
+  "restart": "你可能需要重启应用",
+  "@restart": {},
+  "restartRequired": "你需要重启应用",
+  "@restartRequired": {}
 }
