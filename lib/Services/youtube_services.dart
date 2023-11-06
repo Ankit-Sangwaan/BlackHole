@@ -549,20 +549,19 @@ class YouTubeServices {
   ) async {
     final List<AudioOnlyStreamInfo> sortedStreamInfo =
         await getStreamInfo(video.id.toString());
-    return [
-      sortedStreamInfo.first.url.toString(),
-      sortedStreamInfo.last.url.toString(),
-    ];
+    return sortedStreamInfo.map((e) => e.url.toString()).toList();
   }
 
   Future<List<AudioOnlyStreamInfo>> getStreamInfo(
-    String videoId,
-  ) async {
+    String videoId, {
+    bool onlyMp4 = false,
+  }) async {
     final StreamManifest manifest =
         await yt.videos.streamsClient.getManifest(VideoId(videoId));
-    final List<AudioOnlyStreamInfo> sortedStreamInfo =
-        manifest.audioOnly.sortByBitrate();
-    if (Platform.isIOS || Platform.isMacOS) {
+    final List<AudioOnlyStreamInfo> sortedStreamInfo = manifest.audioOnly
+        .toList()
+      ..sort((a, b) => a.bitrate.compareTo(b.bitrate));
+    if (onlyMp4 || Platform.isIOS || Platform.isMacOS) {
       final List<AudioOnlyStreamInfo> m4aStreams = sortedStreamInfo
           .where((element) => element.audioCodec.contains('mp4'))
           .toList();
