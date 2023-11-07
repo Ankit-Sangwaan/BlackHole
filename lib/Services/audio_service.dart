@@ -673,13 +673,19 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     }
   }
 
-  Future<void> skipToMediaItem(String id) async {
-    final index = queue.value.indexWhere((item) => item.id == id);
-    _player!.seek(
-      Duration.zero,
-      index:
-          _player!.shuffleModeEnabled ? _player!.shuffleIndices![index] : index,
-    );
+  Future<void> skipToMediaItem(String? id, int? idx) async {
+    if (idx == null && id == null) return;
+    final index = idx ?? queue.value.indexWhere((item) => item.id == id);
+    if (index != -1) {
+      _player!.seek(
+        Duration.zero,
+        index: _player!.shuffleModeEnabled
+            ? _player!.shuffleIndices![index]
+            : index,
+      );
+    } else {
+      Logger.root.severe('skipToMediaItem: MediaItem not found');
+    }
   }
 
   @override
@@ -889,7 +895,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     }
 
     if (name == 'skipToMediaItem') {
-      skipToMediaItem(extras!['id'].toString());
+      skipToMediaItem(extras!['id'] as String?, extras['index'] as int?);
     }
     return super.customAction(name, extras);
   }

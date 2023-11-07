@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:blackhole/CustomWidgets/copy_clipboard.dart';
 import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/snackbar.dart';
@@ -103,18 +105,6 @@ class _AboutPageState extends State<AboutPage> {
                                 latestVersion,
                                 appVersion!,
                               )) {
-                                List? abis = await Hive.box('settings')
-                                    .get('supportedAbis') as List?;
-
-                                if (abis == null) {
-                                  final DeviceInfoPlugin deviceInfo =
-                                      DeviceInfoPlugin();
-                                  final AndroidDeviceInfo androidDeviceInfo =
-                                      await deviceInfo.androidInfo;
-                                  abis = androidDeviceInfo.supportedAbis;
-                                  await Hive.box('settings')
-                                      .put('supportedAbis', abis);
-                                }
                                 ShowSnackBar().showSnackBar(
                                   context,
                                   AppLocalizations.of(context)!.updateAvailable,
@@ -123,11 +113,33 @@ class _AboutPageState extends State<AboutPage> {
                                     textColor:
                                         Theme.of(context).colorScheme.secondary,
                                     label: AppLocalizations.of(context)!.update,
-                                    onPressed: () {
+                                    onPressed: () async {
+                                      String arch = '';
+                                      if (Platform.isAndroid) {
+                                        List? abis = await Hive.box('settings')
+                                            .get('supportedAbis') as List?;
+
+                                        if (abis == null) {
+                                          final DeviceInfoPlugin deviceInfo =
+                                              DeviceInfoPlugin();
+                                          final AndroidDeviceInfo
+                                              androidDeviceInfo =
+                                              await deviceInfo.androidInfo;
+                                          abis =
+                                              androidDeviceInfo.supportedAbis;
+                                          await Hive.box('settings')
+                                              .put('supportedAbis', abis);
+                                        }
+                                        if (abis.contains('arm64')) {
+                                          arch = 'arm64';
+                                        } else if (abis.contains('armeabi')) {
+                                          arch = 'armeabi';
+                                        }
+                                      }
                                       Navigator.pop(context);
                                       launchUrl(
                                         Uri.parse(
-                                          'https://sangwan5688.github.io/download/',
+                                          'https://sangwan5688.github.io/download?platform=${Platform.operatingSystem}&arch=$arch',
                                         ),
                                         mode: LaunchMode.externalApplication,
                                       );

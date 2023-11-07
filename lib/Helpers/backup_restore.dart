@@ -29,7 +29,7 @@ import 'package:logging/logging.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-Future<void> createBackup(
+Future<String> createBackup(
   BuildContext context,
   List items,
   Map<String, List> boxNameData, {
@@ -104,18 +104,21 @@ Future<void> createBackup(
           AppLocalizations.of(context)!.backupSuccess,
         );
       }
+      return '';
     } catch (e) {
       Logger.root.severe('Error in creating backup', e);
       ShowSnackBar().showSnackBar(
         context,
         '${AppLocalizations.of(context)!.failedCreateBackup}\nError: $e',
       );
+      return e.toString();
     }
   } else {
     ShowSnackBar().showSnackBar(
       context,
       AppLocalizations.of(context)!.noFolderSelected,
     );
+    return 'No Folder Selected';
   }
 }
 

@@ -39,6 +39,7 @@ import 'package:blackhole/Screens/Settings/new_settings_page.dart';
 import 'package:blackhole/Screens/Top Charts/top.dart';
 import 'package:blackhole/Screens/YouTube/youtube_home.dart';
 import 'package:blackhole/Services/ext_storage_provider.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -119,17 +120,6 @@ class _HomePageState extends State<HomePage> {
             version,
             appVersion!,
           )) {
-            // List? abis =
-            //     await Hive.box('settings').get('supportedAbis') as List?;
-
-            // if (abis == null) {
-            //   final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-            //   final AndroidDeviceInfo androidDeviceInfo =
-            //       await deviceInfo.androidInfo;
-            //   abis = androidDeviceInfo.supportedAbis;
-            //   await Hive.box('settings').put('supportedAbis', abis);
-            // }
-
             Logger.root.info('Update available');
             ShowSnackBar().showSnackBar(
               context,
@@ -138,10 +128,30 @@ class _HomePageState extends State<HomePage> {
               action: SnackBarAction(
                 textColor: Theme.of(context).colorScheme.secondary,
                 label: AppLocalizations.of(context)!.update,
-                onPressed: () {
+                onPressed: () async {
+                  String arch = '';
+                  if (Platform.isAndroid) {
+                    List? abis = await Hive.box('settings').get('supportedAbis')
+                        as List?;
+
+                    if (abis == null) {
+                      final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                      final AndroidDeviceInfo androidDeviceInfo =
+                          await deviceInfo.androidInfo;
+                      abis = androidDeviceInfo.supportedAbis;
+                      await Hive.box('settings').put('supportedAbis', abis);
+                    }
+                    if (abis.contains('arm64')) {
+                      arch = 'arm64';
+                    } else if (abis.contains('armeabi')) {
+                      arch = 'armeabi';
+                    }
+                  }
                   Navigator.pop(context);
                   launchUrl(
-                    Uri.parse('https://sangwan5688.github.io/download/'),
+                    Uri.parse(
+                      'https://sangwan5688.github.io/download?platform=${Platform.operatingSystem}&arch=$arch',
+                    ),
                     mode: LaunchMode.externalApplication,
                   );
                 },
@@ -216,6 +226,27 @@ class _HomePageState extends State<HomePage> {
             path: autoBackPath,
             fileName: 'BlackHole_AutoBackup',
             showDialog: false,
+          ).then(
+            (value) => {
+              if (value.contains('No such file or directory'))
+                {
+                  ExtStorageProvider.getExtStorage(
+                    dirName: 'BlackHole/Backups',
+                    writeAccess: true,
+                  ).then(
+                    (value) {
+                      Hive.box('settings').put('autoBackPath', value);
+                      createBackup(
+                        context,
+                        checked,
+                        boxNames,
+                        path: value,
+                        fileName: 'BlackHole_AutoBackup',
+                      );
+                    },
+                  ),
+                },
+            },
           );
         }
       }
