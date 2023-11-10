@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:isolate';
 
 import 'package:blackhole/Screens/Player/audioplayer.dart';
@@ -36,7 +37,13 @@ Future<void> _backgroundProcess(SendPort sendPort) async {
 
   await for (final message in isolateReceivePort) {
     if (!hiveInit) {
-      Hive.init(message.toString());
+      String path = message.toString();
+      if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+        path += '/BlackHole/Database';
+      } else if (Platform.isIOS) {
+        path += '/Database';
+      }
+      Hive.init(path);
       await Hive.openBox('ytlinkcache');
       await Hive.openBox('settings');
       hiveInit = true;
