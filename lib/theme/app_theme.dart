@@ -31,6 +31,7 @@ class AppTheme {
     required BuildContext context,
   }) {
     return ThemeData(
+      useMaterial3: false,
       textSelectionTheme: TextSelectionThemeData(
         selectionHandleColor: currentTheme.currentColor(),
         cursorColor: currentTheme.currentColor(),
@@ -82,6 +83,7 @@ class AppTheme {
     required BuildContext context,
   }) {
     return ThemeData(
+      useMaterial3: false,
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: Colors.white,
