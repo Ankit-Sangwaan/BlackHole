@@ -370,17 +370,7 @@ class Download with ChangeNotifier {
     }
     String kUrl = data['url'].toString();
 
-    if (data['url'].toString().contains('google')) {
-      Logger.root.info('Fetching youtube download url with preferred quality');
-      // filename = filename.replaceAll('.m4a', '.opus');
-
-      kUrl = preferredYtDownloadQuality == 'High'
-          ? data['highUrl'].toString()
-          : data['lowUrl'].toString();
-      if (kUrl == 'null') {
-        kUrl = data['url'].toString();
-      }
-    } else {
+    if (!data['url'].toString().contains('google')) {
       Logger.root.info('Fetching jiosaavn download url with preferred quality');
       kUrl = kUrl.replaceAll(
         '_96.',
@@ -394,11 +384,13 @@ class Download with ChangeNotifier {
     Stream<List<int>> stream;
     // Download from yt
     if (data['url'].toString().contains('google')) {
+      // Use preferredYtDownloadQuality to check for quality first
       final AudioOnlyStreamInfo streamInfo =
-          (await YouTubeServices().getStreamInfo(data['id'].toString())).last;
+          (await YouTubeServices.instance.getStreamInfo(data['id'].toString()))
+              .last;
       total = streamInfo.size.totalBytes;
       // Get the actual stream
-      stream = YouTubeServices().getStreamClient(streamInfo);
+      stream = YouTubeServices.instance.getStreamClient(streamInfo);
     } else {
       Logger.root.info('Connecting to Client');
       client = Client();

@@ -121,7 +121,7 @@ class _SearchPageState extends State<SearchPage> {
         });
       case 'yt':
         Logger.root.info('calling youtube search');
-        YouTubeServices()
+        YouTubeServices.instance
             .fetchSearchResults(query == '' ? widget.query : query)
             .then((value) {
           setState(() {
@@ -495,19 +495,18 @@ class _SearchPageState extends State<SearchPage> {
                                                                             ) =>
                                                                                 SongsListViewPage(
                                                                               onTap: (index, listItems) async {
-                                                                                final Map? response = await YouTubeServices().formatVideoFromId(
-                                                                                  id: items[index]['id'].toString(),
-                                                                                  data: items[index] as Map,
-                                                                                );
-
-                                                                                final Map response2 = await YtMusicService().getSongData(
+                                                                                final Map response = await YtMusicService().getSongData(
                                                                                   videoId: items[index]['id'].toString(),
+                                                                                  data: items[index] as Map,
+                                                                                  quality: Hive.box('settings')
+                                                                                      .get(
+                                                                                        'ytQuality',
+                                                                                        defaultValue: 'Low',
+                                                                                      )
+                                                                                      .toString(),
                                                                                 );
-                                                                                if (response != null && response2['image'] != null) {
-                                                                                  response['image'] = response2['image'] ?? response['image'];
-                                                                                }
 
-                                                                                if (response != null) {
+                                                                                if (response.isNotEmpty) {
                                                                                   PlayerInvoke.init(
                                                                                     songsList: [
                                                                                       response,
@@ -515,8 +514,7 @@ class _SearchPageState extends State<SearchPage> {
                                                                                     index: 0,
                                                                                     isOffline: false,
                                                                                   );
-                                                                                }
-                                                                                if (response == null) {
+                                                                                } else {
                                                                                   ShowSnackBar().showSnackBar(
                                                                                     context,
                                                                                     AppLocalizations.of(
@@ -780,40 +778,29 @@ class _SearchPageState extends State<SearchPage> {
                                                                     'song' ||
                                                                 itemType ==
                                                                     'video') {
-                                                              final Map?
-                                                                  response =
-                                                                  await YouTubeServices()
+                                                              final Map? response = (itemType ==
+                                                                      'video')
+                                                                  ? await YouTubeServices
+                                                                      .instance
                                                                       .formatVideoFromId(
-                                                                id: items[index]
-                                                                        ['id']
-                                                                    .toString(),
-                                                                data:
-                                                                    items[index]
-                                                                        as Map,
-                                                              );
-                                                              if (itemType ==
-                                                                  'song') {
-                                                                final Map
-                                                                    response2 =
-                                                                    await YtMusicService()
-                                                                        .getSongData(
-                                                                  videoId: items[
+                                                                      id: items[index]
+                                                                              [
+                                                                              'id']
+                                                                          .toString(),
+                                                                      data: items[
                                                                               index]
-                                                                          ['id']
-                                                                      .toString(),
-                                                                );
-                                                                if (response !=
-                                                                        null &&
-                                                                    response2[
-                                                                            'image'] !=
-                                                                        null) {
-                                                                  response[
-                                                                      'image'] = response2[
-                                                                          'image'] ??
-                                                                      response[
-                                                                          'image'];
-                                                                }
-                                                              }
+                                                                          as Map,
+                                                                    )
+                                                                  : await YtMusicService()
+                                                                      .getSongData(
+                                                                      videoId: items[index]
+                                                                              [
+                                                                              'id']
+                                                                          .toString(),
+                                                                      data: items[
+                                                                              index]
+                                                                          as Map,
+                                                                    );
 
                                                               if (response !=
                                                                   null) {
@@ -826,9 +813,7 @@ class _SearchPageState extends State<SearchPage> {
                                                                   isOffline:
                                                                       false,
                                                                 );
-                                                              }
-                                                              if (response ==
-                                                                  null) {
+                                                              } else {
                                                                 ShowSnackBar()
                                                                     .showSnackBar(
                                                                   context,
@@ -904,7 +889,7 @@ class _SearchPageState extends State<SearchPage> {
               );
             },
             onQueryChanged: (changedQuery) {
-              return YouTubeServices()
+              return YouTubeServices.instance
                   .getSearchSuggestions(query: changedQuery);
             },
           ),

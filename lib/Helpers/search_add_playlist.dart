@@ -160,7 +160,7 @@ class SearchAddPlaylist {
         if (index != -1) {
           addMapToPlaylist(playName, result[index] as Map);
         } else {
-          YouTubeServices()
+          YouTubeServices.instance
               .formatVideo(
             video: track as Video,
             getUrl: false,

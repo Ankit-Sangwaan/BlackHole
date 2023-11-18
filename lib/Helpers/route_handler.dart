@@ -182,7 +182,9 @@ class YtUrlHandler extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (type == 'v') {
-      YouTubeServices().formatVideoFromId(id: id).then((Map? response) async {
+      YouTubeServices.instance
+          .formatVideoFromId(id: id)
+          .then((Map? response) async {
         if (response != null) {
           PlayerInvoke.init(
             songsList: [response],

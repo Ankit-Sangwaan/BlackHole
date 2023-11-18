@@ -233,7 +233,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
                 } else {
                   final res = await YtMusicService().getWatchPlaylist(
                     videoId: item.id,
-                    // limit: 15,
+                    limit: 15,
                   );
                   Logger.root.info('Recieved recommendations: $res');
                   refreshLinks.addAll(res);
@@ -449,35 +449,53 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
               //   'player | youtube link expired for ${mediaItem.title}, searching cache',
               // );
               if (Hive.box('ytlinkcache').containsKey(mediaItem.id)) {
-                final Map cachedData =
-                    Hive.box('ytlinkcache').get(mediaItem.id) as Map;
-                final int cachedExpiredAt =
-                    int.parse(cachedData['expire_at'].toString());
-                if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
-                    cachedExpiredAt) {
+                final cachedData = Hive.box('ytlinkcache').get(mediaItem.id);
+                if (cachedData is List) {
+                  int minExpiredAt = 0;
+                  for (final e in cachedData) {
+                    final int cachedExpiredAt =
+                        int.parse(e['expireAt'].toString());
+                    if (minExpiredAt == 0 || cachedExpiredAt < minExpiredAt) {
+                      minExpiredAt = cachedExpiredAt;
+                    }
+                  }
+
+                  if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
+                      minExpiredAt) {
+                    Logger.root.info(
+                      'youtube link expired for ${mediaItem.title}, refreshing',
+                    );
+                    refreshLinks.add(mediaItem.id);
+                    if (!jobRunning) {
+                      refreshJob();
+                    }
+                  } else {
+                    Logger.root.info(
+                      'youtube link found in cache for ${mediaItem.title}',
+                    );
+                    if (cacheSong) {
+                      // Change this to handle yt quality
+                      audioSource = LockCachingAudioSource(
+                        Uri.parse(cachedData.last['url'].toString()),
+                      );
+                    } else {
+                      // Change this to handle yt quality
+                      audioSource = AudioSource.uri(
+                        Uri.parse(cachedData.last['url'].toString()),
+                      );
+                    }
+                    mediaItem.extras!['url'] = cachedData.last['url'];
+                    _mediaItemExpando[audioSource] = mediaItem;
+                    return audioSource;
+                  }
+                } else {
                   Logger.root.info(
-                    'youtube link expired for ${mediaItem.title}, refreshing',
+                    'old youtube link cache found for ${mediaItem.title}, refreshing',
                   );
                   refreshLinks.add(mediaItem.id);
                   if (!jobRunning) {
                     refreshJob();
                   }
-                } else {
-                  Logger.root.info(
-                    'youtube link found in cache for ${mediaItem.title}',
-                  );
-                  if (cacheSong) {
-                    audioSource = LockCachingAudioSource(
-                      Uri.parse(cachedData['url'].toString()),
-                    );
-                  } else {
-                    audioSource = AudioSource.uri(
-                      Uri.parse(cachedData['url'].toString()),
-                    );
-                  }
-                  mediaItem.extras!['url'] = cachedData['url'];
-                  _mediaItemExpando[audioSource] = mediaItem;
-                  return audioSource;
                 }
               } else {
                 Logger.root.info(

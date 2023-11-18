@@ -23,7 +23,6 @@ import 'package:blackhole/CustomWidgets/gradient_containers.dart';
 import 'package:blackhole/CustomWidgets/image_card.dart';
 import 'package:blackhole/CustomWidgets/song_tile_trailing_menu.dart';
 import 'package:blackhole/Services/player_service.dart';
-import 'package:blackhole/Services/youtube_services.dart';
 import 'package:blackhole/Services/yt_music.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -151,21 +150,11 @@ class _YouTubeArtistState extends State<YouTubeArtist> {
                                 setState(() {
                                   done = false;
                                 });
-                                final Map? response =
-                                    await YouTubeServices().formatVideoFromId(
-                                  id: entry['id'].toString(),
-                                  data: entry,
-                                );
-
-                                final Map response2 =
+                                final Map response =
                                     await YtMusicService().getSongData(
                                   videoId: entry['id'].toString(),
+                                  data: entry,
                                 );
-                                if (response != null &&
-                                    response2['image'] != null) {
-                                  response['image'] =
-                                      response2['image'] ?? response['image'];
-                                }
                                 setState(() {
                                   done = true;
                                 });
@@ -177,7 +166,7 @@ class _YouTubeArtistState extends State<YouTubeArtist> {
                                 // for (var i = 0;
                                 //     i < searchedList.length;
                                 //     i++) {
-                                //   YouTubeServices()
+                                //   YouTubeServices.instance
                                 //       .formatVideo(
                                 //     video: searchedList[i],
                                 //     quality: Hive.box('settings')

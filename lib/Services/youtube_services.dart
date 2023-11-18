@@ -20,6 +20,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:blackhole/Services/yt_music.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:html_unescape/html_unescape_small.dart';
 import 'package:http/http.dart';
@@ -39,6 +40,15 @@ class YouTubeServices {
         'Mozilla/5.0 (Windows NT 10.0; rv:96.0) Gecko/20100101 Firefox/96.0',
   };
   final YoutubeExplode yt = YoutubeExplode();
+
+  YouTubeServices._privateConstructor();
+
+  static final YouTubeServices _instance =
+      YouTubeServices._privateConstructor();
+
+  static YouTubeServices get instance {
+    return _instance;
+  }
 
   Future<List<Video>> getPlaylistSongs(String id) async {
     final List<Video> results = await yt.playlists.getVideos(id).toList();
@@ -83,17 +93,24 @@ class YouTubeServices {
     return response;
   }
 
-  Future<Map?> refreshLink(String id) async {
-    final Video? res = await getVideoFromId(id);
-    if (res == null) {
-      return null;
-    }
+  Future<Map?> refreshLink(String id, {bool useYTM = true}) async {
     String quality;
     try {
       quality =
           Hive.box('settings').get('quality', defaultValue: 'Low').toString();
     } catch (e) {
       quality = 'Low';
+    }
+    if (useYTM) {
+      final Map res = await YtMusicService().getSongData(
+        videoId: id,
+        quality: quality,
+      );
+      return res;
+    }
+    final Video? res = await getVideoFromId(id);
+    if (res == null) {
+      return null;
     }
     final Map? data = await formatVideo(video: res, quality: quality);
     return data;
@@ -347,54 +364,17 @@ class YouTubeServices {
     // bool preferM4a = true,
   }) async {
     if (video.duration?.inSeconds == null) return null;
-    List<String> urls = [];
+    List<String> allUrls = [];
+    List<Map> urlsData = [];
     String finalUrl = '';
     String expireAt = '0';
     if (getUrl) {
-      // check cache first
-      if (Hive.box('ytlinkcache').containsKey(video.id.value)) {
-        final Map cachedData =
-            Hive.box('ytlinkcache').get(video.id.value) as Map;
-        final int cachedExpiredAt =
-            int.parse(cachedData['expire_at'].toString());
-        if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
-            cachedExpiredAt) {
-          // cache expired
-          urls = await getUri(video);
-        } else {
-          // giving cache link
-          Logger.root.info('cache found for ${video.id.value}');
-          urls = [cachedData['url'].toString()];
-        }
-      } else {
-        //cache not present
-        urls = await getUri(video);
-      }
-
-      finalUrl = quality == 'High' ? urls.last : urls.first;
-      expireAt = RegExp('expire=(.*?)&').firstMatch(finalUrl)!.group(1) ??
-          (DateTime.now().millisecondsSinceEpoch ~/ 1000 + 3600 * 5.5)
-              .toString();
-
-      try {
-        await Hive.box('ytlinkcache').put(
-          video.id.value,
-          {
-            'url': finalUrl,
-            'expire_at': expireAt,
-            'lowUrl': urls.first,
-            'highUrl': urls.last,
-          },
-        ).onError(
-          (error, stackTrace) => Logger.root.severe(
-            'Hive Error in formatVideo, you probably forgot to open box.\nError: $error',
-          ),
-        );
-      } catch (e) {
-        Logger.root.severe(
-          'Hive Error in formatVideo, you probably forgot to open box.\nError: $e',
-        );
-      }
+      urlsData = await getYtStreamUrls(video.id.value);
+      final Map finalUrlData =
+          quality == 'High' ? urlsData.last : urlsData.first;
+      finalUrl = finalUrlData['url'].toString();
+      expireAt = finalUrlData['expireAt'].toString();
+      allUrls = urlsData.map((e) => e['url'].toString()).toList();
     }
     return {
       'id': video.id.value,
@@ -413,8 +393,8 @@ class YouTubeServices {
       'genre': 'YouTube',
       'expire_at': expireAt,
       'url': finalUrl,
-      'lowUrl': urls.isNotEmpty ? urls.first : '',
-      'highUrl': urls.isNotEmpty ? urls.last : '',
+      'allUrls': allUrls,
+      'urlsData': urlsData,
       'year': video.uploadDate?.year.toString(),
       '320kbps': 'false',
       'has_lyrics': 'false',
@@ -543,13 +523,87 @@ class YouTubeServices {
     // }
   }
 
-  Future<List<String>> getUri(
-    Video video,
+  String getExpireAt(String url) {
+    return RegExp('expire=(.*?)&').firstMatch(url)!.group(1) ??
+        (DateTime.now().millisecondsSinceEpoch ~/ 1000 + 3600 * 5.5).toString();
+  }
+
+  Future<List<Map>> getYtStreamUrls(String videoId) async {
+    try {
+      List<Map> urlData = [];
+
+      // check cache first
+      if (Hive.box('ytlinkcache').containsKey(videoId)) {
+        final cachedData = Hive.box('ytlinkcache').get(videoId);
+        if (cachedData is List) {
+          int minExpiredAt = 0;
+          for (final e in cachedData) {
+            final int cachedExpiredAt = int.parse(e['expireAt'].toString());
+            if (minExpiredAt == 0 || cachedExpiredAt < minExpiredAt) {
+              minExpiredAt = cachedExpiredAt;
+            }
+          }
+
+          if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
+              minExpiredAt) {
+            // cache expired
+            urlData = await getUri(videoId);
+          } else {
+            // giving cache link
+            Logger.root.info('cache found for $videoId');
+            urlData = cachedData as List<Map>;
+          }
+        } else {
+          // old version cache is present
+          urlData = await getUri(videoId);
+        }
+      } else {
+        //cache not present
+        urlData = await getUri(videoId);
+      }
+
+      try {
+        await Hive.box('ytlinkcache')
+            .put(
+              videoId,
+              urlData,
+            )
+            .onError(
+              (error, stackTrace) => Logger.root.severe(
+                'Hive Error in formatVideo, you probably forgot to open box.\nError: $error',
+              ),
+            );
+      } catch (e) {
+        Logger.root.severe(
+          'Hive Error in formatVideo, you probably forgot to open box.\nError: $e',
+        );
+      }
+
+      return urlData;
+    } catch (e) {
+      Logger.root.severe('Error in getYtStreamUrls: $e');
+      return [];
+    }
+  }
+
+  Future<List<Map>> getUri(
+    String videoId,
     // {bool preferM4a = true}
   ) async {
     final List<AudioOnlyStreamInfo> sortedStreamInfo =
-        await getStreamInfo(video.id.toString());
-    return sortedStreamInfo.map((e) => e.url.toString()).toList();
+        await getStreamInfo(videoId);
+    return sortedStreamInfo
+        .map(
+          (e) => {
+            'bitrate': e.bitrate.kiloBitsPerSecond.round().toString(),
+            'codec': e.codec.subtype,
+            'qualityLabel': e.qualityLabel,
+            'size': e.size.totalMegaBytes.toStringAsFixed(2),
+            'url': e.url.toString(),
+            'expireAt': getExpireAt(e.url.toString()),
+          },
+        )
+        .toList();
   }
 
   Future<List<AudioOnlyStreamInfo>> getStreamInfo(

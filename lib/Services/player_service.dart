@@ -193,15 +193,41 @@ class PlayerInvoke {
         'before service | youtube link expired for ${playItem["title"]}',
       );
       if (Hive.box('ytlinkcache').containsKey(playItem['id'])) {
-        final Map cache =
-            await Hive.box('ytlinkcache').get(playItem['id']) as Map;
-        final int expiredAt = int.parse((cache['expire_at'] ?? '0').toString());
-        // final String wasCacheEnabled = cache['cached'].toString();
-        if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 > expiredAt) {
-          Logger.root
-              .info('youtube link expired in cache for ${playItem["title"]}');
-          final newData =
-              await YouTubeServices().refreshLink(playItem['id'].toString());
+        final cache = await Hive.box('ytlinkcache').get(playItem['id']);
+        if (cache is List) {
+          int minExpiredAt = 0;
+          for (final e in cache) {
+            final int cachedExpiredAt = int.parse(e['expireAt'].toString());
+            if (minExpiredAt == 0 || cachedExpiredAt < minExpiredAt) {
+              minExpiredAt = cachedExpiredAt;
+            }
+          }
+
+          if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 >
+              minExpiredAt) {
+            // cache expired
+            Logger.root
+                .info('youtube link expired in cache for ${playItem["title"]}');
+            final newData = await YouTubeServices.instance
+                .refreshLink(playItem['id'].toString());
+            Logger.root.info(
+              'before service | received new link for ${playItem["title"]}',
+            );
+            if (newData != null) {
+              playItem['url'] = newData['url'];
+              playItem['duration'] = newData['duration'];
+              playItem['expire_at'] = newData['expire_at'];
+            }
+          } else {
+            // giving cache link
+            Logger.root
+                .info('youtube link found in cache for ${playItem["title"]}');
+            playItem['url'] = cache.last['url'];
+            playItem['expire_at'] = cache.last['expireAt'];
+          }
+        } else {
+          final newData = await YouTubeServices.instance
+              .refreshLink(playItem['id'].toString());
           Logger.root.info(
             'before service | received new link for ${playItem["title"]}',
           );
@@ -210,15 +236,10 @@ class PlayerInvoke {
             playItem['duration'] = newData['duration'];
             playItem['expire_at'] = newData['expire_at'];
           }
-        } else {
-          Logger.root
-              .info('youtube link found in cache for ${playItem["title"]}');
-          playItem['url'] = cache['url'];
-          playItem['expire_at'] = cache['expire_at'];
         }
       } else {
-        final newData =
-            await YouTubeServices().refreshLink(playItem['id'].toString());
+        final newData = await YouTubeServices.instance
+            .refreshLink(playItem['id'].toString());
         Logger.root.info(
           'before service | received new link for ${playItem["title"]}',
         );

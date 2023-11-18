@@ -19,8 +19,8 @@
 
 import 'dart:convert';
 
-import 'package:blackhole/Helpers/extensions.dart';
 import 'package:blackhole/Models/song_item.dart';
+import 'package:blackhole/Services/youtube_services.dart';
 import 'package:blackhole/Services/ytmusic/nav.dart';
 import 'package:blackhole/Services/ytmusic/playlist.dart';
 import 'package:http/http.dart';
@@ -517,7 +517,12 @@ class YtMusicService {
     return days;
   }
 
-  Future<Map> getSongData({required String videoId}) async {
+  Future<Map> getSongData({
+    required String videoId,
+    Map? data,
+    bool getUrl = true,
+    String quality = 'Low',
+  }) async {
     if (headers == null) {
       await init();
     }
@@ -530,18 +535,18 @@ class YtMusicService {
       body['video_id'] = videoId;
       final Map response =
           await sendRequest(endpoints['get_song']!, body, headers);
-      int maxBitrate = 0;
-      String? url;
-      final formats =
-          await NavClass.nav(response, ['streamingData', 'formats']) as List;
-      for (final element in formats) {
-        if (element['bitrate'] != null) {
-          if (int.parse(element['bitrate'].toString()) > maxBitrate) {
-            maxBitrate = int.parse(element['bitrate'].toString());
-            url = element['signatureCipher'].toString();
-          }
-        }
-      }
+      // int maxBitrate = 0;
+      // String? url;
+      // final formats =
+      //     await NavClass.nav(response, ['streamingData', 'formats']) as List;
+      // for (final element in formats) {
+      //   if (element['bitrate'] != null) {
+      //     if (int.parse(element['bitrate'].toString()) > maxBitrate) {
+      //       maxBitrate = int.parse(element['bitrate'].toString());
+      //       url = element['signatureCipher'].toString();
+      //     }
+      //   }
+      // }
       // final adaptiveFormats =
       //     await NavClass.nav(response, ['streamingData', 'adaptiveFormats']) as List;
       // for (final element in adaptiveFormats) {
@@ -554,18 +559,51 @@ class YtMusicService {
       // }
       final videoDetails =
           await NavClass.nav(response, ['videoDetails']) as Map;
-      final reg = RegExp('url=(.*)');
-      final matches = reg.firstMatch(url!);
-      final String result = matches!.group(1).toString().unescape();
+      // final reg = RegExp('url=(.*)');
+      // final matches = reg.firstMatch(url!);
+      // final String result = matches!.group(1).toString().unescape();
+      List<String> urls = [];
+      List<Map> urlsData = [];
+      String finalUrl = '';
+      String expireAt = '0';
+      if (getUrl) {
+        urlsData = await YouTubeServices.instance.getYtStreamUrls(videoId);
+        if (urlsData.isNotEmpty) {
+          final Map finalUrlData =
+              quality == 'High' ? urlsData.last : urlsData.first;
+          finalUrl = finalUrlData['url'].toString();
+          expireAt = finalUrlData['expireAt'].toString();
+          urls = urlsData.map((e) => e['url'].toString()).toList();
+        }
+      }
+
       return {
         'id': videoDetails['videoId'],
         'title': videoDetails['title'],
-        'artist': videoDetails['author'],
+        'album': (data?['album'] ?? '') != ''
+            ? data!['album']
+            : videoDetails['album'] ?? '',
+        'artist': (data?['artist'] ?? '') != ''
+            ? data!['artist']
+            : videoDetails['author'].replaceAll('- Topic', '').trim(),
         'duration': videoDetails['lengthSeconds'],
-        'url': result,
         'views': videoDetails['viewCount'],
         'image': videoDetails['thumbnail']['thumbnails'].last['url'],
         'images': videoDetails['thumbnail']['thumbnails'].map((e) => e['url']),
+        'language': 'YouTube',
+        'genre': 'YouTube',
+        'channelId': videoDetails['channelId'],
+        'expire_at': expireAt,
+        'url': finalUrl,
+        'urls': urls,
+        'urlsData': urlsData,
+        '320kbps': 'false',
+        'has_lyrics': 'false',
+        'album_id': videoDetails['channelId'],
+        'subtitle': (data?['subtitle'] ?? '') != ''
+            ? data!['subtitle']
+            : videoDetails['author'],
+        'perma_url': 'https://youtube.com/watch?v=$videoId',
       };
     } catch (e) {
       Logger.root.severe('Error in yt get song data', e);
