@@ -187,7 +187,6 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
         switch (value) {
           case 3:
             Share.share(widget.data['perma_url'].toString());
-            break;
 
           case 4:
             Navigator.push(
@@ -204,22 +203,16 @@ class _SongTileTrailingMenuState extends State<SongTileTrailingMenu> {
                 ),
               ),
             );
-            break;
           case 6:
             widget.deleteLiked!(widget.data);
-            break;
           case 7:
             createRadioItems(stationNames: [mediaItem.id]);
-            break;
           case 0:
             AddToPlaylist().addToPlaylist(context, mediaItem);
-            break;
           case 1:
             addToNowPlaying(context: context, mediaItem: mediaItem);
-            break;
           case 2:
             playNext(mediaItem, context);
-            break;
           default:
             Navigator.push(
               context,

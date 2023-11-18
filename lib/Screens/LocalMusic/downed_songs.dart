@@ -213,32 +213,26 @@ class _DownloadedSongsState extends State<DownloadedSongs>
         _songs.sort(
           (a, b) => a.displayName.compareTo(b.displayName),
         );
-        break;
       case 1:
         _songs.sort(
           (a, b) => a.dateAdded.toString().compareTo(b.dateAdded.toString()),
         );
-        break;
       case 2:
         _songs.sort(
           (a, b) => a.album.toString().compareTo(b.album.toString()),
         );
-        break;
       case 3:
         _songs.sort(
           (a, b) => a.artist.toString().compareTo(b.artist.toString()),
         );
-        break;
       case 4:
         _songs.sort(
           (a, b) => a.duration.toString().compareTo(b.duration.toString()),
         );
-        break;
       case 5:
         _songs.sort(
           (a, b) => a.size.toString().compareTo(b.size.toString()),
         );
-        break;
       default:
         _songs.sort(
           (a, b) => a.dateAdded.toString().compareTo(b.dateAdded.toString()),

@@ -57,7 +57,6 @@ class FormatResponse {
         case 'show':
         case 'mix':
           response = await formatSingleSongResponse(responseList[i] as Map);
-          break;
         default:
           break;
       }
@@ -228,16 +227,12 @@ class FormatResponse {
       switch (type) {
         case 'album':
           response = await formatSingleAlbumResponse(responseList[i] as Map);
-          break;
         case 'artist':
           response = await formatSingleArtistResponse(responseList[i] as Map);
-          break;
         case 'playlist':
           response = await formatSinglePlaylistResponse(responseList[i] as Map);
-          break;
         case 'show':
           response = await formatSingleShowResponse(responseList[i] as Map);
-          break;
       }
       if (response!.containsKey('Error')) {
         Logger.root.severe(

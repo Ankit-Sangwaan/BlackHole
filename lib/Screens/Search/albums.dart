@@ -87,7 +87,6 @@ class _AlbumSearchPageState extends State<AlbumSearchPage> {
             loading = false;
           });
         });
-        break;
       case 'Albums':
         SaavnAPI()
             .fetchAlbums(
@@ -103,7 +102,6 @@ class _AlbumSearchPageState extends State<AlbumSearchPage> {
             loading = false;
           });
         });
-        break;
       case 'Artists':
         SaavnAPI()
             .fetchAlbums(
@@ -119,7 +117,6 @@ class _AlbumSearchPageState extends State<AlbumSearchPage> {
             loading = false;
           });
         });
-        break;
       default:
         break;
     }

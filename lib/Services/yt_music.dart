@@ -487,26 +487,21 @@ class YtMusicService {
       case 'Artist':
         if (len > 1) result['subscribers'] = subtitleList[1].trim();
         result['artist'] = title;
-        break;
       case 'Song':
         if (len > 1) result['artist'] = subtitleList[1].trim();
         if (len > 2) result['album'] = subtitleList[2].trim();
         if (len > 3) result['duration'] = subtitleList[3].trim();
-        break;
       case 'Video':
         if (len > 1) result['artist'] = subtitleList[1].trim();
         if (len > 2) result['views'] = subtitleList[2].trim();
         if (len > 3) result['duration'] = subtitleList[3].trim();
-        break;
       case 'Album':
       case 'Single':
         if (len > 1) result['artist'] = subtitleList[1].trim();
         if (len > 2) result['year'] = subtitleList[2].trim();
-        break;
       case 'Playlist':
         if (len > 1) result['artist'] = subtitleList[1].trim();
         if (len > 2) result['views'] = subtitleList[2].trim();
-        break;
       default:
         break;
     }

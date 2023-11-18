@@ -30,10 +30,8 @@ class UrlImageGetter {
       switch (imageQuality) {
         case ImageQuality.low:
           imageQuality = ImageQuality.medium;
-          break;
         case ImageQuality.medium:
           imageQuality = ImageQuality.high;
-          break;
         default:
           imageQuality = ImageQuality.high;
       }

@@ -69,7 +69,6 @@ class _SongsListState extends State<SongsList> {
               .toUpperCase()
               .compareTo(b['title'].toString().toUpperCase()),
         );
-        break;
       case 1:
         _songs.sort(
           (a, b) => a['dateAdded']
@@ -77,7 +76,6 @@ class _SongsListState extends State<SongsList> {
               .toUpperCase()
               .compareTo(b['dateAdded'].toString().toUpperCase()),
         );
-        break;
       case 2:
         _songs.sort(
           (a, b) => a['album']
@@ -85,7 +83,6 @@ class _SongsListState extends State<SongsList> {
               .toUpperCase()
               .compareTo(b['album'].toString().toUpperCase()),
         );
-        break;
       case 3:
         _songs.sort(
           (a, b) => a['artist']
@@ -93,7 +90,6 @@ class _SongsListState extends State<SongsList> {
               .toUpperCase()
               .compareTo(b['artist'].toString().toUpperCase()),
         );
-        break;
       case 4:
         _songs.sort(
           (a, b) => a['duration']
@@ -101,7 +97,6 @@ class _SongsListState extends State<SongsList> {
               .toUpperCase()
               .compareTo(b['duration'].toString().toUpperCase()),
         );
-        break;
       default:
         _songs.sort(
           (b, a) => a['dateAdded']

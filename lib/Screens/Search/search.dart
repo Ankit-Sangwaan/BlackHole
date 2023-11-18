@@ -119,7 +119,6 @@ class _SearchPageState extends State<SearchPage> {
             fetched = true;
           });
         });
-        break;
       case 'yt':
         Logger.root.info('calling youtube search');
         YouTubeServices()
@@ -130,7 +129,6 @@ class _SearchPageState extends State<SearchPage> {
             fetched = true;
           });
         });
-        break;
       default:
         Logger.root.info('calling saavn search');
         searchedList = await SaavnAPI()
