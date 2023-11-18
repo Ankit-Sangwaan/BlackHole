@@ -25,6 +25,7 @@ import 'package:blackhole/CustomWidgets/snackbar.dart';
 import 'package:blackhole/Helpers/lyrics.dart';
 import 'package:blackhole/Services/ext_storage_provider.dart';
 import 'package:blackhole/Services/youtube_services.dart';
+// import 'package:ffmpeg_kit_flutter_audio/ffmpeg_kit.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_downloader/flutter_downloader.dart';
@@ -469,7 +470,7 @@ class Download with ChangeNotifier {
         //       'libmp3lame',
         //       '-b:a',
         //       '320k',
-        //       (filepath!.replaceAll('.m4a', '.mp3'))
+        //       filepath!.replaceAll('.m4a', '.mp3'),
         //     ];
         //   }
         //   if (downloadFormat == 'm4a') {
@@ -481,12 +482,16 @@ class Download with ChangeNotifier {
         //       'aac',
         //       '-b:a',
         //       '320k',
-        //       filepath!.replaceAll('.m4a', '.m4a')
+        //       filepath!.replaceAll('.m4a', '.m4a'),
         //     ];
         //   }
-        //   // await FlutterFFmpeg().executeWithArguments(_argsList);
-        //   // await File(filepath!).delete();
-        //   // filepath = filepath!.replaceAll('.m4a', '.$downloadFormat');
+        //   if (argsList != null) {
+        //     Logger.root.info('Converting audio to $downloadFormat');
+        //     await FFmpegKit.executeWithArguments(argsList);
+        //     Logger.root.info('Conversion complete, deleting old file');
+        //     await File(filepath!).delete();
+        //     filepath = filepath!.replaceAll('.m4a', '.$downloadFormat');
+        //   }
         // }
         Logger.root.info('Getting audio tags');
         if (Platform.isAndroid) {

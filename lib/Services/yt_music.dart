@@ -1069,14 +1069,14 @@ class YtMusicService {
       int count = 0;
       final List<String> songResults = [];
       for (final item in playlist) {
+        if (count > limit) break;
         if (count > 0) {
           final String id =
               NavClass.nav(item, ['playlistPanelVideoRenderer', 'videoId'])
                   .toString();
           songResults.add(id);
-        } else {
-          count++;
         }
+        count++;
       }
       return songResults;
     } catch (e) {

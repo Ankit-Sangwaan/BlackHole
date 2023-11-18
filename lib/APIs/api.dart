@@ -127,6 +127,7 @@ class SaavnAPI {
     int p = 1,
   }) async {
     if (n == -1) {
+      // loop through until all songs are fetch
       final String params =
           "token=$token&type=$type&n=5&p=$p&${endpoints['fromToken']}";
       try {
@@ -139,14 +140,24 @@ class SaavnAPI {
           final res2 = await getResponse(params2);
           if (res2.statusCode == 200) {
             final Map getMain2 = json.decode(res2.body) as Map;
-            if (type == 'album' || type == 'playlist') return getMain2;
-            final List responseList = getMain2['songs'] as List;
-            return {
+            final List responseList = ((type == 'album' || type == 'playlist')
+                ? getMain2['list']
+                : getMain2['songs']) as List;
+            final result = {
               'songs':
                   await FormatResponse.formatSongsResponse(responseList, type),
               'title': getMain2['title'],
             };
+            return result;
+          } else {
+            Logger.root.severe(
+              'getSongFromToken with -1 got res2 with ${res2.statusCode}: ${res2.body}',
+            );
           }
+        } else {
+          Logger.root.severe(
+            'getSongFromToken with -1 got ${res.statusCode}: ${res.body}',
+          );
         }
       } catch (e) {
         Logger.root.severe('Error in getSongFromToken with -1: $e');

@@ -772,12 +772,14 @@ class ControlButtons extends StatelessWidget {
               stream: audioHandler.queueState,
               builder: (context, snapshot) {
                 final queueState = snapshot.data;
+                final resetOnSkip = Hive.box('settings')
+                    .get('resetOnSkip', defaultValue: false) as bool;
                 return IconButton(
                   icon: const Icon(Icons.skip_previous_rounded),
                   iconSize: miniplayer ? 24.0 : 45.0,
                   tooltip: AppLocalizations.of(context)!.skipPrevious,
                   color: dominantColor ?? Theme.of(context).iconTheme.color,
-                  onPressed: queueState?.hasPrevious ?? true
+                  onPressed: ((queueState?.hasPrevious ?? true) || resetOnSkip)
                       ? audioHandler.skipToPrevious
                       : null,
                 );
@@ -952,7 +954,9 @@ class NowPlayingStream extends StatelessWidget {
           itemCount: queue.length - queueStateIndex,
           itemBuilder: (context, index) {
             return Dismissible(
-              key: ValueKey(queue[queueStateIndex + index].id),
+              key: ValueKey(
+                '${queue[queueStateIndex + index].id}#${queueStateIndex + index}',
+              ),
               direction: (queueStateIndex + index) == queueState.queueIndex
                   ? DismissDirection.none
                   : DismissDirection.horizontal,
@@ -1032,7 +1036,9 @@ class NowPlayingStream extends StatelessWidget {
                               ),
                             ],
                             ReorderableDragStartListener(
-                              key: Key(queue[queueStateIndex + index].id),
+                              key: Key(
+                                '${queue[queueStateIndex + index].id}#${queueStateIndex + index}',
+                              ),
                               index: index,
                               enabled: (queueStateIndex + index) !=
                                   queueState.queueIndex,

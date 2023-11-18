@@ -7,8 +7,8 @@ publish_to: "none"
 version: 1.15.9+40
 
 environment:
-  sdk: ">=2.18.0 <4.0.0"
-  flutter: ">=3.0.0"
+  sdk: ">=3.1.0 <4.0.0"
+  flutter: ">=3.3.0"
 
 dependencies:
   app_links: ^3.4.5
@@ -20,11 +20,12 @@ dependencies:
   # bitsdojo_window: ^0.1.1+1 #For Desktops
   cached_network_image: ^3.3.0
   carousel_slider: ^4.2.1
-  connectivity_plus: ^4.0.2
+  connectivity_plus: ^5.0.1
   cupertino_icons: ^1.0.6
   dart_des: ^1.0.2
   device_info_plus: ^9.0.2
-  file_picker: ^5.5.0
+  # ffmpeg_kit_flutter_audio: ^6.0.3
+  file_picker: ^6.1.1
   flip_card: ^0.7.0
   flutter:
     sdk: flutter
@@ -39,7 +40,7 @@ dependencies:
   hive_flutter: ^1.1.0
   home_widget: ^0.3.0
   html_unescape: ^2.0.0
-  just_audio: ^0.9.35
+  just_audio: ^0.9.36
   # Discontinued, Use just_audio_windows instead.
   # just_audio_libwinmedia: ^0.0.4 # For windows and linux.
   logging: ^1.2.0

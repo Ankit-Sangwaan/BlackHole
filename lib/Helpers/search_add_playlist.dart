@@ -123,8 +123,8 @@ class SearchAddPlaylist {
             await SaavnAPI().getSongFromToken(id, 'playlist', n: -1);
         return {
           'title': data['title'],
-          'count': data['list'].length,
-          'tracks': data['list'],
+          'count': data['songs'].length,
+          'tracks': data['songs'],
         };
       }
       return {};

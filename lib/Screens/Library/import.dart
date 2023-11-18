@@ -403,7 +403,7 @@ Future<void> importJioSaavn(
 
       if (data.isNotEmpty) {
         final String playName = data['title'].toString();
-        addPlaylist(playName, data['tracks'] as List);
+        await addPlaylist(playName, data['tracks'] as List);
         playlistNames.add(playName);
       } else {
         Logger.root.severe('Failed to import JioSaavn playlist. data is empty');

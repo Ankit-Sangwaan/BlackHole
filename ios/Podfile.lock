@@ -164,11 +164,11 @@ SPEC CHECKSUMS:
   app_links: 5ef33d0d295a89d9d16bb81b0e3b0d5f70d6c875
   audio_service: f509d65da41b9521a61f1c404dd58651f265a567
   audio_session: 4f3e461722055d21515cf3261b64c973c062f345
-  connectivity_plus: 07c49e96d7fc92bc9920617b83238c4d178b446a
-  device_info_plus: 7545d84d8d1b896cb16a4ff98c19f07ec4b298ea
+  connectivity_plus: bf0076dd84a130856aa636df1c71ccaff908fa1d
+  device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
   DKImagePickerController: b512c28220a2b8ac7419f21c491fc8534b7601ac
   DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
-  file_picker: ce3938a0df3cc1ef404671531facef740d03f920
+  file_picker: 15fd9539e4eb735dc54bae8c0534a7a9511a03de
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_archive: 1805fdd3a695fd284b43edb53dc35ca843fb761c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
@@ -176,17 +176,17 @@ SPEC CHECKSUMS:
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
   metadata_god: eceae399d0020475069a5cebc35943ce8562b5d7
   on_audio_query_ios: e5afb0d4b42cfa3e8762d8ec1953540cb4f02100
-  package_info_plus: fd030dabf36271f146f1f3beacd48f564b0f17f7
+  package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
   permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   receive_sharing_intent: c0d87310754e74c0f9542947e7cbdf3a0335a3b1
   SDWebImage: 0327043dbb9533e75f2eff8445b3df0f2ceca6ac
-  share_plus: 599aa54e4ea31d4b4c0e9c911bcc26c55e791028
+  share_plus: c3fef564749587fc939ef86ffb283ceac0baf9f5
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
-  url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
+  url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
   workmanager: 0afdcf5628bbde6924c21af7836fed07b42e30e6
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 

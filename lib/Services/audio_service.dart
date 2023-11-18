@@ -231,8 +231,10 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
                     }
                   }
                 } else {
-                  final res = await YtMusicService()
-                      .getWatchPlaylist(videoId: item.id, limit: 5);
+                  final res = await YtMusicService().getWatchPlaylist(
+                    videoId: item.id,
+                    // limit: 15,
+                  );
                   Logger.root.info('Recieved recommendations: $res');
                   refreshLinks.addAll(res);
                   if (!jobRunning) {
