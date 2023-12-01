@@ -177,7 +177,7 @@ class Lyrics {
       'source': 'Spotify',
     };
     try {
-      final Uri lyricsUrl = Uri.https('spotify-lyric-api.herokuapp.com', '/', {
+      final Uri lyricsUrl = Uri.https('spotify-lyric-api-984e7b4face0.herokuapp.com', '/', {
         'trackid': trackId,
         'format': 'lrc',
       });
