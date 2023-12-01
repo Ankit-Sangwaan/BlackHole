@@ -5,37 +5,35 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:layout_marginLeft="4dp"
-    android:layout_marginRight="4dp"
     android:gravity="center"
-    android:orientation="vertical"
-    android:weightSum="2"
+    android:orientation="horizontal"
+    android:weightSum="4"
     tools:ignore="ContentDescription,HardcodedText"
-    tools:layout_height="130dp"
+    tools:layout_height="102dp"
+    tools:layout_width="276dp"
     android:theme="@style/Theme.Android.AppWidgetContainer"
     android:id="@+id/widget_container">
 
-    <ViewFlipper
-        android:id="@+id/widget_view_flipper"
+    <ImageView
+        android:id="@+id/widget_album_art"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:inAnimation="@anim/in_animation"
-        android:outAnimation="@anim/out_animation">
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:src="@mipmap/ic_launcher_foreground" />
 
-        <LinearLayout
-            android:id="@+id/widget_display_container"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <ViewFlipper
+            android:id="@+id/widget_view_flipper"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:weightSum="2">
-
-            <ImageView
-                android:id="@+id/widget_album_art"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:src="@mipmap/ic_launcher_foreground" />
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:inAnimation="@anim/in_animation"
+            android:outAnimation="@anim/out_animation">
 
             <LinearLayout
                 android:id="@+id/widget_text_container"
@@ -59,40 +57,40 @@
                     android:layout_weight="1"
                     android:text="TextView" />
             </LinearLayout>
+        </ViewFlipper>
+
+        <LinearLayout
+            android:id="@+id/widget_button_container"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:weightSum="3">
+
+            <ImageButton
+                android:id="@+id/widget_button_prev"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/audio_service_skip_previous"
+                android:background="@android:color/transparent" />
+
+            <ImageButton
+                android:id="@+id/widget_button_play_pause"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/audio_service_play_arrow"
+                android:background="@android:color/transparent" />
+
+            <ImageButton
+                android:id="@+id/widget_button_next"
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:src="@drawable/audio_service_skip_next"
+                android:background="@android:color/transparent" />
+
         </LinearLayout>
-    </ViewFlipper>
-
-    <LinearLayout
-        android:id="@+id/widget_button_container"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:weightSum="3">
-
-        <ImageButton
-            android:id="@+id/widget_button_prev"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/audio_service_skip_previous"
-            android:background="@android:color/transparent" />
-
-        <ImageButton
-            android:id="@+id/widget_button_play_pause"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/audio_service_play_arrow"
-            android:background="@android:color/transparent" />
-
-        <ImageButton
-            android:id="@+id/widget_button_next"
-            android:layout_width="0dip"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/audio_service_skip_next"
-            android:background="@android:color/transparent" />
-
     </LinearLayout>
 
 </LinearLayout>

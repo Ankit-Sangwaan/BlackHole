@@ -6,18 +6,30 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.widget.RemoteViews
-import es.antonborri.home_widget.HomeWidgetBackgroundIntent
-import es.antonborri.home_widget.HomeWidgetLaunchIntent
-import es.antonborri.home_widget.HomeWidgetProvider
+import android.content.BroadcastReceiver
+import android.content.Intent
+import android.content.IntentFilter
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import java.util.*
 
 /**
  * Implementation of App Widget functionality.
  */
-class BlackHoleMusicWidget : HomeWidgetProvider() {
-    override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray, widgetData: SharedPreferences) {
-        // There may be multiple widgets active, so update all of them
-        for (appWidgetId in appWidgetIds) {
-            updateAppWidget(context, appWidgetManager, appWidgetId, widgetData)
+class AudioListenerActivity : AppCompatActivity() {
+    private val audioReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.getByteArrayExtra("audio_data")?.let { audioData ->
+                // Process the received audio data
+                // For example, you could visualize or analyze the audio data
+
+                // Get the associated image data
+                currentImageData = intent.getByteArrayExtra("image_data")
+
+                // Update the widget with the new image data
+                updateAppWidget()
+            }
         }
     }
 }

@@ -1439,85 +1439,187 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
 
               final bool enabled = Hive.box('settings')
                   .get('enableGesture', defaultValue: true) as bool;
+              final volumeGestureEnabled = Hive.box('settings')
+                  .get('volumeGestureEnabled', defaultValue: false) as bool;
 
-              return GestureDetector(
-                onTap: () {
-                  if (dragging.value) {
-                    dragging.value = false;
-                  } else if (enabled) {
-                    tapped.value = true;
-                    Future.delayed(const Duration(seconds: 3), () async {
-                      tapped.value = false;
-                    });
-                    Feedback.forTap(context);
-                  }
-                },
-
-                onDoubleTapDown: (details) {
-                  if (details.globalPosition.dx <= widget.width * 2 / 5) {
-                    widget.audioHandler.customAction('rewind');
-                    doubletapped.value = -1;
-                    Future.delayed(const Duration(milliseconds: 500), () async {
-                      doubletapped.value = 0;
-                    });
-                  }
-
-                  if (details.globalPosition.dx > widget.width * 2 / 5 &&
-                      details.globalPosition.dx < widget.width * 3 / 5) {
-                    widget.cardKey.currentState!.toggleCard();
-                  }
-
-                  if (details.globalPosition.dx >= widget.width * 3 / 5) {
-                    widget.audioHandler.customAction('fastForward');
-                    doubletapped.value = 1;
-                    Future.delayed(const Duration(milliseconds: 500), () async {
-                      doubletapped.value = 0;
-                    });
-                  }
-
-                  Feedback.forLongPress(context);
-                },
-
-                onHorizontalDragEnd: !enabled
-                    ? null
-                    : (DragEndDetails details) {
-                        if ((details.primaryVelocity ?? 0) > 100) {
-                          if (queueState.hasPrevious) {
-                            widget.audioHandler.skipToPrevious();
-                            Feedback.forTap(context);
-                          }
-                        } else if ((details.primaryVelocity ?? 0) < -100) {
-                          if (queueState.hasNext) {
-                            widget.audioHandler.skipToNext();
-                            Feedback.forTap(context);
-                          }
-                        }
-                      },
-                onLongPress: !enabled
-                    ? null
-                    : () {
-                        if (!widget.offline) {
-                          Feedback.forLongPress(context);
-                          AddToPlaylist()
-                              .addToPlaylist(context, widget.mediaItem);
-                        }
-                      },
-                // onVerticalDragStart: !enabled
-                //     ? null
-                //     : (_) {
-                //         dragging.value = true;
-                //       },
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    Card(
-                      elevation: 10.0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0),
+              return ValueListenableBuilder(
+                valueListenable: dragging,
+                child: StreamBuilder<double>(
+                  stream: widget.audioHandler.volume,
+                  builder: (context, snapshot) {
+                    final double volumeValue = snapshot.data ?? 1.0;
+                    return Center(
+                      child: SizedBox(
+                        width: 60.0,
+                        height: widget.width * 0.7,
+                        child: Card(
+                          color: Colors.black87,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                child: FittedBox(
+                                  fit: BoxFit.fitHeight,
+                                  child: RotatedBox(
+                                    quarterTurns: -1,
+                                    child: SliderTheme(
+                                      data: SliderTheme.of(context).copyWith(
+                                        thumbShape: HiddenThumbComponentShape(),
+                                        activeTrackColor: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                        inactiveTrackColor: Theme.of(context)
+                                            .colorScheme
+                                            .secondary
+                                            .withOpacity(0.4),
+                                        trackShape:
+                                            const RoundedRectSliderTrackShape(),
+                                        disabledActiveTrackColor:
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .secondary,
+                                        disabledInactiveTrackColor:
+                                            Theme.of(context)
+                                                .colorScheme
+                                                .secondary
+                                                .withOpacity(0.4),
+                                      ),
+                                      child: ExcludeSemantics(
+                                        child: Slider(
+                                          value:
+                                              widget.audioHandler.volume.value,
+                                          onChanged: null,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                  bottom: 20.0,
+                                ),
+                                child: Icon(
+                                  volumeValue == 0
+                                      ? Icons.volume_off_rounded
+                                      : volumeValue > 0.6
+                                          ? Icons.volume_up_rounded
+                                          : Icons.volume_down_rounded,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                      clipBehavior: Clip.antiAlias,
-                      child:
-                          widget.mediaItem.artUri.toString().startsWith('file')
+                    );
+                  },
+                ),
+                builder: (context, bool value, Widget? child) {
+                  return GestureDetector(
+                    onTap: () {
+                      if (dragging.value) {
+                        dragging.value = false;
+                      } else if (enabled) {
+                        tapped.value = true;
+                        Future.delayed(const Duration(seconds: 3), () async {
+                          tapped.value = false;
+                        });
+                        Feedback.forTap(context);
+                      }
+                    },
+                    onDoubleTapDown: (details) {
+                      if (details.globalPosition.dx <= widget.width * 2 / 5) {
+                        widget.audioHandler.customAction('rewind');
+                        doubletapped.value = -1;
+                        Future.delayed(const Duration(milliseconds: 500),
+                            () async {
+                          doubletapped.value = 0;
+                        });
+                      }
+
+                      if (details.globalPosition.dx > widget.width * 2 / 5 &&
+                          details.globalPosition.dx < widget.width * 3 / 5) {
+                        widget.cardKey.currentState!.toggleCard();
+                      }
+
+                      if (details.globalPosition.dx >= widget.width * 3 / 5) {
+                        widget.audioHandler.customAction('fastForward');
+                        doubletapped.value = 1;
+                        Future.delayed(const Duration(milliseconds: 500),
+                            () async {
+                          doubletapped.value = 0;
+                        });
+                      }
+
+                      Feedback.forLongPress(context);
+                    },
+                    onHorizontalDragEnd: !enabled
+                        ? null
+                        : (DragEndDetails details) {
+                            if ((details.primaryVelocity ?? 0) > 100) {
+                              if (queueState.hasPrevious) {
+                                widget.audioHandler.skipToPrevious();
+                                Feedback.forTap(context);
+                              }
+                            } else if ((details.primaryVelocity ?? 0) < -100) {
+                              if (queueState.hasNext) {
+                                widget.audioHandler.skipToNext();
+                                Feedback.forTap(context);
+                              }
+                            }
+                          },
+                    onLongPress: !enabled
+                        ? null
+                        : () {
+                            if (!widget.offline) {
+                              Feedback.forLongPress(context);
+                              AddToPlaylist()
+                                  .addToPlaylist(context, widget.mediaItem);
+                            }
+                          },
+                    onVerticalDragStart: enabled && volumeGestureEnabled
+                        ? (_) {
+                            dragging.value = true;
+                          }
+                        : null,
+                    onVerticalDragEnd: !enabled
+                        ? null
+                        : (_) {
+                            dragging.value = false;
+                          },
+                    onVerticalDragUpdate: !enabled || !dragging.value
+                        ? null
+                        : (DragUpdateDetails details) {
+                            if (details.delta.dy != 0.0) {
+                              double volume = widget.audioHandler.volume.value;
+                              volume -= details.delta.dy / 150;
+                              if (volume < 0) {
+                                volume = 0;
+                              }
+                              if (volume > 1.0) {
+                                volume = 1.0;
+                              }
+                              widget.audioHandler.setVolume(volume);
+                            }
+                          },
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Card(
+                          elevation: 10.0,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          child: widget.mediaItem.artUri
+                                  .toString()
+                                  .startsWith('file')
                               ? Image(
                                   fit: BoxFit.contain,
                                   width: widget.width * 0.85,
@@ -1553,289 +1655,184 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                                   imageUrl: widget.mediaItem.artUri.toString(),
                                   width: widget.width * 0.85,
                                 ),
-                    ),
-                    ValueListenableBuilder(
-                      valueListenable: dragging,
-                      child: StreamBuilder<double>(
-                        stream: widget.audioHandler.volume,
-                        builder: (context, snapshot) {
-                          final double volumeValue = snapshot.data ?? 1.0;
-                          return Center(
-                            child: GestureDetector(
-                              onVerticalDragEnd: !dragging.value
-                                  ? null
-                                  : (_) {
-                                      dragging.value = false;
-                                    },
-                              onVerticalDragUpdate: !dragging.value
-                                  ? null
-                                  : (DragUpdateDetails details) {
-                                      if (details.delta.dy != 0.0) {
-                                        double volume =
-                                            widget.audioHandler.volume.value;
-                                        volume -= details.delta.dy / 150;
-                                        if (volume < 0) {
-                                          volume = 0;
-                                        }
-                                        if (volume > 1.0) {
-                                          volume = 1.0;
-                                        }
-                                        widget.audioHandler.setVolume(volume);
-                                      }
-                                    },
-                              child: SizedBox(
-                                width: 60.0,
-                                height: widget.width * 0.7,
-                                child: Card(
-                                  color: Colors.black87,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  clipBehavior: Clip.antiAlias,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Expanded(
-                                        child: FittedBox(
-                                          fit: BoxFit.fitHeight,
-                                          child: RotatedBox(
-                                            quarterTurns: -1,
-                                            child: SliderTheme(
-                                              data: SliderTheme.of(context)
-                                                  .copyWith(
-                                                thumbShape:
-                                                    HiddenThumbComponentShape(),
-                                                activeTrackColor:
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary,
-                                                inactiveTrackColor:
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary
-                                                        .withOpacity(0.4),
-                                                trackShape:
-                                                    const RoundedRectSliderTrackShape(),
-                                                disabledActiveTrackColor:
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary,
-                                                disabledInactiveTrackColor:
-                                                    Theme.of(context)
-                                                        .colorScheme
-                                                        .secondary
-                                                        .withOpacity(0.4),
-                                              ),
-                                              child: ExcludeSemantics(
-                                                child: Slider(
-                                                  value: widget.audioHandler
-                                                      .volume.value,
-                                                  onChanged: null,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                          bottom: 20.0,
-                                        ),
-                                        child: Icon(
-                                          volumeValue == 0
-                                              ? Icons.volume_off_rounded
-                                              : volumeValue > 0.6
-                                                  ? Icons.volume_up_rounded
-                                                  : Icons.volume_down_rounded,
-                                          color: Colors.white,
-                                        ),
-                                      ),
+                        ),
+                        Visibility(
+                          visible: value,
+                          child: child!,
+                        ),
+                        ValueListenableBuilder(
+                          valueListenable: tapped,
+                          child: GestureDetector(
+                            onTap: () {
+                              tapped.value = false;
+                            },
+                            child: Card(
+                              color: Colors.black26,
+                              elevation: 0.0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              clipBehavior: Clip.antiAlias,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  gradient: RadialGradient(
+                                    colors: [
+                                      Colors.black.withOpacity(0.4),
+                                      Colors.black.withOpacity(0.7),
                                     ],
                                   ),
                                 ),
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      builder: (
-                        BuildContext context,
-                        bool value,
-                        Widget? child,
-                      ) {
-                        return Visibility(
-                          visible: value,
-                          child: child!,
-                        );
-                      },
-                    ),
-                    ValueListenableBuilder(
-                      valueListenable: tapped,
-                      child: GestureDetector(
-                        onTap: () {
-                          tapped.value = false;
-                        },
-                        child: Card(
-                          color: Colors.black26,
-                          elevation: 0.0,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          clipBehavior: Clip.antiAlias,
-                          child: DecoratedBox(
-                            decoration: BoxDecoration(
-                              gradient: RadialGradient(
-                                colors: [
-                                  Colors.black.withOpacity(0.4),
-                                  Colors.black.withOpacity(0.7),
-                                ],
-                              ),
-                            ),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: IconButton(
-                                      tooltip: AppLocalizations.of(context)!
-                                          .songInfo,
-                                      onPressed: () {
-                                        showSongInfo(
-                                          widget.mediaItem,
-                                          context,
-                                        );
-                                      },
-                                      icon: const Icon(Icons.info_rounded),
-                                      color: Theme.of(context).iconTheme.color,
-                                    ),
-                                  ),
-                                ),
-                                Row(
+                                child: Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Align(
-                                      alignment: Alignment.bottomLeft,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(10.0),
-                                        child: IconButton(
-                                          onPressed: () {
-                                            tapped.value = false;
-                                            dragging.value = true;
-                                          },
-                                          icon: const Icon(
-                                            Icons.volume_up_rounded,
-                                          ),
-                                          color:
-                                              Theme.of(context).iconTheme.color,
-                                        ),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.bottomRight,
+                                      alignment: Alignment.topRight,
                                       child: Padding(
                                         padding: const EdgeInsets.all(10.0),
                                         child: IconButton(
                                           tooltip: AppLocalizations.of(context)!
-                                              .addToPlaylist,
+                                              .songInfo,
                                           onPressed: () {
-                                            AddToPlaylist().addToPlaylist(
-                                              context,
+                                            showSongInfo(
                                               widget.mediaItem,
+                                              context,
                                             );
                                           },
-                                          icon: const Icon(
-                                            Icons.playlist_add_rounded,
-                                          ),
+                                          icon: const Icon(Icons.info_rounded),
                                           color:
                                               Theme.of(context).iconTheme.color,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      builder: (context, bool value, Widget? child) {
-                        return AnimatedContainer(
-                          duration: const Duration(milliseconds: 250),
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Visibility(visible: value, child: child!),
-                        );
-                      },
-                    ),
-                    ValueListenableBuilder(
-                      valueListenable: doubletapped,
-                      child: const Icon(
-                        Icons.forward_10_rounded,
-                        size: 60.0,
-                      ),
-                      builder: (
-                        BuildContext context,
-                        int value,
-                        Widget? child,
-                      ) {
-                        return Visibility(
-                          visible: value != 0,
-                          child: Card(
-                            color: Colors.transparent,
-                            elevation: 0.0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(15.0),
-                            ),
-                            clipBehavior: Clip.antiAlias,
-                            child: SizedBox.expand(
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  gradient: LinearGradient(
-                                    colors: value == 1
-                                        ? [
-                                            Colors.transparent,
-                                            Colors.black.withOpacity(0.4),
-                                            Colors.black.withOpacity(0.7),
-                                          ]
-                                        : [
-                                            Colors.black.withOpacity(0.7),
-                                            Colors.black.withOpacity(0.4),
-                                            Colors.transparent,
-                                          ],
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    Visibility(
-                                      visible: value == -1,
-                                      child: const Icon(
-                                        Icons.replay_10_rounded,
-                                        size: 60.0,
-                                      ),
-                                    ),
-                                    const SizedBox(),
-                                    Visibility(
-                                      visible: value == 1,
-                                      child: child!,
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: IconButton(
+                                              onPressed: () {
+                                                tapped.value = false;
+                                                dragging.value = true;
+                                              },
+                                              icon: const Icon(
+                                                Icons.volume_up_rounded,
+                                              ),
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color,
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(10.0),
+                                            child: IconButton(
+                                              tooltip:
+                                                  AppLocalizations.of(context)!
+                                                      .addToPlaylist,
+                                              onPressed: () {
+                                                AddToPlaylist().addToPlaylist(
+                                                  context,
+                                                  widget.mediaItem,
+                                                );
+                                              },
+                                              icon: const Icon(
+                                                Icons.playlist_add_rounded,
+                                              ),
+                                              color: Theme.of(context)
+                                                  .iconTheme
+                                                  .color,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
                               ),
                             ),
                           ),
-                        );
-                      },
+                          builder: (context, bool value, Widget? child) {
+                            return AnimatedContainer(
+                              duration: const Duration(milliseconds: 250),
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                              ),
+                              child: Visibility(visible: value, child: child!),
+                            );
+                          },
+                        ),
+                        ValueListenableBuilder(
+                          valueListenable: doubletapped,
+                          child: const Icon(
+                            Icons.forward_10_rounded,
+                            size: 60.0,
+                          ),
+                          builder: (
+                            BuildContext context,
+                            int value,
+                            Widget? child,
+                          ) {
+                            return Visibility(
+                              visible: value != 0,
+                              child: Card(
+                                color: Colors.transparent,
+                                elevation: 0.0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(15.0),
+                                ),
+                                clipBehavior: Clip.antiAlias,
+                                child: SizedBox.expand(
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: value == 1
+                                            ? [
+                                                Colors.transparent,
+                                                Colors.black.withOpacity(0.4),
+                                                Colors.black.withOpacity(0.7),
+                                              ]
+                                            : [
+                                                Colors.black.withOpacity(0.7),
+                                                Colors.black.withOpacity(0.4),
+                                                Colors.transparent,
+                                              ],
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Visibility(
+                                          visible: value == -1,
+                                          child: const Icon(
+                                            Icons.replay_10_rounded,
+                                            size: 60.0,
+                                          ),
+                                        ),
+                                        const SizedBox(),
+                                        Visibility(
+                                          visible: value == 1,
+                                          child: child!,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                  ],
-                ),
+                  );
+                },
               );
             },
           ),

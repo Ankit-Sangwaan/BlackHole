@@ -90,6 +90,10 @@ Future<String> createBackup(
       final zipFile =
           File('$savePath/${fileName ?? "BlackHole_Backup_$time"}.zip');
 
+      if ((Platform.isIOS || Platform.isMacOS) && await zipFile.exists()) {
+        await zipFile.delete();
+      }
+
       await ZipFile.createFromFiles(
         sourceDir: saveDir,
         files: files,
