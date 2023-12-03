@@ -892,6 +892,23 @@ class _AppUIPageState extends State<AppUIPage> {
                 AppLocalizations.of(
                   context,
                 )!
+                    .volumeGestureEnabled,
+              ),
+              subtitle: Text(
+                AppLocalizations.of(
+                  context,
+                )!
+                    .volumeGestureEnabledSub,
+              ),
+              keyName: 'volumeGestureEnabled',
+              defaultValue: false,
+              isThreeLine: true,
+            ),
+            BoxSwitchTile(
+              title: Text(
+                AppLocalizations.of(
+                  context,
+                )!
                     .useLessDataImage,
               ),
               subtitle: Text(

@@ -176,6 +176,7 @@ class _NewSettingsPageState extends State<NewSettingsPage>
           AppLocalizations.of(context)!.showLast,
           AppLocalizations.of(context)!.navTabs,
           AppLocalizations.of(context)!.enableGesture,
+          AppLocalizations.of(context)!.volumeGestureEnabled,
           AppLocalizations.of(context)!.useLessDataImage,
         ],
       },

@@ -425,7 +425,7 @@ class Download with ChangeNotifier {
         final bytes2 = await consolidateHttpClientResponseBytes(response2);
         final File file2 = File(filepath2);
 
-        await file2.writeAsBytes(bytes2);
+        file2.writeAsBytesSync(bytes2);
         try {
           Logger.root.info('Checking if lyrics required');
           if (downloadLyrics) {
@@ -514,31 +514,34 @@ class Download with ChangeNotifier {
           }
         } else {
           // Set metadata to file
-          await MetadataGod.writeMetadata(
-            file: filepath!,
-            metadata: Metadata(
-              title: data['title'].toString(),
-              artist: data['artist'].toString(),
-              albumArtist: data['album_artist']?.toString() ??
-                  data['artist']?.toString().split(', ')[0] ??
-                  '',
-              album: data['album'].toString(),
-              genre: data['language'].toString(),
-              year: int.parse(data['year'].toString()),
-              // lyrics: lyrics,
-              // comment: 'BlackHole',
-              // trackNumber: 1,
-              // trackTotal: 12,
-              // discNumber: 1,
-              // discTotal: 5,
-              durationMs: int.parse(data['duration'].toString()) * 1000,
-              fileSize: file.lengthSync(),
-              picture: Picture(
-                data: File(filepath2).readAsBytesSync(),
-                mimeType: 'image/jpeg',
+          if (data['language'].toString() == 'YouTube') {
+            // skipping metadata for saavn for the time being as it corrupts the file
+            await MetadataGod.writeMetadata(
+              file: filepath!,
+              metadata: Metadata(
+                title: data['title'].toString(),
+                artist: data['artist'].toString(),
+                albumArtist: data['album_artist']?.toString() ??
+                    data['artist']?.toString().split(', ')[0] ??
+                    '',
+                album: data['album'].toString(),
+                genre: data['language'].toString(),
+                year: int.parse(data['year'].toString()),
+                // lyrics: lyrics,
+                // comment: 'BlackHole',
+                // trackNumber: 1,
+                // trackTotal: 12,
+                // discNumber: 1,
+                // discTotal: 5,
+                durationMs: int.parse(data['duration'].toString()) * 1000,
+                fileSize: file.lengthSync(),
+                picture: Picture(
+                  data: bytes2,
+                  mimeType: 'image/jpeg',
+                ),
               ),
-            ),
-          );
+            );
+          }
         }
         Logger.root.info('Closing connection & notifying listeners');
         client.close();
