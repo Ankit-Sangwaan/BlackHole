@@ -38,7 +38,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:home_widget/home_widget.dart';
+// import 'package:home_widget/home_widget.dart';
 import 'package:logging/logging.dart';
 import 'package:metadata_god/metadata_god.dart';
 import 'package:path_provider/path_provider.dart';
@@ -122,31 +122,31 @@ Future<void> openHiveBox(String boxName, {bool limit = false}) async {
 }
 
 /// Called when Doing Background Work initiated from Widget
-@pragma('vm:entry-point')
-Future<void> backgroundCallback(Uri? data) async {
-  if (data?.host == 'controls') {
-    final audioHandler = await AudioHandlerHelper().getAudioHandler();
-    if (data?.path == '/play') {
-      audioHandler.play();
-    } else if (data?.path == '/pause') {
-      audioHandler.pause();
-    } else if (data?.path == '/skipNext') {
-      audioHandler.skipToNext();
-    } else if (data?.path == '/skipPrevious') {
-      audioHandler.skipToPrevious();
-    }
+// @pragma('vm:entry-point')
+// Future<void> backgroundCallback(Uri? data) async {
+//   if (data?.host == 'controls') {
+//     final audioHandler = await AudioHandlerHelper().getAudioHandler();
+//     if (data?.path == '/play') {
+//       audioHandler.play();
+//     } else if (data?.path == '/pause') {
+//       audioHandler.pause();
+//     } else if (data?.path == '/skipNext') {
+//       audioHandler.skipToNext();
+//     } else if (data?.path == '/skipPrevious') {
+//       audioHandler.skipToPrevious();
+//     }
 
-    // await HomeWidget.saveWidgetData<String>(
-    //   'title',
-    //   audioHandler?.mediaItem.value?.title,
-    // );
-    // await HomeWidget.saveWidgetData<String>(
-    //   'subtitle',
-    //   audioHandler?.mediaItem.value?.displaySubtitle,
-    // );
-    // await HomeWidget.updateWidget(name: 'BlackHoleMusicWidget');
-  }
-}
+//     // await HomeWidget.saveWidgetData<String>(
+//     //   'title',
+//     //   audioHandler?.mediaItem.value?.title,
+//     // );
+//     // await HomeWidget.saveWidgetData<String>(
+//     //   'subtitle',
+//     //   audioHandler?.mediaItem.value?.displaySubtitle,
+//     // );
+//     // await HomeWidget.updateWidget(name: 'BlackHoleMusicWidget');
+//   }
+// }
 
 class MyApp extends StatefulWidget {
   @override
@@ -173,8 +173,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    HomeWidget.setAppGroupId('com.shadow.blackhole');
-    HomeWidget.registerBackgroundCallback(backgroundCallback);
+    // HomeWidget.setAppGroupId('com.shadow.blackhole');
+    // HomeWidget.registerBackgroundCallback(backgroundCallback);
     final String systemLangCode = Platform.localeName.substring(0, 2);
     final String? lang = Hive.box('settings').get('lang') as String?;
     if (lang == null &&

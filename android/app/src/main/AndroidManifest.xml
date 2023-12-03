@@ -22,7 +22,7 @@
             android:resource="@xml/automotive_app_desc" />
         
         <receiver
-            android:name="BlackHoleMusicWidget"
+            android:name=".BlackHoleMusicWidget"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -323,14 +323,14 @@
         </receiver>
 
         <!-- Used for Background Work -->
-        <receiver android:name="es.antonborri.home_widget.HomeWidgetBackgroundReceiver"
+        <!-- <receiver android:name="es.antonborri.home_widget.HomeWidgetBackgroundReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="es.antonborri.home_widget.action.BACKGROUND" />
             </intent-filter>
-        </receiver>
-        <service android:name="es.antonborri.home_widget.HomeWidgetBackgroundService"
-            android:permission="android.permission.BIND_JOB_SERVICE" android:exported="true"/>
+        </receiver> -->
+        <!-- <service android:name="es.antonborri.home_widget.HomeWidgetBackgroundService"
+            android:permission="android.permission.BIND_JOB_SERVICE" android:exported="true"/> -->
 
 
     </application>
