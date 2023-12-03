@@ -148,7 +148,9 @@ class _DownloadedSongsState extends State<DownloadedSongs>
             .where(
               (i) =>
                   (i.duration ?? 60000) > 1000 * minDuration &&
-                  (i.isMusic! || i.isPodcast! || i.isAudioBook!) &&
+                  ((i.isMusic ?? true) ||
+                      (i.isPodcast ?? false) ||
+                      (i.isAudioBook ?? false)) &&
                   (includeOrExclude
                       ? checkIncludedOrExcluded(i)
                       : !checkIncludedOrExcluded(i)),
