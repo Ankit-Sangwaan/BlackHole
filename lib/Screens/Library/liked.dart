@@ -785,7 +785,9 @@ class _SongsTabState extends State<SongsTab>
                             overflow: TextOverflow.ellipsis,
                           ),
                           subtitle: Text(
-                            '${widget.songs[index]['artist'] ?? 'Unknown'} - ${widget.songs[index]['album'] ?? 'Unknown'}',
+                            (widget.songs[index]['album'] ?? '') == ''
+                                ? '${widget.songs[index]['artist'] ?? 'Unknown'}'
+                                : '${widget.songs[index]['artist'] ?? 'Unknown'} - ${widget.songs[index]['album']}',
                             overflow: TextOverflow.ellipsis,
                           ),
                           trailing: Row(
