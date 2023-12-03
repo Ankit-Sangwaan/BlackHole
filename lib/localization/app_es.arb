@@ -718,5 +718,9 @@
   "restart": "Puede que tengas que reiniciar la aplicación",
   "@restart": {},
   "restartRequired": "Tienes que reiniciar la aplicación",
-  "@restartRequired": {}
+  "@restartRequired": {},
+  "volumeGestureEnabledSub": "Utilice el deslizamiento vertical sobre la ilustración en la pantalla del reproductor para controlar el volumen en lugar de deslizar el reproductor hacia abajo",
+  "@volumeGestureEnabledSub": {},
+  "volumeGestureEnabled": "Activar los controles gestuales del volumen",
+  "@volumeGestureEnabled": {}
 }
