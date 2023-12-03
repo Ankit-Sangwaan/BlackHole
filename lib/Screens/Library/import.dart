@@ -357,8 +357,8 @@ Future<void> importSpotifyViaLink(
     title: AppLocalizations.of(context)!.enterPlaylistLink,
     initialText: '',
     keyboardType: TextInputType.url,
-    onSubmitted: (String value, BuildContext context) async {
-      Navigator.pop(context);
+    onSubmitted: (String value, BuildContext ctxt) async {
+      Navigator.pop(ctxt);
       final String playlistId = value.split('?')[0].split('/').last;
       final playlistName = AppLocalizations.of(context)!.spotifyPublic;
       await importSpotify(

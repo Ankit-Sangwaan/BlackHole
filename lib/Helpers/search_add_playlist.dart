@@ -272,7 +272,7 @@ class SearchAddPlaylist {
                   width: 300,
                   child: StreamBuilder<Object>(
                     stream: songAdd as Stream<Object>?,
-                    builder: (ctxt, AsyncSnapshot snapshot) {
+                    builder: (BuildContext ctxt, AsyncSnapshot snapshot) {
                       final Map? data = snapshot.data as Map?;
                       final int done = (data ?? const {})['done'] as int? ?? 0;
                       final String name =
