@@ -710,5 +710,9 @@
   "restart": "アプリを再起動する必要があるかもしれません",
   "@restart": {},
   "restartRequired": "アプリを再起動してください",
-  "@restartRequired": {}
+  "@restartRequired": {},
+  "volumeGestureEnabledSub": "プレーヤーのアートワーク上で垂直にスワイプすると、プレーヤーを下にスライドするのではなく音量調整を行う",
+  "@volumeGestureEnabledSub": {},
+  "volumeGestureEnabled": "ジェスチャで音量調整",
+  "@volumeGestureEnabled": {}
 }
