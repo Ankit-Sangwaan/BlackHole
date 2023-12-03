@@ -11,4 +11,4 @@ PRODUCT_NAME = blackhole
 PRODUCT_BUNDLE_IDENTIFIER = com.shadow.blackhole
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.shadow. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 com.shadow.blackhole. All rights reserved.
