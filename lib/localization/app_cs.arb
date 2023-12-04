@@ -722,5 +722,9 @@
   "restart": "Možná budete muset restartovat aplikaci",
   "@restart": {},
   "restartRequired": "Je vyžadován restart aplikace",
-  "@restartRequired": {}
+  "@restartRequired": {},
+  "volumeGestureEnabledSub": "Přejeďte prstem nahoru nebo dolů na obalu alba na obrazovce přehrávače pro ovládání přehrávače namísto skrytí přehrávače",
+  "@volumeGestureEnabledSub": {},
+  "volumeGestureEnabled": "Povolit ovládání hlasitosti gesty",
+  "@volumeGestureEnabled": {}
 }
