@@ -60,5 +60,11 @@
   "addToQueue": "క్యూకి జోడించండి",
   "@addToQueue": {},
   "addedBy": "చేర్చారు",
-  "@addedBy": {}
+  "@addedBy": {},
+  "albumArtist": "ఆల్బమ్ కళాకారుడు",
+  "@albumArtist": {},
+  "albums": "ఆల్బమ్",
+  "@albums": {},
+  "album": "ఆల్బమ్",
+  "@album": {}
 }
