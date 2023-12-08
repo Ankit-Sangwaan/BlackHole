@@ -714,5 +714,7 @@
   "restart": "Potresti dover riavviare l'app",
   "@restart": {},
   "restartRequired": "È necessario riavviare l'app",
-  "@restartRequired": {}
+  "@restartRequired": {},
+  "volumeGestureEnabled": "Abilita controlli di gestione del volume",
+  "@volumeGestureEnabled": {}
 }
