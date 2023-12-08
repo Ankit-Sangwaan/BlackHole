@@ -724,5 +724,9 @@
   "restart": "Il se peut que vous deviez redémarrer l'application",
   "@restart": {},
   "restartRequired": "Vous devez redémarrer l'application",
-  "@restartRequired": {}
+  "@restartRequired": {},
+  "volumeGestureEnabledSub": "Glissez verticalement sur l'écran du lecteur pour contrôler le volume au lieu de glisser le lecteur vers le bas",
+  "@volumeGestureEnabledSub": {},
+  "volumeGestureEnabled": "Autoriser les commandes gestuelles du volume",
+  "@volumeGestureEnabled": {}
 }
