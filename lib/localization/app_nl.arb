@@ -722,5 +722,9 @@
   "restart": "De app dient mogelijk te worden herstart",
   "@restart": {},
   "restartRequired": "Herstart de app",
-  "@restartRequired": {}
+  "@restartRequired": {},
+  "volumeGestureEnabledSub": "Veeg verticaal over de albumhoes op het afspeelscherm om het volume te bedienen",
+  "@volumeGestureEnabledSub": {},
+  "volumeGestureEnabled": "Volume bedienen met gebaren",
+  "@volumeGestureEnabled": {}
 }
