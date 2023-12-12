@@ -718,5 +718,9 @@
   "restart": "आपको ऐप पुनः आरंभ करने की आवश्यकता हो सकती है",
   "@restart": {},
   "restartRequired": "आपको ऐप पुनः आरंभ करना होगा",
-  "@restartRequired": {}
+  "@restartRequired": {},
+  "volumeGestureEnabledSub": "प्लेयर को नीचे सरकाने के बजाय वॉल्यूम को नियंत्रित करने के लिए प्लेयर स्क्रीन में आर्टवर्क पर वर्टिकल स्वाइप का उपयोग करें",
+  "@volumeGestureEnabledSub": {},
+  "volumeGestureEnabled": "वॉल्यूम जेस्चर नियंत्रण सक्षम करें",
+  "@volumeGestureEnabled": {}
 }
