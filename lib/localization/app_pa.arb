@@ -710,5 +710,9 @@
   "restart": "ਤੁਹਾਨੂੰ ਐਪ ਨੂੰ ਰੀਸਟਾਰਟ ਕਰਨ ਦੀ ਲੋੜ ਹੋ ਸਕਦੀ ਹੈ",
   "@restart": {},
   "restartRequired": "ਤੁਹਾਨੂੰ ਐਪ ਨੂੰ ਰੀਸਟਾਰਟ ਕਰਨ ਦੀ ਲੋੜ ਹੈ",
-  "@restartRequired": {}
+  "@restartRequired": {},
+  "volumeGestureEnabledSub": "ਪਲੇਅਰ ਨੂੰ ਹੇਠਾਂ ਸਲਾਈਡ ਕਰਨ ਦੀ ਬਜਾਏ ਵੌਲੀਅਮ ਨੂੰ ਕੰਟਰੋਲ ਕਰਨ ਲਈ ਪਲੇਅਰ ਸਕ੍ਰੀਨ ਵਿੱਚ ਆਰਟਵਰਕ 'ਤੇ ਵਰਟੀਕਲ ਸਵਾਈਪ ਦੀ ਵਰਤੋਂ ਕਰੋ",
+  "@volumeGestureEnabledSub": {},
+  "volumeGestureEnabled": "ਵੌਲੀਅਮ ਸੰਕੇਤ ਨਿਯੰਤਰਣ ਨੂੰ ਸਮਰੱਥ ਬਣਾਓ",
+  "@volumeGestureEnabled": {}
 }
