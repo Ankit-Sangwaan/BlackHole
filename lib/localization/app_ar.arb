@@ -698,5 +698,21 @@
   "topCharts": "أعلى الرسوم البيانية",
   "@topCharts": {},
   "minFourRequired": "مطلوب 4 دقائق",
-  "@minFourRequired": {}
+  "@minFourRequired": {},
+  "navTabs": "علامات تبويب شريط التنقل",
+  "@navTabs": {},
+  "useLessDataImage": "استخدم بيانات أقل للصور",
+  "@useLessDataImage": {},
+  "useLessDataImageSub": "سيؤدي هذا إلى تقليل جودة الصور في التطبيق، لكنه سيحفظ بياناتك",
+  "@useLessDataImageSub": {},
+  "restart": "قد تحتاج إلى إعادة تشغيل التطبيق",
+  "@restart": {},
+  "volumeGestureEnabledSub": "استخدم التمرير العمودي على العمل الفني في شاشة المشغل للتحكم في مستوى الصوت بدلاً من تحريك المشغل لأسفل",
+  "@volumeGestureEnabledSub": {},
+  "navTabsSub": "علامات التبويب التي سيتم عرضها في شريط التنقل السفلي",
+  "@navTabsSub": {},
+  "volumeGestureEnabled": "تمكين عناصر التحكم في إيماءة مستوى الصوت",
+  "@volumeGestureEnabled": {},
+  "restartRequired": "قد تحتاج إلى إعادة تشغيل التطبيق",
+  "@restartRequired": {}
 }
