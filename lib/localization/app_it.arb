@@ -716,5 +716,7 @@
   "restartRequired": "È necessario riavviare l'app",
   "@restartRequired": {},
   "volumeGestureEnabled": "Abilita controlli di gestione del volume",
-  "@volumeGestureEnabled": {}
+  "@volumeGestureEnabled": {},
+  "volumeGestureEnabledSub": "scorri verticalmente sull'artwork nella schermata del lettore per controllare il volume invece di far scorrere il lettore verso il basso",
+  "@volumeGestureEnabledSub": {}
 }
