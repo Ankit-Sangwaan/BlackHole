@@ -118,5 +118,19 @@
   "duration": "Duration",
   "@duration": {},
   "createBackSub": "Crear copia de securitate de tu datos",
-  "@createBackSub": {}
+  "@createBackSub": {},
+  "supportEqSub": "Disactivar si tu non pote reproducer cantos (in ambe modos in linea e foras de linea)",
+  "@supportEqSub": {},
+  "musicLangSub": "Pro monstrar cantos sur le schermo de initio",
+  "@musicLangSub": {},
+  "trendingSearch": "Cercar tendentias",
+  "@trendingSearch": {},
+  "useDown": "Reproducer cantos discargate, si es disponibile",
+  "@useDown": {},
+  "noLangSelected": "Necun lingua de musica seligire. Selige un lingua pro vider cantos in le schermo de initio",
+  "@noLangSelected": {},
+  "songs": "Cantos",
+  "@songs": {},
+  "searchText": "Cantos, albumes o artistas",
+  "@searchText": {}
 }
