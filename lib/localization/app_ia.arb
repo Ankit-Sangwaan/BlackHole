@@ -326,5 +326,17 @@
   "sleepTimer": "Temporisator de somno",
   "@sleepTimer": {},
   "saveTheme": "Salvar le thema",
-  "@saveTheme": {}
+  "@saveTheme": {},
+  "compactNotificationButtonsHeader": "Tu pote seliger un maxime de 3 buttones",
+  "@compactNotificationButtonsHeader": {},
+  "clearAll": "Rader toto",
+  "@clearAll": {},
+  "createYtFoldSub": "Crear un dossier differente pro cantos discargate ab YouTube",
+  "@createYtFoldSub": {},
+  "createYtFold": "Crear un dossier differente pro le discargamentos de YouTube",
+  "@createYtFold": {},
+  "createAlbumFold": "Crear un dossier pro le discargamento de albumes e listas de reproduction",
+  "@createAlbumFold": {},
+  "clearCache": "Rader le datos in cache",
+  "@clearCache": {}
 }
