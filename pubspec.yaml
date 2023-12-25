@@ -11,7 +11,7 @@ environment:
   flutter: ">=3.3.0"
 
 dependencies:
-  app_links: ^3.4.5
+  app_links: ^3.5.0
   audio_service: ^0.18.12
   audiotagger:
     git:
@@ -20,16 +20,16 @@ dependencies:
   # bitsdojo_window: ^0.1.1+1 #For Desktops
   cached_network_image: ^3.3.0
   carousel_slider: ^4.2.1
-  connectivity_plus: ^5.0.1
+  connectivity_plus: ^5.0.2
   cupertino_icons: ^1.0.6
   dart_des: ^1.0.2
-  device_info_plus: ^9.0.2
+  device_info_plus: ^9.1.1
   # ffmpeg_kit_flutter_audio: ^6.0.3
   file_picker: ^6.1.1
   flip_card: ^0.7.0
   flutter:
     sdk: flutter
-  flutter_archive: ^5.0.0
+  flutter_archive: ^6.0.0
   flutter_displaymode: ^0.6.0
   # flutter_downloader: ^1.7.1
   flutter_localizations:
@@ -38,7 +38,7 @@ dependencies:
   get_it: ^7.6.4
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  home_widget: ^0.3.0
+  # home_widget: ^0.3.0
   html_unescape: ^2.0.0
   just_audio: ^0.9.36
   # Discontinued, Use just_audio_windows instead.
@@ -51,19 +51,19 @@ dependencies:
   package_info_plus: ^5.0.1
   palette_generator: ^0.3.3+3
   path_provider: ^2.1.1
-  permission_handler: ^11.0.1
+  permission_handler: ^11.1.0
   persistent_bottom_nav_bar:
     git:
       url: https://github.com/Sangwan5688/PersistentBottomNavBar
       ref: ecdadb0
   receive_sharing_intent: ^1.4.5
-  share_plus: ^7.0.2
+  share_plus: ^7.2.1
   sizer: ^2.0.15
   sliding_up_panel: ^2.0.0+1
-  url_launcher: ^6.1.14
+  url_launcher: ^6.2.2
   uuid: ^3.0.7
-  workmanager: ^0.5.1
-  youtube_explode_dart: ^2.0.2
+  # workmanager: ^0.5.1
+  youtube_explode_dart: ^2.0.4
 
 dev_dependencies:
   flutter_test:

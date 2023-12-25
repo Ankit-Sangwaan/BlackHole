@@ -137,42 +137,65 @@ Future<void> restore(
   );
   Logger.root.info('Selected restore file path: $savePath');
   if (savePath != '') {
-    final File zipFile = File(savePath);
-    final Directory tempDir = await getTemporaryDirectory();
-    final Directory destinationDir = Directory('${tempDir.path}/restore');
+    final isZip = savePath.endsWith('.zip');
+    if (isZip || savePath.endsWith('.hive')) {
+      final File zipFile = File(savePath);
+      final Directory tempDir = await getTemporaryDirectory();
+      Directory destinationDir = Directory('${tempDir.path}/restore');
 
-    try {
-      Logger.root.info('Extracting backup file');
-      await ZipFile.extractToDirectory(
-        zipFile: zipFile,
-        destinationDir: destinationDir,
-      );
-      final List<FileSystemEntity> files = await destinationDir.list().toList();
-      Logger.root.info('Found ${files.length} backup files');
-
-      for (int i = 0; i < files.length; i++) {
-        final String backupPath = files[i].path;
-        final String boxName =
-            backupPath.split('/').last.replaceAll('.hive', '');
-        final Box box = await Hive.openBox(boxName);
-        final String boxPath = box.path!;
-        await box.close();
-
-        try {
-          await File(backupPath).copy(boxPath);
-        } finally {
-          await Hive.openBox(boxName);
+      try {
+        if (isZip) {
+          Logger.root.info('Extracting backup file');
+          await ZipFile.extractToDirectory(
+            zipFile: zipFile,
+            destinationDir: destinationDir,
+          );
+        } else {
+          Logger.root.info('Hive file is selected');
+          final splitPath = savePath.split('/');
+          splitPath.removeLast();
+          Logger.root.info('Changing path to ${splitPath.join("/")}');
+          destinationDir = Directory(splitPath.join('/'));
         }
+        final List<FileSystemEntity> files = await destinationDir
+            .list()
+            .where((element) => element.path.endsWith('.hive'))
+            .toList();
+        Logger.root.info('Found ${files.length} backup files');
+
+        for (int i = 0; i < files.length; i++) {
+          final String backupPath = files[i].path;
+          final String boxName =
+              backupPath.split('/').last.replaceAll('.hive', '');
+          final Box box = await Hive.openBox(boxName);
+          final String boxPath = box.path!;
+          await box.close();
+
+          try {
+            await File(backupPath).copy(boxPath);
+          } finally {
+            await Hive.openBox(boxName);
+          }
+        }
+        if (isZip) {
+          await destinationDir.delete(recursive: true);
+        }
+        ShowSnackBar()
+            .showSnackBar(context, AppLocalizations.of(context)!.importSuccess);
+      } catch (e) {
+        Logger.root.severe('Error in restoring backup', e);
+        ShowSnackBar().showSnackBar(
+          context,
+          '${AppLocalizations.of(context)!.failedImport}\nError: $e',
+        );
       }
-      await destinationDir.delete(recursive: true);
-      ShowSnackBar()
-          .showSnackBar(context, AppLocalizations.of(context)!.importSuccess);
-    } catch (e) {
-      Logger.root.severe('Error in restoring backup', e);
+    } else {
+      Logger.root.severe('Error in restoring backup', 'Not a zip file');
       ShowSnackBar().showSnackBar(
         context,
-        '${AppLocalizations.of(context)!.failedImport}\nError: $e',
+        '${AppLocalizations.of(context)!.failedImport}\nSelected file is not a zip file.',
       );
+      return;
     }
   } else {
     Logger.root.severe('Error in restoring backup', 'No file selected');

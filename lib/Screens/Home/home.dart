@@ -285,6 +285,7 @@ class _HomePageState extends State<HomePage> {
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
+        drawerEnableOpenDragGesture: false,
         drawer: Drawer(
           child: GradientContainer(
             child: CustomScrollView(

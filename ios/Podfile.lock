@@ -51,8 +51,6 @@ PODS:
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
-  - home_widget (0.0.1):
-    - Flutter
   - just_audio (0.0.1):
     - Flutter
   - metadata_god (0.0.1)
@@ -81,8 +79,6 @@ PODS:
   - SwiftyGif (5.4.3)
   - url_launcher_ios (0.0.1):
     - Flutter
-  - workmanager (0.0.1):
-    - Flutter
   - ZIPFoundation (0.9.13)
 
 DEPENDENCIES:
@@ -94,7 +90,6 @@ DEPENDENCIES:
   - file_picker (from `.symlinks/plugins/file_picker/ios`)
   - Flutter (from `Flutter`)
   - flutter_archive (from `.symlinks/plugins/flutter_archive/ios`)
-  - home_widget (from `.symlinks/plugins/home_widget/ios`)
   - just_audio (from `.symlinks/plugins/just_audio/ios`)
   - metadata_god (from `.symlinks/plugins/metadata_god/ios`)
   - on_audio_query_ios (from `.symlinks/plugins/on_audio_query_ios/ios`)
@@ -105,7 +100,6 @@ DEPENDENCIES:
   - share_plus (from `.symlinks/plugins/share_plus/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
   - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
-  - workmanager (from `.symlinks/plugins/workmanager/ios`)
 
 SPEC REPOS:
   trunk:
@@ -135,8 +129,6 @@ EXTERNAL SOURCES:
     :path: Flutter
   flutter_archive:
     :path: ".symlinks/plugins/flutter_archive/ios"
-  home_widget:
-    :path: ".symlinks/plugins/home_widget/ios"
   just_audio:
     :path: ".symlinks/plugins/just_audio/ios"
   metadata_god:
@@ -157,8 +149,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite/ios"
   url_launcher_ios:
     :path: ".symlinks/plugins/url_launcher_ios/ios"
-  workmanager:
-    :path: ".symlinks/plugins/workmanager/ios"
 
 SPEC CHECKSUMS:
   app_links: 5ef33d0d295a89d9d16bb81b0e3b0d5f70d6c875
@@ -172,7 +162,6 @@ SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_archive: 1805fdd3a695fd284b43edb53dc35ca843fb761c
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  home_widget: 0434835a4c9a75704264feff6be17ea40e0f0d57
   just_audio: baa7252489dbcf47a4c7cc9ca663e9661c99aafa
   metadata_god: eceae399d0020475069a5cebc35943ce8562b5d7
   on_audio_query_ios: e5afb0d4b42cfa3e8762d8ec1953540cb4f02100
@@ -187,7 +176,6 @@ SPEC CHECKSUMS:
   SwiftyBeaver: 84069991dd5dca07d7069100985badaca7f0ce82
   SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
   url_launcher_ios: bf5ce03e0e2088bad9cc378ea97fa0ed5b49673b
-  workmanager: 0afdcf5628bbde6924c21af7836fed07b42e30e6
   ZIPFoundation: ae5b4b813d216d3bf0a148773267fff14bd51d37
 
 PODFILE CHECKSUM: 7a0f29ba12b78c18d94be8ab9c01b5c71ec71988
