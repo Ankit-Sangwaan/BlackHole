@@ -46,5 +46,6 @@ class LanguageCodes {
     'Turkish': 'tr',
     'Ukrainian': 'uk',
     'Urdu': 'ur',
+    'Vietnamese': 'vi'
   };
 }
