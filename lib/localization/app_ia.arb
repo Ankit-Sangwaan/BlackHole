@@ -418,5 +418,21 @@
   "restartRequired": "Tu besonia reinitiar le application",
   "@restartRequired": {},
   "upiCopied": "UPI ID copiate!",
-  "@upiCopied": {}
+  "@upiCopied": {},
+  "loadLast": "Restaurar ultime session in le initio del application",
+  "@loadLast": {},
+  "cantAddToQueue": "Non pote adder canto in linea al cauda foras de linea",
+  "@cantAddToQueue": {},
+  "buyCoffee": "Compra me un caffe",
+  "@buyCoffee": {},
+  "bgGrad": "Gradiente de fundo",
+  "@bgGrad": {},
+  "adjustSpeed": "Adjustar velocitate",
+  "@adjustSpeed": {},
+  "loadLastSub": "Cargar automaticamente le ultime session quando initia le application",
+  "@loadLastSub": {},
+  "addedTo": "Addite a",
+  "@addedTo": {},
+  "autoplaySub": "Adder automaticamente le cantos relative al cauda",
+  "@autoplaySub": {}
 }
