@@ -186,7 +186,7 @@ class PlayerInvoke {
 
   static Future<void> refreshYtLink(Map playItem) async {
     // final bool cacheSong =
-    // Hive.box('settings').get('cacheSong', defaultValue: true) as bool;
+    // Hive.box('settings').get('cacheSong', defaultValue: false) as bool;
     final int expiredAt = int.parse((playItem['expire_at'] ?? '0').toString());
     if ((DateTime.now().millisecondsSinceEpoch ~/ 1000) + 350 > expiredAt) {
       Logger.root.info(

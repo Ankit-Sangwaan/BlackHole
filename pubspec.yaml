@@ -42,6 +42,7 @@ dependencies:
   html_unescape: ^2.0.0
   just_audio: ^0.9.36
   # Discontinued, Use just_audio_windows instead.
+  # For Linux use just_audio_mpv.
   # just_audio_libwinmedia: ^0.0.4 # For windows and linux.
   logging: ^1.2.0
   marquee: ^2.2.3

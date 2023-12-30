@@ -1588,11 +1588,12 @@ class _ArtWorkWidgetState extends State<ArtWorkWidget> {
                             dragging.value = true;
                           }
                         : null,
-                    onVerticalDragEnd: !enabled
-                        ? null
-                        : (_) {
-                            dragging.value = false;
-                          },
+                    onVerticalDragEnd:
+                        enabled && (volumeGestureEnabled || dragging.value)
+                            ? (_) {
+                                dragging.value = false;
+                              }
+                            : null,
                     onVerticalDragUpdate: !enabled || !dragging.value
                         ? null
                         : (DragUpdateDetails details) {

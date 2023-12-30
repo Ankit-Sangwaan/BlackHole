@@ -460,7 +460,7 @@ class _MusicPlaybackPageState extends State<MusicPlaybackPage> {
                     .cacheSongSub,
               ),
               keyName: 'cacheSong',
-              defaultValue: true,
+              defaultValue: false,
             ),
           ],
         ),

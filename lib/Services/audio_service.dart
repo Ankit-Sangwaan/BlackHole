@@ -188,7 +188,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
     resetOnSkip =
         Hive.box('settings').get('resetOnSkip', defaultValue: false) as bool;
     cacheSong =
-        Hive.box('settings').get('cacheSong', defaultValue: true) as bool;
+        Hive.box('settings').get('cacheSong', defaultValue: false) as bool;
     recommend =
         Hive.box('settings').get('autoplay', defaultValue: true) as bool;
     loadStart =
@@ -562,7 +562,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
         ? preferredWifiQuality
         : preferredMobileQuality;
     cacheSong =
-        Hive.box('settings').get('cacheSong', defaultValue: true) as bool;
+        Hive.box('settings').get('cacheSong', defaultValue: false) as bool;
     useDown = Hive.box('settings').get('useDown', defaultValue: true) as bool;
     return mediaItems.map(_itemToSource).whereType<AudioSource>().toList();
   }
@@ -1013,7 +1013,7 @@ class AudioPlayerHandlerImpl extends BaseAudioHandler
   }
 
   void _playbackError(err) {
-    Logger.root.severe('Error from audioservice: ${err.code}', err);
+    Logger.root.severe('Playback Error from audioservice: ${err.code}', err);
     if (err is PlatformException &&
         err.code == 'abort' &&
         err.message == 'Connection aborted') return;
