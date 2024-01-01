@@ -36,6 +36,20 @@ class HandleRoute {
   static Route? handleRoute(String? url) {
     Logger.root.info('received route url: $url');
     if (url == null) return null;
+    // blackhole specific url
+    // blackhole://blackhole/search?q=stay+with+me
+    if (url.startsWith('/search')) {
+      final uri = Uri.parse(url);
+      final query = uri.queryParameters['q'];
+      if (query != null) {
+        return PageRouteBuilder(
+          pageBuilder: (_, __, ___) => SearchPage(
+            query: query,
+            fromDirectSearch: true,
+          ),
+        );
+      }
+    }
     if (url.contains('saavn')) {
       final RegExpMatch? songResult =
           RegExp(r'.*saavn.com.*?\/(song)\/.*?\/(.*)').firstMatch('$url?');
