@@ -464,5 +464,11 @@
   "includedDetails": "Solmente essera monstrate le cantos del dossieres seligite",
   "@includedDetails": {},
   "guest": "Invitato",
-  "@guest": {}
+  "@guest": {},
+  "viral": "Viral",
+  "@viral": {},
+  "useLessDataImage": "Usar minus de datos pro le imagines",
+  "@useLessDataImage": {},
+  "songsPlayed": "Cantos reproducite",
+  "@songsPlayed": {}
 }
