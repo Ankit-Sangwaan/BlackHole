@@ -502,5 +502,13 @@
   "mostPlayedSong": "Canto plus reproducite",
   "@mostPlayedSong": {},
   "aboutLine2": "Si tu place mi travalio\nmonstra algun ♥ e ⭐ le repositorio",
-  "@aboutLine2": {}
+  "@aboutLine2": {},
+  "shareLogs": "Compartir le registros",
+  "@shareLogs": {},
+  "blacklistedHomeSections": "Sectiones de initio in lista nigre",
+  "@blacklistedHomeSections": {},
+  "miniButtons": "Buttones a monstrar in le Mini reproductor",
+  "@miniButtons": {},
+  "volumeGestureEnabled": "Activar controlos de gestos de volumine",
+  "@volumeGestureEnabled": {}
 }
