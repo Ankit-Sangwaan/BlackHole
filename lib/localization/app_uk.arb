@@ -147,7 +147,7 @@
   "@edit": {},
   "enableGesture": "Ввімкнути жести графічних зображень",
   "@enableGesture": {},
-  "enableGestureSub": "Вмикає доторк, затиск, взмах та інше на обложці на екрані програвача",
+  "enableGestureSub": "Вмикає натискання, утримування, змахування тощо на обкладинці на екрані програвача",
   "@enableGestureSub": {},
   "enforceRepeat": "Примусити повтор",
   "@enforceRepeat": {},
@@ -309,7 +309,7 @@
   "@resetOnSkipSub": {},
   "restore": "Відновити",
   "@restore": {},
-  "restoreSub": "Відновіть дані з бекапу.\nМожливо, вам знадобиться перезапустити додаток\n",
+  "restoreSub": "Відновіть дані з резервної копії.",
   "@restoreSub": {},
   "resultsNotFound": "Результати не знайдено",
   "@resultsNotFound": {},
@@ -706,5 +706,13 @@
   "useLessDataImage": "Використовувати менше даних для зображень",
   "@useLessDataImage": {},
   "useLessDataImageSub": "Це знизить якість зображень в застосунку, але збереже ваші дані",
-  "@useLessDataImageSub": {}
+  "@useLessDataImageSub": {},
+  "volumeGestureEnabledSub": "Використовуйте вертикальне змахування по обкладинці на екрані програвача для регулювання гучності замість того, щоб переміщати програвач донизу",
+  "@volumeGestureEnabledSub": {},
+  "volumeGestureEnabled": "Увімкнути керування гучністю жестами",
+  "@volumeGestureEnabled": {},
+  "restart": "Можливо, вам доведеться перезапустити застосунок",
+  "@restart": {},
+  "restartRequired": "Вам потрібно перезапустити застосунок",
+  "@restartRequired": {}
 }
